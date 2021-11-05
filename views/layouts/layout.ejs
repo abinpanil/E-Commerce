@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=title%></title>
+
+
+    <%if(admin){%>
+
+        <!-- custom style -->
+        <link href="/admin/css/uif9e3.css?v=1.1" rel="stylesheet" type="text/css"/>
+        <link href="/admin/css/responsivef9e3.css?v=1.1" rel="stylesheet" />
+
+        <!-- <link href="/admin/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" /> -->
+        <!-- Icons Css -->
+        <link href="/admin/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <!-- App Css--><link href="css/bootstrapf9e3.css?v=1.1" rel="stylesheet" type="text/css"/>
+        <!-- <link href="/admin/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" /> -->
+        <!-- jvectormap -->
+        <link href="/admin/libs/jqvmap/jqvmap.min.css" rel="stylesheet" />
+
+        <!-- Bootstrap Css -->
+        <link href="/admin/css/bootstrap-dark.min.css" rel="stylesheet" type="text/css" />
+        <!-- Icons Css -->
+        <link href="/admin/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <!-- App Css-->
+        <link href="/admin/css/app-dark.min.css" rel="stylesheet" type="text/css" />
+
+
+    <%}else{%>
+        
+    <%}%>
+    
+</head>
+<body>
+    
+    <%if(admin){%>
+        <%-include('../partials/admin-header')%>
+    <%}else{%>
+        <%-include('../partials/user-header')%>
+    <%}%>
+    <%-body%>
+    
+    <%if(admin){%>
+        <%-include('../partials/admin-footer')%>
+    <%}else{%>
+        <%-include('../partials/user-footer')%>
+    <%}%>
+
+    
+</body>
+</html>
