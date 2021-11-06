@@ -15,7 +15,7 @@ module.exports = {
     },
     doLogin:(userData)=>{
         return new Promise(async(resolve,reject)=>{
-            let loginStatus = false
+            
             let response = {}
             let user = await db.get().collection(collection.USERS_COLLECTION).findOne({username:userData.username})
             if(user){
@@ -23,14 +23,19 @@ module.exports = {
                     if(status){
                         response.user = user
                         response.status = true
+                        response.errormsg=""
                         resolve(response)
                     }else{
                         console.log("log fail");
-                        resolve({status:false})
+                        response.status = false
+                        response.errormsg="Invalid Password"
+                        resolve(response)
                     }
                 })
             }else{
-                resolve({status:false})
+                response.status = false
+                response.errormsg="User not Found"
+                resolve(response)
             }
         })
     }

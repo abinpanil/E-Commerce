@@ -11,9 +11,9 @@
                         
                         <!-- End of Dropdown Menu -->
                         <%if(user){%>
-                            <a href="my-account.html" style="font-size: 14px;" class="d-lg-show"><b>Hi User</b></a>
+                            <a href="my-account.html" style="font-size: 14px;" class="d-lg-show"><b>Hi <%=user.name%></b></a>
                             <a href="my-account.html" style="font-size: 14px;" class="d-lg-show">My Account</a>
-                            <a href="" style="font-size: 14px;" class="d-lg-show login sign-in"><i
+                            <a href="/signout" style="font-size: 14px;" class="d-lg-show"><i
                                 class="w-icon-account"></i>Sign out</a>
                         <%}else{%>
 

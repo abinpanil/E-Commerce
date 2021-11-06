@@ -14,26 +14,25 @@
                                     </a>
                                 </div>
                                 <!-- end row -->
-                                <h4 class="font-size-18 text-muted mt-2 text-center">Welcome Back !</h4>
-                                <p class="mb-5 text-center">Sign in to continue to Upzet.</p>
-                                <form class="form-horizontal" action="">
-
+                    
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="mb-4">
-                                                <label class="form-label" for="username">Username</label>
-                                                <input type="text" class="form-control" id="username" placeholder="Enter username">
-                                            </div>
-                                            <div class="mb-4">
-                                                <label class="form-label" for="userpassword">Password</label>
-                                                <input type="password" class="form-control" id="userpassword" placeholder="Enter password">
-                                            </div>
-                                            <div class="d-grid mt-4">
-                                                <button class="btn btn-primary waves-effect waves-light" type="submit">Log In</button>
-                                            </div>
+                                            <form action="/admin/login" method="post">
+                                                <div class="mb-4">
+                                                    <label class="form-label" for="username">Username</label>
+                                                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="form-label" for="userpassword">Password</label>
+                                                    <input type="password" class="form-control" name="password" id="userpassword" placeholder="Enter password">
+                                                </div>
+                                                <h5 style="color: brown;"></h5>
+                                                <div class="d-grid mt-4">
+                                                    <button class="btn btn-primary waves-effect waves-light" type="submit">Log In</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
-                                </form>
                             </div>
                         </div>
                     </div>

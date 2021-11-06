@@ -4,10 +4,22 @@ const router = express.Router();
 const userHelpers = require('../helpers/user-helpers')
 
 let admin = false
-let user = false
+let user={}
+
+let verifyUser = (req,res,next)=>{
+  if(req.session.user){
+    
+    next()
+  }else{
+    
+    res.redirect('/login')
+  }
+}
+
 
 /* GET users Home. */
 router.get('/', function(req, res, next) {
+  
   res.render('./user/home',{admin,user,title:"Home"});
 });
 
@@ -56,9 +68,12 @@ router.post('/login',function(req,res){
 
 /* Sign in. */
 router.post('/signIn',function(req,res){
-  console.log(req.body);
+  
   userHelpers.doLogin(req.body).then((response)=>{
     if(response.status){
+      req.session.user=response.user
+      user = req.session.user
+      console.log(user.name);
       res.redirect('/')
     }else{
       res.redirect('/login')
@@ -66,6 +81,13 @@ router.post('/signIn',function(req,res){
     
   })
   
+})
+
+
+/* Signout. */
+router.post('/signout',(req,res)=>{
+  delete req.session.user
+  user = null
 })
 
 /* Sign Up. */
