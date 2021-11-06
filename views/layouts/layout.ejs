@@ -27,10 +27,48 @@
         <link href="/admin/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
         <link href="/admin/css/app-dark.min.css" rel="stylesheet" type="text/css" />
+        <!-- Modal Image Crop -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/{version}/croppie.min.css" />
+        <link rel="stylesheet" href="/admin/css/style.css">
 
 
     <%}else{%>
         
+        <!-- WebFont.js -->
+    <script>
+        WebFontConfig = {
+            google: { families: ['Poppins:400,500,600,700,800', 'Seoge Script:400,500,600,700,800'] }
+        };
+        (function (d) {
+            var wf = d.createElement('script'), s = d.scripts[0];
+            wf.src = '/user/js/webfont.js';
+            wf.async = true;
+            s.parentNode.insertBefore(wf, s);
+        })(document);
+    </script>
+
+    <link rel="preload" href="/user/vendor/fontawesome-free/webfonts/fa-regular-400.woff2" as="font" type="font/woff2"
+        crossorigin="anonymous">
+    <link rel="preload" href="/user/vendor/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2"
+        crossorigin="anonymous">
+    <link rel="preload" href="/user/vendor/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2"
+        crossorigin="anonymous">
+    <link rel="preload" href="/user/fonts/wolmart87d5.ttf?png09e" as="font" type="font/ttf" crossorigin="anonymous">
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" type="text/css" href="/user/vendor/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/user/vendor/swiper/swiper-bundle.min.css">
+
+
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" type="text/css" href="/user/vendor/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" type="text/css" href="/user/vendor/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/user/vendor/magnific-popup/magnific-popup.min.css">
+
+    <!-- Default CSS -->
+    <link rel="stylesheet" type="text/css" href="/user/css/demo15.min.css">
+    <link rel="stylesheet" type="text/css" href="/user/css/style.min.css">
+
     <%}%>
     
 </head>

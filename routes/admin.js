@@ -5,8 +5,13 @@ let admin = true;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('./admin/login', {admin,title:"Admin"});
+  
 });
+
+/* Get Login. */
+router.get('/login',function(req,res){
+  res.render('./admin/login', {admin,title:"Admin"});
+})
  
 /* Get dashboard. */
 router.get('/dashboard',function(req,res){
@@ -38,5 +43,32 @@ router.get('/users',function(req,res){
   res.render('./admin/user',{admin,title:"Users"})
 })
 
+/* Login admin. */
+router.post('/login',(req,res)=>{
 
+  let username = abinpanil
+  let password = password
+  if(req.body.username===username){
+    if(req.body.password===password){
+      res.redirect('/')
+    }
+  }
+  
+})
+
+/* Add category */
+router.post('/add_category',function(req,res){
+  console.log("hai");
+  console.log(req.body);
+  res.redirect('/admin/categories') 
+})
+ 
+
+/* Add product */
+router.post('/add_product',function(req,res){
+  console.log("hai");
+  console.log(req.body);
+  console.log(req.files);
+  res.redirect('/admin/add_products') 
+})
 module.exports = router;

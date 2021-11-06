@@ -1,4 +1,4 @@
-<!-- ============================================================== -->
+            <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== -->
             <div class="main-content">
@@ -10,12 +10,13 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Product Management</h4>
+                                    <h4 class="">Product Management</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
                                             <li class="breadcrumb-item active">Product Management</li>
+                                            <li class="breadcrumb-item active">Add Product</li>
                                         </ol>
                                     </div>
 
@@ -28,38 +29,25 @@
 	
                             <div class="content-header">
                                 <h2 class="content-title">Create product </h2>
-                                <div>
-                                    <a href="#" class="btn btn-outline-danger"> &times; Discard</a>
-                                </div>
                             </div>
                         
                             <div class="card mb-4">
                                   <div class="card-body">
-                                    <form>
+                                    <form action="/admin/add_product", method="post", enctype="multipart/form-data">
                                         <div class="mb-4">
-                                            <label for="product_name" class="form-label">Product title</label>
-                                            <input type="text" placeholder="Type here" class="form-control" id="product_name">
+                                            <label for="product_name" class="form-label">Product Name</label>
+                                            <input type="text" name="productname" placeholder="Enter Product Name" class="form-control" id="product_name">
                                         </div>
                         
                                         <div class="mb-4">
-                                            <label class="form-label">Full description</label>
-                                            <textarea placeholder="Type here" class="form-control" rows="4"></textarea>
-                                        </div>
-                        
-                                        <div class="mb-4">
-                                            <label class="form-label">Images</label>
-                                            <input class="form-control" type="file">
-                                        </div>
-                        
-                                        <div class="mb-4">
-                                            <label for="product_name" class="form-label">Tags</label>
-                                            <input type="text" class="form-control">
+                                            <label class="form-label">Product description</label>
+                                            <textarea name="productdiscription" placeholder="Type here" class="form-control" rows="4"></textarea>
                                         </div>
                         
                                         <div class="row gx-2">
                                             <div class="col-sm-6 mb-3">
                                                 <label class="form-label">Category</label>
-                                                <select class="form-select">
+                                                <select class="form-select" name="productcategory">
                                                     <option> Automobiles </option>
                                                     <option> Home items </option>
                                                     <option> Electronics </option>
@@ -70,7 +58,7 @@
                                               </div>
                                               <div class="col-sm-6 mb-3">
                                                 <label class="form-label">Sub-category</label>
-                                                <select class="form-select">
+                                                <select class="form-select" name="productsubcategory">
                                                     <option> Nissan </option>
                                                     <option> Honda </option>
                                                     <option> Mercedes </option>
@@ -79,29 +67,19 @@
                                               </div>
                                         </div> <!-- row.// -->
                         
-                        
+                                        
+
                                         <div class="mb-4">
-                                            <label class="form-label">Price</label>
-                                            <div class="row gx-2">
-                                                <div class="col-4">
-                                                    <input placeholder="Type" type="text" class="form-control">
-                                                  </div>
-                                                <div class="col-2">
-                                                    <select class="form-select">
-                                                        <option> USD </option>
-                                                        <option> EUR </option>
-                                                        <option> RUBL </option>
-                                                    </select>
-                                                </div>
-                                            </div> <!-- row.// -->
+                                            <label class="form-label">Images</label>
+                                            <input class="form-control" type="file" name="productimage3">
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label">Images</label>
+                                            <input class="form-control" type="file" name="productimage4">
                                         </div>
                         
-                                        <label class="form-check mb-4">
-                                          <input class="form-check-input" type="checkbox" value="">
-                                          <span class="form-check-label">  Publish on website </span>
-                                        </label>
-                        
-                                        <button class="btn btn-primary">Submit item</button>
+                                        <button type="submit" class="btn btn-primary">Add item</button>
                         
                                     </form>
                                   </div>
@@ -116,13 +94,18 @@
 
         </div>
         <!-- END layout-wrapper -->
+        
 
         <!-- JAVASCRIPT -->
         <script src="/admin/libs/jquery/jquery.min.js"></script>
         <script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="/admin/libs/metismenu/metisMenu.min.js"></script>
         <script src="/admin/libs/simplebar/simplebar.min.js"></script>
         <script src="/admin/libs/node-waves/waves.min.js"></script>
+        <script src="/admin/libs/metismenu/metisMenu.min.js"></script>
+
+        <!-- Crop Image -->
+        <!-- <script src="croppie.js"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/{version}/croppie.min.js"></script>
 
     </body>
 

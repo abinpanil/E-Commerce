@@ -1,0 +1,226 @@
+<div class="container">
+    <div class="row justify-content-between" style="width:90%">
+        
+        <div class="col-md-2 col-sm-2">
+            <h4 class="title"> Image 1</h4>
+            <div class="fileinput fileinput-new text-center">
+                <div class="fileinput-new thumbnail">
+                    <img src="/assets/images/icons/file.png" id="chekPreview1" alt="...">
+
+                </div>
+                <div>
+
+                    <span class="fileinput-new">Select image</span>
+                    <input type="file" id="image1" accept="image/gif, image/jpeg, image/png"
+                        onchange="validateFileType()" required />
+                    <textarea name="image1_b64" id="imageValue1" cols="30" rows="10" hidden></textarea>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+
+      
+        <div class="col-md-2 col-sm-2">
+            <h4 class="title"> Image 2</h4>
+            <div class="fileinput fileinput-new text-center">
+                <div class="fileinput-new thumbnail">
+                    <img src="/assets/images/icons/file.png" id="chekPreview2" alt="...">
+
+                </div>
+                <div>
+
+                    <span class="fileinput-new">Select image</span>
+                    <input type="file" id="image2" accept="image/gif, image/jpeg, image/png"
+                        onchange="validateFileType()" required />
+                    <textarea name="image2_b64" id="imageValue2" cols="30" rows="10" hidden></textarea>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        
+
+        
+        <div class="col-md-2 col-sm-2">
+            <h4 class="title"> Image 3</h4>
+            <div class="fileinput fileinput-new text-center">
+                <div class="fileinput-new thumbnail">
+                    <img src="/assets/images/icons/file.png" id="chekPreview3" alt="...">
+
+                </div>
+                <div>
+
+                    <span class="fileinput-new">Select image</span>
+                    <input type="file" id="image3" accept="image/gif, image/jpeg, image/png" required />
+                    <textarea name="image3_b64" id="imageValue3" cols="30" rows="10" hidden></textarea>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+        
+        <div class="col-md-2 col-sm-2">
+            <h4 class="title"> Image 4</h4>
+            <div class="fileinput fileinput-new text-center">
+                <div class="fileinput-new thumbnail">
+                    <img src="/assets/images/icons/file.png" id="chekPreview4" alt="...">
+
+                </div>
+                <div>
+
+                    <span class="fileinput-new">Select image</span>
+                    <input type="file" id="image4" accept="image/jpg, image/jpeg, image/png" required />
+                    <textarea name="image4_b64" id="imageValue4" cols="30" rows="10" hidden></textarea>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+
+    </div>
+</div>
+
+<!-- Modal 1-->
+<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Crop Image Here</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="img-container">
+                    <div class="row">
+                        <div class="col-md-8" style="height:300px;width:200px;">
+                            <img src="" id="sampleImage1" style="width:100px; height:100px" />
+                        </div>
+                        <div class="col-md-4">
+                            <div class="preview" id="preview1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" id="crop1" class="btn btn-primary">Crop</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal  1 end-->
+
+
+
+<!-- Modal 2-->
+<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Crop Image Here</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="img-container">
+                    <div class="row">
+                        <div class="col-md-8" style="height:300px;width:200px;">
+                            <img src="" id="sampleImage2" style="width:200px; height:100px" />
+                        </div>
+                        <div class="col-md-4">
+                            <div class="preview" id="preview2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" id="crop2" class="btn btn-primary">Crop</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal  2 end-->
+
+
+<!-- Modal 3-->
+<div class="modal fade" id="modal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Crop Image Here</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="img-container">
+                    <div class="row">
+                        <div class="col-md-8" style="height:300px;width:200px;">
+                            <img src="" id="sampleImage3" />
+                        </div>
+                        <div class="col-md-4">
+                            <div class="preview" id="preview3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" id="crop3" class="btn btn-primary">Crop</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal  3 end-->
+
+<!-- Modal 4-->
+<div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Crop Image Here</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="img-container">
+                    <div class="row">
+                        <div class="col-md-8" style="height:300px;width:200px;">
+                            <img src="" id="sampleImage4" />
+                        </div>
+                        <div class="col-md-4">
+                            <div class="preview" id="preview4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" id="crop4" class="btn btn-primary">Crop</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal  4 end-->

@@ -28,14 +28,14 @@
                             <div class="card-body">
                                  <div class="row">
                                       <div class="col-md-4">
-                                           <form>
+                                           <form action="/admin/add_category" method="post">
                                                 <div class="mb-4">
                                                      <label for="product_name" class="form-label">Category</label>
-                                                     <input type="text" placeholder="Type here" class="form-control" id="category" />
+                                                     <input type="text" placeholder="Type here" name="category" class="form-control" id="category" />
                                                 </div>
                                                 <div class="mb-4">
                                                      <label for="product_slug" class="form-label">Sub Category</label>
-                                                     <input type="text" placeholder="Type here" class="form-control" id="sub_category" />
+                                                     <input type="text" placeholder="Type here" name="subcategory" class="form-control" id="sub_category" />
                                                 </div>
                                                 <!-- <div class="mb-4">
                                                      <label class="form-label">Parent</label>

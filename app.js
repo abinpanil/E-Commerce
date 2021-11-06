@@ -4,11 +4,16 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts')
-
+let admin = false
+let user = false
+// route setup
 var indexRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 
 var app = express();
+const fileUpload = require('express-fileupload')
+// mongodb setup
+const db = require('./config/connection')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,6 +26,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// mongo connect
+db.connect((err)=>{
+
+  if(err) console.log("Connection Error"+err);
+
+  console.log("Database Connected");
+})
+
+app.use(fileUpload())
+
+// route 
 app.use('/admin', indexRouter);
 app.use('/', usersRouter);
 
@@ -37,7 +53,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error',{admin,user,title:"Categories"});
 });
 
 module.exports = app;
