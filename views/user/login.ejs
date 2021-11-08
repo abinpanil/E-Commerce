@@ -115,7 +115,7 @@
 
 
     function otpLogin(){
-        
+
     }
 
     // signIn validation started.
@@ -190,7 +190,7 @@
 
                         block_err.text(data.errormsg)
                     }
-                    
+                    fileUploadForm
                 }
 
 
@@ -277,6 +277,42 @@
             }
         }
 
+        // mobile validation
+        let mobileError = true;
+
+        function validateMobile() {
+
+            let regnum = new RegExp("^[0-9]+$");
+
+            let mobileValue = $('#mobile').val();
+
+            if (mobileValue.length == '') {
+
+                $('#mobile').css('border-color', '#c70d0d')
+                $('#mobile').attr("placeholder", "Enter Password")
+
+                mobileError = false;
+                return false;
+            }else if (!regnum.test(mobileValue)) {
+
+                $('#mobile').css('border-color', '#c70d0d')
+                $("#mobile").after('<span style="color: red;" class="">Enter Numbers Only</span>');
+
+                // $("#signup_email").after('<span class="error">Enter a valid email address.</span>');
+
+                productPriceError = false;
+            }else if (mobileValue.length != 10) {
+
+                $('#mobile').css('border-color', '#c70d0d')
+                $("#mobile").after('<span style="color: red;" class="">Mobile number must Contain 10 Digit</span>');
+
+                // $("#signup_email").after('<span class="error">Enter a valid email address.</span>');
+
+                productPriceError = false;
+            }
+
+        }
+
 
 
         // Validate Password
@@ -314,6 +350,7 @@
         validateName()
         validateUsername();
         validatePassword();
+        validateMobile();
         validateEmail();
 
         let username_err = $('#username_warning')

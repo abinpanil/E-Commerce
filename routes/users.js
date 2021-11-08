@@ -24,7 +24,7 @@ router.get('/', function (req, res, next) {
     res.render('./user/home', { admin, user, title: "Home" });
     
   })
-  
+
 });
 
 
@@ -71,7 +71,7 @@ router.get('/listproducts', function (req, res, next) {
       category: "Men",
       discription: "Nice"
     }]
-  res.render('./user/productlist', { admin, user, title: "Wishlist", products });
+  res.render('./user/productlist', { admin, user, title: "Products", products });
 });
 
 /* Login */
