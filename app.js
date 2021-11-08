@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts')
 const session = require('express-session')
+
+
 let admin = false
 let user = false
 // route setup

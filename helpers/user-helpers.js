@@ -19,7 +19,7 @@ module.exports = {
         let usernameCheck = true
         let blockCheck = true
         
-        // console.log(userData);
+        
         return new Promise(async(resolve,reject)=>{
 
             let checkEmail = await db.get().collection(collection.USERS_COLLECTION).findOne({email:userData.email})
@@ -73,7 +73,7 @@ module.exports = {
                             resolve(response)
                         }else{
 
-                            console.log("log fail");
+                            
                             response.status = false
                             response.errormsg="You Blocked by Admin"
                             resolve(response)
@@ -81,7 +81,7 @@ module.exports = {
                         }
 
                     }else{
-                        console.log("log fail");
+                        
                         response.status = false
                         response.errormsg="Invalid Password"
                         resolve(response)
@@ -91,6 +91,24 @@ module.exports = {
                 response.status = false
                 response.errormsg="User not Found"
                 resolve(response)
+            }
+        })
+    },
+    checkNumber:(number)=>{
+
+        return new Promise(async(resolve,reject)=>{
+
+            let mobRes = {}
+
+            let userNum = await db.get().collection(collection.USERS_COLLECTION).findOne({mobile:number})
+            if(userNum){
+                mobRes.user = userNum
+                mobRes.status = true
+                resolve(mobRes)
+            }else{
+                mobRes.user = userNum
+                mobRes.status = false
+                resolve(mobRes)
             }
         })
     }

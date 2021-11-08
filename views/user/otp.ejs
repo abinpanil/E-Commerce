@@ -1,0 +1,170 @@
+<!-- Start of Main -->
+<main class="main login-page">
+    <!-- Start of Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title mb-0">My Account</h1>
+        </div>
+    </div>
+    <!-- End of Page Header -->
+
+    <!-- Start of Breadcrumb -->
+    <nav class="breadcrumb-nav">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="demo1.html">Home</a></li>
+                <li>My account</li>
+            </ul>
+        </div>
+    </nav>
+    <!-- End of Breadcrumb -->
+    <div class="page-content">
+        <div class="container">
+            <div class="login-popup">
+                <div class="tab tab-nav-boxed tab-nav-center tab-nav-underline">
+                    <ul class="nav nav-tabs text-uppercase" role="tablist">
+                        <li class="nav-item">
+                            <a href="#sign-in" class="nav-link active">OTP Login</a>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="sign-in">
+                            <form>
+                                <div class="form-group">
+                                    <label>Mobile Number<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control your-class" name="mobilenumber" onchange="mobileNumber()" id="mobilenumber">
+                                    <p id="invalidnumber" style="color: red;"> </p>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <label>Enter OTP (6 Digit)<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control your-class" name="otp" id="otp" disabled>
+                                    <p id="invalidotp" style="color: red;"> </p>
+
+                                    <p id="block_warning" style="color: red;"> </p>
+                                </div>
+
+                                <button type="submit" onclick="validate()" style="width: 100%;" id="Otpsubmit"
+                                    class="btn btn-success">Validate</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- End of Main -->
+
+<!-- Plugin JS File -->
+<script src="/user/vendor/jquery/jquery.min.js"></script>
+<script src="/user/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="/user/js/main.min.js"></script>
+
+<!-- ajax -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+
+<script>
+
+    function mobileNumber() {
+
+
+        event.preventDefault()
+        let mobilenumber = $('#mobilenumber').val()
+        let mobilewarn = $('#invalidnumber')
+
+        
+        $("#invalidnumber").text('')
+        // mobile validation
+        let mobileError = true;
+
+        function validateMobile() {
+
+            let regnum = new RegExp("^[0-9]+$");
+
+            let mobileValue = $('#mobilenumber').val();
+
+            if (mobileValue.length == '') {
+
+                $('#mobilenumber').css('border-color', '#c70d0d')
+                $('#mobilenumber').attr("placeholder", "Enter Number")
+
+                mobileError = false;
+                return false;
+            }else if (!regnum.test(mobileValue)) {
+
+                $('#mobilenumber').css('border-color', '#c70d0d')
+                $("#invalidnumber").text('Enter Numbers Only')
+
+                mobileError = false;
+            }else if (mobileValue.length != 10) {
+
+                $('#mobilenumber').css('border-color', '#c70d0d')
+                $("#invalidnumber").text('Mobile number must Contain 10 Digit')
+
+                mobileError = false;
+            }
+
+        }
+
+        validateMobile()
+
+        mobilenumber = $('#mobilenumber').val()
+
+        if (mobileError === true){
+            $.ajax({
+                url:'/checkNum',
+                method:'post',
+                data:{mobilenumber:mobilenumber},
+                success:(response)=>{
+                    console.log(response);
+                    if(response.status){
+                        
+                        console.log("ethyyyyyyyyyyyyy");
+                        $.ajax({
+                            
+                            url:'/otpget',
+                            method:'post',
+                            data:{mobilenumber:mobilenumber},
+                            success:()=>{
+                                $('#otp').removeAttr('disabled')
+                            }
+                        })
+                        
+                    }else{
+                        
+                    }
+                }
+            })
+        }
+
+    }
+
+    function validate(){
+
+        event.preventDefault()
+        
+        let mobilenumber = $('#mobilenumber').val()
+        let otp = $('#otp').val()
+
+        $.ajax({
+            url:"/otpcheck",
+            method:'post',
+            data:{
+                number:mobilenumber,
+                otp:otp
+            },
+            success:()=>{
+
+                $('#invalidotp').text('Invalid OTP')
+            }
+
+        })
+
+    }
+    
+
+</script>

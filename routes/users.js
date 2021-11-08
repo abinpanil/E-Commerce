@@ -1,8 +1,14 @@
 const express = require('express');
-const { response } = require('../app');
+const { response, render } = require('../app');
 const router = express.Router();
 const userHelpers = require('../helpers/user-helpers')
-const adminHelpers = require('../helpers/admin-helpers')
+const adminHelpers = require('../helpers/admin-helpers');
+const config = require('../auth/config');
+
+const serviceID = "VA88c284363de9fd0c8192a127bc7b1e06"
+const accountSID = "AC2253025f4ed61bf98f907de34a78dc5c"
+const authToken = "2a797af2d100479d5df8375a85cefc59"
+const client= require("twilio")(accountSID, authToken)
 
 let admin = false
 let user = {
@@ -11,18 +17,18 @@ let user = {
 }
 
 let verifyUser = (req, res, next) => {
- 
+
 }
 
 
 /* GET users Home. */
 router.get('/', function (req, res, next) {
-  console.log(user);
 
-  adminHelpers.getCategory().then((data)=>{
-    
+
+  adminHelpers.getCategory().then((data) => {
+
     res.render('./user/home', { admin, user, title: "Home" });
-    
+
   })
 
 });
@@ -57,6 +63,17 @@ router.get('/wishlist', function (req, res, next) {
   res.render('./user/wishlist', { admin, user, title: "Wishlist" });
 });
 
+
+
+/* Opt Load */
+router.get('/otpLoad',(req,res)=>{
+
+  // console.log("ethyyyyyyyyy");
+  
+  res.render('./user/otp', { admin, user, title: "Login", loginErr: "" });  
+  
+})
+
 /* GET List products. */
 router.get('/listproducts', function (req, res, next) {
 
@@ -88,8 +105,7 @@ router.post('/signIn', function (req, res) {
       req.session.user = response.user
       user.status = true
       user.name = req.session.user.name
-      console.log(user.name);
-      res.json(response)
+
       res.redirect('/')
     } else {
       res.json(response)
@@ -112,7 +128,7 @@ router.post('/signout', (req, res) => {
 /* Sign Up. */
 router.post('/signUp', function (req, res) {
 
-  console.log(req.body);
+
   userHelpers.doSignup(req.body).then((userResponse) => {
     req.session.userResponse = userResponse
     res.json(userResponse)
@@ -125,6 +141,68 @@ router.post('/signUp', function (req, res) {
 
 })
 
+// mobile number check
+router.post('/checkNum',(req,res)=>{
+  
+  userHelpers.checkNumber(req.body.mobilenumber).then((response)=>{
+    res.json(response)
+  })
+})
+
+/* Otp signin. */
+router.post('/otpget',(req,res)=>{
+
+  // console.log("ivde ethyyyyyyyyyy");
+  client.verify
+    .services(serviceID)
+    .verifications.create({
+      to:`+91${req.body.mobilenumber}`,
+      channel: "sms"
+    })
+    .then((data)=>{
+      res.json(data)
+    })
+})
+
+
+// validate Otp
+router.post('/otpcheck',(req,res)=>{
+
+  let otp = req.body.otp
+  let number = req.body.number
+  console.log(otp,number);
+  client.verify
+    .services(serviceID)
+    .verificationChecks.create({
+      to:`+91${number}`,
+      code:`${otp}`
+      
+    })
+    .then((data)=>{
+    
+      if(data.valid){
+
+        userHelpers.checkNumber(number).then((response)=>{
+          console.log(response.user);
+
+          // res.session.user = response.user
+          console.log("1");
+          user.status = true
+          console.log("2");
+          user.name = response.user.name
+          console.log("3");
+          res.redirect('/')
+          
+        })
+
+      }else{
+        res.json({})
+      }
+      
+    })
+  
+
+})
 
 
 

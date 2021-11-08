@@ -55,11 +55,24 @@
                                 <button type="submit" onclick="logCheck()" style="width: 100%;" id="submitbtn"
                                     class="btn btn-dark">Sign In</button>
                             </form>
-                            <p class="text-center">Sign in with social account</p>
-                            <button onclick="otpLogin()">otp</button>
+                            <!-- sample -->
+                            <div class="row gx-2 mt-5 text-center">
+                                <form action="otpLoad">
+                                    <div class="col-sm-6 mb-3">
+                                        <button type="submit" onclick="otpfn()" style="width: 100%;" id="submitbtn" class="btn btn-success">OTP</button>
+                                        <p class="pt-1" style="font-size: 10px;">Login using Mobile Number</p>
+                                    </div>
+                                </form>
+                                <div class="col-sm-6 mb-3">
+                                    <button type="submit" style="width: 100%;" id="submitbtn" class="btn btn-primary">Google</button>
+                                    <p class="pt-1" style="font-size: 10px;">Login using Google Account</p>
+                                </div>
+                            </div> <!-- row.// -->
+                            <!-- End sample -->
+                            <!-- <p class="text-center">Sign in with social account</p>
                             <div class="social-icons social-icon-border-color d-flex justify-content-center">
                                 <a href="#" class="social-icon 1.4rem 0rem 1.3rem 2rem social-google fab fa-google"></a>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="tab-pane" id="sign-up">
                             <form>
@@ -76,12 +89,14 @@
                                 <div class="form-group mb-5">
                                     <label>Email *</label>
                                     <input type="text" class="form-control your-class" name="email" id="signup_email">
+                                    <span style="color: red;" id="emailwarn" class=""></span>
                                     <p id="email_warning" style="color: red;"> </p>
                                 </div>
                                 <div class="form-group mb-5">
                                     <label>Mobile *</label>
                                     <input type="text" class="form-control your-class" name="mobile" id="mobile">
-                                    <p id="mobile_warning" style="color: red;"> </p>
+                                    <span style="color: red;" id="mobilewarn" class=""></span>
+                                    <!-- <p id="mobile_warning" style="color: red;"> </p> -->
                                 </div>
                                 <div class="form-group mb-5">
                                     <label>Password *</label>
@@ -261,18 +276,13 @@
                 $('#signup_email').css('border-color', '#c70d0d')
                 $('#signup_email').attr("placeholder", "Enter Email")
 
-                // $("#signup_email").after('<span class="error">Please enter your email address.</span>');
-
                 emailError = false;
             }
 
             else if (!emailReg.test(emailaddressVal)) {
 
                 $('#signup_email').css('border-color', '#c70d0d')
-                $("#signup_email").after('<span style="color: red;" class="">Enter a valid email address.</span>');
-
-                // $("#signup_email").after('<span class="error">Enter a valid email address.</span>');
-
+                $("#emailwarn").text('Enter a valid email address')
                 emailError = false;
             }
         }
@@ -289,26 +299,22 @@
             if (mobileValue.length == '') {
 
                 $('#mobile').css('border-color', '#c70d0d')
-                $('#mobile').attr("placeholder", "Enter Password")
+                $('#mobile').attr("placeholder", "Enter Number")
 
                 mobileError = false;
                 return false;
             }else if (!regnum.test(mobileValue)) {
 
                 $('#mobile').css('border-color', '#c70d0d')
-                $("#mobile").after('<span style="color: red;" class="">Enter Numbers Only</span>');
+                $("#mobilewarn").text('Enter Numbers Only')
 
-                // $("#signup_email").after('<span class="error">Enter a valid email address.</span>');
-
-                productPriceError = false;
+                mobileError = false;
             }else if (mobileValue.length != 10) {
 
                 $('#mobile').css('border-color', '#c70d0d')
-                $("#mobile").after('<span style="color: red;" class="">Mobile number must Contain 10 Digit</span>');
+                $("#mobilewarn").text('Mobile number must Contain 10 Digit')
 
-                // $("#signup_email").after('<span class="error">Enter a valid email address.</span>');
-
-                productPriceError = false;
+                mobileError = false;
             }
 
         }
@@ -382,5 +388,16 @@
         }
 
     };
+
+    // function otpfn(){
+
+    //     $.ajax({
+    //         url:'/otpLoad',
+    //         method:'get',
+    //         success:()=>{
+    //             location.reload()
+    //         }
+    //     })
+    // }
 
 </script>

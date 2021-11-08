@@ -18,7 +18,8 @@
     "http-errors": "~1.6.3",
     "mongodb": "^4.1.4",
     "morgan": "~1.9.1",
-    "nodemon": "^2.0.14"
+    "nodemon": "^2.0.14",
+    "twilio": "^3.71.1"
   },
   "description": "My first E-Commerce Website using Node, Express, Ejs, MongoDB",
   "main": "app.js",

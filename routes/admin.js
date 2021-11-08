@@ -90,7 +90,7 @@ router.post('/signin',(req,res)=>{
     username:"abinpanil",
     password:"pass"
   }
-  console.log(req.body);
+  
 
   if(adminData.username===req.body.username){
     if(adminData.password===req.body.password){
@@ -118,10 +118,10 @@ router.post('/signin',(req,res)=>{
 
 /* Add category */
 router.post('/add_category',function(req,res){
-  console.log("Categoryyyyyyy");
+  
   
   adminHelpers.addCategory(req.body).then((data)=>{
-    console.log(data+"responce from addcategory");
+    
     
     res.redirect('/admin/categories') 
     
@@ -132,10 +132,10 @@ router.post('/add_category',function(req,res){
 // Get SubCategory
 router.post('/getSubCategory',(req,res)=>{
 
-  console.log("ethyyyyyyyyyyyyyyyyyyyyyyy");
+  
   adminHelpers.getSubCategory(req.body).then((cat)=>{
     let subCat = cat.subCategory
-   console.log(subCat);
+   
     res.json(subCat)
     
   })
@@ -157,9 +157,9 @@ router.post('/block',(req,res)=>{
 // Delete Category
 router.post('/deleteCategory',(req,res)=>{
 
-  console.log("Ethyyyy");
+  
   adminHelpers.deleteCategory(req.body).then(()=>{
-    
+
     res.redirect('/admin/categories') 
   })
 }) 
@@ -167,8 +167,7 @@ router.post('/deleteCategory',(req,res)=>{
 // Delete subCategory
 router.post('/deletesSubCategory',(req,res)=>{
 
-  console.log("dlete chynnnnnnnnnnnnnnn");
-  console.log(req.body);
+  
   adminHelpers.deleteSubCategory(req.body).then(()=>{
 
     res.redirect('/admin/categories') 
@@ -177,9 +176,7 @@ router.post('/deletesSubCategory',(req,res)=>{
 
 /* Add product */
 router.post('/add_product',function(req,res){
-  console.log("hai");
-  console.log(req.body);
-  console.log(req.files);
+
   res.redirect('/admin/add_products') 
 })
 

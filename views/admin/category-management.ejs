@@ -153,6 +153,12 @@
 <!-- jax -->
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 
+
+<!-- sweat alert -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="sweetalert2.all.min.js"></script>
+
+
 <!-- function -->
 
 <script>
@@ -231,7 +237,7 @@
 
                url: '/admin/deleteCategory',
                type: 'post',
-               data: {catName:catName},
+               data: { catName: catName },
                success: () => {
 
                     $("#table_change").load(location.href + " #table_change");
@@ -248,18 +254,39 @@
                subCatName: document.getElementById(sub).innerText
           }
 
-          $.ajax({
+          Swal.fire({
+               title: 'Are you sure?',
+               text: "You won't be able to revert this!",
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+               if (result.isConfirmed) {
+                    Swal.fire(
 
-               url: '/admin/deletesSubCategory',
-               type: 'post',
-               data: categorys,
-               success: () => {
+                         'Deleted!',
+                         'Your file has been deleted.',
+                         'success',
+                         $.ajax({
 
-                    $("#table_change").load(location.href + " #table_change");
-                    // $('#table_change').load(window.location.href + "#table_change");
+                              url: '/admin/deletesSubCategory',
+                              type: 'post',
+                              data: categorys,
+                              success: () => {
+
+                                   
+                                   $("#table_change").load(location.href + " #table_change");
+                                   // $('#table_change').load(window.location.href + "#table_change");
+                              }
+
+                         })
+
+                    )
                }
-
           })
+
      }
 
 

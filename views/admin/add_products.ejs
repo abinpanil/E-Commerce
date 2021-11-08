@@ -49,13 +49,13 @@
                             <div class="row gx-2">
                                 <div class="col-sm-6 mb-3">
                                     <label class="form-label">Price</label>
-                                    <input type="text" name="productPrice" placeholder="Enter Price"
-                                        class="form-control" id="product_price">
+                                    <input type="text" name="productPrice" placeholder="Enter Price" class="form-control" id="product_price">
+                                    <span style="color: red;" class="" id="pricewarn"></span>
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <label class="form-label">Quantity</label>
-                                    <input type="text" name="productQuantity" placeholder="Enter Quantity"
-                                        class="form-control" id="product_quantity">
+                                    <input type="text" name="productQuantity" placeholder="Enter Quantity" class="form-control" id="product_quantity">
+                                    <span style="color: red;" class="" id="quantitywarn"></span>
                                 </div>
                             </div> <!-- row.// -->
 
@@ -78,6 +78,7 @@
                                     <select id="getSubCat" onchange="getSubcategory()" class="form-select"
                                         name="productcategory">
 
+                                        <option value="">Select</option>
                                         <%for(var i=0;i<data.length;i++){%>
 
                                             <option>
@@ -91,7 +92,7 @@
                                     <label class="form-label">Sub-category</label>
                                     <select id="subcategory" class="form-select" name="productsubcategory">
 
-                                        <option id="" value=" "> </option>
+                                        <option id="" value=" ">Select</option>
 
                                     </select>
                                 </div>
@@ -192,7 +193,7 @@
             let productname = $('#product_name').val()
             if (productname.length == '') {
 
-                $('#product_name').css('border-color', '#c70d0d')
+                $('#product_name').css('border-color', '#f30000')
                 $('#product_name').attr("placeholder", "Enter Product Name")
                 productNameError = false;
                 return false;
@@ -208,7 +209,7 @@
             let productdiscription = $('#product_description').val()
             if (productdiscription.length == '') {
 
-                $('#product_description').css('border-color', '#c70d0d')
+                $('#product_description').css('border-color', '#f30000')
                 $('#product_description').attr("placeholder", "Enter Product Details")
                 productDisError = false;
                 return false;
@@ -225,17 +226,16 @@
             let productprice = $('#product_price').val()
             if (productprice.length == '') {
 
-                $('#product_price').css('border-color', '#c70d0d')
+                $('#product_price').css('border-color', '#f30000')
                 $('#product_price').attr("placeholder", "Enter Price")
                 productPriceError = false;
                 return false;
 
             }else if (!regnum.test(productprice)) {
 
-                $('#product_price').css('border-color', '#c70d0d')
-                $("#product_price").after('<span style="color: red;" class="">Enter Numbers Only</span>');
+                $('#product_price').css('border-color', '#f30000')
+                $("#pricewarn").text('Enter Number Only')
 
-                // $("#signup_email").after('<span class="error">Enter a valid email address.</span>');
 
                 productPriceError = false;
             }
@@ -250,17 +250,15 @@
             let productquantity = $('#product_quantity').val()
             if (productquantity.length == '') {
 
-                $('#product_quantity').css('border-color', '#c70d0d')
+                $('#product_quantity').css('border-color', '#f30000')
                 $('#product_quantity').attr("placeholder", "Enter Quantity")
                 productQuantityError = false;
                 return false;
 
             }else if (!regnum.test(productquantity)) {
 
-                $('#product_quantity').css('border-color', '#c70d0d')
-                $("#product_quantity").after('<span style="color: red;" class="">Enter Numbers Only</span>');
-
-                // $("#signup_email").after('<span class="error">Enter a valid email address.</span>');
+                $('#product_quantity').css('border-color', '#f30000')
+                $("#quantitywarn").text('Enter Number Only')
 
                 productQuantityError = false;
             }
@@ -273,7 +271,7 @@
             let productsize = $('#product_size').val()
             if (productsize.length == '') {
 
-                $('#product_size').css('border-color', '#c70d0d')
+                $('#product_size').css('border-color', '#f30000')
                 $('#product_size').attr("placeholder", "Enter Size")
                 productSizeError = false;
                 return false;
@@ -288,7 +286,7 @@
             let productcolour = $('#product_colour').val()
             if (productcolour.length == '') {
 
-                $('#product_colour').css('border-color', '#c70d0d')
+                $('#product_colour').css('border-color', '#f30000')
                 $('#product_colour').attr("placeholder", "Enter Colour")
                 productSizeError = false;
                 return false;
@@ -301,9 +299,9 @@
         function validateProducCategory() {
 
             let productcategory = $('#getSubCat').val()
-            if (productcategory.length == '') {
+            if (productcategory.val() == 'Select') {
 
-                $('#getSubCat').css('border-color', '#c70d0d')
+                $('#getSubCat').css('border-color', '#f30000')
                 $('#getSubCat').attr("placeholder", "Select Category")
                 productCategoryError = false;
                 return false;
@@ -316,9 +314,9 @@
         function validateProducSubCategory() {
 
             let productsubcategory = $('#subcategory').val()
-            if (productsubcategory.length == '') {
+            if (productsubcategory.val() == 'Select') {
 
-                $('#subcategory').css('border-color', '#c70d0d')
+                $('#subcategory').css('border-color', '#f30000')
                 $('#subcategory').attr("placeholder", "Select SubCategory")
                 productSubCategoryError = false;
                 return false;

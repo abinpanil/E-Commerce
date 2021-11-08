@@ -14,7 +14,7 @@ module.exports={
     },
     addCategory:(categoryObj)=>{
         return new Promise(async(resolve,reject)=>{
-            console.log("ivde ethyy");
+            
             let category = categoryObj.category
             let subCategory= categoryObj.subcategory
             let findCategory = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({category:category})
@@ -62,7 +62,7 @@ module.exports={
     },
     deleteCategory:(category)=>{
 
-        console.log(category); 
+        
         return new Promise(async(resolve,reject)=>{
 
             await db.get().collection(collection.CATEGORY_COLLECTION).deleteOne({category:category.catName}) 
