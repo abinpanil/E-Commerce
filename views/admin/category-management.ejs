@@ -1,120 +1,272 @@
 <!-- ============================================================== -->
-            <!-- Start right Content here -->
-            <!-- ============================================================== -->
-            <div class="main-content">
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
 
-                <div class="page-content">
-                    <div class="container-fluid">
+     <div class="page-content">
+          <div class="container-fluid" id="table_change">
 
-                        <!-- start page title -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Category Management</h4>
+               <!-- start page title -->
+               <div class="row">
+                    <div class="col-12">
+                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                              <h4 class="mb-sm-0">Category Management</h4>
 
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
-                                            <li class="breadcrumb-item active">Category Management</li>
-                                        </ol>
-                                    </div>
+                              <div class="page-title-right">
+                                   <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                                        <li class="breadcrumb-item active">Category Management</li>
+                                   </ol>
+                              </div>
 
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end page title -->
-                        
-                        <div class="card">
-                            <div class="card-body">
-                                 <div class="row">
-                                      <div class="col-md-4">
-                                           <form action="/admin/add_category" method="post">
-                                                <div class="mb-4">
-                                                     <label for="product_name" class="form-label">Category</label>
-                                                     <input type="text" placeholder="Type here" name="category" class="form-control" id="category" />
-                                                </div>
-                                                <div class="mb-4">
-                                                     <label for="product_slug" class="form-label">Sub Category</label>
-                                                     <input type="text" placeholder="Type here" name="subcategory" class="form-control" id="sub_category" />
-                                                </div>
-                                                <!-- <div class="mb-4">
+                         </div>
+                    </div>
+               </div>
+               <!-- end page title -->
+
+               <div class="card">
+                    <div class="card-body">
+                         <div class="row">
+                              <div class="col-md-4">
+                                   <form>
+                                        <div class="mb-4">
+                                             <label for="product_name" class="form-label">Category</label>
+                                             <input type="text" placeholder="Type here" name="category"
+                                                  class="form-control" id="category" />
+                                        </div>
+                                        <div class="mb-4">
+                                             <label for="product_slug" class="form-label">Sub Category</label>
+                                             <input type="text" placeholder="Type here" name="subcategory"
+                                                  class="form-control" id="sub_category" />
+                                        </div>
+                                        <!-- <div class="mb-4">
                                                      <label class="form-label">Parent</label>
                                                      <select class="form-select">
                                                           <option>Clothes</option>
                                                           <option>T-Shirts</option>
                                                      </select>
                                                 </div> -->
-                                                <!-- <div class="mb-4">
+                                        <!-- <div class="mb-4">
                                                      <label class="form-label">Description</label>
                                                      <textarea placeholder="Type here" class="form-control" rows="4"></textarea>
                                                 </div> -->
-                                                <div class="d-grid">
-                                                     <button class="btn btn-primary">Create category</button>
-                                                </div>
-                                           </form>
-                                      </div>
-                                      <div class="col-md-8">
-                                           
-                       <table class="table table-hover">
-                       <thead>
-                         <tr>
-                              <th>#</th>
-                              <th>Category</th>
-                              <th>Sub Category</th>
-                              <th class="text-end">Action</th>
-                         </tr>
-                       </thead>
-                       <tbody>
-                         <tr>
-                              <td>1</td>
-                              <td><b>Men clothes</b></td>
-                              <td>Men clothes</td>
-                              <td class="text-end">
-                                   <div class="dropdown">
-                                        <a href="#" data-bs-toggle="dropdown" class="btn btn-outline-dark "> <i class="mdi-dots-vertical" title="More"></i> </a>
-                                        <div class="dropdown-menu">
-                                             <a class="dropdown-item" href="#">Edit</a>
-                                             <a class="dropdown-item text-danger" href="#">Delete</a>
+                                        <div class="d-grid">
+                                             <a class="btn btn-primary" type="submit" onclick="addCategory()">Create
+                                                  category</a>
+
                                         </div>
-                                   </div>
-                                   <!-- dropdown //end -->
-                              </td>
-                         </tr>
-                       </tbody>
-                       </table>
-                       
-                                      </div> <!-- .col// -->
-                                 </div> <!-- .row // -->
-                            </div> <!-- card body .// -->
-                       </div> <!-- card .// -->
-                </div>
-                <!-- End Page-content -->
-            </div>
-            <!-- end main content-->
+                                   </form>
+                              </div>
+                              <div class="col-md-8">
 
-        </div>
-        <!-- END layout-wrapper -->
+                                   <table class="table table-hover">
+                                        <thead>
+                                             <tr>
+                                                  <th>#</th>
+                                                  <th>Category</th>
+                                                  <th>Sub Category</th>
+                                                  <th class="text-end">Action</th>
+                                             </tr>
+                                        </thead>
+                                        <tbody>
 
-        <!-- JAVASCRIPT -->
-        <script src="/admin/libs/jquery/jquery.min.js"></script>
-        <script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="/admin/libs/metismenu/metisMenu.min.js"></script>
-        <script src="/admin/libs/simplebar/simplebar.min.js"></script>
-        <script src="/admin/libs/node-waves/waves.min.js"></script>
+                                             <%let a=0%>
 
-        <!-- apexcharts js -->
-        <script src="/admin/libs/apexcharts/apexcharts.min.js"></script>
+                                                  <%for(var i=0;i<data.length;i++){%>
 
-        <!-- jquery.vectormap map -->
-        <script src="/admin/libs/jqvmap/jquery.vmap.min.js"></script>
-        <script src="/admin/libs/jqvmap/maps/jquery.vmap.usa.js"></script>
-
-        <script src="/admin/js/pages/dashboard.init.js"></script>
-
-        <script src="/admin/js/app.js"></script>
-
-    </body>
-
-    <!-- card end// -->
+                                                       <%for(var j=0;j<data[i].subCategory.length;j++){%>
+                                                            <tr id="row_<%=a%>">
+                                                                 <%a++%>
+                                                                      <td><b>
+                                                                                <%=a%>
+                                                                           </b></td>
+                                                                      <td id="category_<%=a%>"><b>
+                                                                                <%=data[i].category%>
+                                                                           </b></td>
 
 
+                                                                      <td id="subCategory_<%=a%>">
+                                                                           <%=data[i].subCategory[j].name%>
+                                                                      </td>
+                                                                      <td class="text-end">
+                                                                           <a class="btn btn-outline-dark"
+                                                                                onclick="deleteCategory('category_<%=a%>')">Delete
+                                                                                Category</a>
+                                                                           <a class="btn btn-outline-dark"
+                                                                                onclick="deleteSubCategory('category_<%=a%>','subCategory_<%=a%>')">Delete
+                                                                                Subcategory</a>
+                                                                           <!-- <div class="dropdown">
+                                                                      <a href="#" data-bs-toggle="dropdown"
+                                                                           class="btn btn-outline-dark "> <i
+                                                                                class="mdi-dots-vertical"
+                                                                                title="More"></i> </a>
+                                                                      <div class="">
+                                                                           
+                                                                           
+                                                                      </div>
+                                                                 </div> -->
+                                                                           <!-- dropdown //end -->
+                                                                      </td>
+                                                            </tr>
+                                                            <%}%>
+                                                                 <%}%>
+
+                                        </tbody>
+                                   </table>
+                              </div> <!-- .col// -->
+                         </div> <!-- .row // -->
+                    </div> <!-- card body .// -->
+               </div> <!-- card .// -->
+          </div>
+          <!-- End Page-content -->
+     </div>
+     <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+
+
+<!-- JAVASCRIPT -->
+
+<script src="/admin/libs/jquery/jquery.min.js"></script>
+
+<script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/libs/metismenu/metisMenu.min.js"></script>
+<script src="/admin/libs/simplebar/simplebar.min.js"></script>
+<script src="/admin/libs/node-waves/waves.min.js"></script>
+
+<!-- apexcharts js -->
+<script src="/admin/libs/apexcharts/apexcharts.min.js"></script>
+
+<!-- jquery.vectormap map -->
+<!-- <script src="/admin/libs/jqvmap/jquery.vmap.min.js"></script> -->
+<!-- <script src="/admin/libs/jqvmap/maps/jquery.vmap.usa.js"></script> -->
+
+<!-- <script src="/admin/js/pages/dashboard.init.js"></script> -->
+
+<script src="/admin/js/app.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+     crossorigin="anonymous"></script>
+
+<!-- jax -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+<!-- function -->
+
+<script>
+
+
+
+     function addCategory() {
+
+          event.preventDefault()
+
+          let catError = true;
+
+          function validateCategory() {
+
+               let inpCat = $('#category').val()
+
+               if (inpCat.length == '') {
+
+                    $('#category').css('border-color', '#c70d0d')
+                    $('#category').attr("placeholder", "Enter Category")
+                    catError = false;
+                    return false;
+               }
+          }
+
+
+
+          let subCatError = true;
+
+          function validateSubCategory() {
+
+               let inpSubCat = $('#sub_category').val()
+
+               if (inpSubCat.length == '') {
+
+                    $('#sub_category').css('border-color', '#c70d0d')
+                    $('#sub_category').attr("placeholder", "Enter Subcategory")
+                    subCatError = false;
+                    return false;
+               }
+          }
+
+
+          let cat = {
+
+               category: $('#category').val(),
+               subcategory: $('#sub_category').val()
+          }
+          validateCategory()
+          validateSubCategory()
+
+          if (subCatError === true && catError === true) {
+
+               $.ajax({
+
+                    url: '/admin/add_category',
+                    type: 'post',
+                    data: cat,
+                    success: () => {
+
+                         $("#table_change").load(location.href + " #table_change");
+                         // $('#table_change').load(window.location.href + "#table_change");
+                    }
+               })
+          }
+
+     };
+
+     function deleteCategory(cat) {
+
+          let catName = document.getElementById(cat).innerText
+          // console.log(catName);
+          console.log("ethyyyyyyyyyyyyyyyyy");
+
+          $.ajax({
+
+               url: '/admin/deleteCategory',
+               type: 'post',
+               data: {catName:catName},
+               success: () => {
+
+                    $("#table_change").load(location.href + " #table_change");
+                    // $('#table_change').load(window.location.href + "#table_change");
+               }
+
+          })
+     }
+     function deleteSubCategory(cat, sub) {
+
+          let categorys = {
+
+               catName: document.getElementById(cat).innerText,
+               subCatName: document.getElementById(sub).innerText
+          }
+
+          $.ajax({
+
+               url: '/admin/deletesSubCategory',
+               type: 'post',
+               data: categorys,
+               success: () => {
+
+                    $("#table_change").load(location.href + " #table_change");
+                    // $('#table_change').load(window.location.href + "#table_change");
+               }
+
+          })
+     }
+
+
+
+</script>
+
+
+</body>
+
+<!-- card end// -->

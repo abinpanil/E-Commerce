@@ -32,53 +32,69 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="sign-in">
-                            <form action="/signIn" method="post">
+                            <form>
                                 <div class="form-group">
                                     <label>Username *</label>
-                                    <input type="text" class="form-control" name="username" id="username" required>
+                                    <input type="text" class="form-control your-class" name="username" id="usernames">
+                                   
                                 </div>
                                 <div class="form-group mb-5">
                                     <label>Password *</label>
-                                    <input type="text" class="form-control" name="password" id="password" required>
+                                    <input type="text" class="form-control your-class" name="password" id="password">
+                                    
+                                    <p id="block_warning" style="color: red;"> </p>
                                 </div>
+                                <h5 style="color: red;">
+                                    <%=loginErr%>
+                                </h5>
                                 <!-- <div class="form-checkbox d-flex align-items-center justify-content-between">
                                     <input type="checkbox" class="custom-checkbox" id="remember1" name="remember1" required="">
                                     <label for="remember1">Remember me</label>
                                     <a href="#">Last your password?</a>
                                 </div> -->
-                                <button type="submit" style="width: 100%;" class="btn btn-dark">Sign In</button>
+                                <button type="submit" onclick="logCheck()" style="width: 100%;" id="submitbtn"
+                                    class="btn btn-dark">Sign In</button>
                             </form>
+                            <p class="text-center">Sign in with social account</p>
+                            <button onclick="otpLogin()">otp</button>
+                            <div class="social-icons social-icon-border-color d-flex justify-content-center">
+                                <a href="#" class="social-icon 1.4rem 0rem 1.3rem 2rem social-google fab fa-google"></a>
+                            </div>
                         </div>
                         <div class="tab-pane" id="sign-up">
-                            <form action="/signup" method="post">
+                            <form>
                                 <div class="form-group">
                                     <label>Full Name *</label>
-                                    <input type="text" class="form-control" name="name" id="name" required>
+                                    <input type="text" class="form-control your-class" name="name" id="name">
                                 </div>
                                 <div class="form-group mb-5">
-                                    <label>username *</label>
-                                    <input type="text" class="form-control" name="username" id="username" required>
+                                    <label id="ulabel">username *</label>
+                                    <input type="text" class="form-control your-class" name="username"
+                                        id="signup_username">
+                                    <p id="username_warning" style="color: red;"> </p>
                                 </div>
                                 <div class="form-group mb-5">
                                     <label>Email *</label>
-                                    <input type="text" class="form-control" name="email" id="email" required>
+                                    <input type="text" class="form-control your-class" name="email" id="signup_email">
+                                    <p id="email_warning" style="color: red;"> </p>
                                 </div>
                                 <div class="form-group mb-5">
                                     <label>Mobile *</label>
-                                    <input type="text" class="form-control" name="mobile" id="mobile" required>
+                                    <input type="text" class="form-control your-class" name="mobile" id="mobile">
+                                    <p id="mobile_warning" style="color: red;"> </p>
                                 </div>
                                 <div class="form-group mb-5">
                                     <label>Password *</label>
-                                    <input type="text" class="form-control" name="password" id="password" required>
+                                    <input type="text" class="form-control your-class" name="password"
+                                        id="signup_password">
+                                        
                                 </div>
-                                <button type="submit" style="width: 100%;" class="btn btn-dark">Sign Un</button>
+                                <button type="submit" style="width: 100%;" onclick="signUp()" class="btn btn-dark">Sign
+                                    Up</button>
                             </form>
                         </div>
                     </div>
-                    <p class="text-center">Sign in with social account</p>
-                    <div class="social-icons social-icon-border-color d-flex justify-content-center">
-                        <a href="#" class="social-icon social-google fab fa-google"></a>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -90,3 +106,244 @@
 <script src="/user/vendor/jquery/jquery.min.js"></script>
 <script src="/user/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 <script src="/user/js/main.min.js"></script>
+
+<!-- ajax -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+
+<script>
+
+
+    function otpLogin(){
+        
+    }
+
+    // signIn validation started.
+
+    function logCheck() {
+
+        event.preventDefault()
+
+        // Validate Username
+        let usernameError = true;
+
+        function validateUsername() {
+
+            let usernameValue = $('#usernames').val();
+            if (usernameValue.length == '') {
+
+                $('#usernames').css('border-color', '#c70d0d')
+                $('#usernames').attr("placeholder", "Enter Username")
+                usernameError = false;
+                return false;
+
+            } else {
+
+
+            }
+        }
+
+        // Validate Password
+        let passwordError = true;
+
+        function validatePassword() {
+
+            let passwrdValue =
+                $('#password').val();
+            if (passwrdValue.length == '') {
+
+                $('#password').css('border-color', '#c70d0d')
+                $('#password').attr("placeholder", "Enter Password")
+                passwordError = false;
+                return false;
+            }
+        }
+
+
+        let userValue = {
+            username: $('#usernames').val(),
+            password: $('#password').val()
+        }
+
+        console.log("value" + userValue);
+        validateUsername();
+        validatePassword();
+
+
+        let block_err = $('#block_warning')
+        
+
+        if (usernameError === true && passwordError === true) {
+
+            $.ajax({
+
+                url: '/signIn',
+                method: 'post',
+                data: userValue,
+                success: (data) => {    
+                   
+                    
+                    if(data.status){
+
+                        location.reload()
+                    }else{
+
+                        block_err.text(data.errormsg)
+                    }
+                    
+                }
+
+
+            })
+
+        }
+
+
+
+    };
+
+    // signIn validation end.
+
+
+
+    // SignUp validation
+
+    function signUp() {
+
+        event.preventDefault()
+        // Validate Username  
+
+        let nameError = true;
+
+        function validateName() {
+
+            let nameValue = $('#name').val()
+
+            if (nameValue.length == '') {
+
+                $('#name').css('border-color', '#c70d0d')
+                $('#name').attr("placeholder", "Enter Username")
+
+                nameError = false;
+                return false;
+            }
+        }
+
+        let usernameError = true;
+
+        function validateUsername() {
+
+            let usernameValue = $('#signup_username').val();
+
+            if (usernameValue.length == '') {
+
+                $('#signup_username').css('border-color', '#c70d0d')
+                $('#signup_username').attr("placeholder", "Enter Username")
+
+                usernameError = false;
+                return false;
+
+            }
+        }
+
+        // Validate Email
+
+        let emailError = true;
+
+        function validateEmail() {
+
+            var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+
+            var emailaddressVal = $("#signup_email").val();
+
+            if (emailaddressVal == '') {
+
+                $('#signup_email').css('border-color', '#c70d0d')
+                $('#signup_email').attr("placeholder", "Enter Email")
+
+                // $("#signup_email").after('<span class="error">Please enter your email address.</span>');
+
+                emailError = false;
+            }
+
+            else if (!emailReg.test(emailaddressVal)) {
+
+                $('#signup_email').css('border-color', '#c70d0d')
+                $("#signup_email").after('<span style="color: red;" class="">Enter a valid email address.</span>');
+
+                // $("#signup_email").after('<span class="error">Enter a valid email address.</span>');
+
+                emailError = false;
+            }
+        }
+
+
+
+        // Validate Password
+
+        let passwordError = true;
+
+        function validatePassword() {
+
+            let passwrdValue = $('#signup_password').val();
+
+            if (passwrdValue.length == '') {
+
+                $('#signup_password').css('border-color', '#c70d0d')
+                $('#signup_password').attr("placeholder", "Enter Password")
+
+                passwordError = false;
+                return false;
+            }
+
+        }
+
+
+
+        let userSignupValue = {
+
+            name: $('#name').val(),
+            username: $('#signup_username').val(),
+            email: $('#signup_email').val(),
+            mobile: $('#mobile').val(),
+            password: $('#signup_password').val()
+            
+            
+        }
+
+        validateName()
+        validateUsername();
+        validatePassword();
+        validateEmail();
+
+        let username_err = $('#username_warning')
+        let email_err = $('#email_warning')
+        let mobile_err = $('#mobile_warning')
+
+        if (usernameError === true && passwordError === true && emailError === true) {
+
+            $.ajax({
+
+                url: '/signUp',
+                method: 'post',
+                data: userSignupValue,
+                success: (data) => {
+
+                    if (data.status) {
+                        location.reload()
+                    } else {
+
+                        username_err.text(data.username)
+                        email_err.text(data.email)
+                        mobile_err.text(data.mobile)
+
+
+                    }
+
+                }
+            })
+        }
+
+    };
+
+</script>

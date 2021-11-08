@@ -3,12 +3,17 @@ var router = express.Router();
 const adminHelpers = require('../helpers/admin-helpers')
 
 
+let logErr = ""
 
-let admin = true
+let admin = {
+  status:true
+  
+}
+let catData 
 
 const varifyLogin = (req,res,next)=>{
   if(req.session.admin){
-    console.log("Haii");
+    
     next()
   }else{
     res.redirect('/admin/login')
@@ -23,12 +28,12 @@ router.get('/',varifyLogin,function(req, res, next) {
 
 /* Get Login. */
 router.get('/login', function(req,res){
+  
   if(req.session.admin){
     res.redirect('/admin')
   }else{
-    res.render('./admin/login', {admin,title:"Admin"});
+    res.render('./admin/login', {admin,title:"Admin",logErr});
   }
-  
 })
  
 /* Get dashboard. */
@@ -43,12 +48,24 @@ router.get('/products',varifyLogin, function(req,res){
 
 /* Get add_products. */
 router.get('/add_products',varifyLogin, function(req,res){
-  res.render('./admin/add_products',{admin,title:"Add Products"})
+
+  adminHelpers.getCategory().then((data)=>{
+
+    res.render('./admin/add_products',{admin,title:"Add Products",data})
+  })
+  
 })
 
 /* Get categories. */
 router.get('/categories',varifyLogin, function(req,res){
-  res.render('./admin/category-management',{admin,title:"Categories"})
+  
+  adminHelpers.getCategory().then((data)=>{
+    
+    
+    res.render('./admin/category-management',{admin,title:"Categories",data})
+    
+  })
+  
 })
 
 /* Get orders. */
@@ -58,35 +75,105 @@ router.get('/orders',varifyLogin, function(req,res){
 
 /* Get users. */
 router.get('/users',varifyLogin, function(req,res){
-  res.render('./admin/user',{admin,title:"Users"})
+  adminHelpers.getAllUsers().then((usersList)=>{
+    console.log(usersList);
+    res.render('./admin/user',{admin,title:"Users",usersList})
+  })
+  
 })
 
-/* Login admin. */
-router.post('/login',(req,res)=>{
 
+/* Login admin. */
+router.post('/signin',(req,res)=>{
+ 
   let adminData = {
     username:"abinpanil",
     password:"pass"
   }
-  console.log(adminData);
   console.log(req.body);
+
   if(adminData.username===req.body.username){
     if(adminData.password===req.body.password){
-      req.session.admin=adminData
+      req.session.admin=req.body
+      admin.adminLogin = true
+      logErr = ""
+      res.json({})
       res.redirect('/admin')
+      
+     
+
     }
+    logErr = "Wrong Password"
+    res.json({})
     res.redirect('/admin/login')
+    
   }
+  logErr = "wrong Username"
+  res.json({})
   res.redirect('/admin/login')
+  
 })
+
+
 
 /* Add category */
 router.post('/add_category',function(req,res){
-  console.log("hai");
-  console.log(req.body);
-  res.redirect('/admin/categories') 
+  console.log("Categoryyyyyyy");
+  
+  adminHelpers.addCategory(req.body).then((data)=>{
+    console.log(data+"responce from addcategory");
+    
+    res.redirect('/admin/categories') 
+    
+  })
+  
 })
  
+// Get SubCategory
+router.post('/getSubCategory',(req,res)=>{
+
+  console.log("ethyyyyyyyyyyyyyyyyyyyyyyy");
+  adminHelpers.getSubCategory(req.body).then((cat)=>{
+    let subCat = cat.subCategory
+   console.log(subCat);
+    res.json(subCat)
+    
+  })
+})
+
+/* Block user */
+router.post('/block',(req,res)=>{
+  
+  adminHelpers.blockUser(req.body.id).then((data)=>{
+    if(req.session.user._id === req.body.id){
+      delete req.session.user
+    }
+    res.json(data)
+  }).catch(err=>{
+    res.json(err)
+  })
+})
+
+// Delete Category
+router.post('/deleteCategory',(req,res)=>{
+
+  console.log("Ethyyyy");
+  adminHelpers.deleteCategory(req.body).then(()=>{
+    
+    res.redirect('/admin/categories') 
+  })
+}) 
+
+// Delete subCategory
+router.post('/deletesSubCategory',(req,res)=>{
+
+  console.log("dlete chynnnnnnnnnnnnnnn");
+  console.log(req.body);
+  adminHelpers.deleteSubCategory(req.body).then(()=>{
+
+    res.redirect('/admin/categories') 
+  })
+})
 
 /* Add product */
 router.post('/add_product',function(req,res){
@@ -98,7 +185,7 @@ router.post('/add_product',function(req,res){
 
 /* Logout. */
 router.get('/logout',function(req,res){
-  adminLogin = true
+  admin.adminLogin = false
   delete req.session.admin
   res.redirect('/admin')
 })

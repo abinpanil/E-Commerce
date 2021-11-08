@@ -38,32 +38,36 @@
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Seller</th>
+                                                <th>Name</th>
                                                 <th>Email</th>
+                                                <th>Username</th>
+                                                <th>Mobile</th>
                                                 <th>Status</th>
-                                                <th>Registered</th>
                                                 <th class="text-end"> Action </th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td width="40%">
-                                                    <a href="#" class="itemside">
-                                                        <div class="left">
-                                                        </div>
-                                                        <div class="info pl-3">
-                                                            <h6 class="mb-0 title">Eleanor Pena</h6>
-                                                            <small class="text-muted">Seller ID: #439</small>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td>eleanor2020@example.com</td>
-                                                <td><span class="badge rounded-pill alert-success">Active</span></td>
-                                                <td>08.07.2020</td>
-                                                <td class="text-end">
-                                                    <a href="#" class="btn btn-light" style="width: 110px;">Block</a>
-                                                </td>
-                                            </tr>
+                                            <%for(i=0;i<usersList.length;i++){%>
+                                                <tr>
+                                                    <td width="40%">
+                                                        <a href="#" class="itemside">
+                                                            <div class="left">
+                                                            </div>
+                                                            <div class="info pl-3">
+                                                                <h6 class="mb-0 title"><%=usersList[i].name%></h6>
+                                                                <small class="text-muted"><%=usersList[i]._id%></small>
+                                                            </div>
+                                                        </a>
+                                                    </td>
+                                                    <td><%=usersList[i].username%></td>
+                                                    <td><%=usersList[i].email%></td>
+                                                    <td><%=usersList[i].mobile%></td>
+                                                    <td><span class="badge rounded-pill alert-success" id="status_<%=usersList[i]._id%>" ><%=usersList[i].blockStatus%></span></td>
+                                                    <td class="text-end">
+                                                        <a href="javascript:void(0);" class="btn btn-light" id="block_<%=usersList[i]._id%>" onclick="block('<%=usersList[i]._id%>')" style="width: 110px;"><%=usersList[i].isActive%></a>
+                                                    </td>
+                                                </tr>
+                                            <%}%>
                                             
                                         </tbody>
                                     </table> <!-- table-responsive.// -->
@@ -99,4 +103,38 @@
 
     <!-- card end// -->
 
+    <!-- ajax -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 
+
+    <script>
+
+        function block(id){
+
+            let status = document.getElementById("status_"+id);
+            let button=document.getElementById("block_"+id);
+
+            $.ajax({
+                url:'/admin/block',
+                type: 'post',
+                data : {
+                    id:id
+                },
+                success:(data)=>{
+                    if(data.bloked){
+                        
+                        status.innerHTML="Active";
+                        button.innerHTML="Block";
+
+                    }else{
+                        
+                        status.innerHTML="Block";
+                        button.innerHTML="Unblock";
+                        
+                    }
+                }
+                
+            })
+        }
+
+    </script>

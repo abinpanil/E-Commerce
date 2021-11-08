@@ -1,15 +1,58 @@
 const db = require('../config/connection')
 const collection = require('../config/collections')
+const objectId = require('mongodb').ObjectId;
 const bcrypt = require('bcrypt')
 module.exports = {
 
+    
     doSignup:(userData)=>{
-        console.log(userData);
+        
+        let userResponse={
+            email : "",
+            username : "",
+            mobile : "",
+            block : "",
+            status : true
+        }
+        let emailCheck = true
+        let mobileCheck = true
+        let usernameCheck = true
+        let blockCheck = true
+        
+        // console.log(userData);
         return new Promise(async(resolve,reject)=>{
-            userData.password = await bcrypt.hash(userData.password,10)
-            db.get().collection(collection.USERS_COLLECTION).insertOne(userData).then((data)=>{
-                resolve(data)
-            })
+
+            let checkEmail = await db.get().collection(collection.USERS_COLLECTION).findOne({email:userData.email})
+            if(checkEmail){
+                emailCheck = false
+                userResponse.email = "Email is already exists"
+            }
+            let checkUsername = await db.get().collection(collection.USERS_COLLECTION).findOne({username:userData.username})
+            if(checkUsername){
+                usernameCheck = false
+                userResponse.username = "Username is already exists"
+            }
+            let checkMobile = await db.get().collection(collection.USERS_COLLECTION).findOne({mobile:userData.mobile})
+            if(checkMobile){
+                mobileCheck = false
+                userResponse.mobile = "Mobile Number already exists"
+            }
+            if(emailCheck && usernameCheck && mobileCheck){
+                
+                userData.password = await bcrypt.hash(userData.password,10)
+                userData.isActive = "Block"
+                userData.blockStatus = "Active"
+                db.get().collection(collection.USERS_COLLECTION).insertOne(userData).then((data)=>{
+                    
+                    resolve(userResponse)
+                })
+            }else{
+                                  
+                userResponse.status = false
+                resolve(userResponse)
+            }
+            
+            
         })
         
     },
@@ -21,10 +64,22 @@ module.exports = {
             if(user){
                 bcrypt.compare(userData.password,user.password).then((status)=>{
                     if(status){
-                        response.user = user
-                        response.status = true
-                        response.errormsg=""
-                        resolve(response)
+                        
+                        if(user.blockStatus === "Active"){
+
+                            response.user = user
+                            response.status = true
+                            response.errormsg=""
+                            resolve(response)
+                        }else{
+
+                            console.log("log fail");
+                            response.status = false
+                            response.errormsg="You Blocked by Admin"
+                            resolve(response)
+
+                        }
+
                     }else{
                         console.log("log fail");
                         response.status = false

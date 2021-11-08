@@ -15,6 +15,10 @@ label.cabinet input.file{
   margin-top:-30px;
 }
 
+.your-class::-webkit-input-placeholder {
+    color: #c70d0d
+}
+
 #upload-demo{
 	width: 250px;
 	height: 250px;

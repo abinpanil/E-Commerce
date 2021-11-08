@@ -28,7 +28,7 @@
         <!-- App Css-->
         <link href="/admin/css/app-dark.min.css" rel="stylesheet" type="text/css" />
         <!-- Modal Image Crop -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/{version}/croppie.min.css" />
+       
         <link rel="stylesheet" href="/admin/css/style.css">
 
 
@@ -52,7 +52,7 @@
     <link rel="preload" href="/user/vendor/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2"
         crossorigin="anonymous">
     <link rel="preload" href="/user/vendor/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2"
-        crossorigin="anonymous">
+        crossoriginanswers-header="anonymous">
     <link rel="preload" href="/user/fonts/wolmart87d5.ttf?png09e" as="font" type="font/ttf" crossorigin="anonymous">
 
     <!-- Vendor CSS -->
@@ -74,15 +74,21 @@
 </head>
 <body>
     
-    <%if(admin){%>
-        <%-include('../partials/admin-header')%>
+    <%if(admin.status){%>
+        <%if(admin.adminLogin){%>
+            <%-include('../partials/admin-header')%>
+        <%}%>
+        
     <%}else{%>
         <%-include('../partials/user-header')%>
     <%}%>
     <%-body%>
     
     <%if(admin){%>
-        <%-include('../partials/admin-footer')%>
+        <%if(admin.adminLogin){%>
+            <%-include('../partials/admin-footer')%>
+        <%}%>
+        
     <%}else{%>
         <%-include('../partials/user-footer')%>
     <%}%>

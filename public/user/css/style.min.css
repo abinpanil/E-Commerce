@@ -14848,6 +14848,10 @@ body .product-popup {
           align-items: center;
   padding: 1.4rem 0rem 1.3rem 2rem;
 }
+
+.your-class::-webkit-input-placeholder {
+    color: #c70d0d
+}
 .header-bottom .header-right > a i {
   vertical-align: middle;
 }

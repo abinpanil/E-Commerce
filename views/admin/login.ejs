@@ -1,55 +1,126 @@
 <body class="bg-pattern">
-    <div class="bg-overlay"></div>
-    <div class="account-pages my-5 pt-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-4 col-lg-6 col-md-8">
-                    <div class="card">
-                        <div class="card-body p-4">
-                            <div class="">
-                                <div class="text-center">
-                                    <a href="index.html" class="">
-                                        <img src="" alt="" height="24" class="auth-logo logo-dark mx-auto">
-                                        <img src="/admin/images/logo-light.png" alt="" height="24" class="auth-logo logo-light mx-auto">
-                                    </a>
-                                </div>
-                                <!-- end row -->
-                    
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <form action="/admin/login" method="post">
-                                                <div class="mb-4">
-                                                    <label class="form-label" for="username">Username</label>
-                                                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
-                                                </div>
-                                                <div class="mb-4">
-                                                    <label class="form-label" for="userpassword">Password</label>
-                                                    <input type="password" class="form-control" name="password" id="userpassword" placeholder="Enter password">
-                                                </div>
-                                                <h5 style="color: brown;"></h5>
-                                                <div class="d-grid mt-4">
-                                                    <button class="btn btn-primary waves-effect waves-light" type="submit">Log In</button>
-                                                </div>
-                                            </form>
+<div class="bg-overlay"></div>
+<div class="account-pages ">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-4 col-lg-6 col-md-8">
+                <div class="card" style="transform: translate(0, 50%);">
+                    <div class="card-body p-4">
+                        <div class="">
+                            <div class="text-center">
+                                <a href="index.html" class="">
+                                    <img src="///images/logo-dark.png" alt="" height="24" class="auth-logo logo-dark mx-auto">
+                                    <img src="///images/logo-light.png" alt="" height="24" class="auth-logo logo-light mx-auto">
+                                </a>
+                            </div>
+                            <!-- end row -->
+                            <h4 class="font-size-18 text-muted mt-2 text-center">Welcome Back !</h4>
+                            <p class="mb-5 text-center">Sign in to continue.</p>
+                            
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-4">
+                                            <label class="form-label" for="username">Username</label>
+                                            <input type="text" class="form-control " id="usernames" placeholder="Enter username">
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="form-label" for="userpassword">Password</label>
+                                            <input type="password" class="form-control" id="password" placeholder="Enter password">
+                                        </div>
+                                        <div class="text-center" style="height: 5px;">
+                                            <label class="form-label" style="color: red;" for="userpassword"><%=logErr%></label>
+                                            
+                                        </div>
+                                        
+                                        <div class="d-grid mt-4">
+                                            <button class="btn btn-primary waves-effect waves-light" id="submitbtn" onclick="logCheck()"  type="submit">Log In</button>
                                         </div>
                                     </div>
-                            </div>
+                                </div>
+                           
                         </div>
                     </div>
                 </div>
+                
             </div>
-            <!-- end row -->
         </div>
+        <!-- end row -->
     </div>
-    <!-- end Account pages -->
+</div>
+<!-- end Account pages -->
 
-    <!-- JAVASCRIPT -->
-    <script src="/admin/libs/jquery/jquery.min.js"></script>
-    <script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/admin/libs/metismenu/metisMenu.min.js"></script>
-    <script src="/admin/libs/simplebar/simplebar.min.js"></script>
-    <script src="/admin/libs/node-waves/waves.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 
-    <script src="/admin/js/app.js"></script>
 
-</body>
+<script>
+
+// Validation Sign In form
+
+function logCheck(){
+    
+    event.preventDefault()
+
+    // Validate Username
+    let usernameError = true;
+         
+    function validateUsername() {
+            
+        let usernameValue = $('#usernames').val();
+        if (usernameValue.length == '') {
+            
+            $('#usernames').css('border-color', '#c70d0d')
+            $('#usernames').attr("placeholder", "Enter Username")
+              usernameError = false;
+              return false;
+
+        }
+    }
+         
+    // Validate Password
+    let passwordError = true;
+    
+    function validatePassword() {
+            
+        let passwrdValue =
+        $('#password').val();
+        if (passwrdValue.length == '') {
+                
+            $('#password').css('border-color', '#c70d0d')
+            $('#password').attr("placeholder", "Enter Password")
+            passwordError = false;
+            return false;
+        } 
+    }
+            
+            
+    let userValue = {
+        username : $('#usernames').val(),
+        password : $('#password').val()
+    }
+            
+    console.log("value"+userValue);
+    validateUsername();
+    validatePassword();
+    if (usernameError === true && passwordError === true) {
+                
+        $.ajax({
+
+            url:'/admin/signin',
+            type:'post',
+            data:userValue,
+            success:()=>{
+                location.reload()
+            }
+            
+
+        })
+                
+    } 
+               
+};
+
+
+
+
+</script>
