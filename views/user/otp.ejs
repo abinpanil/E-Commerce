@@ -120,22 +120,28 @@
                 method:'post',
                 data:{mobilenumber:mobilenumber},
                 success:(response)=>{
-                    console.log(response);
+                    
+                    
                     if(response.status){
-                        
-                        console.log("ethyyyyyyyyyyyyy");
+                       
+
                         $.ajax({
                             
                             url:'/otpget',
                             method:'post',
                             data:{mobilenumber:mobilenumber},
-                            success:()=>{
+                            success:(response)=>{
+                                
+                                $("#invalidnumber").text('OTP Sent Successfully')
+
                                 $('#otp').removeAttr('disabled')
                             }
                         })
                         
                     }else{
                         
+                        $("#invalidnumber").text('Number Not registered')
+
                     }
                 }
             })

@@ -19,7 +19,7 @@
     </nav>
     <!-- End of Breadcrumb -->
     <div class="page-content">
-        <div class="container">
+        <div class="container" id="loginpop">
             <div class="login-popup">
                 <div class="tab tab-nav-boxed tab-nav-center tab-nav-underline">
                     <ul class="nav nav-tabs text-uppercase" role="tablist">
@@ -36,12 +36,12 @@
                                 <div class="form-group">
                                     <label>Username *</label>
                                     <input type="text" class="form-control your-class" name="username" id="usernames">
-                                   
+
                                 </div>
                                 <div class="form-group mb-5">
                                     <label>Password *</label>
                                     <input type="text" class="form-control your-class" name="password" id="password">
-                                    
+
                                     <p id="block_warning" style="color: red;"> </p>
                                 </div>
                                 <h5 style="color: red;">
@@ -57,14 +57,16 @@
                             </form>
                             <!-- sample -->
                             <div class="row gx-2 mt-5 text-center">
-                                <form action="otpLoad">
-                                    <div class="col-sm-6 mb-3">
-                                        <button type="submit" onclick="otpfn()" style="width: 100%;" id="submitbtn" class="btn btn-success">OTP</button>
-                                        <p class="pt-1" style="font-size: 10px;">Login using Mobile Number</p>
-                                    </div>
-                                </form>
+                                <!-- <form action="otpLoad"> -->
                                 <div class="col-sm-6 mb-3">
-                                    <button type="submit" style="width: 100%;" id="submitbtn" class="btn btn-primary">Google</button>
+                                    <button type="submit" onclick="otpfn()" style="width: 100%;" id="submitbtn"
+                                        class="btn btn-success">OTP</button>
+                                    <p class="pt-1" style="font-size: 10px;">Login using Mobile Number</p>
+                                </div>
+                                <!-- </form> -->
+                                <div class="col-sm-6 mb-3">
+                                    <button type="submit" style="width: 100%;" id="submitbtn"
+                                        class="btn btn-primary">Google</button>
                                     <p class="pt-1" style="font-size: 10px;">Login using Google Account</p>
                                 </div>
                             </div> <!-- row.// -->
@@ -102,7 +104,7 @@
                                     <label>Password *</label>
                                     <input type="text" class="form-control your-class" name="password"
                                         id="signup_password">
-                                        
+
                                 </div>
                                 <button type="submit" style="width: 100%;" onclick="signUp()" class="btn btn-dark">Sign
                                     Up</button>
@@ -129,7 +131,7 @@
 <script>
 
 
-    function otpLogin(){
+    function otpLogin() {
 
     }
 
@@ -186,7 +188,7 @@
 
 
         let block_err = $('#block_warning')
-        
+
 
         if (usernameError === true && passwordError === true) {
 
@@ -195,13 +197,13 @@
                 url: '/signIn',
                 method: 'post',
                 data: userValue,
-                success: (data) => {    
-                   
-                    
-                    if(data.status){
+                success: (data) => {
+
+
+                    if (data.status) {
 
                         location.reload()
-                    }else{
+                    } else {
 
                         block_err.text(data.errormsg)
                     }
@@ -303,13 +305,13 @@
 
                 mobileError = false;
                 return false;
-            }else if (!regnum.test(mobileValue)) {
+            } else if (!regnum.test(mobileValue)) {
 
                 $('#mobile').css('border-color', '#c70d0d')
                 $("#mobilewarn").text('Enter Numbers Only')
 
                 mobileError = false;
-            }else if (mobileValue.length != 10) {
+            } else if (mobileValue.length != 10) {
 
                 $('#mobile').css('border-color', '#c70d0d')
                 $("#mobilewarn").text('Mobile number must Contain 10 Digit')
@@ -349,8 +351,8 @@
             email: $('#signup_email').val(),
             mobile: $('#mobile').val(),
             password: $('#signup_password').val()
-            
-            
+
+
         }
 
         validateName()
@@ -389,15 +391,190 @@
 
     };
 
-    // function otpfn(){
+    function otpfn() {
 
-    //     $.ajax({
-    //         url:'/otpLoad',
-    //         method:'get',
-    //         success:()=>{
-    //             location.reload()
-    //         }
-    //     })
-    // }
+        event.preventDefault()
+
+        let div = $('#loginpop')
+
+        div.html(`
+
+
+
+        <div class="container">
+            <div class="login-popup">
+                <div class="tab tab-nav-boxed tab-nav-center tab-nav-underline">
+                    <ul class="nav nav-tabs text-uppercase" role="tablist">
+                        <li class="nav-item">
+                            <a href="#sign-in" class="nav-link active">OTP Login</a>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="sign-in">
+                            <form>
+                                <div class="form-group">
+                                    <label>Mobile Number<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control your-class" name="mobilenumber" onchange="mobileNumber()" id="mobilenumber">
+                                    <p id="invalidnumber" style="color: red;"> </p>
+                                </div>
+                                <div class="form-group mb-5">
+                                    <label>Enter OTP (6 Digit)<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control your-class" name="otp" id="otp" disabled>
+                                    <p id="invalidotp" style="color: red;"> </p>
+
+                                    <p id="block_warning" style="color: red;"> </p>
+                                </div>
+
+                                <button type="button" onclick="validateOtp()" style="width: 100%;" id="Otpsubmit" disabled
+                                    class="btn btn-success">Validate</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+
+
+        `)
+
+        // $.ajax({
+        //     url:'/otpLoad',
+        //     method:'get',
+        //     success:()=>{    
+
+
+        //         // location.reload()
+        //     }
+        // })
+    }
+
+
+
+    // otp page
+
+
+
+    function mobileNumber() {
+
+
+        event.preventDefault()
+        let mobilenumber = $('#mobilenumber').val()
+        let mobilewarn = $('#invalidnumber')
+
+
+        $("#invalidnumber").text('')
+        // mobile validation
+        let mobileError = true;
+
+        function validateMobile() {
+
+            let regnum = new RegExp("^[0-9]+$");
+
+            let mobileValue = $('#mobilenumber').val();
+
+            if (mobileValue.length == '') {
+
+                $('#mobilenumber').css('border-color', '#c70d0d')
+                $('#mobilenumber').attr("placeholder", "Enter Number")
+
+                mobileError = false;
+                return false;
+            } else if (!regnum.test(mobileValue)) {
+
+                $('#mobilenumber').css('border-color', '#c70d0d')
+                $("#invalidnumber").text('Enter Numbers Only')
+
+                mobileError = false;
+            } else if (mobileValue.length != 10) {
+
+                $('#mobilenumber').css('border-color', '#c70d0d')
+                $("#invalidnumber").text('Mobile number must Contain 10 Digit')
+
+                mobileError = false;
+            }
+
+        }
+
+        validateMobile()
+
+        mobilenumber = $('#mobilenumber').val()
+
+        if (mobileError === true) {
+            $.ajax({
+                url: '/checkNum',
+                method: 'post',
+                data: { mobilenumber: mobilenumber },
+                success: (response) => {
+
+
+                    if (response.status) {
+
+
+                        $.ajax({
+
+                            url: '/otpget',
+                            method: 'post',
+                            data: { mobilenumber: mobilenumber },
+                            success: (response) => {
+
+                                $("#invalidnumber").text('OTP Sent Successfully')
+                                
+                                $('#otp').removeAttr('disabled')
+                                $('#Otpsubmit').removeAttr('disabled')
+                            }
+                        })
+
+                    } else {
+
+                        $("#invalidnumber").text('Number Not registered')
+
+                    }
+                }
+            })
+        }
+
+    }
+
+    function validateOtp() {
+
+        
+
+        event.preventDefault()
+
+        let mobilenumber = $('#mobilenumber').val()
+        let otp = $('#otp').val()
+
+        
+
+            $.ajax({
+                url: "/otpcheck",
+                method: 'post',
+                data: {
+                    number: mobilenumber,
+                    otp: otp
+                },
+                success: (response) => {
+                    console.log(response,"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+                    if(response.err===true){
+                        $('#invalidotp').text('Something Went wrong')
+                    }else if(response.valid===false){
+                        $('#invalidotp').text('Invalid OTP')
+                    }else{
+                        location.reload()
+                        
+                    }
+                    
+                }
+
+            })
+
+        
+    }
+
+
 
 </script>

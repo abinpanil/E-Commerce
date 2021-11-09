@@ -87,67 +87,23 @@
                             <nav class="main-nav">
                                 <ul class="menu active-underline">
                                     
+                                    <%for(var i=0;i<data.length;i++){%>
+                                        
                                     <li>
-                                        <a href="#">MEN</a>
+                                        <a href="#"><%=data[i].category%></a>
+                                        
                                         <ul>
-                                            <li>
-                                                <a href="vendor-dokan-store-list.html">Store Listing</a>
-                                                <ul>
-                                                    <li><a href="vendor-dokan-store-list.html">Store listing 1</a></li>
-                                                    <li><a href="vendor-wcfm-store-list.html">Store listing 2</a></li>
-                                                    <li><a href="vendor-wcmp-store-list.html">Store listing 3</a></li>
-                                                    <li><a href="vendor-wc-store-list.html">Store listing 4</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="vendor-dokan-store.html">Vendor Store</a>
-                                                <ul>
-                                                    <li><a href="vendor-dokan-store.html">Vendor Store 1</a></li>
-                                                    <li><a href="vendor-wcfm-store-product-grid.html">Vendor Store 2</a>
-                                                    </li>
-                                                    <li><a href="vendor-wcmp-store-product-grid.html">Vendor Store 3</a>
-                                                    </li>
-                                                    <li><a href="vendor-wc-store-product-grid.html">Vendor Store 4</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
+                                            <%for(var j=0;j<data[i].subCategory.length;j++){%>
+                                                <li>
+                                                    <a href="vendor-dokan-store-list.html"><%=data[i].subCategory[j].name%></a>
+                                            
+                                                </li>
+                                            <%}%>
                                         </ul>
+                                        
                                     </li>
-                                    <li>
-                                        <a href="#">WOMEN</a>
-                                        <ul>
-                                            <li><a href="blog.html">Classic</a></li>
-                                            <li><a href="blog-listing.html">Listing</a></li>
-                                            <li>
-                                                <a href="blog-grid-3cols.html">Grid</a>
-                                                <ul>
-                                                    <li><a href="blog-grid-2cols.html">Grid 2 columns</a></li>
-                                                    <li><a href="blog-grid-3cols.html">Grid 3 columns</a></li>
-                                                    <li><a href="blog-grid-4cols.html">Grid 4 columns</a></li>
-                                                    <li><a href="blog-grid-sidebar.html">Grid sidebar</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="blog-masonry-3cols.html">Masonry</a>
-                                                <ul>
-                                                    <li><a href="blog-masonry-2cols.html">Masonry 2 columns</a></li>
-                                                    <li><a href="blog-masonry-3cols.html">Masonry 3 columns</a></li>
-                                                    <li><a href="blog-masonry-4cols.html">Masonry 4 columns</a></li>
-                                                    <li><a href="blog-masonry-sidebar.html">Masonry sidebar</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="blog-mask-grid.html">Mask</a>
-                                                <ul>
-                                                    <li><a href="blog-mask-grid.html">Blog mask grid</a></li>
-                                                    <li><a href="blog-mask-masonry.html">Blog mask masonry</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="post-single.html">Single Post</a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    <%}%>
+                                    
                                 </ul>
                             </nav>
                         </div>

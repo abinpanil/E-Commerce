@@ -5,10 +5,10 @@ const userHelpers = require('../helpers/user-helpers')
 const adminHelpers = require('../helpers/admin-helpers');
 const config = require('../auth/config');
 
-const serviceID = "VA88c284363de9fd0c8192a127bc7b1e06"
-const accountSID = "AC2253025f4ed61bf98f907de34a78dc5c"
-const authToken = "2a797af2d100479d5df8375a85cefc59"
-const client= require("twilio")(accountSID, authToken)
+const serviceID = "VAa5e077df7a059df1d1bae9a32df93ca9"
+const accountSID = "AC29e0de96271489ac12f1c32008d70906"
+const authToken = "2975bf30634d92615dab33cee7689014"
+const client = require("twilio")(accountSID, authToken)
 
 let admin = false
 let user = {
@@ -16,18 +16,18 @@ let user = {
   status: false
 }
 
-let verifyUser = (req, res, next) => {
 
-}
 
 
 /* GET users Home. */
 router.get('/', function (req, res, next) {
 
 
-  adminHelpers.getCategory().then((data) => {
 
-    res.render('./user/home', { admin, user, title: "Home" });
+  adminHelpers.getCategory().then((data) => {
+    console.log(data);
+    res.render('./user/home', { admin, user, title: "Home" ,data});
+    res.json({})
 
   })
 
@@ -42,7 +42,10 @@ router.get('/login', function (req, res) {
     res.redirect('/')
 
   } else {
-    res.render('./user/login', { admin, user, title: "Login", loginErr: "" });
+
+    adminHelpers.getCategory().then((data) => {
+      res.render('./user/login', { admin, user, title: "Login", loginErr: "", data });
+    })
   }
 
 });
@@ -50,28 +53,38 @@ router.get('/login', function (req, res) {
 
 /* GET Account page. */
 router.get('/my_account', function (req, res, next) {
-  res.render('./user/my_account', { admin, user, title: "My Account" });
+
+  adminHelpers.getCategory().then((data) => {
+    res.render('./user/my_account', { admin, user, title: "My Account",data });
+  })
 });
 
 /* GET cart. */
 router.get('/cart', function (req, res, next) {
-  res.render('./user/cart', { admin, user, title: "Cart" });
+
+  adminHelpers.getCategory().then((data) => {
+    res.render('./user/cart', { admin, user, title: "Cart" ,data});
+  })
 });
 
 /* GET wishlist. */
 router.get('/wishlist', function (req, res, next) {
-  res.render('./user/wishlist', { admin, user, title: "Wishlist" });
+
+  adminHelpers.getCategory().then((data) => {
+    res.render('./user/wishlist', { admin, user, title: "Wishlist" });
+  })
 });
 
 
 
 /* Opt Load */
-router.get('/otpLoad',(req,res)=>{
+router.get('/otpLoad', (req, res) => {
 
   // console.log("ethyyyyyyyyy");
-  
-  res.render('./user/otp', { admin, user, title: "Login", loginErr: "" });  
-  
+  adminHelpers.getCategory().then((data) => {
+    res.render('./user/otp', { admin, user, title: "Login", loginErr: "" });
+  })
+
 })
 
 /* GET List products. */
@@ -88,7 +101,9 @@ router.get('/listproducts', function (req, res, next) {
       category: "Men",
       discription: "Nice"
     }]
-  res.render('./user/productlist', { admin, user, title: "Products", products });
+    adminHelpers.getCategory().then((data) => {
+      res.render('./user/productlist', { admin, user, title: "Products", products });
+    })
 });
 
 /* Login */
@@ -142,84 +157,86 @@ router.post('/signUp', function (req, res) {
 })
 
 // mobile number check
-router.post('/checkNum',(req,res)=>{
-  
-  userHelpers.checkNumber(req.body.mobilenumber).then((response)=>{
+router.post('/checkNum', (req, res) => {
+  userHelpers.checkNumber(req.body.mobilenumber).then((response) => {
+
     res.json(response)
   })
 })
 
 /* Otp signin. */
-router.post('/otpget',(req,res)=>{
+router.post('/otpget', (req, res) => {
 
-  // console.log("ivde ethyyyyyyyyyy");
-  client.verify
-    .services(serviceID)
+
+  client.verify.services(serviceID)
     .verifications.create({
-      to:`+91${req.body.mobilenumber}`,
+      to: `+91${req.body.mobilenumber}`,
       channel: "sms"
     })
-    .then((data)=>{
-      res.json(data)
+    .then((response) => {
+
+      res.json(response)
+    }).catch((e) => {
+      console.log(e, "errroooorrrrrrrrrr");
     })
 })
 
 
 // validate Otp
-router.post('/otpcheck',(req,res)=>{
+router.post('/otpcheck', (req, res) => {
 
   let otp = req.body.otp
   let number = req.body.number
-  console.log(otp,number);
+  console.log(otp, number);
+
   client.verify
     .services(serviceID)
     .verificationChecks.create({
-      to:`+91${number}`,
-      code:`${otp}`
-      
+      to: `+91${number}`,
+      code: `${otp}`
+
     })
-    .then((data)=>{
-    
-      if(data.valid){
+    .then((data) => {
 
-        userHelpers.checkNumber(number).then((response)=>{
-          console.log(response.user);
+      console.log(data.valid);
+      if (data.valid) {
 
-          // res.session.user = response.user
+        userHelpers.checkNumber(number).then((response) => {
+          console.log(response.user.name);
+
+          req.session.user = response.user
+          console.log(req.session.user);
           console.log("1");
           user.status = true
+          console.log(user.status);
           console.log("2");
+
           user.name = response.user.name
+          console.log(user.name);
           console.log("3");
           res.redirect('/')
-          
+
+
         })
 
-      }else{
-        res.json({})
+
+
+      } else {
+
+        res.json(data)
       }
-      
+
+    }).catch((e) => {
+      console.log(e + 'errrrrrrr');
+      let data = {
+        err: true
+      }
+      res.json(data)
     })
-  
+
 
 })
 
 
-
-
-// Error passing 
-// router.get(function(req, res, next) {
-//   next(createError(404));
-// });
-
-// router.get(function(err, req, res, next) {
-
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-
-//   res.status(err.status || 500);
-//   res.render('error',{admin,user,title:"Categories"});
-// });
 
 module.exports = router;
