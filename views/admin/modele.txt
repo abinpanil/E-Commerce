@@ -38,7 +38,7 @@
 
 
 
-
+/admin/images/placeholder.png
 
 <div class="col-md-2 col-sm-2">
     <h4 class="title"> Image 2</h4>

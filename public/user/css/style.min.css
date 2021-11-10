@@ -21332,6 +21332,7 @@ aside .sp-sidebar-banner span {
   margin-bottom: 0;
 }
 
+
 @media (max-width: 1036px) {
   .store-wcfm .store-footer {
     padding-top: 5rem;
@@ -21402,4 +21403,22 @@ aside .sp-sidebar-banner span {
         -ms-flex-pack: center;
             justify-content: center;
   }
+}
+#pageloader
+{
+  background: rgba( 255, 255, 255, 0.8 );
+  display: none;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
+}
+
+#pageloader img
+{
+  left: 50%;
+  margin-left: -32px;
+  margin-top: -32px;
+  position: absolute;
+  top: 50%;
 }

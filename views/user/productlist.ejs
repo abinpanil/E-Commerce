@@ -57,15 +57,15 @@
                     </nav> -->
                     <div class="product-wrapper row cols-lg-5 cols-md-4 cols-sm-3 cols-2 pt-5">
                         
-                        <%for(i=0;i<products.length;i++){%>
+                        <%for(i=0;i<pro.length;i++){%>
 
                             <div class="product-wrap">
                                 <div class="product text-center">
                                     <figure class="product-media">
-                                        <a href="product-default.html">
-                                            <img src="/user/images/shop/19-1.jpg" alt="Product" width="300"
+                                        <a href="/viewproduct/<%=pro[i]._id%>">
+                                            <img src="/user/images/productImage/<%=pro[i]._id%>1.jpg" alt="Product" width="300"
                                                 height="338" />
-                                            <img src="/user/images/shop/19-2.jpg" alt="Product" width="300"
+                                            <img src="/user/images/productImage/<%=pro[i]._id%>1.jpg" alt="Product" width="300"
                                                 height="338" />
                                         </a>
                                         <div class="product-action-horizontal">
@@ -79,10 +79,10 @@
                                     </figure>
                                     <div class="product-details">
                                         <div class="product-cat">
-                                            <a href="shop-banner-sidebar.html"><%=products[0].category%></a>
+                                            <a href="shop-banner-sidebar.html"><%=pro[i].productcategory%></a>
                                         </div>
                                         <h3 class="product-name">
-                                            <a href="product-default.html"><%=products[0].name%></a>
+                                            <a href="product-default.html"><%=pro[i].productname%></a>
                                         </h3>
                                         <div class="ratings-container">
                                             <div class="ratings-full">
@@ -93,7 +93,7 @@
                                         </div>
                                         <div class="product-pa-wrapper">
                                             <div class="product-price">
-                                                $5.00
+                                                RS.<%=pro[i].productprice%>
                                             </div>
                                         </div>
                                     </div>

@@ -16,22 +16,23 @@ let user = {
   status: false
 }
 
-
+let logData 
 
 
 /* GET users Home. */
 router.get('/', function (req, res, next) {
 
-
-
   adminHelpers.getCategory().then((data) => {
-    console.log(data);
-    res.render('./user/home', { admin, user, title: "Home" ,data});
-    res.json({})
-
+    adminHelpers.getAllProducts().then((products)=>{
+      // console.log(products);
+      
+      res.render('./user/home', { admin, user, title: "Home" ,data,products});
+      
+    })
+  
   })
 
-});
+});  
 
 
 /* GET login. */
@@ -71,38 +72,67 @@ router.get('/cart', function (req, res, next) {
 router.get('/wishlist', function (req, res, next) {
 
   adminHelpers.getCategory().then((data) => {
-    res.render('./user/wishlist', { admin, user, title: "Wishlist" });
+    res.render('./user/wishlist', { admin, user, title: "Wishlist" ,data});
   })
 });
 
 
+// product page
+router.get('/viewproduct/:_id',(req,res)=>{
+
+  let id = req.params._id
+  console.log("Ethyyyyyyyyyyyy");
+  adminHelpers.getCategory().then((data) => {
+    userHelpers.getProduct(id).then((products)=>{
+      // console.log(products);
+      res.render('./user/product', { admin, user, title: "Login",data,products});
+    })
+    
+  })
+
+
+})
 
 /* Opt Load */
 router.get('/otpLoad', (req, res) => {
 
-  // console.log("ethyyyyyyyyy");
+  
   adminHelpers.getCategory().then((data) => {
-    res.render('./user/otp', { admin, user, title: "Login", loginErr: "" });
+    res.render('./user/otp', { admin, user, title: "Login", loginErr: "" ,data});
   })
 
 })
 
-/* GET List products. */
-router.get('/listproducts', function (req, res, next) {
 
-  let products = [
-    {
-      name: "Shirt",
-      category: "Men",
-      discription: "Nice"
-    },
-    {
-      name: "jeans",
-      category: "Men",
-      discription: "Nice"
-    }]
+// Get list category products
+router.get('/listproductscat/:cat', function (req, res, next) {
+  console.log(req.params.cat);
     adminHelpers.getCategory().then((data) => {
-      res.render('./user/productlist', { admin, user, title: "Products", products });
+        userHelpers.getCatProducts(req.params.cat).then((pro)=>{
+          res.render('./user/productlist', { admin, user, title: "Products" ,data,pro})
+        })
+        ;
+      
+       
+    })
+});
+
+
+
+
+/* GET List subcategory products. */
+router.get('/listproductssubcat/:subcat/:cat', function (req, res, next) {
+  console.log(req.params.subcat);
+  console.log(req.params.cat);
+    adminHelpers.getCategory().then((data) => {
+      
+        userHelpers.getSubCatProducts(req.params.cat,req.params.subcat).then((pro)=>{
+          console.log(pro);
+          res.render('./user/productlist', { admin, user, title: "Products" ,data,pro})
+        })
+        ;
+      
+       
     })
 });
 
@@ -114,13 +144,13 @@ router.post('/login', function (req, res) {
 
 /* Sign in. */
 router.post('/signIn', function (req, res) {
-
   userHelpers.doLogin(req.body).then((response) => {
     if (response.status) {
       req.session.user = response.user
       user.status = true
       user.name = req.session.user.name
-
+      logData = response
+      res.json({})
       res.redirect('/')
     } else {
       res.json(response)
@@ -140,10 +170,9 @@ router.post('/signout', (req, res) => {
   res.redirect('/')
 })
 
+
 /* Sign Up. */
 router.post('/signUp', function (req, res) {
-
-
   userHelpers.doSignup(req.body).then((userResponse) => {
     req.session.userResponse = userResponse
     res.json(userResponse)
@@ -156,6 +185,7 @@ router.post('/signUp', function (req, res) {
 
 })
 
+
 // mobile number check
 router.post('/checkNum', (req, res) => {
   userHelpers.checkNumber(req.body.mobilenumber).then((response) => {
@@ -164,9 +194,9 @@ router.post('/checkNum', (req, res) => {
   })
 })
 
+
 /* Otp signin. */
 router.post('/otpget', (req, res) => {
-
 
   client.verify.services(serviceID)
     .verifications.create({
@@ -174,9 +204,10 @@ router.post('/otpget', (req, res) => {
       channel: "sms"
     })
     .then((response) => {
-
+     
       res.json(response)
     }).catch((e) => {
+
       console.log(e, "errroooorrrrrrrrrr");
     })
 })
@@ -187,8 +218,7 @@ router.post('/otpcheck', (req, res) => {
 
   let otp = req.body.otp
   let number = req.body.number
-  console.log(otp, number);
-
+  
   client.verify
     .services(serviceID)
     .verificationChecks.create({
@@ -198,34 +228,21 @@ router.post('/otpcheck', (req, res) => {
     })
     .then((data) => {
 
-      console.log(data.valid);
       if (data.valid) {
 
         userHelpers.checkNumber(number).then((response) => {
-          console.log(response.user.name);
 
           req.session.user = response.user
-          console.log(req.session.user);
-          console.log("1");
           user.status = true
-          console.log(user.status);
-          console.log("2");
-
           user.name = response.user.name
-          console.log(user.name);
-          console.log("3");
           res.redirect('/')
 
-
         })
-
-
 
       } else {
 
         res.json(data)
       }
-
     }).catch((e) => {
       console.log(e + 'errrrrrrr');
       let data = {
@@ -233,7 +250,6 @@ router.post('/otpcheck', (req, res) => {
       }
       res.json(data)
     })
-
 
 })
 

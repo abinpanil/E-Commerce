@@ -111,5 +111,24 @@ module.exports = {
                 resolve(mobRes)
             }
         })
+    },
+    getProduct:(id)=>{
+
+        return new Promise(async(resolve,reject)=>{
+            let product = await db.get().collection(collection.PRODUCTS_COLLECTION).findOne({ _id: objectId(id) })
+            resolve(product)
+        })
+    },
+    getSubCatProducts:(cat,sub)=>{
+        return new Promise(async(resolve,reject)=>{
+            let subProduct = await db.get().collection(collection.PRODUCTS_COLLECTION).find({productcategory:cat,productsubcategory:sub}).toArray()
+            resolve(subProduct)
+        })
+    },
+    getCatProducts:(cat)=>{
+        return new Promise(async(resolve,reject)=>{
+            let subProduct = await db.get().collection(collection.PRODUCTS_COLLECTION).find({productcategory:cat}).toArray()
+            resolve(subProduct)
+        })
     }
 }

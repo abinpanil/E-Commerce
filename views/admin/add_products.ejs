@@ -33,28 +33,32 @@
 
                 <div class="card mb-4">
                     <div class="card-body">
-                        <form id="uploadForm">
+                        <form id="uploadForm" action="/admin/add_product" enctype="multipart/form-data"
+                            method="post">
                             <div class="mb-4">
                                 <label for="product_name" class="form-label">Product Name</label>
-                                <input type="text" name="productname" placeholder="Enter Product Name"
-                                    class="form-control" id="product_name">
+                                <input type="text" name="productname" onchange="validateProductName()"
+                                    placeholder="Enter Product Name" class="form-control" id="product_name">
                             </div>
 
                             <div class="mb-4">
                                 <label class="form-label">Product description</label>
-                                <textarea name="productdiscription" placeholder="Type here" id="product_description"
+                                <textarea name="productdiscription" placeholder="Type here"
+                                    onchange="validateProductDiscription()" id="product_description"
                                     class="form-control" rows="4"></textarea>
                             </div>
 
                             <div class="row gx-2">
                                 <div class="col-sm-6 mb-3">
                                     <label class="form-label">Price</label>
-                                    <input type="text" name="productPrice" placeholder="Enter Price" class="form-control" id="product_price">
+                                    <input type="text" name="productprice" onchange="validateProductPrice()"
+                                        placeholder="Enter Price" class="form-control" id="product_price">
                                     <span style="color: red;" class="" id="pricewarn"></span>
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <label class="form-label">Quantity</label>
-                                    <input type="text" name="productQuantity" placeholder="Enter Quantity" class="form-control" id="product_quantity">
+                                    <input type="text" name="productquantity" onchange="validateProducQuantity()"
+                                        placeholder="Enter Quantity" class="form-control" id="product_quantity">
                                     <span style="color: red;" class="" id="quantitywarn"></span>
                                 </div>
                             </div> <!-- row.// -->
@@ -62,13 +66,13 @@
                             <div class="row gx-2">
                                 <div class="col-sm-6 mb-3">
                                     <label class="form-label">Size</label>
-                                    <input type="text" name="productSize" placeholder="Enter Size" class="form-control"
-                                        id="product_size">
+                                    <input type="text" name="productsize" onchange="validateProducSize()"
+                                        placeholder="Enter Size" class="form-control" id="product_size">
                                 </div>
                                 <div class="col-sm-6 mb-3">
                                     <label class="form-label">Colour</label>
-                                    <input type="text" name="productColour" placeholder="Enter Colour"
-                                        class="form-control" id="product_colour">
+                                    <input type="text" name="productcolour" onchange="validateProducColour()"
+                                        placeholder="Enter Colour" class="form-control" id="product_colour">
                                 </div>
                             </div> <!-- row.// -->
 
@@ -98,19 +102,33 @@
                                 </div>
                             </div> <!-- row.// -->
 
+                            <div class="row gx-2">
+                                <div class="mb-4 col-sm-6 mb-3">
+                                    <label class="form-label">Image 1</label>
+                                    <input class="form-control" type="file" id="image1" name="productimage1">
+                                </div>
+
+                               
 
 
-                            <div class="mb-4">
-                                <label class="form-label">Images</label>
-                                <input class="form-control" type="file" name="productimage3">
+
+
+                                <!-- end -->
+                                <div class="mb-4 col-sm-6 mb-3">
+                                    <label class="form-label">Images 2</label>
+                                    <input class="form-control" type="file" id="image2" name="productimage2">
+                                </div>
+                                <div class="mb-4 col-sm-6 mb-3">
+                                    <label class="form-label">Image 3</label>
+                                    <input class="form-control" type="file" id="image3" name="productimage3">
+                                </div>
+                                <div class="mb-4 col-sm-6 mb-3">
+                                    <label class="form-label">Image 4</label>
+                                    <input class="form-control" type="file" id="image4" name="productimage4">
+                                </div>
                             </div>
 
-                            <div class="mb-4">
-                                <label class="form-label">Images</label>
-                                <input class="form-control" type="file" name="productimage4">
-                            </div>
-
-                            <button type="submit" onclick="addProduct()" class="btn btn-primary">Add item</button>
+                            <button type="submit" class="btn btn-primary">Add item</button>
 
                         </form>
                     </div>
@@ -129,22 +147,100 @@
 
 <!-- JAVASCRIPT -->
 <script src="/admin/libs/jquery/jquery.min.js"></script>
-<script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script> -->
 <script src="/admin/libs/simplebar/simplebar.min.js"></script>
-<script src="/admin/libs/node-waves/waves.min.js"></script>
-<script src="/admin/libs/metismenu/metisMenu.min.js"></script>
+<!-- <script src="/admin/libs/node-waves/waves.min.js"></script> -->
 
-<!-- Crop Image -->
-<!-- <script src="croppie.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/{version}/croppie.min.js"></script>
+
 
 </body>
+
+<!-- croppy -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
+<script src="https://foliotek.github.io/Croppie/croppie.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 
 <!-- card end// -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 
+
+<!-- start -->
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
+    <script src="https://foliotek.github.io/Croppie/croppie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- end -->
+
+
+
 <script type="text/javascript">
+
+
+
+    $(".gambar").attr("src", "https://user.gadjian.com/static/images/personnel_boy.png");
+    var $uploadCrop,
+        tempFilename,
+        rawImg,
+        imageId;
+    function readFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.upload-demo').addClass('ready');
+                $('#cropImagePop').modal('show');
+                rawImg = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+            swal("Sorry - you're browser doesn't support the FileReader API");
+        }
+    }
+
+    $uploadCrop = $('#upload-demo').croppie({
+        viewport: {
+            width: 150,
+            height: 200,
+        },
+        enforceBoundary: false,
+        enableExif: true
+    });
+    $('#cropImagePop').on('shown.bs.modal', function () {
+        // alert('Shown pop');
+        $uploadCrop.croppie('bind', {
+            url: rawImg
+        }).then(function () {
+            console.log('jQuery bind complete');
+        });
+    });
+
+    $('.item-img').on('change', function () {
+        imageId = $(this).data('id'); tempFilename = $(this).val();
+        $('#cancelCropBtn').data('id', imageId); readFile(this);
+    });
+    $('#cropImageBtn').on('click', function (ev) {
+        $uploadCrop.croppie('result', {
+            type: 'base64',
+            format: 'jpeg',
+            size: { width: 150, height: 200 }
+        }).then(function (resp) {
+            $('#item-img-output').attr('src', resp);
+            $('#cropImagePop').modal('hide');
+        });
+    });
+
+
+
+
+
+
+
+
+
     function getSubcategory() {
 
         let category = $('#getSubCat').val()
@@ -174,7 +270,7 @@
 
     function addProduct() {
 
-        event.preventDefault()
+            event.preventDefault()
 
         let productname = $('#product_name').val()
         let productdiscription = $('#product_description').val()
@@ -231,7 +327,7 @@
                 productPriceError = false;
                 return false;
 
-            }else if (!regnum.test(productprice)) {
+            } else if (!regnum.test(productprice)) {
 
                 $('#product_price').css('border-color', '#f30000')
                 $("#pricewarn").text('Enter Number Only')
@@ -255,12 +351,12 @@
                 productQuantityError = false;
                 return false;
 
-            }else if (!regnum.test(productquantity)) {
+            } else if (!regnum.test(productquantity)) {
 
                 $('#product_quantity').css('border-color', '#f30000')
                 $("#quantitywarn").text('Enter Number Only')
 
-                productQuantityError = false;
+                product2000QuantityError = false;
             }
         }
         // product size
@@ -299,7 +395,7 @@
         function validateProducCategory() {
 
             let productcategory = $('#getSubCat').val()
-            if (productcategory.val() == 'Select') {
+            if (productcategory == '') {
 
                 $('#getSubCat').css('border-color', '#f30000')
                 $('#getSubCat').attr("placeholder", "Select Category")
@@ -314,7 +410,7 @@
         function validateProducSubCategory() {
 
             let productsubcategory = $('#subcategory').val()
-            if (productsubcategory.val() == 'Select') {
+            if (productsubcategory == ' ') {
 
                 $('#subcategory').css('border-color', '#f30000')
                 $('#subcategory').attr("placeholder", "Select SubCategory")
@@ -324,22 +420,7 @@
             }
         }
 
-        let addedProducts = {
-
-            productname : $('#product_name').val(),
-            productdiscription : $('#product_description').val(),
-            productprice : $('#product_price').val(),
-            productquantity : $('#product_quantity').val(),
-            productsize : $('#product_size').val(),
-            productcolour : $('#product_colour').val(),
-            productcategory : $('#getSubCat').val(),
-            productsubcategory : $('#subcategory').val()
-
-        }
-        // let form = $('#uploadForm')[0]
-        // let data = new FormData(form)
-
-        console.log(addedProducts);
+        
 
         validateProductName()
         validateProductDiscription()
@@ -350,20 +431,29 @@
         validateProducCategory()
         validateProducSubCategory()
 
-        if(productNameError===true && productDisError===true && productPriceError===true && productQuantityError===true && productSizeError===true && productColourError===true && productCategoryError===true && productSubCategoryError===true){
+            if (productNameError === true && productDisError === true && productPriceError === true && productQuantityError === true && productSizeError === true && productColourError === true ) {
+                console.log();
 
-            $.ajax({
+                return true
+                // $.ajax({
 
-                // url:'/admin/add_product',
-                // method:'post',
-                // data:addedProducts
-            })
+                //     url:'/admin/add_product',
+                //     method:'post',
+                //     enctype:"multipart/form-data",
+                //     data:addedProducts
+                // })
 
 
-        }
+            }
 
 
     }
+
+
+
+
+
+
 
 
 

@@ -4,7 +4,8 @@ const adminHelpers = require('../helpers/admin-helpers')
 
 
 let logErr = ""
-
+let pid = 123
+let pro={}
 let admin = {
   status:true
   
@@ -19,7 +20,6 @@ const varifyLogin = (req,res,next)=>{
     res.redirect('/admin/login')
   }
 }
-
 /* GET home page. */
 router.get('/',varifyLogin,function(req, res, next) {
 
@@ -43,7 +43,15 @@ router.get('/dashboard',varifyLogin, function(req,res){
 
 /* Get products. */
 router.get('/products',varifyLogin, function(req,res){
-  res.render('./admin/product-management',{admin,title:"Products"})
+  adminHelpers.getAllProducts().then((products)=>{
+    adminHelpers.getCategory().then((data)=>{
+      
+      res.render('./admin/product-management',{admin,title:"Products",products,data})
+      res.json({})
+      
+    })
+  })
+  
 })
 
 /* Get add_products. */
@@ -51,9 +59,10 @@ router.get('/add_products',varifyLogin, function(req,res){
 
   adminHelpers.getCategory().then((data)=>{
 
+    console.log(data);
     res.render('./admin/add_products',{admin,title:"Add Products",data})
   })
-  
+
 })
 
 /* Get categories. */
@@ -90,6 +99,7 @@ router.post('/signin',(req,res)=>{
     username:"abinpanil",
     password:"pass"
   }
+  
   
 
   if(adminData.username===req.body.username){
@@ -144,14 +154,19 @@ router.post('/getSubCategory',(req,res)=>{
 /* Block user */
 router.post('/block',(req,res)=>{
   
-  adminHelpers.blockUser(req.body.id).then((data)=>{
+  
+  adminHelpers.blockUser(req.body.id).then(data=>{
+    
+    res.json(data)
     if(req.session.user._id === req.body.id){
+      
       delete req.session.user
     }
-    res.json(data)
+    
+    
   }).catch(err=>{
     res.json(err)
-  })
+  }) 
 })
 
 // Delete Category
@@ -163,6 +178,75 @@ router.post('/deleteCategory',(req,res)=>{
     res.redirect('/admin/categories') 
   })
 }) 
+
+// Delete Product
+router.post('/deleteProduct',(req,res)=>{
+
+  adminHelpers.deleteProduct(req.body).then((resolve)=>{
+    
+    res.redirect('/admin/products')
+  })
+})
+
+// get details for edit
+router.post('/editproduct_get',(req,res)=>{
+ pid=req.body.id
+ console.log(pid);
+})
+
+// edit Product
+router.post('/edit_product',(req,res)=>{
+
+  let image1 = req.files.productimage1
+  let image2 = req.files.productimage2
+  let image3 = req.files.productimage3
+  let image4 = req.files.productimage4
+  
+  let id = req.body.id
+  console.log(id);
+  adminHelpers.updateProduct(req.body).then((product)=>{
+    res.redirect('/admin/products') 
+    image1.mv('./public/user/images/productImage/'+id+'1.jpg',(err,done)=>{
+
+      if(!err){
+
+        image2.mv('./public/user/images/productImage/'+id+'2.jpg',(err,done)=>{
+
+          if(!err){
+    
+            image3.mv('./public/user/images/productImage/'+id+'3.jpg',(err,done)=>{
+
+              if(!err){
+                
+                image4.mv('./public/user/images/productImage/'+id+'4.jpg',(err,done)=>{
+
+                  if(!err){
+            
+                    
+                    
+                  }else{
+                    console.log(err+"err 1");
+                  }
+                })
+                
+              }else{
+                console.log(err+"err 2");
+              }
+            })
+            
+          }else{
+            console.log(err+"err 3");
+          }
+        })
+        
+      }else{
+        console.log(err+"err 4");
+      }
+    })
+    console.log(product);
+    
+  })
+})
 
 // Delete subCategory
 router.post('/deletesSubCategory',(req,res)=>{
@@ -177,7 +261,54 @@ router.post('/deletesSubCategory',(req,res)=>{
 /* Add product */
 router.post('/add_product',function(req,res){
 
-  res.redirect('/admin/add_products') 
+  let image1 = req.files.productimage1
+  let image2 = req.files.productimage2
+  let image3 = req.files.productimage3
+  let image4 = req.files.productimage4
+  adminHelpers.addProduct(req.body).then((data)=>{
+    
+    image1.mv('./public/user/images/productImage/'+data+'1.jpg',(err,done)=>{
+
+      if(!err){
+
+        image2.mv('./public/user/images/productImage/'+data+'2.jpg',(err,done)=>{
+
+          if(!err){
+    
+            image3.mv('./public/user/images/productImage/'+data+'3.jpg',(err,done)=>{
+
+              if(!err){
+                
+                image4.mv('./public/user/images/productImage/'+data+'4.jpg',(err,done)=>{
+
+                  if(!err){
+            
+                    res.redirect('/admin/add_products') 
+                    
+                  }else{
+                    console.log(err+"err 1");
+                  }
+                })
+                
+              }else{
+                console.log(err+"err 2");
+              }
+            })
+            
+          }else{
+            console.log(err+"err 3");
+          }
+        })
+        
+      }else{
+        console.log(err+"err 4");
+      }
+    })
+    
+    
+  })
+
+  
 })
 
 /* Logout. */

@@ -33,24 +33,11 @@
                     <div class="header-left mr-md-4">
                         <a href="#" class="mobile-menu-toggle  w-icon-hamburger" aria-label="menu-toggle">
                         </a>
-                        <a href="demo1.html" class="logo ml-lg-0">
+                        <a href="/" class="logo ml-lg-0">
                             <img src="/user/images/logo.png" alt="logo" width="144" height="45" />
                         </a>
                         <form method="get" action="#" class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
-                            <div class="select-box">
-                                <select id="category" name="category">
-                                    <option value="">All Categories</option>
-                                    <option value="4">Fashion</option>
-                                    <option value="5">Furniture</option>
-                                    <option value="6">Shoes</option>
-                                    <option value="7">Sports</option>
-                                    <option value="8">Games</option>
-                                    <option value="9">Computers</option>
-                                    <option value="10">Electronics</option>
-                                    <option value="11">Kitchen</option>
-                                    <option value="12">Clothing</option>
-                                </select>
-                            </div>
+                            
                             <input type="text" class="form-control" name="search" id="search"
                                 placeholder="Search in..." required />
                             <button class="btn btn-search" type="submit"><i class="w-icon-search"></i>
@@ -68,7 +55,7 @@
                         <div class="dropdown cart-dropdown  mr-0 mr-lg-2">
                             <a href="/cart" class="cart-toggle label-down link">
                                 <i class="w-icon-cart">
-                                    <span class="cart-count">2</span>
+                                    
                                 </i>
                                 <span class="cart-label">Cart</span>
                             </a>
@@ -90,12 +77,12 @@
                                     <%for(var i=0;i<data.length;i++){%>
                                         
                                     <li>
-                                        <a href="#"><%=data[i].category%></a>
+                                        <a href="/listproductscat/<%=data[i].category%>"><%=data[i].category%></a>
                                         
                                         <ul>
                                             <%for(var j=0;j<data[i].subCategory.length;j++){%>
                                                 <li>
-                                                    <a href="vendor-dokan-store-list.html"><%=data[i].subCategory[j].name%></a>
+                                                    <a href="/listproductssubcat/<%=data[i].subCategory[j].name%>/<%=data[i].category%>"><%=data[i].subCategory[j].name%></a>
                                             
                                                 </li>
                                             <%}%>

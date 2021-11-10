@@ -18,6 +18,9 @@
         </div>
     </nav>
     <!-- End of Breadcrumb -->
+    <div id="pageloader">
+        <img src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." />
+     </div>
     <div class="page-content">
         <div class="container" id="loginpop">
             <div class="login-popup">
@@ -191,23 +194,24 @@
 
 
         if (usernameError === true && passwordError === true) {
-
+            
             $.ajax({
 
                 url: '/signIn',
                 method: 'post',
                 data: userValue,
                 success: (data) => {
-
-
-                    if (data.status) {
-
-                        location.reload()
-                    } else {
+                    console.log('hiiiiiiiiii');
+                    console.log(data);
+                    if (data.status === false) {
 
                         block_err.text(data.errormsg)
+                        
+                    } else {
+
+                        location.reload()
                     }
-                    fileUploadForm
+                    
                 }
 
 
@@ -362,8 +366,9 @@
         validateEmail();
 
         let username_err = $('#username_warning')
-        let email_err = $('#email_warning')
+       
         let mobile_err = $('#mobile_warning')
+        $("#pageloader").fadeIn();
 
         if (usernameError === true && passwordError === true && emailError === true) {
 
@@ -375,6 +380,7 @@
                 success: (data) => {
 
                     if (data.status) {
+                        console.log(hii);
                         location.reload()
                     } else {
 

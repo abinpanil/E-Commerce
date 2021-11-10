@@ -1,110 +1,100 @@
 <!-- ============================================================== -->
-            <!-- Start right Content here -->
-            <!-- ============================================================== -->
-            <div class="main-content">
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content" id="reload">
 
-                <div class="page-content">
-                    <div class="container-fluid">
+    <div class="page-content">
+        <div class="container-fluid">
 
-                        <!-- start page title -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Product Management</h4>
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Product Management</h4>
 
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
-                                            <li class="breadcrumb-item active">Product Management</li>
-                                        </ol>
-                                    </div>
-
-                                </div>
-                            </div>
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                                <li class="breadcrumb-item active">Product Management</li>
+                            </ol>
                         </div>
-                        <!-- end page title -->
-                        
-                        <div class="content-header d-flex justify-content-between">
-                            <h2 class="content-title">Products list </h2>
-                <div>
-                    <a href="/admin/add_products" class="btn btn-primary"><i class="material-icons md-plus"></i> Create new</a>
+
+                    </div>
                 </div>
             </div>
+            <!-- end page title -->
 
-            <div class="card mb-4">
-                <header class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col col-check flex-grow-0">
-                            <div class="form-check ms-2">
-                                <input class="form-check-input" type="checkbox" value="">
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <select class="form-select">
-                                <option>All category</option>
-                                <option>Electronics</option>
-                                <option>Clothes</option>
-                                <option>Automobile</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 col-6">
-                            <input type="date" class="form-control">
-                        </div>
-                        <div class="col-md-2 col-6">
-                            <select class="form-select">
-                                <option>Status</option>
-                                <option>Active</option>
-                                <option>Disabled</option>
-                                <option>Show all</option>
-                            </select>
-                        </div>
+            <div class="c" id="table_change">
+                <div class="content-header d-flex justify-content-between">
+                    <h2 class="content-title">Products list </h2>
+                    <div>
+                        <a href="/admin/add_products" class="btn btn-primary"><i class="material-icons md-plus"></i>
+                            Create
+                            new</a>
                     </div>
-                </header> <!-- card-header end// -->
-                
-                <div class="card-body">
-
-                    <article class="itemlist">
-                        <div class="row align-items-center">
-                            <div class="col col-check flex-grow-0">
-                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox">
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-                                <a class="itemside" href="#">
-                                    <div class="left ">
-                                        <img  src="/admin/images/items/3.jpg" class="img-sm img-thumbnail" alt="Item">
-                                    </div>
-                                    <div class="info">
-                                        <h6 class="mb-0">T-shirt for men medium size</h6>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-price"> <span>$34.50</span> </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-status">
-                                <span class="badge rounded-pill alert-success">Active</span>
-                            </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-date">
-                                <span>04.12.2020</span>
-                            </div>
-                            <div class="col-lg-1 col-sm-2 col-4 col-action">
-                                <div class="dropdown float-end">
-                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-outline-dark "> <i class="mdi-dots-vertical" title="More"></i> </a>
-                                    <div class="dropdown-menu ">
-                                        <a class="dropdown-item" href="#">Edit</a>
-                                        <a class="dropdown-item text-danger" href="#">Delete</a>
-                                    </div>
-                                </div> <!-- dropdown // -->
-                            </div>
-                        </div> <!-- row .// -->
-                    </article>  <!-- itemlist  .// -->
                 </div>
-                <!-- End Page-content -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
+                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Size</th>
+                                    <th>Colour</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%for(var i=0;i<products.length;i++){%>
+                                    <tr id="tr_<%=products[i]._id%>">
+                                        <th><img style="width: 50px;height: 50px;"
+                                                src="/user/images/productImage/<%=products[i]._id%>1.jpg" alt="image">
+                                        </th>
+                                        <td id="name_<%=products[i]._id%>">
+                                            <%=products[i].productname%>
+                                        </td>
+                                        <td id="dis_<%=products[i]._id%>"><b>RS.</b>
+                                            <%=products[i].productprice%>
+                                        </td>
+                                        <td id="quan_<%=products[i]._id%>">
+                                            <%=products[i].productquantity%>
+                                        </td>
+                                        <td id="size_<%=products[i]._id%>">
+                                            <%=products[i].productsize%>
+                                        </td>
+                                        <td id="color_<%=products[i]._id%>">
+                                            <%=products[i].productcolour%>
+                                        </td>
+                                        <td class="text-end"><a class="btn btn-outline-dark"
+                                                onclick="editProduct('<%=products[i]._id%>','<%=products[i].productname%>','<%=products[i].productdiscription%>','<%=products[i].productprice%>','<%=products[i].productquantity%>','<%=products[i].productsize%>','<%=products[i].productcolour%>','<%=products[i].productcategory%>','<%=products[i].productsubcategory%>')">Edit</a>
+                                            <a class="btn btn-outline-dark"
+                                                onclick="deleteProduct('<%=products[i]._id%>')">Delete</a>
+                                        </td>
+                                    </tr>
+                                    <%}%>
+                            </tbody>
+                        </table>
+                        <!-- changing content -->
+
+                        <!-- End chnage -->
+                    </div>
+                    <!-- End Page-content -->
+                </div>
             </div>
             <!-- end main content-->
 
         </div>
         <!-- END layout-wrapper -->
+
+        <div class="rightbar-overlay"></div>
+
+
+
+
 
         <!-- JAVASCRIPT -->
         <script src="/admin/libs/jquery/jquery.min.js"></script>
@@ -113,8 +103,406 @@
         <script src="/admin/libs/simplebar/simplebar.min.js"></script>
         <script src="/admin/libs/node-waves/waves.min.js"></script>
 
-    </body>
+        <!-- Required datatable js -->
+        <script src="/admin/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="/admin/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <!-- Buttons examples -->
+        <script src="/admin/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="/admin/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+        <script src="/admin/libs/jszip/jszip.min.js"></script>
+        <script src="/admin/libs/pdfmake/build/pdfmake.min.js"></script>
+        <script src="/admin/libs/pdfmake/build/vfs_fonts.js"></script>
+        <script src="/admin/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+        <script src="/admin/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+        <script src="/admin/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+        <!-- Responsive examples -->
+        <script src="/admin/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="/admin/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
 
-    <!-- card end// -->
+        <!-- Datatable init js -->
+        <script src="/admin/js/pages/datatables.init.js"></script>
+
+        <!-- sweat alert -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="sweetalert2.all.min.js"></script>
+
+        <script src="/admin/js/app.js"></script>
+
+        </body>
+
+        <!-- card end// -->
+
+        <script>
 
 
+            function editProduct(id, name, discription, price, quantity, size, color, category) {
+
+
+                // let tr = document.getElementById("tr_" + id);
+
+
+
+
+
+                let change = document.getElementById('table_change')
+
+
+                change.innerHTML = `
+                <section class="content-main" style="max-width: 720px">
+                    <div class="content-header">
+                        <h2 class="content-title">Edit product </h2>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body hidden_table" id="replaced" style=" ">
+                            <form id="uploadForm"  action="/admin/edit_product"  enctype="multipart/form-data" method="post">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Product Name</label>
+                                    <input type="text" value="${name}" placeholder="Type here" name="productname" class="form-control" id="product_name"
+                                        required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Full description</label>
+                                    <input type="text" value="${discription}" placeholder="Type here" name="productdiscription" class="form-control" id="product_description"
+                                        required>
+                                
+                                </div>
+                                <div class="row gx-2">
+                                    <div class="col-sm-6 mb-3"><input style="display: none;" value="${id}" name="id" type="text">
+                                        <label class="form-label">Price</label>
+                                        <input value="${price}" type="text" name="productprice" onchange="validateProductPrice()" placeholder="Enter Price"
+                                            class="form-control" id="product_price" required>
+                                        <span style="color: red;" class="" id="pricewarn"></span>
+                                    </div>
+                                    <div class="col-sm-6 mb-3">
+                                        <label cpricelass="form-label">Quantity</label>
+                                        <input value="${quantity}" type="text" name="productquantity" onchange="validateProducQuantity()" placeholder="Enter Quantity"
+                                            class="form-control" id="product_quantity" required>
+                                        <span style="color: red;" class="" id="quantitywarn"></span>
+                                    </div>
+                                    </div>
+                                    <div class="row gx-2">
+                                         <div class="col-sm-6 mb-3">
+                                            <label class="form-label">Size</label>
+                                            <input value="${size}" type="text" name="productsize" onchange="validateProducSize()" placeholder="Enter Size" class="form-control"
+                                                id="product_size" required>
+                                            </div>
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label">Colour</label>
+                                                <input value="${color}" type="text" name="productcolour" onchange="validateProducColour()" placeholder="Enter Colour"
+                                                    class="form-control" id="product_colour" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row gx-2">
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label">Category</label>
+                                                <select id="getSubCat" value="${category}" onchange="getSubcategory()" class="form-select"
+                                                    name="productcategory">
+            
+                                                    <option value="">Select</option>
+                                                    <%for(var i=0;i<data.length;i++){%>
+            
+                                                        <option>
+                                                            <%=data[i].category%>
+                                                        </option>
+                                                        <%}%>
+            
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6 mb-3">
+                                                <label class="form-label">Sub-category</label>
+                                                <select id="subcategory" class="form-select" name="productsubcategory">
+            
+                                                    <option id="" value=" ">Select</option>
+            
+                                                </select>
+                                            </div>
+                                        </div>
+            
+            
+                                        <div class="row gx-2">
+                                            <div class="mb-4 col-sm-6 mb-3">
+                                                <label class="form-label">Image 1</label>
+                                                <input class="form-control" value="/user/images/productImage/${id}1.jpg" type="file" id="image1" name="productimage1" >
+                                            </div>
+                                            <div class="mb-4 col-sm-6 mb-3">
+                                                <label class="form-label">Images 2</label>
+                                                <input class="form-control" type="file" id="image2" value="/user/images/productImage/${id}2.jpg" name="productimage2" >
+                                            </div>
+                                            <div class="mb-4 col-sm-6 mb-3">
+                                                <label class="form-label">Image 3</label>
+                                                <input class="form-control" type="file" id="image3" value="/user/images/productImage/${id}3.jpg" name="productimage3" >
+                                            </div>
+                                            <div class="mb-4 col-sm-6 mb-3">
+                                                <label class="form-label">Image 4</label>
+                                                <input class="form-control" type="file" id="image4" value="/user/images/productImage/${id}4.jpg" name="productimage4" >
+                                            </div>
+                                        </div>
+            
+                                        <button type="submit" class="btn btn-primary">Edit item</button>
+                                        <!-- <button type="submit"   class="btn btn-danger">Cancel</button>// -->
+            
+                            </form>
+                        </div> 
+                    </div> <!-- card end// -->
+                </section>
+
+                `
+            }
+
+
+            // validation
+
+            function addProduct() {
+
+                console.log("hiii");
+                event.preventDefault()
+
+                let productname = $('#product_name').val()
+                let productdiscription = $('#product_description').val()
+                let productprice = $('#product_price').val()
+                let productquantity = $('#product_quantity').val()
+                let productsize = $('#product_size').val()
+                let productcolour = $('#product_colour').val()
+                let productcategory = $('#getSubCat').val()
+                let productsubcategory = $('#subcategory').val()
+
+                // product name
+                let productNameError = true;
+
+                function validateProductName() {
+
+                    let productname = $('#product_name').val()
+                    if (productname.length == '') {
+
+                        $('#product_name').css('border-color', '#f30000')
+                        $('#product_name').attr("placeholder", "Enter Product Name")
+                        productNameError = false;
+                        return false;
+
+                    }
+                }
+
+                // product discription
+                let productDisError = true;
+
+                function validateProductDiscription() {
+
+                    let productdiscription = $('#product_description').val()
+                    if (productdiscription.length == '') {
+
+                        $('#product_description').css('border-color', '#f30000')
+                        $('#product_description').attr("placeholder", "Enter Product Details")
+                        productDisError = false;
+                        return false;
+
+                    }
+                }
+
+                // product price
+                let productPriceError = true;
+
+                function validateProductPrice() {
+
+                    let regnum = new RegExp("^[0-9]+$");
+                    let productprice = $('#product_price').val()
+                    if (productprice.length == '') {
+
+                        $('#product_price').css('border-color', '#f30000')
+                        $('#product_price').attr("placeholder", "Enter Price")
+                        productPriceError = false;
+                        return false;
+
+                    } else if (!regnum.test(productprice)) {
+
+                        $('#product_price').css('border-color', '#f30000')
+                        $("#pricewarn").text('Enter Number Only')
+
+
+                        productPriceError = false;
+                    }
+                }
+
+                // product quantity
+                let productQuantityError = true;
+
+                function validateProducQuantity() {
+
+                    let regnum = new RegExp("^[0-9]+$");
+                    let productquantity = $('#product_quantity').val()
+                    if (productquantity.length == '') {
+
+                        $('#product_quantity').css('border-color', '#f30000')
+                        $('#product_quantity').attr("placeholder", "Enter Quantity")
+                        productQuantityError = false;
+                        return false;
+
+                    } else if (!regnum.test(productquantity)) {
+
+                        $('#product_quantity').css('border-color', '#f30000')
+                        $("#quantitywarn").text('Enter Number Only')
+
+                        product2000QuantityError = false;
+                    }
+                }
+                // product size
+                let productSizeError = true;
+
+                function validateProducSize() {
+
+                    let productsize = $('#product_size').val()
+                    if (productsize.length == '') {
+
+                        $('#product_size').css('border-color', '#f30000')
+                        $('#product_size').attr("placeholder", "Enter Size")
+                        productSizeError = false;
+                        return false;
+
+                    }
+                }
+                // product colour
+                let productColourError = true;
+
+                function validateProducColour() {
+
+                    let productcolour = $('#product_colour').val()
+                    if (productcolour.length == '') {
+
+                        $('#product_colour').css('border-color', '#f30000')
+                        $('#product_colour').attr("placeholder", "Enter Colour")
+                        productSizeError = false;
+                        return false;
+
+                    }
+                }
+                // product category
+                let productCategoryError = true;
+
+                function validateProducCategory() {
+
+                    let productcategory = $('#getSubCat').val()
+                    if (productcategory == '') {
+
+                        $('#getSubCat').css('border-color', '#f30000')
+                        $('#getSubCat').attr("placeholder", "Select Category")
+                        productCategoryError = false;
+                        return false;
+
+                    }
+                }
+                // product subCategory
+                let productSubCategoryError = true;
+
+                function validateProducSubCategory() {
+
+                    let productsubcategory = $('#subcategory').val()
+                    if (productsubcategory == ' ') {
+
+                        $('#subcategory').css('border-color', '#f30000')
+                        $('#subcategory').attr("placeholder", "Select SubCategory")
+                        productSubCategoryError = false;
+                        return false;
+
+                    }
+                }
+
+
+
+                validateProductName()
+                validateProductDiscription()
+                validateProductPrice()
+                validateProducQuantity()
+                validateProducSize()
+                validateProducColour()
+                validateProducCategory()
+                validateProducSubCategory()
+
+                if (productNameError === true && productDisError === true && productPriceError === true && productQuantityError === true && productSizeError === true && productColourError === true) {
+                    console.log("hoiiiiiiiiiiiiiiiiiii");
+
+                    return true
+                    // $.ajax({
+
+                    //     url:'/admin/add_product',
+                    //     method:'post',
+                    //     enctype:"multipart/form-data",
+                    //     data:addedProducts
+                    // })
+
+
+                }
+
+
+            }
+
+
+
+
+
+            // Get sub category
+            function getSubcategory() {
+
+                let category = $('#getSubCat').val()
+                $.ajax({
+
+                    url: '/admin/getSubCategory',
+                    method: 'post',
+                    data: { category: category },
+                    success: (response) => {
+
+                        // $('#subcategory').html = ''
+                        $("#subcategory").find('option').remove();
+                        for (var i = 0; i < response.length; i++) {
+
+                            $("#subcategory").append('<option >' + response[i].name + '</option>');
+                            // let sub = <option>response[i].name</option>
+                            // $('#subcategory').html+= sub
+                        }
+
+                    }
+
+                })
+            }
+
+            // Delete Product
+
+            function deleteProduct(id) {
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success',
+                            $.ajax({
+
+                                url: '/admin/deleteProduct',
+                                type: 'post',
+                                data: { id: id },
+                                success: () => {
+
+                                    $("#table_change").load(location.href + " #table_change");
+
+                                }
+
+                            })
+
+                        )
+                    }
+                })
+
+
+            }
+
+        </script>
