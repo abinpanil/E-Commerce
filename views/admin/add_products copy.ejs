@@ -33,13 +33,8 @@
 
                 <div class="card mb-4">
                     <div class="card-body">
-                        <form id="uploadForm" onsubmit="return validateform()" action="/admin/add_product"
-                            enctype="multipart/form-data" method="post">
-                            <div class="mb-4">
-                                <label for="product_name" class="form-label">Product Title</label>
-                                <input type="text" name="producttitle" onchange="validateProductTitle()"
-                                    placeholder="Enter Product Title" class="form-control" id="product_title">
-                            </div>
+                        <form id="uploadForm" action="/admin/add_product" enctype="multipart/form-data"
+                            method="post">
                             <div class="mb-4">
                                 <label for="product_name" class="form-label">Product Name</label>
                                 <input type="text" name="productname" onchange="validateProductName()"
@@ -106,60 +101,34 @@
                                     </select>
                                 </div>
                             </div> <!-- row.// -->
-                            
+
                             <div class="row gx-2">
-                                <div class="mb-4 col-sm-3 mb-3">
-                                    <label class="cabinet center-block">
-										<figure>
-											<img  style=" width: 100px;" src="/user/images/imgplaceholder.png" class="gambar img-responsive img-thumbnail" id="uploadImage1" />
-								    </figure>
-                                    <input type="file" class="item-img file center-block" id="image1" onchange="addImg(1)" name="productimage1" required/>
-									</label>
-                                </div>
-                                <div class="mb-4 col-sm-3 mb-3">
-                                    <label class="cabinet center-block">
-										<figure>
-											<img  style=" width: 100px;" src="/user/images/imgplaceholder.png" class="gambar img-responsive img-thumbnail" id="uploadImage2" />
-								    </figure>
-                                    <input type="file" class="item-img file center-block" id="image2" onchange="addImg(2)" name="productimage2" required/>
-									</label>
-                                </div>
-                                <div class="mb-4 col-sm-3 mb-3">
-                                    <label class="cabinet center-block">
-										<figure>
-											<img  style=" width: 100px;" src="/user/images/imgplaceholder.png" class="gambar img-responsive img-thumbnail" id="uploadImage3" />
-								    </figure>
-                                    <input type="file" class="item-img file center-block" id="image3" onchange="addImg(3)" name="productimage3" required/>
-									</label>
-                                </div>
-                                <div class="mb-4 col-sm-3 mb-3">
-                                    <label class="cabinet center-block">
-										<figure>
-											<img  style=" width: 100px;" src="/user/images/imgplaceholder.png" class="gambar img-responsive img-thumbnail" id="uploadImage4" />
-								    </figure>   
-                                    <input type="file" class="item-img file center-block" onchange="addImg(4)" name="productimage4" required/>
-									</label>
-                                </div>
-                                <!-- <div class="mb-4 col-sm-6 mb-3">
+                                <div class="mb-4 col-sm-6 mb-3">
                                     <label class="form-label">Image 1</label>
-                                    <input class="form-control" type="file" id="image1" onchange="addImg(1)" name="productimage1" required>
-                                </div> -->
+                                    <input class="form-control" type="file" id="image1" name="productimage1">
+                                </div>
+
+                               
+
+
+
+
                                 <!-- end -->
-                                <!-- <div class="mb-4 col-sm-6 mb-3">
+                                <div class="mb-4 col-sm-6 mb-3">
                                     <label class="form-label">Images 2</label>
-                                    <input class="form-control" type="file" id="image2" onchange="addImg(2)" name="productimage2" required>
+                                    <input class="form-control" type="file" id="image2" name="productimage2">
                                 </div>
                                 <div class="mb-4 col-sm-6 mb-3">
                                     <label class="form-label">Image 3</label>
-                                    <input class="form-control" type="file" id="image3" onchange="addImg(3)" name="productimage3" required>
+                                    <input class="form-control" type="file" id="image3" name="productimage3">
                                 </div>
                                 <div class="mb-4 col-sm-6 mb-3">
                                     <label class="form-label">Image 4</label>
-                                    <input class="form-control" type="file" id="image4" onchange="addImg(4)" name="productimage4" required>
-                                </div> -->
+                                    <input class="form-control" type="file" id="image4" name="productimage4">
+                                </div>
                             </div>
 
-                            <button type="submit" id="submit" class="btn btn-primary">Add item</button>
+                            <button type="submit" class="btn btn-primary">Add item</button>
 
                         </form>
                     </div>
@@ -186,30 +155,92 @@
 
 </body>
 
+<!-- croppy -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
+<script src="https://foliotek.github.io/Croppie/croppie.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
 <!-- card end// -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 
 
+<!-- start -->
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
+    <script src="https://foliotek.github.io/Croppie/croppie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- end -->
 
 
 
+<script type="text/javascript">
 
-<script>
 
 
-function addImg(id){
-    console.log(id);
-        var oFReader = new FileReader();
-        oFReader.readAsDataURL(document.getElementById("image"+id).files[0]);
-
-        oFReader.onload = function (e){
-            document.getElementById("uploadImage"+id).src = e.target.result;
+    $(".gambar").attr("src", "https://user.gadjian.com/static/images/personnel_boy.png");
+    var $uploadCrop,
+        tempFilename,
+        rawImg,
+        imageId;
+    function readFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.upload-demo').addClass('ready');
+                $('#cropImagePop').modal('show');
+                rawImg = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
         }
-}
+        else {
+            swal("Sorry - you're browser doesn't support the FileReader API");
+        }
+    }
+
+    $uploadCrop = $('#upload-demo').croppie({
+        viewport: {
+            width: 150,
+            height: 200,
+        },
+        enforceBoundary: false,
+        enableExif: true
+    });
+    $('#cropImagePop').on('shown.bs.modal', function () {
+        // alert('Shown pop');
+        $uploadCrop.croppie('bind', {
+            url: rawImg
+        }).then(function () {
+            console.log('jQuery bind complete');
+        });
+    });
+
+    $('.item-img').on('change', function () {
+        imageId = $(this).data('id'); tempFilename = $(this).val();
+        $('#cancelCropBtn').data('id', imageId); readFile(this);
+    });
+    $('#cropImageBtn').on('click', function (ev) {
+        $uploadCrop.croppie('result', {
+            type: 'base64',
+            format: 'jpeg',
+            size: { width: 150, height: 200 }
+        }).then(function (resp) {
+            $('#item-img-output').attr('src', resp);
+            $('#cropImagePop').modal('hide');
+        });
+    });
 
 
-    // get subcategory 
+
+
+
+
+
+
+
     function getSubcategory() {
 
         let category = $('#getSubCat').val()
@@ -218,14 +249,13 @@ function addImg(id){
             url: '/admin/getSubCategory',
             method: 'post',
             data: { category: category },
-            success: (response) => {    
-                console.log(response);
+            success: (response) => {
+
                 // $('#subcategory').html = ''
                 $("#subcategory").find('option').remove();
                 for (var i = 0; i < response.length; i++) {
-                    console.log("hereeeeeeeeeeeeeeeeeeeeee");
-                    console.log(response);
-                    $("#subcategory").append('<option >' + response[i] + '</option>');
+
+                    $("#subcategory").append('<option >' + response[i].name + '</option>');
                     // let sub = <option>response[i].name</option>
                     // $('#subcategory').html+= sub
                 }
@@ -236,14 +266,13 @@ function addImg(id){
     }
 
 
-
     // validation
-    function validateform() {
 
+    function addProduct() {
 
+            event.preventDefault()
 
         let productname = $('#product_name').val()
-        let producttitle = $('#product_title').val()
         let productdiscription = $('#product_description').val()
         let productprice = $('#product_price').val()
         let productquantity = $('#product_quantity').val()
@@ -268,20 +297,6 @@ function addImg(id){
             }
         }
 
-        // product Title
-        let productTitleError = true;
-
-        function validateProductTitle() {
-
-            let productname = $('#product_title').val()
-            if (productname.length == '') {
-
-                $('#product_title').css('border-color', '#f30000')
-                $('#product_title').attr("placeholder", "Enter Product Title")
-                productTitleError = false;
-                return false;
-            }
-        }
         // product discription
         let productDisError = true;
 
@@ -405,8 +420,8 @@ function addImg(id){
             }
         }
 
+        
 
-        validateProductTitle()
         validateProductName()
         validateProductDiscription()
         validateProductPrice()
@@ -416,14 +431,30 @@ function addImg(id){
         validateProducCategory()
         validateProducSubCategory()
 
-        if ( productNameError === true && productTitleError === true && productDisError === true && productPriceError === true && productQuantityError === true && productSizeError === true && productColourError === true) {
+            if (productNameError === true && productDisError === true && productPriceError === true && productQuantityError === true && productSizeError === true && productColourError === true ) {
+                console.log();
 
-            return true
+                return true
+                // $.ajax({
 
-        } else {
-            return false
-        }
+                //     url:'/admin/add_product',
+                //     method:'post',
+                //     enctype:"multipart/form-data",
+                //     data:addedProducts
+                // })
+
+
+            }
+
+
     }
+
+
+
+
+
+
+
 
 
 </script>

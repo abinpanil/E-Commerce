@@ -28,13 +28,13 @@
             </div>
             <!-- End of Header Top -->
 
-            <div class="header-middle ">
+            <div class="header-middle header-bottom sticky-content fix-top sticky-header">
                 <div class="container">
                     <div class="header-left mr-md-4">
                         <a href="#" class="mobile-menu-toggle  w-icon-hamburger" aria-label="menu-toggle">
                         </a>
                         <a href="/" class="logo ml-lg-0">
-                            <img src="/user/images/logo.png" alt="logo" width="55" height="13" />
+                            <img src="/user/images/logo.png" alt="logo" width="70" height="13" />
                         </a>
                         <form method="get" action="#" class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
                             
@@ -67,7 +67,7 @@
             </div>
             <!-- End of Header Middle -->
 
-            <div class="header-bottom sticky-content fix-top sticky-header">
+            <!-- <div class="header-bottom sticky-content fix-top sticky-header">
                 <div class="container">
                     <div class="inner-wrap">
                         <div class="header-left"> 
@@ -82,7 +82,7 @@
                                         <ul>
                                             <%for(var j=0;j<data[i].subCategory.length;j++){%>
                                                 <li>
-                                                    <a href="/listproductssubcat/<%=data[i].subCategory[j]%>/<%=data[i].category%>"><%=data[i].subCategory[j]%></a>
+                                                    <a href="/listproductssubcat/<%=data[i].subCategory[j].name%>/<%=data[i].category%>"><%=data[i].subCategory[j].name%></a>
                                             
                                                 </li>
                                             <%}%>
@@ -99,7 +99,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </header>
         <!-- End of Header -->
 

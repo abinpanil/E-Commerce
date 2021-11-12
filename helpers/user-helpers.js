@@ -4,9 +4,8 @@ const objectId = require('mongodb').ObjectId;
 const bcrypt = require('bcrypt')
 module.exports = {
 
-    
-    doSignup:(userData)=>{
-        
+    validate:(userData)=>{
+        console.log(userData);
         let userResponse={
             email : "",
             username : "",
@@ -14,12 +13,11 @@ module.exports = {
             block : "",
             status : true
         }
+
         let emailCheck = true
         let mobileCheck = true
         let usernameCheck = true
-        let blockCheck = true
-        
-        
+
         return new Promise(async(resolve,reject)=>{
 
             let checkEmail = await db.get().collection(collection.USERS_COLLECTION).findOne({email:userData.email})
@@ -39,22 +37,32 @@ module.exports = {
             }
             if(emailCheck && usernameCheck && mobileCheck){
                 
-                userData.password = await bcrypt.hash(userData.password,10)
-                userData.isActive = "Block"
-                userData.blockStatus = "Active"
-                db.get().collection(collection.USERS_COLLECTION).insertOne(userData).then((data)=>{
-                    
-                    resolve(userResponse)
-                })
+                resolve(userResponse)
+
             }else{
-                                  
+   
                 userResponse.status = false
                 resolve(userResponse)
-            }
-            
-            
+
+            }  
         })
+    },
+
+    
+    doSignup:(userData)=>{
         
+        console.log(userData);
+        return new Promise(async(resolve,reject)=>{
+    
+            userData.password = await bcrypt.hash(userData.password,10)
+            userData.isActive = "Block"
+            userData.blockStatus = "Active"
+            console.log(userData);
+            db.get().collection(collection.USERS_COLLECTION).insertOne(userData).then((data)=>{
+                
+            resolve()
+            })
+        })
     },
     doLogin:(userData)=>{
         return new Promise(async(resolve,reject)=>{

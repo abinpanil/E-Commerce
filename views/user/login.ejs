@@ -18,12 +18,12 @@
         </div>
     </nav>
     <!-- End of Breadcrumb -->
-    <div id="pageloader">
+    <!-- <div id="pageloader">
         <img src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." />
-     </div>
+     </div> -->
     <div class="page-content">
         <div class="container" id="loginpop">
-            <div class="login-popup">
+            <div class="login-popup" id="changediv">
                 <div class="tab tab-nav-boxed tab-nav-center tab-nav-underline">
                     <ul class="nav nav-tabs text-uppercase" role="tablist">
                         <li class="nav-item">
@@ -101,7 +101,7 @@
                                     <label>Mobile *</label>
                                     <input type="text" class="form-control your-class" name="mobile" id="mobile">
                                     <span style="color: red;" id="mobilewarn" class=""></span>
-                                    <!-- <p id="mobile_warning" style="color: red;"> </p> -->
+                                    <p id="mobile_warning" style="color: red;"> </p>
                                 </div>
                                 <div class="form-group mb-5">
                                     <label>Password *</label>
@@ -113,6 +113,7 @@
                                     Up</button>
                             </form>
                         </div>
+
                     </div>
 
                 </div>
@@ -121,6 +122,13 @@
     </div>
 </main>
 <!-- End of Main -->
+
+
+<!-- START OTP -->
+
+
+
+<!-- End otp -->
 
 <!-- Plugin JS File -->
 <script src="/user/vendor/jquery/jquery.min.js"></script>
@@ -138,8 +146,8 @@
 
     }
 
-    // signIn validation started.
 
+    // signIn validation started.
     function logCheck() {
 
         event.preventDefault()
@@ -158,7 +166,6 @@
                 return false;
 
             } else {
-
 
             }
         }
@@ -194,7 +201,7 @@
 
 
         if (usernameError === true && passwordError === true) {
-            
+
             $.ajax({
 
                 url: '/signIn',
@@ -206,21 +213,14 @@
                     if (data.status === false) {
 
                         block_err.text(data.errormsg)
-                        
+
                     } else {
 
                         location.reload()
                     }
-                    
                 }
-
-
             })
-
         }
-
-
-
     };
 
     // signIn validation end.
@@ -292,6 +292,7 @@
                 emailError = false;
             }
         }
+
 
         // mobile validation
         let mobileError = true;
@@ -366,36 +367,102 @@
         validateEmail();
 
         let username_err = $('#username_warning')
-       
+        let email_err = $('#email_warning')
         let mobile_err = $('#mobile_warning')
-        $("#pageloader").fadeIn();
+
+        console.log(userSignupValue);
 
         if (usernameError === true && passwordError === true && emailError === true) {
-
+            console.log("ethyyyyyyyyy");
             $.ajax({
 
-                url: '/signUp',
+                url: '/validate',
                 method: 'post',
                 data: userSignupValue,
                 success: (data) => {
-
+                    console.log(data);
                     if (data.status) {
-                        console.log(hii);
-                        location.reload()
-                    } else {
 
+                        if (data.otp) {
+                            mobile_err.text(data.otp)
+                        } else {
+
+                            let change = document.getElementById('changediv')
+
+                            change.innerHTML = `<div class="tab-pane" id="sign-up">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label>Enter OTP *</label>
+                                                        <input placeholder="Enter 6 digit OTP" type="text" class="form-control your-class" name="otp" id="otp">
+                                                        <p id="invalidotp1" style="color: red;"> </p>
+                                                    </div>
+                                                    <button type="submit" style="width: 100%;" onclick="Otp()" class="btn btn-success">Verify Number</button>
+                                                </form>
+                                            </div>`
+                        }
+                    } else {
+                        console.log(data);
                         username_err.text(data.username)
                         email_err.text(data.email)
                         mobile_err.text(data.mobile)
 
 
                     }
-
                 }
             })
         }
-
     };
+
+
+    function Otp() {
+
+        console.log("otp");
+        event.preventDefault()
+
+        let otp = $('#otp').val()
+        let mobilenumber = $('#mobilenumber').val()
+        let otp_Err = true
+        let regnum = new RegExp("^[0-9]+$");
+        if (otp.length == '') {
+
+            $('#otp').css('border-color', '#c70d0d')
+            $('#otp').attr("placeholder", "Enter Number")
+
+        } else if (!regnum.test(otp)) {
+
+            $('#otp').css('border-color', '#c70d0d')
+            $('#invalidotp1').text('Only Number Allowed')
+        } else if (otp.length != 6) {
+
+            $('#otp').css('border-color', '#c70d0d')
+            $('#invalidotp1').text("OTP must 6 number")
+        } else {
+
+            $.ajax({
+
+                url: '/otpvalidate',
+                method: 'post',
+                data: {
+                    number: mobilenumber,
+                    otp: otp
+                },
+                success: (response) => {
+
+                    if (response.err === true) {
+                        console.log("err");
+                        $('#invalidotp1').text('Something Went wrong')
+                    } else if (response.valid === false) {
+                        console.log("not val");
+                        $('#invalidotp1').text('Invalid OTP')
+                    } else {
+                        console.log("load");
+                        location.reload()
+                    }
+                }
+            })
+        }
+    }
+
 
     function otpfn() {
 
@@ -447,15 +514,7 @@
 
         `)
 
-        // $.ajax({
-        //     url:'/otpLoad',
-        //     method:'get',
-        //     success:()=>{    
 
-
-        //         // location.reload()
-        //     }
-        // })
     }
 
 
@@ -528,7 +587,7 @@
                             success: (response) => {
 
                                 $("#invalidnumber").text('OTP Sent Successfully')
-                                
+
                                 $('#otp').removeAttr('disabled')
                                 $('#Otpsubmit').removeAttr('disabled')
                             }
@@ -547,38 +606,38 @@
 
     function validateOtp() {
 
-        
+
 
         event.preventDefault()
 
         let mobilenumber = $('#mobilenumber').val()
         let otp = $('#otp').val()
 
-        
 
-            $.ajax({
-                url: "/otpcheck",
-                method: 'post',
-                data: {
-                    number: mobilenumber,
-                    otp: otp
-                },
-                success: (response) => {
-                    console.log(response,"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-                    if(response.err===true){
-                        $('#invalidotp').text('Something Went wrong')
-                    }else if(response.valid===false){
-                        $('#invalidotp').text('Invalid OTP')
-                    }else{
-                        location.reload()
-                        
-                    }
-                    
+
+        $.ajax({
+            url: "/otpcheck",
+            method: 'post',
+            data: {
+                number: mobilenumber,
+                otp: otp
+            },
+            success: (response) => {
+
+                if (response.err === true) {
+                    $('#invalidotp').text('Something Went wrong')
+                } else if (response.valid === false) {
+                    $('#invalidotp').text('Invalid OTP')
+                } else {
+                    location.reload()
+
                 }
 
-            })
+            }
 
-        
+        })
+
+
     }
 
 

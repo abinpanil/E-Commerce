@@ -120,11 +120,9 @@
                 method:'post',
                 data:{mobilenumber:mobilenumber},
                 success:(response)=>{
-                    
-                    
+                        
                     if(response.status){
                        
-
                         $.ajax({
                             
                             url:'/otpget',
@@ -146,7 +144,6 @@
                 }
             })
         }
-
     }
 
     function validate(){
@@ -167,9 +164,7 @@
 
                 $('#invalidotp').text('Invalid OTP')
             }
-
         })
-
     }
     
 

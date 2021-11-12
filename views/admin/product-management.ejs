@@ -40,6 +40,7 @@
                             <thead>
                                 <tr>
                                     <th>Image</th>
+                                    <th>Product Title</th>
                                     <th>Product Name</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
@@ -54,6 +55,9 @@
                                         <th><img style="width: 50px;height: 50px;"
                                                 src="/user/images/productImage/<%=products[i]._id%>1.jpg" alt="image">
                                         </th>
+                                        <td id="name_<%=products[i]._id%>">
+                                            <%=products[i].producttitle%>
+                                        </td>
                                         <td id="name_<%=products[i]._id%>">
                                             <%=products[i].productname%>
                                         </td>
@@ -70,7 +74,7 @@
                                             <%=products[i].productcolour%>
                                         </td>
                                         <td class="text-end"><a class="btn btn-outline-dark"
-                                                onclick="editProduct('<%=products[i]._id%>','<%=products[i].productname%>','<%=products[i].productdiscription%>','<%=products[i].productprice%>','<%=products[i].productquantity%>','<%=products[i].productsize%>','<%=products[i].productcolour%>','<%=products[i].productcategory%>','<%=products[i].productsubcategory%>')">Edit</a>
+                                                onclick="editProduct('<%=products[i]._id%>','<%=products[i].productname%>','<%=products[i].productdiscription%>','<%=products[i].productprice%>','<%=products[i].productquantity%>','<%=products[i].productsize%>','<%=products[i].productcolour%>','<%=products[i].productcategory%>','<%=products[i].productsubcategory%>','<%=products[i].producttitle%>')">Edit</a>
                                             <a class="btn btn-outline-dark"
                                                 onclick="deleteProduct('<%=products[i]._id%>')">Delete</a>
                                         </td>
@@ -123,7 +127,7 @@
         <script src="/admin/js/pages/datatables.init.js"></script>
 
         <!-- sweat alert -->
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
         <script src="sweetalert2.all.min.js"></script>
 
         <script src="/admin/js/app.js"></script>
@@ -135,17 +139,206 @@
         <script>
 
 
-            function editProduct(id, name, discription, price, quantity, size, color, category) {
+
+            function addImg(id) {
+                console.log(id);
+                var oFReader = new FileReader();
+                oFReader.readAsDataURL(document.getElementById("image" + id).files[0]);
+
+                oFReader.onload = function (e) {
+                    document.getElementById("uploadImage" + id).src = e.target.result;
+                }
+            }
 
 
-                // let tr = document.getElementById("tr_" + id);
+
+            function editval() {
+
+                let productname = $('#product_name').val()
+                let producttitle = $('#product_title').val()
+                let productdiscription = $('#product_description').val()
+                let productprice = $('#product_price').val()
+                let productquantity = $('#product_quantity').val()
+                let productsize = $('#product_size').val()
+                let productcolour = $('#product_colour').val()
+                let productcategory = $('#getSubCat').val()
+                let productsubcategory = $('#subcategory').val()
 
 
+                let productNameError = true;
+
+                function validateProductName() {
+
+                    let productname = $('#product_name').val()
+                    if (productname.length == '') {
+
+                        $('#product_name').css('border-color', '#f30000')
+                        $('#product_name').attr("placeholder", "Enter Product Name")
+                        productNameError = false;
+                        return false;
+                    }
+                }
+
+                // product Title
+                let productTitleError = true;
+
+                function validateProductTitle() {
+
+                    let productname = $('#product_title').val()
+                    if (productname.length == '') {
+
+                        $('#product_title').css('border-color', '#f30000')
+                        $('#product_title').attr("placeholder", "Enter Product Title")
+                        productTitleError = false;
+                        return false;
+                    }
+                }
 
 
+                // product discription
+                let productDisError = true;
+
+                function validateProductDiscription() {
+
+                    let productdiscription = $('#product_description').val()
+                    if (productdiscription.length == '') {
+
+                        $('#product_description').css('border-color', '#f30000')
+                        $('#product_description').attr("placeholder", "Enter Product Details")
+                        productDisError = false;
+                        return false;
+                    }
+                }
+                // product price
+                let productPriceError = true;
+
+                function validateProductPrice() {
+
+                    let regnum = new RegExp("^[0-9]+$");
+                    let productprice = $('#product_price').val()
+                    if (productprice.length == '') {
+
+                        $('#product_price').css('border-color', '#f30000')
+                        $('#product_price').attr("placeholder", "Enter Price")
+                        productPriceError = false;
+                        return false;
+
+                    } else if (!regnum.test(productprice)) {
+
+                        $('#product_price').css('border-color', '#f30000')
+                        $("#pricewarn").text('Enter Number Only')
+
+
+                        productPriceError = false;
+                    }
+                }
+                // product quantity
+                let productQuantityError = true;
+
+                function validateProducQuantity() {
+
+                    let regnum = new RegExp("^[0-9]+$");
+                    let productquantity = $('#product_quantity').val()
+                    if (productquantity.length == '') {
+
+                        $('#product_quantity').css('border-color', '#f30000')
+                        $('#product_quantity').attr("placeholder", "Enter Quantity")
+                        productQuantityError = false;
+                        return false;
+
+                    } else if (!regnum.test(productquantity)) {
+
+                        $('#product_quantity').css('border-color', '#f30000')
+                        $("#quantitywarn").text('Enter Number Only')
+
+                        product2000QuantityError = false;
+                    }
+                }
+                // product size
+                let productSizeError = true;
+
+                function validateProducSize() {
+
+                    let productsize = $('#product_size').val()
+                    if (productsize.length == '') {
+
+                        $('#product_size').css('border-color', '#f30000')
+                        $('#product_size').attr("placeholder", "Enter Size")
+                        productSizeError = false;
+                        return false;
+
+                    }
+                }
+                // product colour
+                let productColourError = true;
+
+                function validateProducColour() {
+
+                    let productcolour = $('#product_colour').val()
+                    if (productcolour.length == '') {
+
+                        $('#product_colour').css('border-color', '#f30000')
+                        $('#product_colour').attr("placeholder", "Enter Colour")
+                        productSizeError = false;
+                        return false;
+                    }
+                }
+                // product category
+                let productCategoryError = true;
+
+                function validateProducCategory() {
+
+                    let productcategory = $('#getSubCat').val()
+                    if (productcategory == '') {
+
+                        $('#getSubCat').css('border-color', '#f30000')
+                        $('#getSubCat').attr("placeholder", "Select Category")
+                        productCategoryError = false;
+                        return false;
+                    }
+                }
+                // product subCategory
+                let productSubCategoryError = true;
+
+                function validateProducSubCategory() {
+
+                    let productsubcategory = $('#subcategory').val()
+                    if (productsubcategory == ' ') {
+
+                        $('#subcategory').css('border-color', '#f30000')
+                        $('#subcategory').attr("placeholder", "Select SubCategory")
+                        productSubCategoryError = false;
+                        return false;
+
+                    }
+                }
+                validateProductName()
+                validateProductTitle()
+                validateProductDiscription()
+                validateProductPrice()
+                validateProducQuantity()
+                validateProducSize()
+                validateProducColour()
+                validateProducCategory()
+                validateProducSubCategory()
+
+                if (productNameError === true && productDisError === true && productPriceError === true && productQuantityError === true && productSizeError === true && productColourError === true && productSubCategoryError === true && productCategoryError === true && productTitleError === true) {
+
+                    return true
+
+                } else {
+
+
+                    return false
+                }
+
+                return false
+            }
+
+
+            function editProduct(id, name, discription, price, quantity, size, color, category, title) {
 
                 let change = document.getElementById('table_change')
-
 
                 change.innerHTML = `
                 <section class="content-main" style="max-width: 720px">
@@ -155,7 +348,12 @@
 
                     <div class="card mb-4">
                         <div class="card-body hidden_table" id="replaced" style=" ">
-                            <form id="uploadForm"  action="/admin/edit_product"  enctype="multipart/form-data" method="post">
+                            <form id="uploadForm" onsubmit=" return editval() " action="/admin/edit_product"  enctype="multipart/form-data" method="post">
+                                <div class="mb-4">
+                                <label for="product_name" class="form-label">Product Title</label>
+                                <input type="text" name="producttitle" value="${title}" onchange="validateProductTitle()"
+                                    placeholder="Enter Product Title" class="form-control" id="product_title">
+                            </div>
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Product Name</label>
                                     <input type="text" value="${name}" placeholder="Type here" name="productname" class="form-control" id="product_name"
@@ -223,22 +421,38 @@
             
             
                                         <div class="row gx-2">
-                                            <div class="mb-4 col-sm-6 mb-3">
-                                                <label class="form-label">Image 1</label>
-                                                <input class="form-control" value="/user/images/productImage/${id}1.jpg" type="file" id="image1" name="productimage1" >
-                                            </div>
-                                            <div class="mb-4 col-sm-6 mb-3">
-                                                <label class="form-label">Images 2</label>
-                                                <input class="form-control" type="file" id="image2" value="/user/images/productImage/${id}2.jpg" name="productimage2" >
-                                            </div>
-                                            <div class="mb-4 col-sm-6 mb-3">
-                                                <label class="form-label">Image 3</label>
-                                                <input class="form-control" type="file" id="image3" value="/user/images/productImage/${id}3.jpg" name="productimage3" >
-                                            </div>
-                                            <div class="mb-4 col-sm-6 mb-3">
-                                                <label class="form-label">Image 4</label>
-                                                <input class="form-control" type="file" id="image4" value="/user/images/productImage/${id}4.jpg" name="productimage4" >
-                                            </div>
+                                            <div class="mb-4 col-sm-3 mb-3">
+                                    <label class="cabinet center-block">
+										<figure>
+											<img  style=" width: 100px;" src="/user/images/productImage/${id}1.jpg" class="gambar img-responsive img-thumbnail" id="uploadImage1" />
+								    </figure>
+                                    <input type="file" class="item-img file center-block" id="image1" onchange="addImg(1)" name="productimage1" required/>
+									</label>
+                                </div>
+                                <div class="mb-4 col-sm-3 mb-3">
+                                    <label class="cabinet center-block">
+										<figure>
+											<img  style=" width: 100px;" src="/user/images/productImage/${id}2.jpg" class="gambar img-responsive img-thumbnail" id="uploadImage2" />
+								    </figure>
+                                    <input type="file" class="item-img file center-block" id="image2" onchange="addImg(2)" name="productimage2" required/>
+									</label>
+                                </div>
+                                <div class="mb-4 col-sm-3 mb-3">
+                                    <label class="cabinet center-block">
+										<figure>
+											<img  style=" width: 100px;" src="/user/images/productImage/${id}3.jpg" class="gambar img-responsive img-thumbnail" id="uploadImage3" />
+								    </figure>
+                                    <input type="file" class="item-img file center-block" id="image3" onchange="addImg(3)" name="productimage3" required/>
+									</label>
+                                </div>
+                                <div class="mb-4 col-sm-3 mb-3">
+                                    <label class="cabinet center-block">
+										<figure>
+											<img  style=" width: 100px;" src="/user/images/productImage/${id}4.jpg" class="gambar img-responsive img-thumbnail" id="uploadImage4" />
+								    </figure>   
+                                    <input type="file" class="item-img file center-block" onchange="addImg(4)" name="productimage4" required/>
+									</label>
+                                </div>
                                         </div>
             
                                         <button type="submit" class="btn btn-primary">Edit item</button>
@@ -255,10 +469,9 @@
 
             // validation
 
-            function addProduct() {
+            function validateform() {
 
-                console.log("hiii");
-                event.preventDefault()
+
 
                 let productname = $('#product_name').val()
                 let productdiscription = $('#product_description').val()
@@ -420,22 +633,17 @@
                 validateProducSubCategory()
 
                 if (productNameError === true && productDisError === true && productPriceError === true && productQuantityError === true && productSizeError === true && productColourError === true) {
-                    console.log("hoiiiiiiiiiiiiiiiiiii");
 
                     return true
-                    // $.ajax({
 
-                    //     url:'/admin/add_product',
-                    //     method:'post',
-                    //     enctype:"multipart/form-data",
-                    //     data:addedProducts
-                    // })
-
-
+                } else {
+                    return false
                 }
-
-
             }
+
+
+
+
 
 
 
@@ -456,7 +664,7 @@
                         $("#subcategory").find('option').remove();
                         for (var i = 0; i < response.length; i++) {
 
-                            $("#subcategory").append('<option >' + response[i].name + '</option>');
+                            $("#subcategory").append('<option >' + response[i] + '</option>');
                             // let sub = <option>response[i].name</option>
                             // $('#subcategory').html+= sub
                         }

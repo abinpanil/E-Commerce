@@ -1,4 +1,6 @@
-
+body{
+	color: #ffff;
+}
 /* Add Product Modal Crop Image */
 label.cabinet{
 	display: block;

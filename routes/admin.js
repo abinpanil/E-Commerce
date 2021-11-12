@@ -69,8 +69,7 @@ router.get('/add_products',varifyLogin, function(req,res){
 router.get('/categories',varifyLogin, function(req,res){
   
   adminHelpers.getCategory().then((data)=>{
-    
-    
+    console.log(data);
     res.render('./admin/category-management',{admin,title:"Categories",data})
     
   })
@@ -129,14 +128,21 @@ router.post('/signin',(req,res)=>{
 /* Add category */
 router.post('/add_category',function(req,res){
   
+  console.log(req.body);
   
   adminHelpers.addCategory(req.body).then((data)=>{
-    
-    
-    res.redirect('/admin/categories') 
-    
-  })
   
+    res.redirect('/admin/categories') 
+  })
+})
+
+// Add subcatetgory
+router.post('/add_subcategory',(req,res)=>{
+  
+  adminHelpers.addSubcategory(req.body).then((data)=>{
+
+    res.redirect('/admin/categories') 
+  })
 })
  
 // Get SubCategory
@@ -157,12 +163,18 @@ router.post('/block',(req,res)=>{
   
   adminHelpers.blockUser(req.body.id).then(data=>{
     
-    res.json(data)
-    if(req.session.user._id === req.body.id){
+    console.log(req.session.user);
+    console.log(req.body.id);
+    if(req.session.user){
+      if(req.session.user._id === req.body.id){
+        delete req.session.user
+        // console.log(req.session.user);
+      }
+    }else{
       
-      delete req.session.user
+      res.json(data)
     }
-    
+    res.json(data)
     
   }).catch(err=>{
     res.json(err)
@@ -197,55 +209,70 @@ router.post('/editproduct_get',(req,res)=>{
 // edit Product
 router.post('/edit_product',(req,res)=>{
 
-  let image1 = req.files.productimage1
-  let image2 = req.files.productimage2
-  let image3 = req.files.productimage3
-  let image4 = req.files.productimage4
+  console.log(req.body);
   
-  let id = req.body.id
-  console.log(id);
-  adminHelpers.updateProduct(req.body).then((product)=>{
-    res.redirect('/admin/products') 
-    image1.mv('./public/user/images/productImage/'+id+'1.jpg',(err,done)=>{
+  if(req.files){
+   
+    let image1 = req.files.productimage1
+    let image2 = req.files.productimage2
+    let image3 = req.files.productimage3
+    let image4 = req.files.productimage4
+    let id = req.body.id
+    console.log(req.body);
+    adminHelpers.updateProduct(req.body).then((product)=>{
 
-      if(!err){
-
-        image2.mv('./public/user/images/productImage/'+id+'2.jpg',(err,done)=>{
-
-          if(!err){
-    
-            image3.mv('./public/user/images/productImage/'+id+'3.jpg',(err,done)=>{
-
-              if(!err){
-                
-                image4.mv('./public/user/images/productImage/'+id+'4.jpg',(err,done)=>{
-
-                  if(!err){
-            
-                    
-                    
-                  }else{
-                    console.log(err+"err 1");
-                  }
-                })
-                
-              }else{
-                console.log(err+"err 2");
-              }
-            })
-            
-          }else{
-            console.log(err+"err 3");
-          }
-        })
-        
-      }else{
-        console.log(err+"err 4");
-      }
+      res.redirect('/admin/products') 
+      image1.mv('./public/user/images/productImage/'+id+'1.jpg',(err,done)=>{
+  
+        if(!err){
+  
+          image2.mv('./public/user/images/productImage/'+id+'2.jpg',(err,done)=>{
+  
+            if(!err){
+      
+              image3.mv('./public/user/images/productImage/'+id+'3.jpg',(err,done)=>{
+  
+                if(!err){
+                  
+                  image4.mv('./public/user/images/productImage/'+id+'4.jpg',(err,done)=>{
+  
+                    if(!err){
+              
+                      res.redirect('/admin/products') 
+                      
+                    }else{
+                      console.log(err+"err 1");
+                    }
+                  })
+                  
+                }else{
+                  console.log(err+"err 2");
+                }
+              })
+              
+            }else{
+              console.log(err+"err 3");
+            }
+          })
+          
+        }else{
+          console.log(err+"err 4");
+        }
+      })
+      console.log(product);
+      
     })
-    console.log(product);
+
+  }else{
+
+    let id = req.body.id
     
-  })
+    adminHelpers.updateProduct(req.body).then((product)=>{
+      console.log(product);
+      res.redirect('/admin/products') 
+      
+    })
+  }
 })
 
 // Delete subCategory
@@ -260,7 +287,7 @@ router.post('/deletesSubCategory',(req,res)=>{
 
 /* Add product */
 router.post('/add_product',function(req,res){
-
+  
   let image1 = req.files.productimage1
   let image2 = req.files.productimage2
   let image3 = req.files.productimage3

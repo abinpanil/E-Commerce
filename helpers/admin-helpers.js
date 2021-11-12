@@ -18,39 +18,55 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
 
             let category = categoryObj.category
-            let subCategory = categoryObj.subcategory
+            
             let findCategory = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ category: category })
-
+            console.log(findCategory);
             if (findCategory) {
 
-                await db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ category: category }, { $addToSet: { subCategory: { $each: [{ name: subCategory }] } } })
                 let showCat = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ category: category })
                 resolve(showCat)
-
             } else {
-
-                await db.get().collection(collection.CATEGORY_COLLECTION).insertOne({ category: category })
-                await db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ category: category }, { $addToSet: { subCategory: { $each: [{ name: subCategory }] } } })
+                await db.get().collection(collection.CATEGORY_COLLECTION).insertOne({ category: category , subCategory:[]})
                 let showCat = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ category: category })
+               
                 resolve(showCat)
-
             }
+        })
+    },
+    addSubcategory: (categoryObj) => {
+
+        return new Promise(async (resolve, reject)=>{
+
+            let category = categoryObj.category
+            let subCategory = categoryObj.subcategory
+            await db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ category: category }, { $addToSet: { subCategory: { $each: [subCategory] } } })
+            let showCat = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ category: category })
+            resolve(showCat)
 
         })
+
+
+
     },
     getCategory: () => {
 
         return new Promise(async (resolve, reject) => {
             let data = await db.get().collection(collection.CATEGORY_COLLECTION).find().toArray()
-            resolve(data)
-        })
+                
+            if(data.subCategory){
+                console.log("true");
+            }else{
+                
+            }
 
+            resolve(data)      
+        })  
     },
     getSubCategory: (cat) => {
 
         return new Promise(async (resolve, reject) => {
             let subCat = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ category: cat.category })
-
+            
             resolve(subCat)
         })
     },
@@ -60,7 +76,7 @@ module.exports = {
 
             await db.get().collection(collection.CATEGORY_COLLECTION).updateOne(
                 { category: category.catName },
-                { $pull: { subCategory: { name: category.subCatName } } },
+                { $pull: { subCategory:category.subCatName } },
             );
 
             resolve()
@@ -85,17 +101,17 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
 
             let a = await db.get().collection(collection.PRODUCTS_COLLECTION).deleteOne({ _id: objectId(id) })
-           
+
             resolve()
         })
 
 
     },
-    updateProduct:(data)=>{
-        
-        return new Promise(async(resolve,reject)=>{
-            let product = await db.get().collection(collection.PRODUCTS_COLLECTION).updateOne({ _id:objectId(data.id)}, {$set:{productname:data.productname, productdiscription:data.productdiscription, productprice:data.productprice, productquantity:data.productquantity, productsize:data.productsize, productcolour:data.productcolour, productcategory:data.productcategory, productsubcategory:data.productsubcategory }})
-            
+    updateProduct: (data) => {
+
+        return new Promise(async (resolve, reject) => {
+            let product = await db.get().collection(collection.PRODUCTS_COLLECTION).updateOne({ _id: objectId(data.id) }, { $set: { productname: data.productname, productdiscription: data.productdiscription, productprice: data.productprice, productquantity: data.productquantity, productsize: data.productsize, productcolour: data.productcolour, productcategory: data.productcategory, productsubcategory: data.productsubcategory } })
+
             resolve(product)
         })
     },
@@ -118,11 +134,11 @@ module.exports = {
                 }).catch((err) => {
                     reject(err)
                 })
-            } 
+            }
         })
     },
-    editProductGet:(id)=>{
-        return new Promise(async(resolve,reject)=>{
+    editProductGet: (id) => {
+        return new Promise(async (resolve, reject) => {
             let product = await db.get().collection(collection.PRODUCTS_COLLECTION).findOne({ _id: objectId(id) })
             resolve(editpr)
         })
@@ -134,7 +150,7 @@ module.exports = {
             db.get().collection(collection.PRODUCTS_COLLECTION).insertOne(product).then((data) => {
 
                 let objId = ObjectId(data.insertedId).toString()
-               
+
                 resolve(objId)
             })
         })
