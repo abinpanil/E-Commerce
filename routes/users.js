@@ -16,38 +16,44 @@ let user = {
   status: false
 }
 
-let logData
+let count = 0
 
-function varifyLogin(req,res,next) {
 
-  if(req.session.user){
+// user Check
+function varifyLogin(req, res, next) {
+
+  if (req.session.user) {
     next()
-  }else{
+  } else {
     res.redirect('/login')
   }
 }
+
+
+// get cart count
+
 
 /* GET users Home. */
 router.get('/', function (req, res, next) {
 
   console.log(req.session.user);
 
-  if(req.session.user){
-    console.log("true in userrrrr");
-  }else{
+  if (req.session.user) {
+    
+  } else {
     user.status = false
     user.name = ''
     delete req.session.user
     console.log("false in userrrrrrrrrrr");
-    
+
   }
   console.log(user);
-
+  console.log(count);
   adminHelpers.getCategory().then((data) => {
     adminHelpers.getAllProducts().then((products) => {
       // console.log(products);
 
-      res.render('./user/home', { admin, user, title: "Home", data, products });
+      res.render('./user/home', { admin, user, title: "Home", data, products, count });
 
     })
 
@@ -82,15 +88,17 @@ router.get('/my_account', function (req, res, next) {
 });
 
 /* GET cart. */
-router.get('/cart',varifyLogin, function (req, res, next) {
+router.get('/cart', varifyLogin, async (req, res) => {
 
   adminHelpers.getCategory().then((data) => {
-    userHelpers.getCartProducts(req.session.user._id).then((cartItems)=>{
-      
-      let cart = cartItems
-      console.log(cart);
-      res.render('./user/cart', { admin, user, title: "Cart", data,cart });
-      res.json({})
+    userHelpers.getCartProducts(req.session.user._id).then((cartItems) => {
+      userHelpers.getTotalAmount(req.session.user._id).then((total) => {
+        console.log(total);
+        let cart = cartItems
+        console.log(cart);
+        res.render('./user/cart', { admin, user, title: "Cart", data, cart ,total});
+        
+      })
     })
   })
 });
@@ -104,6 +112,14 @@ router.get('/wishlist', function (req, res, next) {
 });
 
 
+// GET Checkout
+router.get('/checkout',(req,res)=>{
+  adminHelpers.getCategory().then((data) => {
+    res.render('./user/checkout', { admin, user, title: "Checkout", data });
+  })
+})
+
+
 // product page
 router.get('/viewproduct/:_id', (req, res) => {
 
@@ -111,7 +127,7 @@ router.get('/viewproduct/:_id', (req, res) => {
   adminHelpers.getCategory().then((data) => {
     userHelpers.getProduct(id).then((products) => {
 
-      res.render('./user/product', { admin, user, title: "Login", data, products });
+      res.render('./user/product', { admin, user, title: "Product", data, products });
     })
 
   })
@@ -233,7 +249,7 @@ router.post('/validate', function (req, res) {
           userResponse.otp = "Otp not send"
           console.log(e, "errroooorrrrrrrrrr");
         })
-    }else{
+    } else {
       res.json(userResponse)
     }
   })
@@ -254,7 +270,7 @@ router.post('/checkNum', (req, res) => {
 router.post('/otpget', (req, res) => {
 
   let response = {
-    send:true,
+    send: true,
 
   }
   res.json(response)
@@ -271,7 +287,7 @@ router.post('/otpget', (req, res) => {
 
       console.log(e, "errroooorrrrrrrrrr");
     })
-  
+
 })
 
 
@@ -344,7 +360,7 @@ router.post('/otpvalidate', (req, res) => {
         userHelpers.doSignup(req.session.signup).then((userResponse) => {
           console.log(userResponse);
           res.redirect('/login')
-      
+
         })
 
       } else {
@@ -365,23 +381,34 @@ router.post('/otpvalidate', (req, res) => {
 
 
 // add to cart
-router.post('/add-to-cart',(req,res)=>{
- 
-  let proId = req.body.proId
+router.post('/add-to-cart', (req, res) => {
+
+  let proId = req.body.proId  
   console.log(proId);
   let userId = req.session.user._id
-  
-  userHelpers.addToCart(proId,userId).then(()=>{
+
+  userHelpers.addToCart(proId, userId).then(() => {
     res.json({})
   })
 })
 
 // product increment
-router.post('/change-product-quantity',(req,res)=>{
-console.log(req.body);
-  userHelpers.changeProductQuantity(req.body).then((response)=>{
+router.post('/change-product-quantity', (req, res) => {
+  console.log(req.body);
+  userHelpers.changeProductQuantity(req.body).then((response) => {
+    userHelpers.getTotalAmount(req.session.user._id).then((total) => {
+
+      res.json(total)
+    })
+  })
+})
+
+// remove product from cart
+router.post('/removeCartProduct', (req, res) => {
+  let product = req.body.product
+  let user = req.session.user._id
+  userHelpers.removeCartProduct(product, user).then(() => {
     res.redirect('/cart')
-    
   })
 })
 

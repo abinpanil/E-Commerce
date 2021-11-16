@@ -55,7 +55,9 @@
                             </div>
                         </div>
                     </nav> -->
+                    <%if(pro.length){%>
                     <div class="product-wrapper row cols-lg-5 cols-md-4 cols-sm-3 cols-2 pt-5">
+
                         
                         <%for(i=0;i<pro.length;i++){%>
 
@@ -103,7 +105,22 @@
                         <%}%>
                         
                         
+
+                            
+
+
+
+
+                       
                     </div>
+
+                    <%}else{%>
+
+
+                        <h1>No Items Yet!!!!!</h1>
+
+
+                    <%}%>
 
                     <!-- <div class="toolbox toolbox-pagination justify-content-between"> -->
                         <!-- <p class="showing-info mb-2 mb-sm-0">

@@ -48,8 +48,11 @@ body {
   background: #fff;
   
 }
-
+.img-zoom-lens{
+  /* display: none; */
+}
 main {
+  min-height: 68.5vh;
   display: block;
   position: relative;
 }
