@@ -3,10 +3,10 @@
     <div class="container">
         <div class="footer-top">
             <div class="row">
-                <div class="col-lg-4 col-sm-6">
+                <div class="col-lg-4 col-sm-6">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                     <div class="widget widget-about">
                         <a href="demo1.html" class="logo-footer">
-                            <img src="/user/images/logo_footer.png" alt="logo-footer" width="70"
+                            <img src="/user/images/logo_footer.png" alt="logo-footer" width="40"
                                 height="45" />
                         </a>
                         <div class="widget-body">
@@ -148,42 +148,17 @@
     <div class="tab-content">
         <div class="tab-pane active" id="main-menu">
             <ul class="mobile-menu">
+                <%for(var i=0;i<data.length;i++){%>
                 <li>
-                    <a href="#"><i class="w-icon-tshirt2"></i>Men</a>
+                    <a href="/listproductscat/<%=data[i].category%>"><%=data[i].category%></a>
                             <ul>
-                                <li><a href="shop-fullwidth-banner.html">New Arrivals</a>
+                                <%for(var j=0;j<data[i].subCategory.length;j++){%>
+                                <li><a href="/listproductssubcat/<%=data[i].subCategory[j]%>/<%=data[i].category%>"><%=data[i].subCategory[j]%></a>
                                 </li>
-                                <li><a href="shop-fullwidth-banner.html">Best Sellers</a>
-                                </li>
-                                <li><a href="shop-fullwidth-banner.html">Trending</a></li>
-                                <li><a href="shop-fullwidth-banner.html">Clothing</a></li>
-                                <li><a href="shop-fullwidth-banner.html">Shoes</a></li>
-                                <li><a href="shop-fullwidth-banner.html">Bags</a></li>
-                                <li><a href="shop-fullwidth-banner.html">Accessories</a>
-                                </li>
-                                <li><a href="shop-fullwidth-banner.html">Jewlery &
-                                        Watches</a></li>
-                                <li><a href="shop-fullwidth-banner.html">Sale</a></li>
+                                <%}%>
                             </ul>
                 </li>
-                <li>
-                    <a href="#"><i class="w-icon-tshirt2"></i>Women</a>
-                            <ul>
-                                <li><a href="shop-fullwidth-banner.html">New Arrivals</a>
-                                </li>
-                                <li><a href="shop-fullwidth-banner.html">Best Sellers</a>
-                                </li>
-                                <li><a href="shop-fullwidth-banner.html">Trending</a></li>
-                                <li><a href="shop-fullwidth-banner.html">Clothing</a></li>
-                                <li><a href="shop-fullwidth-banner.html">Shoes</a></li>
-                                <li><a href="shop-fullwidth-banner.html">Bags</a></li>
-                                <li><a href="shop-fullwidth-banner.html">Accessories</a>
-                                </li>
-                                <li><a href="shop-fullwidth-banner.html">Jewlery &
-                                        Watches</a></li>
-                            </ul>
-                    
-                </li>
+                <%}%>
             </ul>
         </div>
     </div>

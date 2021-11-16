@@ -1,7 +1,7 @@
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
-<div class="main-content" id="reload">
+<div class="main-content" id="">
 
     <div class="page-content">
         <div class="container-fluid">
@@ -42,10 +42,11 @@
                                     <th>Image</th>
                                     <th>Product Title</th>
                                     <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Subcategory</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
                                     <th>Size</th>
-                                    <th>Colour</th>
                                     <th class="text-end">Actions</th>
                                 </tr>
                             </thead>
@@ -61,6 +62,12 @@
                                         <td id="name_<%=products[i]._id%>">
                                             <%=products[i].productname%>
                                         </td>
+                                        <td id="name_<%=products[i]._id%>">
+                                            <%=products[i].productcategory%> 
+                                        </td>
+                                        <td id="name_<%=products[i]._id%>">
+                                            <%=products[i].productsubcategory%>
+                                        </td>
                                         <td id="dis_<%=products[i]._id%>"><b>RS.</b>
                                             <%=products[i].productprice%>
                                         </td>
@@ -69,9 +76,6 @@
                                         </td>
                                         <td id="size_<%=products[i]._id%>">
                                             <%=products[i].productsize%>
-                                        </td>
-                                        <td id="color_<%=products[i]._id%>">
-                                            <%=products[i].productcolour%>
                                         </td>
                                         <td class="text-end"><a class="btn btn-outline-dark"
                                                 onclick="editProduct('<%=products[i]._id%>','<%=products[i].productname%>','<%=products[i].productdiscription%>','<%=products[i].productprice%>','<%=products[i].productquantity%>','<%=products[i].productsize%>','<%=products[i].productcolour%>','<%=products[i].productcategory%>','<%=products[i].productsubcategory%>','<%=products[i].producttitle%>')">Edit</a>
@@ -111,14 +115,14 @@
         <script src="/admin/libs/datatables.net/js/jquery.dataTables.min.js"></script>
         <script src="/admin/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
         <!-- Buttons examples -->
-        <script src="/admin/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+        <!-- <script src="/admin/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
         <script src="/admin/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
         <script src="/admin/libs/jszip/jszip.min.js"></script>
         <script src="/admin/libs/pdfmake/build/pdfmake.min.js"></script>
         <script src="/admin/libs/pdfmake/build/vfs_fonts.js"></script>
         <script src="/admin/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
         <script src="/admin/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
-        <script src="/admin/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+        <script src="/admin/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script> -->
         <!-- Responsive examples -->
         <script src="/admin/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
         <script src="/admin/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
@@ -127,8 +131,8 @@
         <script src="/admin/js/pages/datatables.init.js"></script>
 
         <!-- sweat alert -->
-        <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
-        <script src="sweetalert2.all.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- <script src="sweetalert2.all.min.js"></script> -->
 
         <script src="/admin/js/app.js"></script>
 
@@ -633,6 +637,7 @@
                 validateProducSubCategory()
 
                 if (productNameError === true && productDisError === true && productPriceError === true && productQuantityError === true && productSizeError === true && productColourError === true) {
+
 
                     return true
 

@@ -39,13 +39,13 @@
                         }">
                             Diam in arcu cursus euismod quis. Eget sit amet tellus cras adipiscing enim eu.
                         </p>
-                        <a href="demo15-shop.html" class="btn btn-dark btn-rounded slide-animate"
+                        <!-- <a href="demo15-shop.html" class="btn btn-dark btn-rounded slide-animate"
                             data-animation-options="{
                             'name': 'fadeInUpShorter',
                             'duration': '1s',
                             'delay': '.8s'
                             }">SHOP COLLECTION
-                        </a>
+                        </a> -->
 
                     </div>
                     <!-- End of .banner-content -->
@@ -74,16 +74,16 @@
                             }">
                             Fashion Lifestyle<br>Collection
                         </h3>
-                        <a href="demo15-shop.html"
+                        <!-- <a href="demo15-shop.html"
                             class="btn btn-dark btn-outline btn-rounded btn-icon-right mb-1 slide-animate"
                             data-animation-options="{
                             'name': 'fadeInRightShorter',
                             'duration': '1s',
-                            'delay': '.8s'
+                            'delay': '.8s'  
                             }">
                             SHOP NOW
                             <i class="w-icon-long-arrow-right"></i>
-                        </a>
+                        </a> -->
 
                     </div>
                     <!-- End of .banner-content -->
@@ -143,13 +143,13 @@
                                     width="300" height="337">
                             </a>
                             <div class="product-action-horizontal">
-                                <a href="#" class="btn-product-icon btn-cart w-icon-cart"
+                                <a onclick="addToCart('<%=products[i]._id%>')" class="btn-product-icon btn-cart w-icon-cart"
                                     title="Add to cart"></a>
-                                <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                    title="Wishlist"></a>
+                                <!-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                    title="Wishlist"></a> -->
                                 
-                                <!-- <a href="#" class="btn-product-icon btn-quickview w-icon-search"
-                                    title="Quick View"></a> -->
+                                <a href="#" class="btn-product-icon btn-compare w-icon-shipping"
+                                    title="Buy Now"></a>
                             </div>
                         </figure>
                         <div class="product-details">
@@ -196,3 +196,23 @@
 
 <!-- Main JS -->
 <script src="/user/js/main.min.js"></script>
+
+
+<script>
+
+
+    function addToCart(id){
+       
+        $.ajax({
+            url:'add-to-cart',
+            method:'post',
+            data:{proId:id},
+            success:()=>{
+                
+            }
+        })
+
+    }
+
+
+</script>

@@ -1,3 +1,7 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+
 <body>
     <div class="page-wrapper">
         <!-- Start of Header -->
@@ -11,9 +15,9 @@
                         
                         <!-- End of Dropdown Menu -->
                         <%if(user.status){%>
-                            <a href="javascript:void(0)" style="font-size: 14px;" class="d-lg-show"><b>Hi <%=user.name%></b></a>
-                            <a href="/my_account" style="font-size: 14px;" class="d-lg-show">My Account</a>
-                            <a href="javascript:void(0);" onclick="signOut()" style="font-size: 14px;" class="d-lg-show"><i
+                            <a href="javascript:void(0)" style="font-size: 12px;" class="d-lg-show"><b>Hi <%=user.name%></b></a>
+                            <a href="/my_account" style="font-size: 12px;" class="d-lg-show">My Account</a>
+                            <a href="javascript:void(0);" onclick="signOut()" style="font-size: 12px;" class="d-lg-show"><i
                                 class="w-icon-account" ></i>Sign out</a>
                         <%}else{%>
 
@@ -33,14 +37,14 @@
                     <div class="header-left mr-md-4">
                         <a href="#" class="mobile-menu-toggle  w-icon-hamburger" aria-label="menu-toggle">
                         </a>
-                        <a href="/" class="logo ml-lg-0">
-                            <img src="/user/images/logo.png" alt="logo" width="55" height="13" />
+                        <a href="/" class="logo ml-lg-0" style="padding-top: 8px;">
+                            <img src="/user/images/logo.png" alt="logo" width="40" height="13" />
                         </a>
-                        <form method="get" action="#" class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
+                        <form method="get" action="#" class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper justify-content-end">
                             
                             <input type="text" class="form-control" name="search" id="search"
-                                placeholder="Search in..." required />
-                            <button class="btn btn-search" type="submit"><i class="w-icon-search"></i>
+                                placeholder="Search for items and brands" style="font-family: 'PT Sans', sans-serif; font-size: 15px;" required />
+                            <button class="" style="background: none; border: none; border-bottom: 2px solid #666; cursor: pointer; color: #666;" type="submit"><i class="w-icon-search"></i>
                             </button>
                         </form>
                     </div>
@@ -55,7 +59,7 @@
                         <div class="dropdown cart-dropdown  mr-0 mr-lg-2">
                             <a href="/cart" class="cart-toggle label-down link">
                                 <i class="w-icon-cart">
-                                    
+                                    <span class="cart-count">2</span>
                                 </i>
                                 <span class="cart-label">Cart</span>
                             </a>
@@ -67,7 +71,7 @@
             </div>
             <!-- End of Header Middle -->
 
-            <div class="header-bottom sticky-content fix-top sticky-header">
+            <div class="header-bottom sticky-content fix-top sticky-header" style="background-color: #2d2d2d; color: #dccfcf;" >
                 <div class="container">
                     <div class="inner-wrap">
                         <div class="header-left"> 
@@ -79,7 +83,7 @@
                                     <li>
                                         <a href="/listproductscat/<%=data[i].category%>"><%=data[i].category%></a>
                                         
-                                        <ul>
+                                        <ul style="background-color: #2d2d2d; color: #dccfcf;">
                                             <%for(var j=0;j<data[i].subCategory.length;j++){%>
                                                 <li>
                                                     <a href="/listproductssubcat/<%=data[i].subCategory[j]%>/<%=data[i].category%>"><%=data[i].subCategory[j]%></a>

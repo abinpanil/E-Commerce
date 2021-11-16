@@ -95,6 +95,27 @@ module.exports = {
 
 
     },
+    deleteProductcategory:(category)=>{
+
+        return new Promise(async(resolve,reject)=>{
+            let productId = await db.get().collection(collection.PRODUCTS_COLLECTION).findOne({ productcategory: category.catName })
+            await db.get().collection(collection.PRODUCTS_COLLECTION).deleteOne({ productcategory: category.catName })
+            console.log("hereeeeeeeeeeeeeeeeeeee");
+            let objId = ObjectId(productId._id).toString()
+            console.log(objId);
+            resolve(objId)
+        })
+    },
+    deleteProductSubcategory:(category)=>{
+
+        return new Promise(async(resolve,reject)=>{
+            let productId = await db.get().collection(collection.PRODUCTS_COLLECTION).findOne({ productcategory: category.catName ,  productsubcategory: category.subCatName })
+            await db.get().collection(collection.PRODUCTS_COLLECTION).deleteOne({ productcategory: category.catName ,  productsubcategory: category.subCatName })
+           
+            let objId = ObjectId(productId._id).toString()
+            resolve(objId)
+        })
+    },
     deleteProduct: (id) => {
 
 

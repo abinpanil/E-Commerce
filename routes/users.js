@@ -5,9 +5,9 @@ const userHelpers = require('../helpers/user-helpers')
 const adminHelpers = require('../helpers/admin-helpers');
 const config = require('../auth/config');
 
-const serviceID = "VA88c284363de9fd0c8192a127bc7b1e06"
-const accountSID = "AC2253025f4ed61bf98f907de34a78dc5c"
-const authToken = "8929ac33d8ae24d3ca4c6d36db0f4fa4"
+const serviceID = "	VAa5e077df7a059df1d1bae9a32df93ca9"
+const accountSID = "AC29e0de96271489ac12f1c32008d70906"
+const authToken = "2975bf30634d92615dab33cee7689014"
 const client = require("twilio")(accountSID, authToken)
 
 let admin = false
@@ -18,6 +18,14 @@ let user = {
 
 let logData
 
+function varifyLogin(req,res,next) {
+
+  if(req.session.user){
+    next()
+  }else{
+    res.redirect('/login')
+  }
+}
 
 /* GET users Home. */
 router.get('/', function (req, res, next) {
@@ -74,10 +82,16 @@ router.get('/my_account', function (req, res, next) {
 });
 
 /* GET cart. */
-router.get('/cart', function (req, res, next) {
+router.get('/cart',varifyLogin, function (req, res, next) {
 
   adminHelpers.getCategory().then((data) => {
-    res.render('./user/cart', { admin, user, title: "Cart", data });
+    userHelpers.getCartProducts(req.session.user._id).then((cartItems)=>{
+      
+      let cart = cartItems
+      console.log(cart);
+      res.render('./user/cart', { admin, user, title: "Cart", data,cart });
+      res.json({})
+    })
   })
 });
 
@@ -239,18 +253,25 @@ router.post('/checkNum', (req, res) => {
 /* Otp signin. */
 router.post('/otpget', (req, res) => {
 
+  let response = {
+    send:true,
+
+  }
+  res.json(response)
+
   client.verify.services(serviceID)
     .verifications.create({
       to: `+91${req.body.mobilenumber}`,
       channel: "sms"
     })
     .then((response) => {
-
+      response.send = true
       res.json(response)
     }).catch((e) => {
 
       console.log(e, "errroooorrrrrrrrrr");
     })
+  
 })
 
 
@@ -343,5 +364,25 @@ router.post('/otpvalidate', (req, res) => {
 })
 
 
+// add to cart
+router.post('/add-to-cart',(req,res)=>{
+ 
+  let proId = req.body.proId
+  console.log(proId);
+  let userId = req.session.user._id
+  
+  userHelpers.addToCart(proId,userId).then(()=>{
+    res.json({})
+  })
+})
+
+// product increment
+router.post('/change-product-quantity',(req,res)=>{
+console.log(req.body);
+  userHelpers.changeProductQuantity(req.body).then((response)=>{
+    res.redirect('/cart')
+    
+  })
+})
 
 module.exports = router;
