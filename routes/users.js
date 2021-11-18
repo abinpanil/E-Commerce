@@ -4,6 +4,7 @@ const router = express.Router();
 const userHelpers = require('../helpers/user-helpers')
 const adminHelpers = require('../helpers/admin-helpers');
 const config = require('../auth/config');
+const { route } = require('./admin');
 
 const serviceID = "	VAa5e077df7a059df1d1bae9a32df93ca9"
 const accountSID = "AC29e0de96271489ac12f1c32008d70906"
@@ -93,9 +94,8 @@ router.get('/cart', varifyLogin, async (req, res) => {
   adminHelpers.getCategory().then((data) => {
     userHelpers.getCartProducts(req.session.user._id).then((cartItems) => {
       userHelpers.getTotalAmount(req.session.user._id).then((total) => {
-        console.log(total);
+        
         let cart = cartItems
-        console.log(cart);
         res.render('./user/cart', { admin, user, title: "Cart", data, cart ,total});
         
       })
@@ -115,7 +115,14 @@ router.get('/wishlist', function (req, res, next) {
 // GET Checkout
 router.get('/checkout',(req,res)=>{
   adminHelpers.getCategory().then((data) => {
-    res.render('./user/checkout', { admin, user, title: "Checkout", data });
+    userHelpers.getAddress(req.session.user._id).then((address)=>{
+      userHelpers.getCartProducts(req.session.user._id).then((cartItems) =>{
+        userHelpers.getTotalAmount(req.session.user._id).then((total) => {
+          let cart = cartItems
+          res.render('./user/checkout', { admin, user, title: "Checkout", data,address,cart,total });
+        })
+      }) 
+    })
   })
 })
 
@@ -176,6 +183,17 @@ router.get('/listproductssubcat/:subcat/:cat', function (req, res, next) {
 
   })
 });
+
+
+
+// Get add new address
+router.get('/add_address',(req,res)=>{
+  
+  adminHelpers.getCategory().then((data) => {
+    res.render('./user/address', { admin, user, title: "Add Address", data });
+  })
+})
+
 
 /* Login */
 router.post('/login', function (req, res) {
@@ -334,7 +352,7 @@ router.post('/otpcheck', (req, res) => {
 
 
 // signup otp Validate
-router.post('/otpvalidate', (req, res) => {
+router.post('/otpvalidate', (rcheckouteq, res) => {
 
   let otp = req.body.otp
   let number = req.session.number
@@ -376,7 +394,6 @@ router.post('/otpvalidate', (req, res) => {
       console.log("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
       res.json(data)
     })
-
 })
 
 
@@ -384,9 +401,7 @@ router.post('/otpvalidate', (req, res) => {
 router.post('/add-to-cart', (req, res) => {
 
   let proId = req.body.proId  
-  console.log(proId);
   let userId = req.session.user._id
-
   userHelpers.addToCart(proId, userId).then(() => {
     res.json({})
   })
@@ -397,8 +412,15 @@ router.post('/change-product-quantity', (req, res) => {
   console.log(req.body);
   userHelpers.changeProductQuantity(req.body).then((response) => {
     userHelpers.getTotalAmount(req.session.user._id).then((total) => {
-
-      res.json(total)
+      userHelpers.getSubTotalAmount(req.body).then((subTotal)=>{
+       
+        let response = {
+          total:total,
+          subTotal:subTotal.subTotal
+        }
+        console.log(response);
+        res.json(response)
+      })
     })
   })
 })
@@ -410,6 +432,45 @@ router.post('/removeCartProduct', (req, res) => {
   userHelpers.removeCartProduct(product, user).then(() => {
     res.redirect('/cart')
   })
+})
+
+
+// add address
+router.post('/add_address',(req,res)=>{
+
+  let newAddress = req.body
+  newAddress.user = req.session.user._id
+  console.log(newAddress);
+  userHelpers.addAddress(newAddress).then(()=>{
+    res.redirect('/checkout')
+    res.json({})
+  })
+})
+
+
+// update address
+router.post('/update_address',(req,res)=>{
+
+  let updateAddress = req.body
+  userHelpers.editAddress(updateAddress).then(()=>{
+    res.redirect('/checkout')
+    res.json({})
+  })
+})
+
+
+// delete address
+router.post('/deleteAddress',(req,res)=>{
+
+  userHelpers.deleteAddress(req.body).then(()=>{
+    res.redirect('/checkout')
+    res.json({})
+  })
+})
+
+router.post('/cancel',(req,res)=>{
+  res.redirect('/checkout')
+    res.json({})
 })
 
 module.exports = router;

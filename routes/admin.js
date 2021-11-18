@@ -357,10 +357,13 @@ router.post('/deletesSubCategory', (req, res) => {
 /* Add product */
 router.post('/add_product', function (req, res) {
 
+  console.log("'hiiiiii");
   let image1 = req.files.productimage1
   let image2 = req.files.productimage2
   let image3 = req.files.productimage3
   let image4 = req.files.productimage4
+  console.log(req.body);
+  console.log(req.files);
   adminHelpers.addProduct(req.body).then((data) => {
 
     image1.mv('./public/user/images/productImage/' + data + '1.jpg', (err, done) => {

@@ -67,7 +67,7 @@
                 </div>
               </div> <!-- row.// -->
 
-              <div class="row gx-2">
+              <!-- <div class="row gx-2">
                 <div class="col-sm-6 mb-3">
                   <label class="form-label">Size</label>
                   <input type="text" name="productsize" onchange="validateProducSize()" placeholder="Enter Size"
@@ -78,7 +78,7 @@
                   <input type="text" name="productcolour" onchange="validateProducColour()" placeholder="Enter Colour"
                     class="form-control" id="product_colour">
                 </div>
-              </div> <!-- row.// -->
+              </div> row.// -->
 
               <div class="row gx-2">
                 <div class="col-sm-6 mb-3">
@@ -434,8 +434,8 @@
     let productdiscription = $('#product_description').val()
     let productprice = $('#product_price').val()
     let productquantity = $('#product_quantity').val()
-    let productsize = $('#product_size').val()
-    let productcolour = $('#product_colour').val()
+    // let productsize = $('#product_size').val()
+    // let productcolour = $('#product_colour').val()
     let productcategory = $('#getSubCat').val()
     let productsubcategory = $('#subcategory').val()
 
@@ -532,35 +532,35 @@
       }
     }
     // product size
-    let productSizeError = true;
+    // let productSizeError = true;
 
-    function validateProducSize() {
+    // function validateProducSize() {
 
-      let productsize = $('#product_size').val()
-      if (productsize.length == '') {
+    //   let productsize = $('#product_size').val()
+    //   if (productsize.length == '') {
 
-        $('#product_size').css('border-color', '#f30000')
-        $('#product_size').attr("placeholder", "Enter Size")
-        productSizeError = false;
-        return false;
+    //     $('#product_size').css('border-color', '#f30000')
+    //     $('#product_size').attr("placeholder", "Enter Size")
+    //     productSizeError = false;
+    //     return false;
 
-      }
-    }
+    //   }
+    // }
     // product colour
-    let productColourError = true;
+    // let productColourError = true;
 
-    function validateProducColour() {
+    // function validateProducColour() {
 
-      let productcolour = $('#product_colour').val()
-      if (productcolour.length == '') {
+    //   let productcolour = $('#product_colour').val()
+    //   if (productcolour.length == '') {
 
-        $('#product_colour').css('border-color', '#f30000')
-        $('#product_colour').attr("placeholder", "Enter Colour")
-        productSizeError = false;
-        return false;
+    //     $('#product_colour').css('border-color', '#f30000')
+    //     $('#product_colour').attr("placeholder", "Enter Colour")
+    //     productSizeError = false;
+    //     return false;
 
-      }
-    }
+    //   }
+    // }
     // product category
     let productCategoryError = true;
 
@@ -598,12 +598,12 @@
     validateProductDiscription()
     validateProductPrice()
     validateProducQuantity()
-    validateProducSize()
-    validateProducColour()
+    // validateProducSize()
+    // validateProducColour()
     validateProducCategory()
     validateProducSubCategory()
 
-    if (productNameError === true && productTitleError === true && productDisError === true && productPriceError === true && productQuantityError === true && productSizeError === true && productColourError === true) {
+    if (productNameError === true && productTitleError === true && productDisError === true && productPriceError === true && productQuantityError === true ) {
 
       return true
 

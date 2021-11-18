@@ -56,16 +56,15 @@
                                                 max="100000">
                                             <button
                                                 onclick="changeQuantity('<%=cart[i]._id%>','<%=cart[i].product._id%>',1)"
-                                                class="quantity-plus w-icon-plus"></button>
+                                                class="quantity-plus w-icon-plus quan_btn"></button>
                                             <button
                                                 onclick="changeQuantity('<%=cart[i]._id%>','<%=cart[i].product._id%>',-1)"
                                                 id="minus_<%=cart[i].product._id%>"
-                                                onfocus="disable('<%=cart[i].product._id%>')"
-                                                class="quantity-minus w-icon-minus"></button>
+                                                class="quantity-minus w-icon-minus quan_btn"></button>
                                         </div>
                                     </td>
                                     <td class="product-subtotal">
-                                        <span class="amount">$60.00</span>
+                                        <span class="amount">RS.<span id="subtotal_<%=cart[i].product._id%>"><%=cart[i].subTotal%></span></span>
                                     </td>
                                 </tr>
                                 <%}%>
@@ -92,8 +91,8 @@
                         <div class="cart-summary mb-4">
                             <h3 class="cart-title text-uppercase">Cart Totals</h3>
                             <div class="cart-subtotal d-flex align-items-center justify-content-between">
-                                <label class="ls-25">Subtotal</label>
-                                <span>$100.00</span>
+                                <!-- <label class="ls-25">Subtotal</label>
+                                <span>$100.00</span> -->
                             </div>
 
                             <hr class="divider">
@@ -135,7 +134,7 @@
                                 <label>Total</label>
                                 <span class="ls-50">RS.<span id="total_price"><%=total%></span></span>
                             </div>
-                            <a href="#" class="btn btn-block btn-dark btn-icon-right btn-rounded  btn-checkout">
+                            <a href="/checkout" class="btn btn-block btn-dark btn-icon-right btn-rounded  btn-checkout">
                                 Proceed to checkout<i class="w-icon-long-arrow-right"></i></a>
                         </div>
                     </div>
@@ -160,8 +159,7 @@
 
 <script>
 
-
-    $('#')
+    
 
 
     function removeCart(productId) {
@@ -213,7 +211,7 @@
                 product: productId,
                 count: count
             },
-            success: (total) => {
+            success: (response) => {
 
                 let quantity = $('#quantity_' + productId).val()
                 console.log(quantity);
@@ -230,7 +228,8 @@
                     $('#minus_' + productId).removeAttr("disabled")
                 }
                 $('#quantity_' + productId).val(quantity)
-                $('#total_price').html(total)
+                $('#total_price').html(response.total)
+                $('#subtotal_'+productId).html(response.subTotal)
             }
 
         })

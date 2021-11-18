@@ -129,7 +129,9 @@ module.exports = {
 
     },
     updateProduct: (data) => {
-
+        
+        data.productquantity = parseInt(data.productquantity)
+        data.productprice = parseInt(data.productprice)
         return new Promise(async (resolve, reject) => {
             let product = await db.get().collection(collection.PRODUCTS_COLLECTION).updateOne({ _id: objectId(data.id) }, { $set: { productname: data.productname, productdiscription: data.productdiscription, productprice: data.productprice, productquantity: data.productquantity, productsize: data.productsize, productcolour: data.productcolour, productcategory: data.productcategory, productsubcategory: data.productsubcategory } })
 
@@ -166,6 +168,9 @@ module.exports = {
     },
 
     addProduct: (product) => {
+        product.productquantity = parseInt(product.productquantity)
+        product.productprice = parseInt(product.productprice)
+        
         return new Promise((resolve, reject) => {
 
             db.get().collection(collection.PRODUCTS_COLLECTION).insertOne(product).then((data) => {
