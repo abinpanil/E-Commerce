@@ -187,6 +187,17 @@ module.exports = {
             let products = await db.get().collection(collection.PRODUCTS_COLLECTION).find().toArray()
             resolve(products)
         })
+    },
+    getOrderforAdmin:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let orders = await db.get().collection(collection.ORDER_COLLECTION).find().toArray()
+            resolve(orders)
+        })
+    },
+    getProductdetailsfromOrder:(orderId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let 
+        })
     }
 
 }

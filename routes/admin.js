@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const adminHelpers = require('../helpers/admin-helpers')
 const fs = require('fs');
+const userHelpers = require('../helpers/user-helpers');
 
 let logErr = ""
 let pid = 123
@@ -78,9 +79,12 @@ router.get('/categories', varifyLogin, function (req, res) {
 })
 
 /* Get orders. */
-router.get('/orders', varifyLogin, function (req, res) {
-  res.render('./admin/orders', { admin, title: "Orders" })
+router.get('/orders', varifyLogin, async (req, res)=> {
+  let orders = await adminHelpers.getOrderforAdmin()
+  console.log(orders);
+  res.render('./admin/orders', { admin, title: "Orders", orders})
 })
+
 
 /* Get users. */
 router.get('/users', varifyLogin, function (req, res) {
@@ -416,7 +420,16 @@ router.get('/logout', function (req, res) {
   delete req.session.admin
   res.redirect('/admin')
 })
-// middleware
+
+
+// view more Orders
+router.post('/viewMoreOrders',async(req,res)=>{
+
+  console.log(req.body);
+  let orderDetails = userHelpers.getOrderedProduct(req.body.orderId)
+  console.log(orderDetails);
+
+})
 
 
 

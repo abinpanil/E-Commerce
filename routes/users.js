@@ -133,6 +133,16 @@ router.get('/checkout', varifyLogin, (req, res) => {
 })
 
 
+// order placed
+router.get('/order-placed',(req,res)=>{
+
+  adminHelpers.getCategory().then((data) => {
+    res.render('./user/order-placed', { admin, user, title: "Order Placed", data });
+    res.json({})
+  })
+})
+
+
 // product page
 router.get('/viewproduct/:_id', (req, res) => {
 
@@ -147,14 +157,17 @@ router.get('/viewproduct/:_id', (req, res) => {
 
 
 // Get view products
-router.get('/view-order/:_id',varifyLogin,(req,res)=>{
+router.get('/view-order/:_id',varifyLogin,async(req,res)=>{
 
-  userHelpers.getOrderedProduct(req.params._id).then((response)=>{
+   let orderDetail = await userHelpers.getOrderedProduct(req.params._id)
+   console.log("**************");
+    console.log(orderDetail);
+   console.log("**************");
 
     adminHelpers.getCategory().then((data) => {
-      res.render('./user/my_account', { admin, user, title: "My Account", data});
+      res.render('./user/view-order-details', { admin, user, title: "My Account", data,orderDetail});
     })
-  })
+  
 }) 
 
 
@@ -527,14 +540,12 @@ router.post('/place-order', async (req, res) => {
     totalPrice: totalPrice,
     products: products
   }
-  req.session.order = lastOrder
-  userHelpers.placeOrder(req.body, products, totalPrice, address, req.session.user._id).then((response) => {
-
-    console.log(response);
-    res.json({ status: true })
-  })
-  console.log(req.body);
-  console.log(req.session.user._id);
+  // req.session.order = lastOrder
+  await userHelpers.placeOrder(req.body, products, totalPrice, address, req.session.user._id)
+    console.log("donee");
+    res.redirect('/order-placed')
+    
+  
 })
 
 

@@ -5,8 +5,8 @@
         <div class="container">
             <ul class="breadcrumb shop-breadcrumb bb-no">
                 <li class="active"><a href="/">Shopping Cart</a></li>
-                <li><a href="">Checkout</a></li>
-                <li><a href="/cart">Order Complete</a></li>
+                <li><a href="javascript: void(0)">Checkout</a></li>
+                <li><a href="javascript: void(0)">Order Complete</a></li>
             </ul>
         </div>
     </nav>
@@ -27,7 +27,9 @@
                                 <th class="product-subtotal"><span>Subtotal</span></th>
                             </tr>
                         </thead>
+                        <%if(cart.length){%>
                         <tbody>
+                            
                             <%for(i=0;i<cart.length;i++){%>
                                 <tr id="tr_<%=cart[i].product._id%>">
                                     <td class="product-thumbnail">
@@ -64,12 +66,27 @@
                                         </div>
                                     </td>
                                     <td class="product-subtotal">
-                                        <span class="amount">RS.<span id="subtotal_<%=cart[i].product._id%>"><%=cart[i].subTotal%></span></span>
+                                        <span class="amount">RS.<span id="subtotal_<%=cart[i].product._id%>">
+                                                <%=cart[i].subTotal%>
+                                            </span></span>
                                     </td>
                                 </tr>
                                 <%}%>
                         </tbody>
+                        <%}else{%>
+
+                        </table>
+
+                            <div class="row justify-content-center">
+                                <div class="col-12 pt-5" style="min-height: 33vh; display: flex; justify-content: center; align-items: center;">
+                                    <h3 style="color: #696666;">Your cart is Empty...!</h3>
+                                </div>
+                            </div>
+
+                            <%}%>
                     </table>
+
+                    
 
                     <div class="cart-action mb-6">
                         <a href="/" class="btn btn-dark btn-rounded btn-icon-left btn-shopping mr-auto"><i
@@ -103,19 +120,19 @@
                                 </li>
                                 <li>
                                     <div class="pt-2">
-                                       
+
                                         <label for="free-shipping" class="custom-control-label color-dark">Free
                                             Shipping</label>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="pt-2">
-                                        
+
                                         <label for="local-pickup" class="custom-control-label color-dark">Local
                                             Pickup</label>
                                     </div>
                                 </li>
-                               
+
                             </ul>
 
 
@@ -123,10 +140,25 @@
                             <hr class="divider mb-6">
                             <div class="order-total d-flex justify-content-between align-items-center">
                                 <label>Total</label>
-                                <span class="ls-50">RS.<span id="total_price"><%=total%></span></span>
+                                <span class="ls-50">RS.<span id="total_price">
+                                        <%=total%>
+                                    </span></span>
                             </div>
-                            <a href="/checkout" class="btn btn-block btn-dark btn-icon-right btn-rounded  btn-checkout">
-                                Proceed to checkout<i class="w-icon-long-arrow-right"></i></a>
+                            <%if(cart.length){%>
+
+                                <a href="/checkout"
+                                    class="btn btn-block btn-dark btn-icon-right btn-rounded  btn-checkout">
+                                    Proceed to checkout<i class="w-icon-long-arrow-right"></i></a>
+
+                                <%}else{%>
+
+                                    <a href="javascript: void(0)" onclick="disabled()"
+                                        class="btn btn-block btn-dark btn-icon-right btn-rounded  btn-checkout">
+                                        Proceed to checkout<i class="w-icon-long-arrow-right"></i></a>
+
+                                    <%}%>
+                                        <!-- <a href="/checkout" class="btn btn-block btn-dark btn-icon-right btn-rounded  btn-checkout">
+                                Proceed to checkout<i class="w-icon-long-arrow-right"></i></a> -->
                         </div>
                     </div>
                 </div>
@@ -150,7 +182,15 @@
 
 <script>
 
-    
+    function disabled() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Your Cart is Empty..!',
+            footer: '<a href="/">Add products to Cart</a>'
+        })
+    }
+
 
 
     function removeCart(productId) {
@@ -220,7 +260,7 @@
                 }
                 $('#quantity_' + productId).val(quantity)
                 $('#total_price').html(response.total)
-                $('#subtotal_'+productId).html(response.subTotal)
+                $('#subtotal_' + productId).html(response.subTotal)
             }
 
         })

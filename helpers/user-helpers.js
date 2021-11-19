@@ -2,8 +2,10 @@ const db = require('../config/connection')
 const collection = require('../config/collections')
 const objectId = require('mongodb').ObjectId;
 const bcrypt = require('bcrypt');
+const moment = require('moment')
 const { PRODUCTS_COLLECTION } = require('../config/collections');
 const { response } = require('express');
+
 module.exports = {
 
     validate: (userData) => {
@@ -59,6 +61,7 @@ module.exports = {
             userData.password = await bcrypt.hash(userData.password, 10)
             userData.isActive = "Block"
             userData.blockStatus = "Active"
+            userData.date = new Date()
             console.log(userData);
             db.get().collection(collection.USERS_COLLECTION).insertOne(userData).then((data) => {
 
@@ -491,6 +494,7 @@ module.exports = {
                 ]
             ).toArray()
             console.log(order); 
+            resolve(order)
             
         })
     }
