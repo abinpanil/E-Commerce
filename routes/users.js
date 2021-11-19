@@ -5,6 +5,7 @@ const userHelpers = require('../helpers/user-helpers')
 const adminHelpers = require('../helpers/admin-helpers');
 const config = require('../auth/config');
 const { route } = require('./admin');
+const { Db } = require('mongodb');
 
 const serviceID = "	VAa5e077df7a059df1d1bae9a32df93ca9"
 const accountSID = "AC29e0de96271489ac12f1c32008d70906"
@@ -26,6 +27,7 @@ function varifyLogin(req, res, next) {
   if (req.session.user) {
     next()
   } else {
+    req.session.location = 'home'
     res.redirect('/login')
   }
 }
@@ -40,7 +42,7 @@ router.get('/', function (req, res, next) {
   console.log(req.session.user);
 
   if (req.session.user) {
-    
+
   } else {
     user.status = false
     user.name = ''
@@ -71,7 +73,6 @@ router.get('/login', function (req, res) {
     res.redirect('/')
 
   } else {
-
     adminHelpers.getCategory().then((data) => {
       res.render('./user/login', { admin, user, title: "Login", loginErr: "", data });
     })
@@ -81,12 +82,17 @@ router.get('/login', function (req, res) {
 
 
 /* GET Account page. */
-router.get('/my_account', function (req, res, next) {
+router.get('/myaccount',varifyLogin, async (req, res) => {
 
+  let orders = await userHelpers.getOrder(req.session.user._id)
+
+  console.log(orders);
   adminHelpers.getCategory().then((data) => {
-    res.render('./user/my_account', { admin, user, title: "My Account", data });
+    res.render('./user/my_account', { admin, user, title: "My Account", data ,orders});
   })
-});
+
+})
+
 
 /* GET cart. */
 router.get('/cart', varifyLogin, async (req, res) => {
@@ -94,10 +100,10 @@ router.get('/cart', varifyLogin, async (req, res) => {
   adminHelpers.getCategory().then((data) => {
     userHelpers.getCartProducts(req.session.user._id).then((cartItems) => {
       userHelpers.getTotalAmount(req.session.user._id).then((total) => {
-        
+
         let cart = cartItems
-        res.render('./user/cart', { admin, user, title: "Cart", data, cart ,total});
-        
+        res.render('./user/cart', { admin, user, title: "Cart", data, cart, total });
+
       })
     })
   })
@@ -113,15 +119,15 @@ router.get('/wishlist', function (req, res, next) {
 
 
 // GET Checkout
-router.get('/checkout',(req,res)=>{
+router.get('/checkout', varifyLogin, (req, res) => {
   adminHelpers.getCategory().then((data) => {
-    userHelpers.getAddress(req.session.user._id).then((address)=>{
-      userHelpers.getCartProducts(req.session.user._id).then((cartItems) =>{
+    userHelpers.getAddress(req.session.user._id).then((address) => {
+      userHelpers.getCartProducts(req.session.user._id).then((cartItems) => {
         userHelpers.getTotalAmount(req.session.user._id).then((total) => {
           let cart = cartItems
-          res.render('./user/checkout', { admin, user, title: "Checkout", data,address,cart,total });
+          res.render('./user/checkout', { admin, user, title: "Checkout", data, address, cart, total });
         })
-      }) 
+      })
     })
   })
 })
@@ -136,11 +142,21 @@ router.get('/viewproduct/:_id', (req, res) => {
 
       res.render('./user/product', { admin, user, title: "Product", data, products });
     })
-
   })
-
-
 })
+
+
+// Get view products
+router.get('/view-order/:_id',varifyLogin,(req,res)=>{
+
+  userHelpers.getOrderedProduct(req.params._id).then((response)=>{
+
+    adminHelpers.getCategory().then((data) => {
+      res.render('./user/my_account', { admin, user, title: "My Account", data});
+    })
+  })
+}) 
+
 
 /* Opt Load */
 router.get('/otpLoad', (req, res) => {
@@ -154,7 +170,7 @@ router.get('/otpLoad', (req, res) => {
 
 // Get list category products
 router.get('/listproductscat/:cat', function (req, res, next) {
-  console.log(req.params.cat);
+
   adminHelpers.getCategory().then((data) => {
     userHelpers.getCatProducts(req.params.cat).then((pro) => {
       res.render('./user/productlist', { admin, user, title: "Products", data, pro })
@@ -187,8 +203,8 @@ router.get('/listproductssubcat/:subcat/:cat', function (req, res, next) {
 
 
 // Get add new address
-router.get('/add_address',(req,res)=>{
-  
+router.get('/add_address', (req, res) => {
+
   adminHelpers.getCategory().then((data) => {
     res.render('./user/address', { admin, user, title: "Add Address", data });
   })
@@ -203,14 +219,27 @@ router.post('/login', function (req, res) {
 
 /* Sign in. */
 router.post('/signIn', function (req, res) {
-  userHelpers.doLogin(req.body).then((response) => {
+  console.log(req.session.location);
+  let data = {
+    username: req.body.username,
+    password: req.body.password
+  }
+  userHelpers.doLogin(data).then((response) => {
     if (response.status) {
       req.session.user = response.user
       user.status = true
       user.name = req.session.user.name
       logData = response
-      res.json({})
-      res.redirect('/')
+      if (req.session.product) {
+        userHelpers.addToCart(req.session.product, req.session.user._id).then(() => {
+
+          res.redirect('/')
+          res.json(response)
+        })
+      } else {
+        res.redirect('/')
+      }
+
     } else {
       res.json(response)
       res.redirect('/login')
@@ -400,11 +429,24 @@ router.post('/otpvalidate', (rcheckouteq, res) => {
 // add to cart
 router.post('/add-to-cart', (req, res) => {
 
-  let proId = req.body.proId  
-  let userId = req.session.user._id
-  userHelpers.addToCart(proId, userId).then(() => {
-    res.json({})
-  })
+  console.log(user.status);
+  let response = {}
+  if (user.status === true) {
+    console.log("innnn");
+    let proId = req.body.proId
+    let userId = req.session.user._id
+    userHelpers.addToCart(proId, userId).then(() => {
+      response.status = true
+      res.json(response)
+    })
+  } else {
+    response.status = false
+    console.log("outtt");
+    req.session.product = req.body.proId
+    res.json(response)
+
+  }
+
 })
 
 // product increment
@@ -412,11 +454,11 @@ router.post('/change-product-quantity', (req, res) => {
   console.log(req.body);
   userHelpers.changeProductQuantity(req.body).then((response) => {
     userHelpers.getTotalAmount(req.session.user._id).then((total) => {
-      userHelpers.getSubTotalAmount(req.body).then((subTotal)=>{
-       
+      userHelpers.getSubTotalAmount(req.body).then((subTotal) => {
+
         let response = {
-          total:total,
-          subTotal:subTotal.subTotal
+          total: total,
+          subTotal: subTotal.subTotal
         }
         console.log(response);
         res.json(response)
@@ -436,12 +478,12 @@ router.post('/removeCartProduct', (req, res) => {
 
 
 // add address
-router.post('/add_address',(req,res)=>{
+router.post('/add_address', (req, res) => {
 
   let newAddress = req.body
   newAddress.user = req.session.user._id
   console.log(newAddress);
-  userHelpers.addAddress(newAddress).then(()=>{
+  userHelpers.addAddress(newAddress).then(() => {
     res.redirect('/checkout')
     res.json({})
   })
@@ -449,10 +491,10 @@ router.post('/add_address',(req,res)=>{
 
 
 // update address
-router.post('/update_address',(req,res)=>{
+router.post('/update_address', (req, res) => {
 
   let updateAddress = req.body
-  userHelpers.editAddress(updateAddress).then(()=>{
+  userHelpers.editAddress(updateAddress).then(() => {
     res.redirect('/checkout')
     res.json({})
   })
@@ -460,17 +502,40 @@ router.post('/update_address',(req,res)=>{
 
 
 // delete address
-router.post('/deleteAddress',(req,res)=>{
+router.post('/deleteAddress', (req, res) => {
 
-  userHelpers.deleteAddress(req.body).then(()=>{
+  userHelpers.deleteAddress(req.body).then(() => {
     res.redirect('/checkout')
     res.json({})
   })
 })
 
-router.post('/cancel',(req,res)=>{
+router.post('/cancel', (req, res) => {
   res.redirect('/checkout')
-    res.json({})
+  res.json({})
 })
+
+
+// place order
+router.post('/place-order', async (req, res) => {
+
+  let products = await userHelpers.getCartProductForOrder(req.session.user._id)
+  let totalPrice = await userHelpers.getTotalAmount(req.session.user._id)
+  let address = await userHelpers.getAddressForOrder(req.body.address)
+  let lastOrder = {
+    address: address,
+    totalPrice: totalPrice,
+    products: products
+  }
+  req.session.order = lastOrder
+  userHelpers.placeOrder(req.body, products, totalPrice, address, req.session.user._id).then((response) => {
+
+    console.log(response);
+    res.json({ status: true })
+  })
+  console.log(req.body);
+  console.log(req.session.user._id);
+})
+
 
 module.exports = router;

@@ -159,18 +159,11 @@
                                         <a href="#" class="color" style="background-color: #333;"></a>
                                     </div> -->
                                 </div>
-                                <div class="product-form product-variation-form product-size-swatch">
-                                    <label class="mb-1">Size:</label>
-                                    <div class="flex-wrap d-flex align-items-center product-variations">
-                                        <a href="#" class="size"><%=products.productsize%></a>
-                                        
-                                    </div>
-                                   
-                                </div>
+
 
                                 <div class="fix-bottom product-sticky-content sticky-content">
                                     <div class=" product-form form-button container pb-2 ">
-                                        <button class="btn btn-primary btn-cart1">
+                                        <button  onclick="addToCart('<%=products._id%>')" class="btn btn-primary btn-cart1">
                                             <i class="w-icon-cart "></i>
                                             <span>Add to Cart</span>
                                         </button>
@@ -473,9 +466,36 @@
 <!-- Main JS File -->
 <script src="/user/js/main.min.js"></script> 
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 
+
+function addToCart(id) {
+
+console.log(id);
+$.ajax({
+    url: '/add-to-cart',
+    method: 'post',
+    data: { proId: id },
+    success: (response) => {
+        if(response.status){
+
+            Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Product Added to cart',
+                    showConfirmButton: false,
+                    timer: 1500
+            })
+        }else{
+            window.location.assign('/login')
+        }
+                
+    }
+})
+
+}
 
 
 // 1 zoom start

@@ -46,7 +46,7 @@
                                     <th>Subcategory</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
-                                    <th>Size</th>
+                                    
                                     <th class="text-end">Actions</th>
                                 </tr>
                             </thead>
@@ -74,11 +74,9 @@
                                         <td id="quan_<%=products[i]._id%>">
                                             <%=products[i].productquantity%>
                                         </td>
-                                        <td id="size_<%=products[i]._id%>">
-                                            <%=products[i].productsize%>
-                                        </td>
+                                        
                                         <td class="text-end"><a class="btn btn-outline-dark"
-                                                onclick="editProduct('<%=products[i]._id%>','<%=products[i].productname%>','<%=products[i].productdiscription%>','<%=products[i].productprice%>','<%=products[i].productquantity%>','<%=products[i].productsize%>','<%=products[i].productcolour%>','<%=products[i].productcategory%>','<%=products[i].productsubcategory%>','<%=products[i].producttitle%>')">Edit</a>
+                                                onclick="editProduct('<%=products[i]._id%>','<%=products[i].productname%>','<%=products[i].productdiscription%>','<%=products[i].productprice%>','<%=products[i].productquantity%>','<%=products[i].productcategory%>','<%=products[i].productsubcategory%>','<%=products[i].producttitle%>')">Edit</a>
                                             <a class="btn btn-outline-dark"
                                                 onclick="deleteProduct('<%=products[i]._id%>')">Delete</a>
                                         </td>
@@ -158,13 +156,14 @@
 
             function editval() {
 
+                console.log("called");
                 let productname = $('#product_name').val()
                 let producttitle = $('#product_title').val()
                 let productdiscription = $('#product_description').val()
                 let productprice = $('#product_price').val()
                 let productquantity = $('#product_quantity').val()
-                let productsize = $('#product_size').val()
-                let productcolour = $('#product_colour').val()
+                // let productsize = $('#product_size').val()
+                // let productcolour = $('#product_colour').val()
                 let productcategory = $('#getSubCat').val()
                 let productsubcategory = $('#subcategory').val()
 
@@ -259,34 +258,34 @@
                     }
                 }
                 // product size
-                let productSizeError = true;
+                // let productSizeError = true;
 
-                function validateProducSize() {
+                // function validateProducSize() {
 
-                    let productsize = $('#product_size').val()
-                    if (productsize.length == '') {
+                //     let productsize = $('#product_size').val()
+                //     if (productsize.length == '') {
 
-                        $('#product_size').css('border-color', '#f30000')
-                        $('#product_size').attr("placeholder", "Enter Size")
-                        productSizeError = false;
-                        return false;
+                //         $('#product_size').css('border-color', '#f30000')
+                //         $('#product_size').attr("placeholder", "Enter Size")
+                //         productSizeError = false;
+                //         return false;
 
-                    }
-                }
+                //     }
+                // }
                 // product colour
-                let productColourError = true;
+                // let productColourError = true;
 
-                function validateProducColour() {
+                // function validateProducColour() {
 
-                    let productcolour = $('#product_colour').val()
-                    if (productcolour.length == '') {
+                //     let productcolour = $('#product_colour').val()
+                //     if (productcolour.length == '') {
 
-                        $('#product_colour').css('border-color', '#f30000')
-                        $('#product_colour').attr("placeholder", "Enter Colour")
-                        productSizeError = false;
-                        return false;
-                    }
-                }
+                //         $('#product_colour').css('border-color', '#f30000')
+                //         $('#product_colour').attr("placeholder", "Enter Colour")
+                //         productSizeError = false;
+                //         return false;
+                //     }
+                // }
                 // product category
                 let productCategoryError = true;
 
@@ -321,12 +320,12 @@
                 validateProductDiscription()
                 validateProductPrice()
                 validateProducQuantity()
-                validateProducSize()
-                validateProducColour()
+                // validateProducSize()
+                // validateProducColour()
                 validateProducCategory()
                 validateProducSubCategory()
 
-                if (productNameError === true && productDisError === true && productPriceError === true && productQuantityError === true && productSizeError === true && productColourError === true && productSubCategoryError === true && productCategoryError === true && productTitleError === true) {
+                if (productNameError === true && productDisError === true && productPriceError === true && productQuantityError === true && productSubCategoryError === true && productCategoryError === true && productTitleError === true) {
 
                     return true
 
@@ -340,7 +339,9 @@
             }
 
 
-            function editProduct(id, name, discription, price, quantity, size, color, category, title) {
+            function editProduct(id, name, discription, price, quantity, category, title) {
+
+                console.log("ethyyyy");
 
                 let change = document.getElementById('table_change')
 
@@ -384,18 +385,7 @@
                                         <span style="color: red;" class="" id="quantitywarn"></span>
                                     </div>
                                     </div>
-                                    <div class="row gx-2">
-                                         <div class="col-sm-6 mb-3">
-                                            <label class="form-label">Size</label>
-                                            <input value="${size}" type="text" name="productsize" onchange="validateProducSize()" placeholder="Enter Size" class="form-control"
-                                                id="product_size" required>
-                                            </div>
-                                            <div class="col-sm-6 mb-3">
-                                                <label class="form-label">Colour</label>
-                                                <input value="${color}" type="text" name="productcolour" onchange="validateProducColour()" placeholder="Enter Colour"
-                                                    class="form-control" id="product_colour" required>
-                                            </div>
-                                        </div>
+                                    
                                         
                                         <div class="row gx-2">
                                             <div class="col-sm-6 mb-3">
@@ -481,8 +471,7 @@
                 let productdiscription = $('#product_description').val()
                 let productprice = $('#product_price').val()
                 let productquantity = $('#product_quantity').val()
-                let productsize = $('#product_size').val()
-                let productcolour = $('#product_colour').val()
+                
                 let productcategory = $('#getSubCat').val()
                 let productsubcategory = $('#subcategory').val()
 
@@ -565,35 +554,35 @@
                     }
                 }
                 // product size
-                let productSizeError = true;
+                // let productSizeError = true;
 
-                function validateProducSize() {
+                // function validateProducSize() {
 
-                    let productsize = $('#product_size').val()
-                    if (productsize.length == '') {
+                //     let productsize = $('#product_size').val()
+                //     if (productsize.length == '') {
 
-                        $('#product_size').css('border-color', '#f30000')
-                        $('#product_size').attr("placeholder", "Enter Size")
-                        productSizeError = false;
-                        return false;
+                //         $('#product_size').css('border-color', '#f30000')
+                //         $('#product_size').attr("placeholder", "Enter Size")
+                //         productSizeError = false;
+                //         return false;
 
-                    }
-                }
+                //     }
+                // }
                 // product colour
-                let productColourError = true;
+                // let productColourError = true;
 
-                function validateProducColour() {
+                // function validateProducColour() {
 
-                    let productcolour = $('#product_colour').val()
-                    if (productcolour.length == '') {
+                //     let productcolour = $('#product_colour').val()
+                //     if (productcolour.length == '') {
 
-                        $('#product_colour').css('border-color', '#f30000')
-                        $('#product_colour').attr("placeholder", "Enter Colour")
-                        productSizeError = false;
-                        return false;
+                //         $('#product_colour').css('border-color', '#f30000')
+                //         $('#product_colour').attr("placeholder", "Enter Colour")
+                //         productSizeError = false;
+                //         return false;
 
-                    }
-                }
+                //     }
+                // }
                 // product category
                 let productCategoryError = true;
 
@@ -631,8 +620,7 @@
                 validateProductDiscription()
                 validateProductPrice()
                 validateProducQuantity()
-                validateProducSize()
-                validateProducColour()
+         
                 validateProducCategory()
                 validateProducSubCategory()
 

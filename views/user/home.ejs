@@ -1,4 +1,3 @@
-
 <!-- Start of Main -->
 <main class="main">
     <section class="intro-section mb-6">
@@ -14,8 +13,8 @@
             <div class="swiper-wrapper">
                 <div class="swiper-slide banner banner-fixed intro-slide1">
                     <figure class="banner-media">
-                        <img src="/user/images/demos/demo15/sliders/slide-1.jpg" alt="Slide" width="1903"
-                            height="600" style="background-color: #DBDBDD;">
+                        <img src="/user/images/demos/demo15/sliders/slide-1.jpg" alt="Slide" width="1903" height="600"
+                            style="background-color: #DBDBDD;">
                     </figure>
                     <div class="banner-content x-50 y-50 text-center">
                         <h4 class="banner-date slide-animate" data-animation-options="{
@@ -51,12 +50,12 @@
                     <!-- End of .banner-content -->
                 </div>
                 <!-- End of .intro-slide1 -->
-                
+
                 <!-- End of .intro-slide2 -->
                 <div class="swiper-slide banner banner-fixed intro-slide3">
                     <figure class="banner-media">
-                        <img src="/user/images/demos/demo15/sliders/slide-3.jpg" alt="Slide" width="1903"
-                            height="600" style="background-color: #CECECE;">
+                        <img src="/user/images/demos/demo15/sliders/slide-3.jpg" alt="Slide" width="1903" height="600"
+                            style="background-color: #CECECE;">
                     </figure>
                     <div class="banner-content y-50 ml-4 mr-4">
                         <span class="d-block text-dark text-uppercase font-weight-normal slide-animate"
@@ -66,8 +65,7 @@
                             data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '.5s', 'delay': '.5s'}">
                             Summer Season
                         </h4>
-                        <h3 class="banner-title text-dark font-weight-bold slide-animate"
-                            data-animation-options="{
+                        <h3 class="banner-title text-dark font-weight-bold slide-animate" data-animation-options="{
                             'name': 'fadeInRightShorter',
                             'duration': '1s',
                             'delay': '.2s'
@@ -94,24 +92,24 @@
         <!-- End of .swiper-container -->
     </section>
     <!-- End of .intro-section -->
-    
-    <div class="container-fluid">
-       
 
-        
-            <div class="product-wrapper col-xl-12 col-md-12">
-                
-            </div>
+    <div class="container-fluid">
+
+
+
+        <div class="product-wrapper col-xl-12 col-md-12">
+
         </div>
-        <!-- End of Banner Product Wrapper -->
-        
-        <!-- End of Category Banner Wrapper -->
-        
+    </div>
+    <!-- End of Banner Product Wrapper -->
+
+    <!-- End of Category Banner Wrapper -->
+
     <!-- End of Banner Fashion -->
     <div class="container-fluid">
         <div class="title-link-wrapper latest-title after-none pt-6 mb-0 appear-animate">
             <h2 class="title font-size-xl mr-auto mb-3">Latest Products</h2>
-            
+
         </div>
         <div class="swiper-container swiper-theme pb-1 mb-8 appear-animate" data-swiper-options="{
             'spaceBetween': 20,
@@ -131,48 +129,52 @@
             }
             }">
             <div class="swiper-wrapper row cols-xl-8 cols-lg-6 cols-md-4 cols-2">
-               
+
                 <%for(var i=0;i<products.length;i++){%>
-                <div class="swiper-slide product-wrap">
-                    <div class="product text-center">
-                        <figure class="product-media">
-                            <a href="/viewproduct/<%=products[i]._id%>">
-                                <img src="/user/images/productImage/<%=products[i]._id%>1.jpg" alt="Product"
-                                    width="300" height="337">
-                                <img src="/user/images/productImage/<%=products[i]._id%>2.jpg" alt="Product"
-                                    width="300" height="337">
-                            </a>
-                            <div class="product-action-horizontal">
-                                <a onclick="addToCart('<%=products[i]._id%>')" class="btn-product-icon btn-cart w-icon-cart"
-                                    title="Add to cart"></a>
-                                <!-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                    <div class="swiper-slide product-wrap">
+                        <div class="product text-center">
+                            <figure class="product-media">
+                                <a href="/viewproduct/<%=products[i]._id%>">
+                                    <img src="/user/images/productImage/<%=products[i]._id%>1.jpg" alt="Product"
+                                        width="300" height="337">
+                                    <img src="/user/images/productImage/<%=products[i]._id%>2.jpg" alt="Product"
+                                        width="300" height="337">
+                                </a>
+                                <div class="product-action-horizontal">
+                                    <a onclick="addToCart('<%=products[i]._id%>')" class="btn-product-icon  w-icon-cart"
+                                        title="Add to cart"></a>
+                                    <!-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
                                     title="Wishlist"></a> -->
-                                
-                                <a href="#" class="btn-product-icon btn-compare w-icon-shipping"
-                                    title="Buy Now"></a>
-                            </div>
-                        </figure>
-                        <div class="product-details">
-                            <form action="/viewproduct/<%=products[i]._id%>" method="">
-                                <h4 class="product-name"><a href=""><%=products[i].productname%></a>
-                                </h4>
-                            </form>
-                            <div class="product-price">
-                                <h5><%=products[i].productprice%></h5>
-                                <!-- <ins class="new-price">$60.54</ins><del class="old-price"><b>RS.</b></del> -->
+
+                                    <a href="#" class="btn-product-icon w-icon-shipping"
+                                        title="Buy Now"></a>
+                                </div>
+                            </figure>
+                            <div class="product-details">
+                                <form action="/viewproduct/<%=products[i]._id%>" method="">
+                                    <h4 class="product-name"><a href="">
+                                            <%=products[i].productname%>
+                                        </a>
+                                    </h4>
+                                </form>
+                                <div class="product-price">
+                                    <h5>
+                                        <%=products[i].productprice%>
+                                    </h5>
+                                    <!-- <ins class="new-price">$60.54</ins><del class="old-price"><b>RS.</b></del> -->
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <%}%>
-                <!-- End of Product Wrap -->
-                
+                    <%}%>
+                        <!-- End of Product Wrap -->
+
             </div>
         </div>
         <!-- End of Banner Product Wrapper -->
-        
-       
-        
+
+
+
 
 </main>
 <!-- End of Main -->
@@ -197,17 +199,31 @@
 <!-- Main JS -->
 <script src="/user/js/main.min.js"></script>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 
 
-    function addToCart(id){
-       
+    function addToCart(id) {
+
+
         $.ajax({
-            url:'add-to-cart',
-            method:'post',
-            data:{proId:id},
-            success:()=>{
+            url: '/add-to-cart',
+            method: 'post',
+            data: { proId: id },
+            success: (response) => {
+                if(response.status){
+
+                    Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Product Added to cart',
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+                }else{
+                    window.location.assign('/login')
+                }
                 
             }
         })

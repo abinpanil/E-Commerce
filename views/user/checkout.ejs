@@ -17,7 +17,7 @@
     <div class="page-content" id="container">
         <div class="container">
 
-            <form class="form checkout-form" action="#" method="post">
+            <form class="form checkout-form" id="checkout-form" action="" method="post">
                 <div class="row mb-9">
                     <div class="col-lg-7 pr-lg-4 mb-4">
                         <div class="head pb-5">
@@ -28,9 +28,12 @@
                         </div>
                         <%for(var i=0;i<address.length;i++){%>
                         <div id="edit_<%=address[i]._id%>" class="ecommerce-address shipping-address pr-lg-8 pt-5">
-                            
-                            <div class="row">
-                                <div class="col-md-6">
+                       
+                            <div class="row align-items-center">
+                                <div class="col-md-1 col-1">
+                                    <input type="radio" name="address" value="<%=address[i]._id%>" checked>
+                                </div>
+                                <div class="col-md-5 col-11">
                                     <address class="mb-4">
                                         <table class="address-table">
                                             <tbody>
@@ -177,7 +180,7 @@
                                         </div>
                                         <div class="card">
                                             <div class="card-header">
-                                                <a href="#delivery" class="expand">Cash on delivery</a>
+                                                <label style="color: #6e6b6b; font-weight: 500;" for="" ><input type="radio" name="payment" value="Cash On Delivery" checked> Cash On Delivery</label>
                                             </div>
                                             <div id="delivery" class="card-body collapsed">
                                                 <p class="mb-0">
@@ -222,6 +225,23 @@
 
 
 <script>
+
+
+    $('#checkout-form').submit((e)=>{
+        e.preventDefault()
+        console.log("ethyyyyyyyyyy");
+        $.ajax({
+            url:'/place-order',
+            method:'post',
+            data:$('#checkout-form').serialize(),
+            success:(response)=>{
+                if(response.status){
+                    location.href('/order-placed')
+                }
+            }
+        })
+    })
+
 
     function deleteAddress(id){
 

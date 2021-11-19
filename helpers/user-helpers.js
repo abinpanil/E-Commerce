@@ -267,6 +267,11 @@ module.exports = {
     getTotalAmount: (userId) => {
 
         return new Promise(async (resolve, reject) => {
+
+            let checkPro = await db.get().collection(collection.CART_COLLECTION).findOne({user:objectId(userId)})
+
+            if(checkPro.products!=0){
+
             let total = await db.get().collection(collection.CART_COLLECTION).aggregate(
                 [
                     {
@@ -302,8 +307,12 @@ module.exports = {
                     }
                 ]
             ).toArray()
-            console.log(total[0].total);
-            resolve(total[0].total)
+           
+                resolve(total[0].total)
+            }else{
+                resolve(0)
+            }
+            
         })
     },
     getSubTotalAmount: (details) => {
@@ -386,6 +395,103 @@ module.exports = {
         return new Promise((resolve,reject)=>{
             db.get().collection(collection.ADDRESS_COLLECTION).deleteOne({_id:objectId(data.id)})
             resolve()
+        })
+    },
+    getCartProductForOrder:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let cart = await db.get().collection(collection.CART_COLLECTION).findOne({user:objectId(userId)})
+            resolve(cart.products)
+        })
+    },
+    getAddressForOrder:(addressId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let address =  await db.get().collection(collection.ADDRESS_COLLECTION).findOne({_id:objectId(addressId)})
+            resolve(address)
+        })
+    },
+    placeOrder:(order,products,totalPrice,address,user)=>{
+        return new Promise((resolve,reject)=>{
+            // console.log(order,products,totalPrice,address);
+            let status = order.payment==='Cash On Delivery'?'placed':'pending'
+            let orderObj = {
+                deliveryDetails:{
+                    name:address.name,
+                    address:address.address,
+                    town:address.town,
+                    zip:address.zip,
+                    state:address.state,
+                    mobile:address.mobile
+                },
+                userId:objectId(user),
+                paymentMethod:order.payment,
+                products:products,
+                status:status,
+                totalPrice:totalPrice,
+                date:new Date(),
+                displayDate:moment(new Date()).format('DD-MM-YYYY')
+            }
+            db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
+                db.get().collection(collection.CART_COLLECTION).updateOne({user:objectId(user)},{$set:{'products':[]}})
+                resolve(response)
+            })
+        })
+    },
+    getOrder:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let order = await db.get().collection(collection.ORDER_COLLECTION).find({userId:objectId(userId)}).toArray()
+
+            resolve(order)
+        })
+    },
+    getProductsforOrder:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let products = await db.get().collection(collection.PRODUCTS_COLLECTION).find().toArray()
+            resolve(products)
+        })
+    },
+    getOrderedProduct:(oredrId)=>{
+        console.log(oredrId);
+        return new Promise(async(resolve,reject)=>{
+            let order = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
+                [
+                    {
+                        $match: { _id: objectId(oredrId) }
+                    },
+                    {
+                        $unwind: '$products'
+                    },
+                    {
+                        $project: {
+                            status:1,
+                            deliveryDetails:1,
+                            date:1,
+                            totalPrice:1,
+                            item: '$products.item',
+                            quantity: '$products.quantity'
+                        }
+                    },
+                    { 
+                        $lookup: {
+                            from: collection.PRODUCTS_COLLECTION,
+                            localField: 'item',
+                            foreignField: '_id',
+                            as: 'product'
+                        }
+                    },
+                    {
+                        $project: {
+                            status:1, deliveryDetails:1, date:1, totalPrice:1, item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
+                        }
+                    },
+                    {
+                        $project: {
+                            status:1, deliveryDetails:1, date:1, totalPrice:1, item: 1, quantity: 1, product:1, subTotal: { $multiply: ['$quantity', '$product.productprice'] }
+                        }
+                    }
+                ]
+            ).toArray()
+            console.log(order); 
+            
         })
     }
 }

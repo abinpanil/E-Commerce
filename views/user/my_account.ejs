@@ -36,6 +36,9 @@
                     <li class="nav-item">
                         <a href="#account-details" class="nav-link">Account details</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#account-details" class="nav-link">Logout</a>
+                    </li>
                 </ul>
 
                 <div class="tab-content mb-6">
@@ -51,8 +54,7 @@
                         <p class="mb-4">
                             From your account dashboard you can view your <a href="#account-orders"
                                 class="text-primary link-to-tab">recent orders</a>,
-                            manage your <a href="#account-addresses" class="text-primary link-to-tab">shipping
-                                and billing
+                            manage your <a href="#account-addresses" class="text-primary link-to-tab">
                                 addresses</a>, and
                             <a href="#account-details" class="text-primary link-to-tab">edit your password and
                                 account details.</a>
@@ -112,7 +114,7 @@
                         <table class="shop-table account-orders-table mb-6">
                             <thead>
                                 <tr>
-                                    <th class="order-id">Order</th>
+                                    <th class="order-id">Address</th>
                                     <th class="order-date">Date</th>
                                     <th class="order-status">Status</th>
                                     <th class="order-total">Total</th>
@@ -120,62 +122,23 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <%for(i=0;i<orders.length;i++){%>
                                 <tr>
-                                    <td class="order-id">#2321</td>
-                                    <td class="order-date">August 20, 2021</td>
-                                    <td class="order-status">Processing</td>
+                                    <td class="order-id"><%=orders[i].deliveryDetails.name%>,<%=orders[i].deliveryDetails.address%>,<%=orders[i].deliveryDetails.town%></td>
+                                    <td class="order-date"><%=orders[i].displayDate%></td>
+                                    <td class="order-status"><%=orders[i].status%></td>
                                     <td class="order-total">
-                                        <span class="order-price">$121.00</span> for
-                                        <span class="order-quantity"> 1</span> item
+                                        <span class="order-price">RS.<%=orders[i].totalPrice%></span> 
                                     </td>
                                     <td class="order-action">
-                                        <a href="#"
-                                            class="btn btn-outline btn-default btn-block btn-sm btn-rounded">View</a>
+                                        <a href="/view-order/<%=orders[i]._id%>" class="btn btn-outline btn-default btn-block btn-sm btn-rounded">View</a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="order-id">#2321</td>
-                                    <td class="order-date">August 20, 2021</td>
-                                    <td class="order-status">Processing</td>
-                                    <td class="order-total">
-                                        <span class="order-price">$150.00</span> for
-                                        <span class="order-quantity"> 1</span> item
-                                    </td>
-                                    <td class="order-action">
-                                        <a href="#"
-                                            class="btn btn-outline btn-default btn-block btn-sm btn-rounded">View</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="order-id">#2319</td>
-                                    <td class="order-date">August 20, 2021</td>
-                                    <td class="order-status">Processing</td>
-                                    <td class="order-total">
-                                        <span class="order-price">$201.00</span> for
-                                        <span class="order-quantity"> 1</span> item
-                                    </td>
-                                    <td class="order-action">
-                                        <a href="#"
-                                            class="btn btn-outline btn-default btn-block btn-sm btn-rounded">View</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="order-id">#2318</td>
-                                    <td class="order-date">August 20, 2021</td>
-                                    <td class="order-status">Processing</td>
-                                    <td class="order-total">
-                                        <span class="order-price">$321.00</span> for
-                                        <span class="order-quantity"> 1</span> item
-                                    </td>
-                                    <td class="order-action">
-                                        <a href="#"
-                                            class="btn btn-outline btn-default btn-block btn-sm btn-rounded">View</a>
-                                    </td>
-                                </tr>
+                               <%}%>
                             </tbody>
                         </table>
 
-                        <a href="shop-banner-sidebar.html" class="btn btn-dark btn-rounded btn-icon-right">Go
+                        <a href="/" class="btn btn-dark btn-rounded btn-icon-right">Go
                             Shop<i class="w-icon-long-arrow-right"></i></a>
                     </div>
 
@@ -347,3 +310,23 @@
  <script src="/user/vendor/swiper/swiper-bundle.min.js"></script>
  <script src="/user/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
  <script src="/user/js/main.min.js"></script>
+
+
+
+
+ <script>
+
+
+    function viewOrder(orderId){
+
+
+        $.ajax({
+            url:'/view-order/'+orderId,
+            method:'get'
+        })
+
+
+    }
+
+
+ </script>
