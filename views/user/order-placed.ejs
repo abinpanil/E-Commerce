@@ -26,46 +26,57 @@
                         <h3>Order Summery</h3>
                     </div>
                 </div>
-                    <div class="col-sm-6 mb-6">
-                        <div class="ecommerce-address billing-address pr-lg-8">
-                            <h4 class="title title-underline ls-25 font-weight-bold">Shipping Address</h4>
-                            <address class="mb-4">
-                                <table class="address-table">
-                                    <tbody>
-                                        <tr>
-                                            <th>Name:</th>
-                                            <td>John Doe</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Company:</th>
-                                            <td>Conia</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Address:</th>
-                                            <td>Wall Street</td>
-                                        </tr>
-                                        <tr>
-                                            <th>City:</th>
-                                            <td>California</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Country:</th>
-                                            <td>United States (US)</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Postcode:</th>
-                                            <td>92020</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Phone:</th>
-                                            <td>1112223334</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </address>
+                    <div class="row align-items-center">
+                        <div class="col-sm-6 mb-6">
+                            <div class="ecommerce-address billing-address pr-lg-8">
+                                <h4 class="title title-underline ls-25 font-weight-bold">Shipping Address</h4>
+                                <address class="mb-4">
+                                    <table class="address-table">
+                                        <tbody>
+                                            <tr>
+                                                <th>Name:</th>
+                                                <td><%=order.address.name%></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Address:</th>
+                                                <td><%=order.address.address%></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Town:</th>
+                                                <td><%=order.address.town%></td>
+                                            </tr>
+                                            <tr>
+                                                <th>State:</th>
+                                                <td><%=order.address.state%></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Postcode:</th>
+                                                <td><%=order.address.zip%></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Phone:</th>
+                                                <td><%=order.address.mobile%></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </address>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <h5>Item Id: <span><%=order.products[0].item%></span></h5>
+                            <h5>Quantity: <span><%=order.products[0].quantity%></span></h5>
+                            <h5>Total Price: <span><%=order.totalPrice%></span></h5>
                         </div>
                     </div>
-              
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="cart-action mb-6" style="display: flex; flex-wrap: wrap;">
+                                <a href="/" class="btn btn-dark btn-rounded btn-icon-left btn-shopping mr-auto"><i class="w-icon-long-arrow-left"></i>Continue Shopping</a>
+                                <a href="/myaccount" class="btn btn-rounded btn-default btn-clear">View Orders</a>
+                                
+                            </div>
+                        </div>
+                    </div>
             </div>
             
         </div>

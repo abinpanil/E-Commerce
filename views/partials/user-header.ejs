@@ -38,7 +38,7 @@
                         <a href="#" class="mobile-menu-toggle  w-icon-hamburger" aria-label="menu-toggle">
                         </a>
                         <a href="/" class="logo ml-lg-0" style="padding-top: 8px;">
-                            <img src="/user/images/logo.png" alt="logo" width="40" height="13" />
+                            <img src="/user/images/logo.png" alt="logo" width="40" height="13" style="margin: auto;" />
                         </a>
                         <form method="get" action="#" class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper justify-content-end">
                             
@@ -59,7 +59,7 @@
                         <div class="dropdown cart-dropdown  mr-0 mr-lg-2">
                             <a href="/cart" class="cart-toggle label-down link">
                                 <i class="w-icon-cart">
-                                    <span class="cart-count">2</span>
+                                    <span class="cart-count"><%=cartCount%></span>
                                 </i>
                                 <span class="cart-label">Cart</span>
                             </a>
@@ -77,7 +77,7 @@
                         <div class="header-left"> 
                             <nav class="main-nav">  
                                 <ul class="menu active-underline">
-                                    
+                                   <%if(data){%> 
                                     <%for(var i=0;i<data.length;i++){%>
                                         
                                     <li>
@@ -93,6 +93,7 @@
                                         </ul>
                                         
                                     </li>
+                                    <%}%>
                                     <%}%>
                                     
                                 </ul>

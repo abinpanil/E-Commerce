@@ -14,10 +14,10 @@
 
     <!-- Start of PageContent -->
     <div class="page-content">
-        <div class="container">
+        <div class="container " id="">
             <div class="row gutter-lg mb-10" id="table_change">
                 <div class="col-lg-8 pr-lg-4 mb-6">
-                    <table class="shop-table cart-table">
+                    <table class="shop-table cart-table " id="container">
                         <thead>
                             <tr>
                                 <th class="product-name"><span>Product</span></th>
@@ -59,10 +59,12 @@
                                             <button
                                                 onclick="changeQuantity('<%=cart[i]._id%>','<%=cart[i].product._id%>',1)"
                                                 class="quantity-plus w-icon-plus quan_btn"></button>
+                                                <%if(cart[i].quantity > 1){%>
                                             <button
                                                 onclick="changeQuantity('<%=cart[i]._id%>','<%=cart[i].product._id%>',-1)"
                                                 id="minus_<%=cart[i].product._id%>"
                                                 class="quantity-minus w-icon-minus quan_btn"></button>
+                                                <%}%>
                                         </div>
                                     </td>
                                     <td class="product-subtotal">
@@ -233,6 +235,7 @@
 
 
     function changeQuantity(cartId, productId, count) {
+        
         let change = $('#tr_' + productId)
         $.ajax({
             url: '/change-product-quantity',
@@ -261,6 +264,11 @@
                 $('#quantity_' + productId).val(quantity)
                 $('#total_price').html(response.total)
                 $('#subtotal_' + productId).html(response.subTotal)
+                if(quantity === 1 || quantity === 2){
+
+                    $("#container").load(location.href + " #container");
+                    
+                }
             }
 
         })

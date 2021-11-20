@@ -10,12 +10,12 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Responsive Tables</h4>
+                                    <h4 class="mb-sm-0">Orders</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                                            <li class="breadcrumb-item active">Responsive Tables</li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                                            <li class="breadcrumb-item active">Orders</li>
                                         </ol>
                                     </div>
 
@@ -29,8 +29,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-rep-plugin">
-                                            <div class="table-responsive mb-0" data-pattern="priority-columns">
-                                                <table id="tech-companies-1" class="table table-striped">
+                                            <div class="table-responsive mb-0" data-pattern="priority-columns" id="change">
+                                                <table id="tech-companies-1" class="table table-striped"  >
                                                     <thead>
                                                     <tr>
                                                         <th>OrderId</th>
@@ -49,19 +49,24 @@
                                                         <td><%=orders[i].displayDate%></td>
                                                         <td><%=orders[i].deliveryDetails.name%></td>
                                                         <td><%=orders[i].totalPrice%></td>
+                                                        <%if(orders[i].status != 'cancel'){%>
                                                         <td>
-                                                            <select  class="form-select" name="productsubcategory">
+                                                            <select id="status_<%=orders[i]._id%>" onchange="status('<%=orders[i]._id%>')" class="form-select">
 
                                                                 <option><%=orders[i].status%></option>
-                                                                <option>Shipped</option>
-                                                                <option>Confirmed</option>
-                                                                <option>Delivered</option>
-                                                                <option>Cancel</option>
+                                                                <option>placed</option>
+                                                                <option>shipped</option>
+                                                                <option>confirmed</option>
+                                                                <option>delivered</option>
+                                                                <option>cancel</option>
                                             
-                                                              </select>
-                                                            </td>
+                                                            </select>
+                                                        </td>
+                                                        <%}else{%>
+                                                            <td><span style="color: red;"><b>Canceled</b></span></td>
+                                                        <%}%>
                                                         <td><%=orders[i].paymentMethod%></td>
-                                                        <td><a onclick="viewMore('<%=orders[i]._id%>')" class="btn btn-outline-dark">View More</a></td>
+                                                        <td><a href="/admin/viewMoreOrders/<%=orders[i]._id%>"  class="btn btn-outline-dark">View More</a></td>
                                                     </tr>
                                                     <%}%>
                                                     </tbody>
@@ -112,16 +117,24 @@
 
     <script>
 
+        function status(id){
 
-        function viewMore(orderId){
-
+            let status = $(`#status_${id}`).val()
             $.ajax({
-                url:'/admin/viewMoreOrders',
+                url:'/admin/change-status',
                 method:'post',
-                data:{orderId:orderId}
+                data:{
+                    orderId:id,
+                    status:status
+                },
+                success:()=>{
+                    $("#change").load(location.href + " #change");
+                    let change = document.getElementById(`status_${id}`).value = status
+                }
             })
 
         }
+        
 
 
     </script>

@@ -194,10 +194,12 @@ module.exports = {
             resolve(orders)
         })
     },
-    getProductdetailsfromOrder:(orderId)=>{
-        return new Promise(async(resolve,reject)=>{
-            let 
+    changeOrderStatus:(data)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId(data.orderId)},{$set:{status:data.status}})
+            resolve()
         })
     }
+    
 
 }

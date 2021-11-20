@@ -25,23 +25,23 @@
                     <div class="row gutter-sm">
                         <%for(i=0;i<orderDetail.length;i++){%>
                             <div class="row align-items-center pt-4 pb-4">
-                                
-                                    <div class="col-xs-3">
-                                        <a href="/viewproduct/<%=orderDetail[i].product._id%>">
+
+                                <div class="col-xs-3">
+                                    <a href="/viewproduct/<%=orderDetail[i].product._id%>">
                                         <img style="width: 115px;"
                                             src="/user/images/productImage/<%=orderDetail[i].product._id%>1.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-xs-9">
-                                        <h5>
-                                            <%=orderDetail[i].product.productname%>
-                                        </h5>
-                                        <h5>Price:<span> Rs.<%=orderDetail[i].product.productprice%></span></h5>
-                                        <h5>Quantity:<span>
-                                                <%=orderDetail[i].quantity%>
-                                            </span></h5>
-                                    </div>
-                                
+                                    </a>
+                                </div>
+                                <div class="col-xs-9">
+                                    <h5>
+                                        <%=orderDetail[i].product.productname%>
+                                    </h5>
+                                    <h5>Price:<span> Rs.<%=orderDetail[i].product.productprice%></span></h5>
+                                    <h5>Quantity:<span>
+                                            <%=orderDetail[i].quantity%>
+                                        </span></h5>
+                                </div>
+
                             </div>
                             <hr>
                             <%}%>
@@ -56,22 +56,22 @@
                         <div class="order-summary">
                             <div class="col5 order_address">
                                 <p><b>
-                                        <%=orderDetail[1].deliveryDetails.name%>
+                                        <%=orderDetail[0].deliveryDetails.name%>
                                     </b></p>
                                 <p>
-                                    <%=orderDetail[1].deliveryDetails.address%>
+                                    <%=orderDetail[0].deliveryDetails.address%>
                                 </p>
                                 <p>
-                                    <%=orderDetail[1].deliveryDetails.town%>
+                                    <%=orderDetail[0].deliveryDetails.town%>
                                 </p>
                                 <p>
-                                    <%=orderDetail[1].deliveryDetails.state%>
+                                    <%=orderDetail[0].deliveryDetails.state%>
                                 </p>
                                 <p>
-                                    <%=orderDetail[1].deliveryDetails.zip%>
+                                    <%=orderDetail[0].deliveryDetails.zip%>
                                 </p>
                                 <p>
-                                    <%=orderDetail[1].deliveryDetails.mobile%>
+                                    <%=orderDetail[0].deliveryDetails.mobile%>
                                 </p>
                             </div>
                         </div>
@@ -80,17 +80,29 @@
                             <div class="col5 order_address">
                                 <p>Shipping Charge :<b> Free</b></p>
                                 <p>Status :<b>
-                                        <%=orderDetail[1].status%>
+                                        <%=orderDetail[0].status%>
                                     </b></p>
-
                             </div>
                         </div>
                         <h3 class="title ls-10">Total Price : <span>
-                                <%=orderDetail[1].totalPrice%>
+                                <%=orderDetail[0].totalPrice%>
                             </span></h3>
-                        <div class="col-3 pt-5">
-                            <button class="btn btn-secondary btn-outline btn-rounded" onclick="cancelOrder('<%=orderDetail[1]._id%>')">Cancel Order</button>
-                        </div>
+
+                        <%if(orderDetail[0].status!="cancel"){%>
+
+                            <div id="cancel" class="col-5 pb-5 pt-5">
+                                <button class="btn btn-secondary btn-outline btn-rounded"
+                                    onclick="cancelOrder('<%=orderDetail[0]._id%>')">Cancel Order</button>
+
+                            </div>
+
+                            <%}else{%>
+
+                                <div class="col-5 pt-5 pb-5">
+                                    <h5><span style="color: red;">Order Canceled</span></h5>
+                                </div>
+
+                                <%}%>
                     </div>
                 </div>
             </div>
@@ -102,12 +114,52 @@
 <!-- End of Main -->
 
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 
-    function cancelOrder(id){
+    function cancelOrder(id) {
 
-         
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Are You sure!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Cancel'
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    url: '/cancel-order',
+                    method: 'post',
+                    data: { id: id },
+                    success: () => {
+
+                        document.getElementById('cancel').innerHTML = '<h5><span style="color: red;">Order Canceled</span></h5>'
+
+                        Swal.fire(
+                            'Canceled!',
+                            'Your Order canceled.',
+                            'success'
+                        )
+
+                    }
+                })
+
+            }
+
+
+        })
+
+
     }
+
+
+
+   
 
 </script>

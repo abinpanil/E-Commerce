@@ -81,7 +81,7 @@ router.get('/categories', varifyLogin, function (req, res) {
 /* Get orders. */
 router.get('/orders', varifyLogin, async (req, res)=> {
   let orders = await adminHelpers.getOrderforAdmin()
-  console.log(orders);
+  // console.log(orders);
   res.render('./admin/orders', { admin, title: "Orders", orders})
 })
 
@@ -423,12 +423,26 @@ router.get('/logout', function (req, res) {
 
 
 // view more Orders
-router.post('/viewMoreOrders',async(req,res)=>{
+router.get('/viewMoreOrders/:orderId',async(req,res)=>{
+  let id = req.params.orderId
+  console.log(id);
+  let orderDetail = await userHelpers.getOrderedProduct(req.params.orderId)
+  console.log('********');
+  console.log(orderDetail);
+  console.log('********');
 
-  console.log(req.body);
-  let orderDetails = userHelpers.getOrderedProduct(req.body.orderId)
-  console.log(orderDetails);
+  res.render('./admin/order-details', { admin, title: "Orders",orderDetail})
 
+})
+
+
+
+// change status
+router.post('/change-status',(req,res)=>{
+
+  adminHelpers.changeOrderStatus(req.body).then(()=>{
+    res.json({})
+  })
 })
 
 

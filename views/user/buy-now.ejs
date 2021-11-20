@@ -96,14 +96,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%for(i=0;i<cart.length;i++){%>
+                                        
                                         <tr class="bb-no">
-                                            <td class="product-name"><%=cart[i].product.producttitle%><i class="fas fa-times"></i>
-                                                <span class="product-quantity"><%=cart[i].quantity%></span>
+                                            <td class="product-name"><%=product.productname%><i class="fas fa-times"></i>
+                                                <span class="product-quantity">1</span>
                                             </td>
-                                            <td class="product-total">RS.<span><%=cart[i].subTotal%></span></td>
+                                            <td class="product-total">RS.<span><%=product.productprice%></span></td>
                                         </tr>
-                                        <%}%>
+                                        
                                         <!-- <tr class="cart-subtotal bb-no">
                                             <td>
                                                 <b>Subtotal</b>
@@ -145,7 +145,7 @@
                                                 <b>Total</b>
                                             </th>
                                             <td>
-                                                <b>RS.<span><%=total%></span></b>
+                                                <b>RS.<span><%=product.productprice%></span></b>
                                             </td>
                                         </tr>
                                     </tfoot>

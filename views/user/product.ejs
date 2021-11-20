@@ -139,7 +139,7 @@
                                         Reviews)</a> -->
                                 </div>
 
-                                <div class="product-short-desc">
+                                <div class="product-short-desc" style="min-height: 20vh;">
                                     <ul class="list-type-check list-style-none">
                                         <li>""</li>
                                         <li>""</li>
@@ -163,13 +163,19 @@
 
                                 <div class="fix-bottom product-sticky-content sticky-content">
                                     <div class=" product-form form-button container pb-2 ">
-                                        <button  onclick="addToCart('<%=products._id%>')" class="btn btn-primary btn-cart1">
-                                            <i class="w-icon-cart "></i>
-                                            <span>Add to Cart</span>
-                                        </button>
-                                        <button class="btn btn-dark btn-cart1">
-                                            Buy Now
-                                         </button>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <button  onclick="addToCart('<%=products._id%>')" class="btn btn-primary btn-cart1">
+                                                    <i class="w-icon-cart "></i>
+                                                    <span>Add to Cart</span>
+                                                </button>
+                                            </div>
+                                            <div class="col-6">
+                                                <a href="/product-buy-now/<%=products._id%>" class="btn btn-dark btn-cart1">
+                                                    Buy Now
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class=" form-button container">
                                         

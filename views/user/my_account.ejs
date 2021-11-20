@@ -45,10 +45,10 @@
                     <div class="tab-pane active in" id="account-dashboard">
                         <p class="greeting">
                             Hello
-                            <span class="text-dark font-weight-bold">John Doe</span>
-                            (not
-                            <span class="text-dark font-weight-bold">John Doe</span>?
-                            <a href="#" class="text-primary">Log out</a>)
+                            <span class="text-dark font-weight-bold">
+                                <%=user.name%>
+                            </span>
+
                         </p>
 
                         <p class="mb-4">
@@ -97,7 +97,7 @@
                                     </div>
                                 </a>
                             </div>
-                    
+
                         </div>
                     </div>
 
@@ -123,18 +123,36 @@
                             </thead>
                             <tbody>
                                 <%for(i=0;i<orders.length;i++){%>
-                                <tr>
-                                    <td class="order-id"><%=orders[i].deliveryDetails.name%>,<%=orders[i].deliveryDetails.address%>,<%=orders[i].deliveryDetails.town%></td>
-                                    <td class="order-date"><%=orders[i].displayDate%></td>
-                                    <td class="order-status"><%=orders[i].status%></td>
-                                    <td class="order-total">
-                                        <span class="order-price">RS.<%=orders[i].totalPrice%></span> 
-                                    </td>
-                                    <td class="order-action">
-                                        <a href="/view-order/<%=orders[i]._id%>" class="btn btn-outline btn-default btn-block btn-sm btn-rounded">View</a>
-                                    </td>
-                                </tr>
-                               <%}%>
+                                    <tr>
+                                        <td class="order-id pr-2">
+                                            <%=orders[i].deliveryDetails.name%>,<%=orders[i].deliveryDetails.address%>,
+                                                    <%=orders[i].deliveryDetails.town%>
+                                        </td>
+                                        <td class="order-date" style="align-items: center; vertical-align: middle;">
+                                            <%=orders[i].displayDate%>
+                                        </td>
+                                        <%if(orders[i].status !='cancel' ){%>
+                                            <td class="order-status"
+                                                style="align-items: center; vertical-align: middle;">
+                                                <%=orders[i].status%>
+                                            </td>
+                                            <%}else{%>
+                                                <td class="order-status"
+                                                    style="align-items: center; vertical-align: middle;"><span
+                                                        style="color: red;">
+                                                        <%=orders[i].status%>
+                                                    </span></td>
+                                                <%}%>
+                                                    <td class="order-total" style="align-items: center;">
+                                                        <span class="order-price">RS.<%=orders[i].totalPrice%></span>
+                                                    </td>
+                                                    <td class="order-action"
+                                                        style="align-items: center; vertical-align: middle;">
+                                                        <a href="/view-order/<%=orders[i]._id%>"
+                                                            class="btn btn-outline btn-default btn-block btn-sm btn-rounded">View</a>
+                                                    </td>
+                                    </tr>
+                                    <%}%>
                             </tbody>
                         </table>
 
@@ -144,96 +162,89 @@
 
 
                     <div class="tab-pane" id="account-addresses">
-                        <div class="icon-box icon-box-side icon-box-light">
-                            <span class="icon-box-icon icon-map-marker">
-                                <i class="w-icon-map-marker"></i>
-                            </span>
-                            <div class="icon-box-content">
-                                <h4 class="icon-box-title mb-0 ls-normal">Addresses</h4>
-                            </div>
-                        </div>
-                        <p>The following addresses will be used on the checkout page
-                            by default.</p>
+
+
                         <div class="row">
-                            <div class="col-sm-6 mb-6">
-                                <div class="ecommerce-address billing-address pr-lg-8">
-                                    <h4 class="title title-underline ls-25 font-weight-bold">Billing Address</h4>
-                                    <address class="mb-4">
-                                        <table class="address-table">
-                                            <tbody>
-                                                <tr>
-                                                    <th>Name:</th>
-                                                    <td>John Doe</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Company:</th>
-                                                    <td>Conia</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Address:</th>
-                                                    <td>Wall Street</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>City:</th>
-                                                    <td>California</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Country:</th>
-                                                    <td>United States (US)</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Postcode:</th>
-                                                    <td>92020</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Phone:</th>
-                                                    <td>1112223334</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </address>
-                                    <a href="#"
-                                        class="btn btn-link btn-underline btn-icon-right text-primary">Edit
-                                        your billing address<i class="w-icon-long-arrow-right"></i></a>
+                            <div class="col-lg-7 pr-lg-4 mb-4">
+                                <div class="head pb-5">
+                                    <h4 class="ls-10 pt-1 mb-0">
+                                        Address
+                                    </h4>
+                                    <p>The following addresses will be used on the checkout page
+                                        by default.</p>
                                 </div>
-                            </div>
-                            <div class="col-sm-6 mb-6">
-                                <div class="ecommerce-address shipping-address pr-lg-8">
-                                    <h4 class="title title-underline ls-25 font-weight-bold">Shipping Address</h4>
-                                    <address class="mb-4">
-                                        <table class="address-table">
-                                            <tbody>
-                                                <tr>
-                                                    <th>Name:</th>
-                                                    <td>John Doe</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Company:</th>
-                                                    <td>Conia</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Address:</th>
-                                                    <td>Wall Street</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>City:</th>
-                                                    <td>California</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Country:</th>
-                                                    <td>United States (US)</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Postcode:</th>
-                                                    <td>92020</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </address>
-                                    <a href="#"
-                                        class="btn btn-link btn-underline btn-icon-right text-primary">Edit your
-                                        shipping address<i class="w-icon-long-arrow-right"></i></a>
-                                </div>
+                                <%for(var i=0;i<address.length;i++){%>
+                                    <div id="edit_<%=address[i]._id%>"
+                                        class="ecommerce-address shipping-address pr-lg-8 pt-5">
+
+                                        <div class="row align-items-center">
+
+                                            <div class="col-md-5 col-11">
+                                                <address class="mb-4">
+                                                    <table class="address-table">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Name:</th>
+                                                                <td id="name_<%=address[i]._id%>">
+                                                                    <%=address[i].name%>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Address:</th>
+                                                                <td id="address_<%=address[i]._id%>">
+                                                                    <%=address[i].address%>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Town:</th>
+                                                                <td id="town_<%=address[i]._id%>">
+                                                                    <%=address[i].town%>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>State:</th>
+                                                                <td id="state_<%=address[i]._id%>">
+                                                                    <%=address[i].state%>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Postcode:</th>
+                                                                <td id="zip_<%=address[i]._id%>">
+                                                                    <%=address[i].zip%>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Mobile:</th>
+                                                                <td id="mobile_<%=address[i]._id%>">
+                                                                    <%=address[i].mobile%>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </address>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <a onclick="editAddress('<%=address[i]._id%>')"
+                                                    class="btn btn-link btn-underline btn-icon-right text-primary pt-5">Edit
+                                                    your
+                                                    shipping address<i class="w-icon-long-arrow-right"></i></a>
+                                                <a onclick="deleteAddress('<%=address[i]._id%>')"
+                                                    class="btn btn-link btn-underline btn-icon-right text-success pt-5">Delete
+                                                    Address<i class="w-icon-long-arrow-right"></i></a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <%}%>
+
+                                        <div class="new_address pt-5">
+                                            <a onclick="addressRow()"
+                                                class="btn btn-link btn-underline btn-icon-right text-primary">Add
+                                                New Address<i class="w-icon-long-arrow-right"></i></a>
+                                        </div>
+                                        <input id="identification" type="text" value="close" style="display: none;">
+                                        <div id="add_address_div"></div>
                             </div>
                         </div>
                     </div>
@@ -269,30 +280,32 @@
                                 <label for="display-name">Display name *</label>
                                 <input type="text" id="display-name" name="display_name" placeholder="John Doe"
                                     class="form-control form-control-md mb-0">
-                                <p>This will be how your name will be displayed in the account section and in reviews</p>
+                                <p>This will be how your name will be displayed in the account section and in reviews
+                                </p>
                             </div>
 
                             <div class="form-group mb-6">
                                 <label for="email_1">Email address *</label>
-                                <input type="email" id="email_1" name="email_1"
-                                    class="form-control form-control-md">
+                                <input type="email" id="email_1" name="email_1" class="form-control form-control-md">
                             </div>
-                          
+
                             <h4 class="title title-password ls-25 font-weight-bold">Password change</h4>
                             <div class="form-group">
-                                <label class="text-dark" for="cur-password">Current Password leave blank to leave unchanged</label>
-                                <input type="password" class="form-control form-control-md"
-                                    id="cur-password" name="cur_password">
+                                <label class="text-dark" for="cur-password">Current Password leave blank to leave
+                                    unchanged</label>
+                                <input type="password" class="form-control form-control-md" id="cur-password"
+                                    name="cur_password">
                             </div>
                             <div class="form-group">
-                                <label class="text-dark" for="new-password">New Password leave blank to leave unchanged</label>
-                                <input type="password" class="form-control form-control-md"
-                                    id="new-password" name="new_password">
-                              </div>
+                                <label class="text-dark" for="new-password">New Password leave blank to leave
+                                    unchanged</label>
+                                <input type="password" class="form-control form-control-md" id="new-password"
+                                    name="new_password">
+                            </div>
                             <div class="form-group mb-10">
                                 <label class="text-dark" for="conf-password">Confirm Password</label>
-                                <input type="password" class="form-control form-control-md"
-                                    id="conf-password" name="conf_password">
+                                <input type="password" class="form-control form-control-md" id="conf-password"
+                                    name="conf_password">
                             </div>
                             <button type="submit" class="btn btn-dark btn-rounded btn-sm mb-4">Save Changes</button>
                         </form>
@@ -305,28 +318,581 @@
 </main>
 <!-- End of Main -->
 
- <!-- Plugin JS File -->
- <script src="/user/vendor/jquery/jquery.min.js"></script>
- <script src="/user/vendor/swiper/swiper-bundle.min.js"></script>
- <script src="/user/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
- <script src="/user/js/main.min.js"></script>
+<!-- Plugin JS File -->
+<script src="/user/vendor/jquery/jquery.min.js"></script>
+<script src="/user/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/user/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="/user/js/main.min.js"></script>
 
 
 
 
- <script>
+<script>
 
 
-    function viewOrder(orderId){
-
+    function viewOrder(orderId) {
 
         $.ajax({
-            url:'/view-order/'+orderId,
-            method:'get'
+            url: '/view-order/' + orderId,
+            method: 'get'
         })
+    }
+
+
+
+
+
+    function deleteAddress(id) {
+
+        event.preventDefault()
+        $.ajax({
+            url: 'deleteAddress',
+            method: 'post',
+            data: { id: id },
+            success: () => {
+                $("#container").load(location.href + " #container");
+            }
+        })
+    }
+
+
+    function cancelEdit() {
+        event.preventDefault()
+        $.ajax({
+
+            url: '/cancel',
+            method: 'post',
+            success: () => {
+                $("#container").load(location.href + " #container");
+            }
+        })
+    }
+
+    function updateAddress(id) {
+
+        event.preventDefault()
+
+
+        // name validation
+        let nameError = true;
+
+        function validateName() {
+
+            let nameValue = $('#name').val()
+
+            if (nameValue.length == '') {
+
+                $('#name').css('border-color', '#c70d0d')
+                $('#name').attr("placeholder", "Enter Name")
+
+                nameError = false;
+                return false;
+            }
+        }
+
+        // address validation
+        let addressError = true;
+
+        function validateAddress() {
+
+            let adressValue = $('#adress').val()
+
+            if (adressValue.length == '') {
+
+                $('#adress').css('border-color', '#c70d0d')
+                $('#adress').attr("placeholder", "Enter Address")
+
+                addressError = false;
+                return false;
+            }
+        }
+
+        // town validation
+        let townError = true;
+
+        function validateTown() {
+
+            let townValue = $('#town').val()
+
+            if (townValue.length == '') {
+
+                $('#town').css('border-color', '#c70d0d')
+                $('#town').attr("placeholder", "Enter Town")
+
+                townError = false;
+                return false;
+            }
+        }
+
+        // zip validation
+        let zipError = true;
+
+        function validateZip() {
+
+            let regnum = new RegExp("^[0-9]+$");
+            let zipValue = $('#zip').val()
+
+            if (zipValue.length == '') {
+
+                $('#zip').css('border-color', '#c70d0d')
+                $('#zip').attr("placeholder", "Enter Zip")
+
+                zipError = false;
+                return false;
+            }
+            else if (!regnum.test(zipValue)) {
+
+                $('#zip').css('border-color', '#c70d0d')
+                $("#zip_warning").text('Enter Numbers Only')
+
+                mobileError = false;
+            }
+            else if (zipValue.length != 6) {
+
+                $('#zip').css('border-color', '#c70d0d')
+                $("#zip_warning").text('Enter a valid Zip')
+
+                mobileError = false;
+            }
+        }
+
+        // state validation
+        let stateError = true;
+
+        function validateState() {
+
+            let stateValue = $('#state').val()
+
+            if (stateValue.length == '') {
+
+                $('#state').css('border-color', '#c70d0d')
+                $('#state').attr("placeholder", "Enter State")
+
+                stateError = false;
+                return false;
+            }
+        }
+
+        // mobile validation
+        let mobileError = true;
+
+        function validateMobile() {
+
+            let regnum = new RegExp("^[0-9]+$");
+
+            let mobileValue = $('#mobile').val();
+
+            if (mobileValue.length == '') {
+
+                $('#mobile').css('border-color', '#c70d0d')
+                $('#mobile').attr("placeholder", "Enter Number")
+
+                mobileError = false;
+                return false;
+            } else if (!regnum.test(mobileValue)) {
+
+                $('#mobile').css('border-color', '#c70d0d')
+                $("#mobile_warning").text('Enter Numbers Only')
+
+                mobileError = false;
+            } else if (mobileValue.length != 10) {
+
+                $('#mobile').css('border-color', '#c70d0d')
+                $("#mobile_warning").text('Mobile number must Contain 10 Digit')
+
+                mobileError = false;
+            }
+
+        }
+
+
+        validateName()
+        validateAddress()
+        validateTown()
+        validateZip()
+        validateState()
+        validateMobile()
+
+        let updateAddress = {
+            name: $('#name').val(),
+            address: $('#adress').val(),
+            town: $('#town').val(),
+            zip: $('#zip').val(),
+            state: $('#state').val(),
+            mobile: $('#mobile').val(),
+            id: id
+        }
+
+        console.log(updateAddress);
+
+        if (mobileError === true && stateError === true && zipError === true && townError === true && addressError === true && nameError === true) {
+
+
+            $.ajax({
+                url: '/update_address',
+                method: 'post',
+                data: updateAddress,
+                success: () => {
+
+                    $("#container").load(location.href + " #container");
+
+                }
+            })
+        }
+
+    }
+
+    function editAddress(id) {
+
+        let name = $('#name_' + id).html()
+        let address = $('#address_' + id).html()
+        let town = $('#town_' + id).html()
+        let state = $('#state_' + id).html()
+        let zip = $('#zip_' + id).html()
+        let mobile = $('#mobile_' + id).html()
+
+        console.log(name);
+
+        let changediv = document.getElementById('edit_' + id)
+        changediv.innerHTML = `
+
+<div class=" mb-4 pt-5">
+                <h5 class="title billing-title ls-10 pt-1 pb-3 mb-0">
+                    Edit Address
+                </h5>
+                <div class="row gutter-sm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" class="form-control form-control-md" name="Name" value="${name}" id="name" placeholder="Enter Name">
+                        <p id="name_warning" style="color: red;"> </p>
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" class="form-control form-control-md" placeholder="Enter Address" value="${address}" id="adress" Address" name="address">
+                    <p id="address_warning" style="color: red;"> </p>
+                </div>
+                
+                
+                <div class="row gutter-sm">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Town / City *</label>
+                            <input type="text" class="form-control form-control-md" value="${town}" id="town" name="town" >
+                            <p id="town_warning" style="color: red;"> </p>
+                        </div>
+                        <div class="form-group">
+                            <label>ZIP *</label>
+                            <input type="text" class="form-control form-control-md" value="${zip}" id="zip" name="zip" >
+                            <p id="zip_warning" style="color: red;"> </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>State *</label>
+                            <input type="text" class="form-control form-control-md" value="${state}" id="state" name="state" >
+                            <p id="state_warning" style="color: red;"> </p>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone *</label>
+                            <input type="text" class="form-control form-control-md" value="${mobile}" id="mobile" name="phone" >
+                            <p id="mobile_warning" style="color: red;"> </p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end pt-3">
+                        <div class="col-6 col-md-3 float-right">
+                            <div class="form-group">
+                                
+                                <button onclick="cancelEdit()" class="btn btn-outline-dark btn-block btn-rounded">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 float-right">
+                            <div class="form-group">
+                               
+                                <button onclick="updateAddress('${id}')" class="btn btn-dark btn-block btn-rounded">Save</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+`
 
 
     }
 
 
- </script>
+
+
+
+    function addAddress() {
+
+        event.preventDefault()
+
+        // name validation
+        let nameError = true;
+
+        function validateName() {
+
+            let nameValue = $('#name').val()
+
+            if (nameValue.length == '') {
+
+                $('#name').css('border-color', '#c70d0d')
+                $('#name').attr("placeholder", "Enter Name")
+
+                nameError = false;
+                return false;
+            }
+        }
+
+        // address validation
+        let addressError = true;
+
+        function validateAddress() {
+
+            let adressValue = $('#adress').val()
+
+            if (adressValue.length == '') {
+
+                $('#adress').css('border-color', '#c70d0d')
+                $('#adress').attr("placeholder", "Enter Address")
+
+                addressError = false;
+                return false;
+            }
+        }
+
+        // town validation
+        let townError = true;
+
+        function validateTown() {
+
+            let townValue = $('#town').val()
+
+            if (townValue.length == '') {
+
+                $('#town').css('border-color', '#c70d0d')
+                $('#town').attr("placeholder", "Enter Town")
+
+                townError = false;
+                return false;
+            }
+        }
+
+        // zip validation
+        let zipError = true;
+
+        function validateZip() {
+
+            let regnum = new RegExp("^[0-9]+$");
+            let zipValue = $('#zip').val()
+
+            if (zipValue.length == '') {
+
+                $('#zip').css('border-color', '#c70d0d')
+                $('#zip').attr("placeholder", "Enter Zip")
+
+                zipError = false;
+                return false;
+            }
+            else if (!regnum.test(zipValue)) {
+
+                $('#zip').css('border-color', '#c70d0d')
+                $("#zip_warning").text('Enter Numbers Only')
+
+                mobileError = false;
+            }
+            else if (zipValue.length != 6) {
+
+                $('#zip').css('border-color', '#c70d0d')
+                $("#zip_warning").text('Enter a valid Zip')
+
+                mobileError = false;
+            }
+        }
+
+        // state validation
+        let stateError = true;
+
+        function validateState() {
+
+            let stateValue = $('#state').val()
+
+            if (stateValue.length == '') {
+
+                $('#state').css('border-color', '#c70d0d')
+                $('#state').attr("placeholder", "Enter State")
+
+                stateError = false;
+                return false;
+            }
+        }
+
+        // mobile validation
+        let mobileError = true;
+
+        function validateMobile() {
+
+            let regnum = new RegExp("^[0-9]+$");
+
+            let mobileValue = $('#mobile').val();
+
+            if (mobileValue.length == '') {
+
+                $('#mobile').css('border-color', '#c70d0d')
+                $('#mobile').attr("placeholder", "Enter Number")
+
+                mobileError = false;
+                return false;
+            } else if (!regnum.test(mobileValue)) {
+
+                $('#mobile').css('border-color', '#c70d0d')
+                $("#mobile_warning").text('Enter Numbers Only')
+
+                mobileError = false;
+            } else if (mobileValue.length != 10) {
+
+                $('#mobile').css('border-color', '#c70d0d')
+                $("#mobile_warning").text('Mobile number must Contain 10 Digit')
+
+                mobileError = false;
+            }
+
+        }
+
+
+        validateName()
+        validateAddress()
+        validateTown()
+        validateZip()
+        validateState()
+        validateMobile()
+
+        let newAddress = {
+            name: $('#name').val(),
+            address: $('#adress').val(),
+            town: $('#town').val(),
+            zip: $('#zip').val(),
+            state: $('#state').val(),
+            mobile: $('#mobile').val()
+        }
+
+        if (mobileError === true && stateError === true && zipError === true && townError === true && addressError === true && nameError === true) {
+
+            console.log(newAddress);
+            $.ajax({
+                url: '/add_address',
+                method: 'post',
+                data: newAddress,
+                success: () => {
+
+                    $("#container").load(location.href + " #container");
+
+                }
+            })
+        }
+
+    }
+
+
+    function cancel() {
+        event.preventDefault()
+        let address_space = document.getElementById('add_address_div')
+
+        address_space.innerHTML = ""
+    }
+
+
+    function addressRow() {
+
+        let identity = document.getElementById('identification').value
+
+        if (identity === "close") {
+
+            identity.value = "open"
+            let address_space = document.getElementById('add_address_div')
+
+            address_space.innerHTML = `
+<hr>
+<div class=" mb-4 pt-5">
+                <h5 class="title billing-title ls-10 pt-1 pb-3 mb-0">
+                    Add New Address
+                </h5>
+                <div class="row gutter-sm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" class="form-control form-control-md" name="Name" id="name" placeholder="Enter Name">
+                        <p id="name_warning" style="color: red;"> </p>
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" class="form-control form-control-md" placeholder="Enter Address" id="adress" Address" name="address">
+                    <p id="address_warning" style="color: red;"> </p>
+                </div>
+                
+                
+                <div class="row gutter-sm">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Town / City *</label>
+                            <input type="text" class="form-control form-control-md" id="town" name="town" >
+                            <p id="town_warning" style="color: red;"> </p>
+                        </div>
+                        <div class="form-group">
+                            <label>ZIP *</label>
+                            <input type="text" class="form-control form-control-md" id="zip" name="zip" >
+                            <p id="zip_warning" style="color: red;"> </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>State *</label>
+                            <input type="text" class="form-control form-control-md" id="state" name="state" >
+                            <p id="state_warning" style="color: red;"> </p>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone *</label>
+                            <input type="text" class="form-control form-control-md" id="mobile" name="phone" >
+                            <p id="mobile_warning" style="color: red;"> </p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end pt-3">
+                        <div class="col-6 col-md-3 float-right">
+                            <div class="form-group">
+                                
+                                <button onclick="cancel()" class="btn btn-outline-dark btn-block btn-rounded">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 float-right">
+                            <div class="form-group">
+                               
+                                <button onclick="addAddress()" class="btn btn-dark btn-block btn-rounded">Save</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+`
+        } else {
+
+            let address_space = document.getElementById('add_address_div')
+
+            identity.value = "close"
+
+            address_space.innerHTML = ""
+        }
+
+    }
+
+
+
+
+
+</script>

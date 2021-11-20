@@ -1,0 +1,218 @@
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Order Details</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                                <li class="breadcrumb-item active"><a href="/admin/orders">Ordes</a></li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4"  id="change">
+                <div class="card-body">
+
+
+
+                    <div class="row mb-9" >
+                        <div class="col-lg-7 pr-lg-4 mb-4" >
+                            <h3 class="title billing-title text-uppercase ls-10 pt-1 pb-3 mb-0">
+                                Order Details
+                            </h3>
+
+                            <div class="row gutter-sm">
+                                <%for(i=0;i<orderDetail.length;i++){%>
+                                    <div class="row align-items-center g-2 pt-4 pb-4">
+
+                                        <div class="col-sm-2">
+                                            <a href="/viewproduct/<%=orderDetail[i].product._id%>" target="_blank">
+                                                <img style="width: 115px;"
+                                                    src="/user/images/productImage/<%=orderDetail[i].product._id%>1.jpg"
+                                                    alt="">
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <h5>
+                                                <%=orderDetail[i].product.productname%>
+                                            </h5>
+                                            <h5>Price:<span> Rs.<%=orderDetail[i].product.productprice%></span></h5>
+                                            <h5>Quantity:<span>
+                                                    <%=orderDetail[i].quantity%>
+                                                </span></h5>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <%}%>
+                            </div>
+
+
+
+                        </div>
+                        <div class="col-lg-5 mb-4 sticky-sidebar-wrapper" >
+                            <div class="order-summary-wrapper sticky-sidebar">
+
+                                <%if(orderDetail[0].status!="cancel"){%>
+
+                                    <div class="col-3 pt-5 pb-5">
+                                        <p><b>Change Status</b></p>
+                                        <select class="form-select" id="status_<%=orderDetail[0]._id%>"
+                                            onchange="status('<%=orderDetail[0]._id%>')">
+                                            <option>
+                                                <%=orderDetail[0].status%>
+                                            </option>
+                                            <option>placed</option>
+                                            <option>shipped</option>
+                                            <option>confirmed</option>
+                                            <option>delivered</option>
+                                            <option>cancel</option>
+                                        </select>
+                                    </div>
+
+                                    <%}else{%>
+
+                                        <div class="col-3 pt-5 pb-5">
+                                            <h5><span style="color: red;">Order Canceled</span></h5>
+                                        </div>
+
+                                        <%}%>
+
+                                            <h3 class="title text-uppercase ls-10">Shipping Address</h3>
+                                            <div class="order-summary">
+                                                <div class="col-5 order_address">
+                                                    <p><b>
+                                                            <%=orderDetail[0].deliveryDetails.name%>
+                                                        </b></p>
+                                                    <p>
+                                                        <%=orderDetail[0].deliveryDetails.address%>
+                                                    </p>
+                                                    <p>
+                                                        <%=orderDetail[0].deliveryDetails.town%>
+                                                    </p>
+                                                    <p>
+                                                        <%=orderDetail[0].deliveryDetails.state%>
+                                                    </p>
+                                                    <p>
+                                                        <%=orderDetail[0].deliveryDetails.zip%>
+                                                    </p>
+                                                    <p>
+                                                        <%=orderDetail[0].deliveryDetails.mobile%>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <h5></h5>
+                                            <div class="order-summary pb-5">
+                                                <div class="col5 order_address">
+                                                    <p>Shipping Charge :<b> Free</b></p>
+
+                                                    <%if(orderDetail[0].status != 'cancel'){%>
+                                                    <p>Status :<b>
+                                                            <%=orderDetail[0].status%>
+                                                        </b></p>
+                                                        <%}else{%>
+
+                                                            <p>Status :<span style="color: red;">
+                                                                <b>
+                                                                    Order Canceled
+                                                                </b>
+                                                            </span></p>
+
+                                                        <%}%>
+
+                                                </div>
+                                            </div>
+                                            <h3 class="title ls-10">Total Price : <span>
+                                                    <%=orderDetail[0].totalPrice%>
+                                                </span></h3>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div> <!-- card-body end// -->
+            </div>
+        </div>
+        <!-- End Page-content -->
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+<!-- JAVASCRIPT -->
+<script src="/admin/libs/jquery/jquery.min.js"></script>
+
+<script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/libs/simplebar/simplebar.min.js"></script>
+
+<!-- apexcharts js -->
+<script src="/admin/libs/apexcharts/apexcharts.min.js"></script>
+
+<!-- jquery.vectormap map -->
+<script src="/admin/libs/jqvmap/jquery.vmap.min.js"></script>
+<script src="/admin/libs/jqvmap/maps/jquery.vmap.usa.js"></script>
+
+<script src="/admin/js/pages/dashboard.init.js"></script>
+
+<script src="/admin/js/app.js"></script>
+
+</body>
+
+<!-- card end// -->
+
+<!-- ajax -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+
+<!-- JAVASCRIPT -->
+<script src="/admin/libs/jquery/jquery.min.js"></script>
+<script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/libs/metismenu/metisMenu.min.js"></script>
+<script src="/admin/libs/simplebar/simplebar.min.js"></script>
+<!-- <script src="/admin/libs/node-waves/waves.min.js"></script>     -->
+
+
+<script src="/admin/js/app.js"></script>
+
+
+
+<script>
+
+
+
+    function status(id) {
+
+        let status = $(`#status_${id}`).val()
+        $.ajax({
+            url: '/admin/change-status',
+            method: 'post',
+            data: {
+                orderId: id,
+                status: status
+            },
+            success: () => {
+                $("#change").load(location.href + " #change");
+                let change = document.getElementById(`status_${id}`).value = status
+            }
+        })
+
+    }
+
+
+
+</script>
