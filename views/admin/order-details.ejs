@@ -66,29 +66,33 @@
                         <div class="col-lg-5 mb-4 sticky-sidebar-wrapper" >
                             <div class="order-summary-wrapper sticky-sidebar">
 
-                                <%if(orderDetail[0].status!="cancel"){%>
-
+                                <%if(orderDetail[0].status ==="cancel"){%>
                                     <div class="col-3 pt-5 pb-5">
-                                        <p><b>Change Status</b></p>
-                                        <select class="form-select" id="status_<%=orderDetail[0]._id%>"
-                                            onchange="status('<%=orderDetail[0]._id%>')">
-                                            <option>
-                                                <%=orderDetail[0].status%>
-                                            </option>
-                                            <option>placed</option>
-                                            <option>shipped</option>
-                                            <option>confirmed</option>
-                                            <option>delivered</option>
-                                            <option>cancel</option>
-                                        </select>
+                                        <h5><span style="color: red;">Order Canceled</span></h5>
                                     </div>
-
-                                    <%}else{%>
+                                    
+                                    <%}else if(orderDetail[0].status ==="delivered"){%>
 
                                         <div class="col-3 pt-5 pb-5">
-                                            <h5><span style="color: red;">Order Canceled</span></h5>
+                                            <h5><span style="color: rgb(102, 255, 0);">Delivered</span></h5>
                                         </div>
 
+                                        <%}else{%>
+                                            <div class="col-3 pt-5 pb-5">
+                                                <p><b>Change Status</b></p>
+                                                <select class="form-select" id="status_<%=orderDetail[0]._id%>"
+                                                    onchange="status('<%=orderDetail[0]._id%>')">
+                                                    <option>
+                                                        <%=orderDetail[0].status%>
+                                                    </option>
+                                                    <option>placed</option>
+                                                    <option>shipped</option>
+                                                    <option>confirmed</option>
+                                                    <option>delivered</option>
+                                                    <option>cancel</option>
+                                                </select>
+                                            </div>
+        
                                         <%}%>
 
                                             <h3 class="title text-uppercase ls-10">Shipping Address</h3>

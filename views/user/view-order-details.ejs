@@ -85,22 +85,30 @@
                             </div>
                         </div>
                         <h3 class="title ls-10">Total Price : <span>
-                                <%=orderDetail[0].totalPrice%>
+                                    <%=orderDetail[0].totalPrice%>
                             </span></h3>
 
-                        <%if(orderDetail[0].status!="cancel"){%>
+                        <%if(orderDetail[0].status==="cancel"){%>
 
-                            <div id="cancel" class="col-5 pb-5 pt-5">
-                                <button class="btn btn-secondary btn-outline btn-rounded"
-                                    onclick="cancelOrder('<%=orderDetail[0]._id%>')">Cancel Order</button>
-
+                            <div class="col-5 pt-5 pb-5">
+                                <h5><span style="color: red;">Order Canceled</span></h5>
                             </div>
 
-                            <%}else{%>
+                            <%}else if(orderDetail[0].status == "delivered" ){%>
 
                                 <div class="col-5 pt-5 pb-5">
-                                    <h5><span style="color: red;">Order Canceled</span></h5>
+                                    <h5><span style="color: rgb(72, 255, 0);">Delivered</span></h5>
                                 </div>
+                                
+
+                                <%}else{%>
+
+                                    <div id="cancel" class="col-5 pb-5 pt-5">
+                                        <button class="btn btn-secondary btn-outline btn-rounded"
+                                            onclick="cancelOrder('<%=orderDetail[0]._id%>')">Cancel Order</button>
+        
+                                    </div>
+                                    
 
                                 <%}%>
                     </div>
@@ -128,7 +136,7 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Cancel'
+            confirmButtonText: 'Yes'
         }).then((result) => {
 
             if (result.isConfirmed) {

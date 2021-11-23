@@ -49,21 +49,24 @@
                                                         <td><%=orders[i].displayDate%></td>
                                                         <td><%=orders[i].deliveryDetails.name%></td>
                                                         <td><%=orders[i].totalPrice%></td>
-                                                        <%if(orders[i].status != 'cancel'){%>
-                                                        <td>
-                                                            <select id="status_<%=orders[i]._id%>" onchange="status('<%=orders[i]._id%>')" class="form-select">
-
-                                                                <option><%=orders[i].status%></option>
-                                                                <option>placed</option>
-                                                                <option>shipped</option>
-                                                                <option>confirmed</option>
-                                                                <option>delivered</option>
-                                                                <option>cancel</option>
-                                            
-                                                            </select>
-                                                        </td>
-                                                        <%}else{%>
+                                                        <%if(orders[i].status === 'cancel'){%>
                                                             <td><span style="color: red;"><b>Canceled</b></span></td>
+                                                        <%}else if(orders[i].status === 'delivered' ){%>
+                                                            <td><span style="color: rgb(39, 214, 23);"><b>Delivered</b></span></td>
+                                                        <%}else{%>
+                                                            <td>
+                                                                <select id="status_<%=orders[i]._id%>" onchange="status('<%=orders[i]._id%>')" class="form-select">
+    
+                                                                    <option><%=orders[i].status%></option>
+                                                                    <option>placed</option>
+                                                                    <option>shipped</option>
+                                                                    <option>confirmed</option>
+                                                                    <option>delivered</option>
+                                                                    <option>cancel</option>
+                                                
+                                                                </select>
+                                                            </td>
+                                                        
                                                         <%}%>
                                                         <td><%=orders[i].paymentMethod%></td>
                                                         <td><a href="/admin/viewMoreOrders/<%=orders[i]._id%>"  class="btn btn-outline-dark">View More</a></td>

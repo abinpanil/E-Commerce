@@ -17,7 +17,7 @@
     <div class="page-content" id="container">
         <div class="container">
 
-            <form class="form checkout-form" onsubmit="return submitform()" id="checkout-form" action="place-order" method="post">
+            <form class="form checkout-form" onsubmit="return submitform()" id="checkout-form" action="/place-order-direct" method="post">
                 <div class="row mb-9">
                     <div class="col-lg-7 pr-lg-4 mb-4">
                         <div class="head pb-5">
@@ -102,6 +102,8 @@
                                                 <span class="product-quantity">1</span>
                                             </td>
                                             <td class="product-total">RS.<span><%=product.productprice%></span></td>
+                                            <input type="text" name="product" value="<%=product._id%>" style="display: none;">
+                                            <input type="text" name="quantity" value=1 style="display: none;">
                                         </tr>
                                         
                                         <!-- <tr class="cart-subtotal bb-no">

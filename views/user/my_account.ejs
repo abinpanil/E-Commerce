@@ -1,3 +1,6 @@
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+
+
 <!-- Start of Main -->
 <main class="main">
     <!-- Start of Page Header -->
@@ -258,57 +261,49 @@
                                 <h4 class="icon-box-title mb-0 ls-normal">Account Details</h4>
                             </div>
                         </div>
-                        <form class="form account-details-form" action="#" method="post">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="firstname">First name *</label>
-                                        <input type="text" id="firstname" name="firstname" placeholder="John"
-                                            class="form-control form-control-md">
+
+                        <div class="inner pt-5" id="inner">
+                            <h4 class="title title-password ls-25 font-weight-bold" id="edit_heading"></h4>
+                            <form class="form account-details-form" action="#" method="post">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Full Name *</label>
+                                            <input type="text" class="form-control your-class"
+                                                value="<%=userDetails[0].name%>" name="name" id="edit_name" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label id="ulabel">username *</label>
+                                            <input type="text" class="form-control your-class"
+                                                value="<%=userDetails[0].username%>" name="username" id="edit_username"
+                                                disabled>
+                                            <p id="username_warning" style="color: red;"> </p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="lastname">Last name *</label>
-                                        <input type="text" id="lastname" name="lastname" placeholder="Doe"
-                                            class="form-control form-control-md">
-                                    </div>
+                                <div class="form-group mb-3">
+                                    <label>Mobile *</label>
+                                    <input type="text" class="form-control your-class"
+                                        value="<%=userDetails[0].mobile%>" name="mobile" id="edit_mobile" disabled>
+                                    <span style="color: red;" id="mobilewarn" class=""></span>
+                                    <p id="mobile_warning" style="color: red;"> </p>
                                 </div>
-                            </div>
+                                <div class="form-group mb-6">
+                                    <label>Email *</label>
+                                    <input type="text" class="form-control your-class" value="<%=userDetails[0].email%>"
+                                        name="email" id="edit_email" disabled>
+                                    <span style="color: red;" id="emailwarn" class=""></span>
+                                    <p id="email_warning" style="color: red;"> </p>
+                                </div>
 
-                            <div class="form-group mb-3">
-                                <label for="display-name">Display name *</label>
-                                <input type="text" id="display-name" name="display_name" placeholder="John Doe"
-                                    class="form-control form-control-md mb-0">
-                                <p>This will be how your name will be displayed in the account section and in reviews
-                                </p>
-                            </div>
-
-                            <div class="form-group mb-6">
-                                <label for="email_1">Email address *</label>
-                                <input type="email" id="email_1" name="email_1" class="form-control form-control-md">
-                            </div>
-
-                            <h4 class="title title-password ls-25 font-weight-bold">Password change</h4>
-                            <div class="form-group">
-                                <label class="text-dark" for="cur-password">Current Password leave blank to leave
-                                    unchanged</label>
-                                <input type="password" class="form-control form-control-md" id="cur-password"
-                                    name="cur_password">
-                            </div>
-                            <div class="form-group">
-                                <label class="text-dark" for="new-password">New Password leave blank to leave
-                                    unchanged</label>
-                                <input type="password" class="form-control form-control-md" id="new-password"
-                                    name="new_password">
-                            </div>
-                            <div class="form-group mb-10">
-                                <label class="text-dark" for="conf-password">Confirm Password</label>
-                                <input type="password" class="form-control form-control-md" id="conf-password"
-                                    name="conf_password">
-                            </div>
-                            <button type="submit" class="btn btn-dark btn-rounded btn-sm mb-4">Save Changes</button>
-                        </form>
+                                <button type="submit" class="btn btn-dark btn-rounded btn-sm mb-4"
+                                    onclick="editDetails()" id="edit_button">Edit</button>
+                                <a class="btn btn-outline-secondary btn-rounded btn-sm mb-4" onclick="changePassword()"
+                                    id="chane_password">Change Password</a>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -325,6 +320,9 @@
 <script src="/user/js/main.min.js"></script>
 
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+
+
 
 
 <script>
@@ -339,8 +337,332 @@
     }
 
 
+    function changePassword() {
+
+        event.preventDefault()
+
+        document.getElementById('inner').innerHTML = `
+        
+        <h4 class="title title-password ls-25 font-weight-bold">Password change</h4>
+                                <form action="">
+                                    <div class="form-group">
+                                        <label class="text-dark" for="cur-password">Enter Current Password</label>
+                                        <input type="password" class="form-control form-control-md" id="cur-password"
+                                            name="cur_password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="text-dark" for="new-password">Enter New Password</label>
+                                        <input type="password" class="form-control form-control-md" id="new-password"
+                                            name="new_password">
+                                    </div>
+                                    <div class="form-group mb-10">
+                                        <label class="text-dark" for="conf-password">Confirm Password</label>
+                                        <input type="password" class="form-control form-control-md" id="conf-password"
+                                            name="conf_password">
+                                            <p id="pass_warning" style="color: red;"> </p>
+                                    </div>
+                                    <button class="btn btn-dark btn-rounded btn-sm mb-4" onclick="savePassword()">Save</button>
+                                    <button class="btn btn-outline-secondary btn-rounded btn-sm mb-4" onclick="cancelEditPassword()">Cancel</button>
+                                </form>
+
+        `
+
+    }
+
+    function savePassword() {
+
+        event.preventDefault()
+
+        let currPassError = true;
+
+        function curPass() {
+
+            let currPass = $('#cur-password').val()
+
+            if (currPass.length == '') {
+
+                $('#cur-password').css('border-color', '#c70d0d')
+                $('#cur-password').attr("placeholder", "Enter Current Password")
+
+                currPassError = false;
+                return false;
+            }
+        }
+
+        let newPassError = true;confPass
+
+        function newPass() {
+
+            let newPass = $('#new-password').val()
+
+            if (newPass.length == '') {
+
+                $('#new-password').css('border-color', '#c70d0d')
+                $('#new-password').attr("placeholder", "Enter New Password")
+
+                newPassError = false;
+                return false;
+            }
+        }
+
+        let confPassError = true;
+
+        function confPass() {
+
+            let confPass = $('#conf-password').val()
+
+            if (confPass.length == '') {
+
+                $('#conf-password').css('border-color', '#c70d0d')
+                $('#conf-password').attr("placeholder", "Enter Conform Password")
+
+                confPassError = false;
+                return false;
+            }
+        }
+
+        curPass()
+        newPass()
+        confPass()
+
+        let passObj = {
+            currentPass : $('#cur-password').val(),
+            newPass : $('#new-password').val(),
+            confPass : $('#conf-password').val()
+        }
+        console.log(passObj);
+
+        if( currPassError === true && newPassError === true && confPassError === true ){
+
+            
+
+            if(passObj.newPass === passObj.confPass){
+
+                $.ajax({
+                    url:'/edit_password',
+                    method:'post',
+                    data:passObj,
+                    success:(responce)=>{
+
+                        if(responce.status){
+
+                        }else{
+                            
+                        }
+
+                    }
+                })
+
+            }else{
+
+                console.log("out");
+                $('#pass_warning').text('Enter same password')
+
+            }
+
+        }
+        
+    }
+
+    function cancelEditPassword() {
+
+        event.preventDefault()
+
+        $("#inner").load(location.href + " #inner");
+
+    }
+
+    function editDetails() {
+
+        event.preventDefault()
+
+        $('#edit_heading').html('Edit Details')
+
+        $('#edit_name').removeAttr('disabled')
+        $('#edit_username').removeAttr('disabled')
+        $('#edit_email').removeAttr('disabled')
+        $('#edit_mobile').removeAttr('disabled')
+        document.getElementById('edit_name').style.border = '1px solid black'
+        document.getElementById('edit_name').style.color = 'black'
+        document.getElementById('edit_username').style.border = '1px solid black'
+        document.getElementById('edit_username').style.color = 'black'
+        document.getElementById('edit_email').style.border = '1px solid black'
+        document.getElementById('edit_email').style.color = 'black'
+        document.getElementById('edit_mobile').style.border = '1px solid black'
+        document.getElementById('edit_mobile').style.color = 'black'
+        document.getElementById('edit_button').innerHTML = "Save"
+        document.getElementById('edit_button').removeAttribute('onclick')
+        document.getElementById('edit_button').setAttribute("onclick", "saveEdit()")
+        document.getElementById('chane_password').innerHTML = 'Cancel'
+        document.getElementById('chane_password').removeAttribute('onclick')
+        document.getElementById('chane_password').setAttribute('onclick', 'cancelEditPassword()')
 
 
+
+    }
+
+    function saveEdit() {
+
+        event.preventDefault()
+
+        let nameError = true;
+
+        function validateName() {
+
+            let nameValue = $('#edit_name').val()
+
+            if (nameValue.length == '') {
+
+                $('#edit_name').css('border-color', '#c70d0d')
+                $('#edit_name').attr("placeholder", "Enter Username")
+
+                nameError = false;
+                return false;
+            }
+        }
+
+        let usernameError = true;
+
+        function validateUsername() {
+
+            let usernameValue = $('#edit_username').val();
+
+            if (usernameValue.length == '') {
+
+                $('#edit_username').css('border-color', '#c70d0d')
+                $('#edit_username').attr("placeholder", "Enter Username")
+
+                usernameError = false;
+                return false;
+
+            }
+        }
+
+        // Validate Email
+
+        let emailError = true;
+
+        function validateEmail() {
+
+            var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+
+            var emailaddressVal = $("#edit_email").val();
+
+            if (emailaddressVal == '') {
+
+                $('#edit_email').css('border-color', '#c70d0d')
+                $('#edit_email').attr("placeholder", "Enter Email")
+
+                emailError = false;
+            }
+
+            else if (!emailReg.test(emailaddressVal)) {
+
+                $('#edit_email').css('border-color', '#c70d0d')
+                $("#emailwarn").text('Enter a valid email address')
+                emailError = false;
+            }
+        }
+
+
+        // mobile validation
+        let mobileError = true;
+
+        function validateMobile() {
+
+            let regnum = new RegExp("^[0-9]+$");
+
+            let mobileValue = $('#edit_mobile').val();
+
+            if (mobileValue.length == '') {
+
+                $('#edit_mobile').css('border-color', '#c70d0d')
+                $('#edit_mobile').attr("placeholder", "Enter Number")
+
+                mobileError = false;
+                return false;
+            } else if (!regnum.test(mobileValue)) {
+
+                $('#mobile').css('border-color', '#c70d0d')
+                $("#mobilewarn").text('Enter Numbers Only')
+
+                mobileError = false;
+            } else if (mobileValue.length != 10) {
+
+                $('#edit_mobile').css('border-color', '#c70d0d')
+                $("#mobilewarn").text('Mobile number must Contain 10 Digit')
+
+                mobileError = false;
+            }
+
+        }
+
+        validateName()
+        validateUsername()
+        validateEmail()
+        validateMobile()
+
+        let username_err = $('#username_warning')
+        let email_err = $('#email_warning')
+        let mobile_err = $('#mobile_warning')
+
+
+        if (nameError === true && usernameError === true && emailError === true && mobileError === true) {
+
+            let editObj = {
+
+                name: $('#edit_name').val(),
+                username: $('#edit_username').val(),
+                email: $('#edit_email').val(),
+                mobile: $('#edit_mobile').val()
+            }
+            console.log(editObj);
+            $.ajax({
+
+                url: '/edit_validate',
+                method: 'post',
+                data: editObj,
+                success: (data) => {
+                    console.log(data);
+                    // if (data.status) {
+
+                    var toastMixin = Swal.mixin({
+                        toast: true,
+                        icon: 'success',
+                        title: 'General Title',
+                        animation: false,
+                        position: 'top-right',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    });
+
+                    toastMixin.fire({
+                        animation: true,
+                        title: 'Edited Successfully'
+                    });
+
+                    $("#account-details").load(location.href + " #account-details");
+
+                    // } else {
+
+                    //     username_err.text(data.username)
+                    //     email_err.text(data.email)
+                    //     mobile_err.text(data.mobile)
+
+
+                    // }
+                }
+            })
+        }
+
+
+
+    }
 
     function deleteAddress(id) {
 

@@ -208,8 +208,7 @@
                 method: 'post',
                 data: userValue,
                 success: (data) => {
-                    console.log('hiiiiiiiiii');
-                    console.log(data);
+                    
                     if (data.status === false) {
 
                         block_err.text(data.errormsg)
@@ -370,10 +369,9 @@
         let email_err = $('#email_warning')
         let mobile_err = $('#mobile_warning')
 
-        console.log(userSignupValue);
 
         if (usernameError === true && passwordError === true && emailError === true) {
-            console.log("ethyyyyyyyyy");
+            
             $.ajax({
 
                 url: '/validate',
@@ -401,17 +399,17 @@
                                                             <p id="invalidnumber" style="color: red;"> </p>
                                                         </div>
                                                         <div class=" col-6">
-                                                            <a href="javascript:void(0)" onclick = "mobileNumber()" id="resend" class="nav-link active" style="display:none" >Resend</a>
+                                                            <a href="javascript:void(0)" href="/resend" id="resend" class="nav-link active" style="display:none" >Resend</a>
                                                             <a href="javascript:void(0)" style="cursor: default;" id="counter" class="nav-link active"></a>
                                                         </div>
                                                     </div>
                                                     <button type="submit" style="width: 100%;" onclick="Otp()" class="btn btn-success">Verify Number</button>
                                                 </form>
                                             </div>`
-
-                                            $("#invalidnumber").text('OTP Sent Successfully')
-                                    $('#otp').removeAttr('disabled')
-                                    $('#Otpsubmit').removeAttr('disabled')
+                                            
+                            $("#invalidnumber").text('OTP Sent Successfully')
+                            $('#otp').removeAttr('disabled')
+                            $('#Otpsubmit').removeAttr('disabled')
 
                                     let resendButton = document.getElementById('resend').style.display = 'none'
                                     // resendButton.style.display = ""
@@ -425,18 +423,15 @@
                                         seconds = seconds < 2 ? '0' + seconds : seconds
                                         countdownElement.innerHTML = `${minutes}:${seconds}`
                                         time--
-                                        if (minutes == 0 && seconds == 0) {
+                                if (minutes == 0 && seconds == 0) {
 
-                                            let resendButton = document.getElementById('resend').style.display = 'block'
-                                            let counter = document.getElementById('counter').style.display = 'none'
-                                            clearInterval(timer)
-                                        }
-                                    }
-
-
-
-
+                                    let resendButton = document.getElementById('resend').style.display = 'block'
+                                    let counter = document.getElementById('counter').style.display = 'none'
+                                    clearInterval(timer)
+                                }
+                            }
                         }
+
                     } else {
                         console.log(data);
                         username_err.text(data.username)
@@ -451,11 +446,6 @@
     };
 
 
-
-    function signUpResend(){
-
-
-    }
 
 
     function Otp() {
@@ -493,13 +483,13 @@
                 success: (response) => {
 
                     if (response.err === true) {
-                        console.log("err");
+                       
                         $('#invalidotp1').text('Something Went wrong')
                     } else if (response.valid === false) {
-                        console.log("not val");
+                        
                         $('#invalidotp1').text('Invalid OTP')
                     } else {
-                        console.log("load");
+                        
                         location.reload()
                     }
                 }

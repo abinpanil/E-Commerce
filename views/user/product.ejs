@@ -572,8 +572,8 @@ function normalImg(x) {
     /*get the cursor's x and y positions:*/
     pos = getCursorPos(e);
     /*calculate the position of the lens:*/
-    x = pos.x - (lens.offsetWidth / 2);
-    y = pos.y - (lens.offsetHeight / 2);
+    x = pos.x - (lens.offsetWidth / 1);
+    y = pos.y - (lens.offsetHeight / 1);
   // console.log("x" , x , "and Y " , y); 
     /*prevent the lens from being positioned outside the image:*/
     if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;  } //else{img.addEventListener("mouseenter", bigImg);  }

@@ -360,8 +360,6 @@ module.exports = {
                     }
                 ]
             ).toArray()
-            console.log("hereeeeee");
-            console.log(Subtotal[0]);
             resolve(Subtotal[0])
         })
     },
@@ -374,15 +372,24 @@ module.exports = {
             })
         })
     },
+    editUser:(userObj)=>{
+        return new Promise(async(resolve,reject)=>{
+            await db.get().collection(collection.USERS_COLLECTION).updateOne({username:userObj.username},{$set:{name:userObj.name,username:userObj.username,email:userObj.email,mobile:userObj.mobile}})
+            resolve()
+        })
+    },
+    editPassword:(passObj)=>{
+        return new Promise(async(resolve,reject)=>{
+            
+        })
+    },
     getAddress:(user)=>{
-
         return new Promise(async(resolve,reject)=>{
             let address = await db.get().collection(collection.ADDRESS_COLLECTION).find({user:objectId(user)}).toArray()
             resolve(address)
         })
     },
     editAddress:(updateAddress)=>{
-        console.log(updateAddress);
         return new Promise(async(resolve,reject)=>{
             await db.get().collection(collection.ADDRESS_COLLECTION)
             .updateOne({_id:objectId(updateAddress.id)},{
@@ -434,7 +441,11 @@ module.exports = {
                 displayDate:moment(new Date()).format('DD-MM-YYYY')
             }
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
-                db.get().collection(collection.CART_COLLECTION).updateOne({user:objectId(user)},{$set:{'products':[]}})
+                if(order.direct!=true){
+
+                    db.get().collection(collection.CART_COLLECTION).updateOne({user:objectId(user)},{$set:{'products':[]}})
+                }
+                
                 resolve(response)
             })
         })
@@ -450,6 +461,17 @@ module.exports = {
         return new Promise(async(resolve,reject)=>{
             let products = await db.get().collection(collection.PRODUCTS_COLLECTION).find().toArray()
             resolve(products)
+        })
+    },
+    getUserDetails:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let user = await db.get().collection(collection.USERS_COLLECTION).aggregate([
+                {
+                    $match:{_id: objectId(userId)}
+                }
+            ]).toArray()
+            console.log(user);
+            resolve(user)
         })
     },
     getOrderedProduct:(oredrId)=>{

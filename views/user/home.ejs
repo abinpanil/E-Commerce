@@ -107,7 +107,7 @@
 
     <!-- End of Banner Fashion -->
     <div class="container-fluid">
-        <div class="title-link-wrapper latest-title after-none pt-6 mb-0 appear-animate">
+        <div class="title-link-wrapper latest-title after-none pt-6 mb-0 appear-animate pb-5">
             <h2 class="title font-size-xl mr-auto mb-3">Latest Products</h2>
 
         </div>
@@ -128,47 +128,87 @@
                 }
             }
             }">
-            <div class="swiper-wrapper row cols-xl-8 cols-lg-6 cols-md-4 cols-2">
 
-                <%for(var i=0;i<products.length;i++){%>
-                    <div class="swiper-slide product-wrap">
+
+
+            <div class="shop-content toolbox-horizontal">
+                
+                <!-- Start of Selected Items -->
+                <div class="selected-items mb-3">
+                    <a href="#" class="filter-clean text-primary">Clean All</a>
+                </div>
+                <!-- End of Selected Items -->
+
+                <!-- Start of Product Wrapper -->
+                <div class="product-wrapper row cols-lg-4 cols-md-3 cols-sm-2 cols-2">
+                    <%for(var i=0;i<products.length;i++){%>
+                    <div class="product-wrap">
                         <div class="product text-center">
                             <figure class="product-media">
                                 <a href="/viewproduct/<%=products[i]._id%>">
-                                    <img src="/user/images/productImage/<%=products[i]._id%>1.jpg" alt="Product"
-                                        width="300" height="337">
-                                    <img src="/user/images/productImage/<%=products[i]._id%>2.jpg" alt="Product"
-                                        width="300" height="337">
+                                    <img src="/user/images/productImage/<%=products[i]._id%>1.jpg" alt="Product" width="300"
+                                        height="338" />
                                 </a>
                                 <div class="product-action-horizontal">
                                     <a onclick="addToCart('<%=products[i]._id%>')" class="btn-product-icon  w-icon-cart"
                                         title="Add to cart"></a>
                                     <!-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                    title="Wishlist"></a> -->
-
+                                        title="Wishlist"></a> -->
                                     <a href="/product-buy-now/<%=products[i]._id%>" class="btn-product-icon w-icon-shipping"
                                         title="Buy Now"></a>
                                 </div>
                             </figure>
                             <div class="product-details">
-                                <form action="/viewproduct/<%=products[i]._id%>" method="">
-                                    <h4 class="product-name"><a href="">
-                                            <%=products[i].productname%>
-                                        </a>
-                                    </h4>
-                                </form>
-                                <div class="product-price">
-                                    <h5>
+                                <div class="product-cat">
+                                    <a href="/viewproduct/<%=products[i]._id%>"><%=products[i].productcategory%></a>
+                                </div>
+                                <h3 class="product-name">
+                                    <a href="/viewproduct/<%=products[i]._id%>"><%=products[i].productname%></a>
+                                </h3>
+                                <!-- <div class="ratings-container">
+                                    <div class="ratings-full">
+                                        <span class="ratings" style="width: 100%;"></span>
+                                        <span class="tooltiptext tooltip-top"></span>
+                                    </div>
+                                    <a href="product-default.html" class="rating-reviews">(3 reviews)</a>
+                                </div> -->
+                                <div class="product-pa-wrapper">
+                                    <div class="product-price">
                                         <%=products[i].productprice%>
-                                    </h5>
-                                    <!-- <ins class="new-price">$60.54</ins><del class="old-price"><b>RS.</b></del> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <%}%>
-                        <!-- End of Product Wrap -->
+                    
+                <!-- End of Product Wrapper -->
 
+                <!-- Start of Pagination -->
+                <!-- <div class="toolbox toolbox-pagination justify-content-between">
+                    <p class="showing-info mb-2 mb-sm-0">
+                        Showing<span>1-12 of 60</span>Products
+                    </p>
+                    <ul class="pagination">
+                        <li class="prev disabled">
+                            <a href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                                <i class="w-icon-long-arrow-left"></i>Prev
+                            </a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="next">
+                            <a href="#" aria-label="Next">
+                                Next<i class="w-icon-long-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div> -->
+                <!-- End of Pagination -->
             </div>
         </div>
         <!-- End of Banner Product Wrapper -->
@@ -214,6 +254,9 @@
             success: (response) => {
                 if(response.status){
 
+                    let count = $('#cart_count').html()
+                    $('#cart_count').html(parseInt(count)+1)                    
+
                     Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -221,6 +264,7 @@
                     showConfirmButton: false,
                     timer: 1500
                     })
+
                 }else{
                     window.location.assign('/login')
                 }

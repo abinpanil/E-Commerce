@@ -12629,7 +12629,7 @@ body .product-popup {
 }
 .tab-vertical .tab-content {
   width: 73.7%;
-  border-top: 1px solid #eee;
+  /* border-top: 1px solid #eee; */
   padding-left: 2rem;
 }
 .tab-vertical .tab-pane {
