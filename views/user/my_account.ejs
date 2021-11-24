@@ -360,6 +360,9 @@
                                         <input type="password" class="form-control form-control-md" id="conf-password"
                                             name="conf_password">
                                             <p id="pass_warning" style="color: red;"> </p>
+                                            <input type="text" class="form-control your-class" style="display:none"
+                                                value="<%=userDetails[0].username%>" name="username" id="pass_username"
+                                                disabled>
                                     </div>
                                     <button class="btn btn-dark btn-rounded btn-sm mb-4" onclick="savePassword()">Save</button>
                                     <button class="btn btn-outline-secondary btn-rounded btn-sm mb-4" onclick="cancelEditPassword()">Cancel</button>
@@ -426,6 +429,7 @@
         confPass()
 
         let passObj = {
+            username : $('#pass_username').val(),
             currentPass : $('#cur-password').val(),
             newPass : $('#new-password').val(),
             confPass : $('#conf-password').val()

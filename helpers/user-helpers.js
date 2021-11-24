@@ -380,7 +380,30 @@ module.exports = {
     },
     editPassword:(passObj)=>{
         return new Promise(async(resolve,reject)=>{
-            
+            let response = {}
+            let user = await db.get().collection(collection.USERS_COLLECTION).aggregate(
+                [
+                    {
+                        $match:{username : passObj.username}
+                    }
+                ]
+            )
+            bcrypt.compare(passObj.password, user.password).then((status)=>{
+
+                if(status){
+
+                    bcrypt.hash(passObj.password, 10).then((pass)=>{
+                        passObj.password = pass
+                        
+                    })
+
+                }else{
+
+                    response.status = false
+                    response.errormsg = "Invalid Password"
+                    resolve(response)
+                }
+            })
         })
     },
     getAddress:(user)=>{
