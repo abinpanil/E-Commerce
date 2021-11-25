@@ -79,16 +79,16 @@ router.get('/categories', varifyLogin, function (req, res) {
 })
 
 /* Get orders. */
-router.get('/orders', varifyLogin, async (req, res)=> {
+router.get('/orders', varifyLogin, async (req, res) => {
   let orders = await adminHelpers.getOrderforAdmin()
-  res.render('./admin/orders', { admin, title: "Orders", orders})
+  res.render('./admin/orders', { admin, title: "Orders", orders })
 })
 
 
 // home banners
-router.get('/homepage-customization',(req,res)=>{
+router.get('/homepage-customization', (req, res) => {
 
-  
+  res.render('./admin/home_page', { admin, title: "Home Custom" })
 })
 
 /* Get users. */
@@ -188,7 +188,7 @@ router.post('/deleteCategory', (req, res) => {
   adminHelpers.deleteCategory(req.body).then(() => {
 
     res.redirect('/admin/categories')
-    adminHelpers.deleteProductcategory(req.body).then((productId)=>{
+    adminHelpers.deleteProductcategory(req.body).then((productId) => {
 
       fs.unlink('./public/user/images/productImage/' + productId + '1.jpg', (err) => {
         if (err) {
@@ -212,7 +212,8 @@ router.post('/deleteCategory', (req, res) => {
         }
       });
       fs.unlink('./public/user/images/productImage/' + productId + '4.jpg', (err) => {
-        if (err) {1
+        if (err) {
+          1
           1
           1
           console.log("failed to delete local image: 4" + err);
@@ -220,16 +221,14 @@ router.post('/deleteCategory', (req, res) => {
           console.log('successfully deleted local image 4');
         }
       });
-      res.redirect('/admin/categories') 
+      res.redirect('/admin/categories')
     })
   })
 })
 
 // Delete Product
 router.post('/deleteProduct', (req, res) => {
-
   adminHelpers.deleteProduct(req.body).then((resolve) => {
-
     res.redirect('/admin/products')
   })
 })
@@ -244,71 +243,46 @@ router.post('/editproduct_get', (req, res) => {
 // edit Product
 router.post('/edit_product', (req, res) => {
 
-  // console.log(req.body);
+  let product = {
 
-  if (req.files) {
+    producttitle: req.body.producttitle,
+    productname: req.body.productname,
+    productdiscription: req.body.productdiscription,
+    productprice: req.body.productprice,
+    productquantity: req.body.productquantity,
+    productcategory: req.body.productcategory,
+    productsubcategory: req.body.productsubcategory
+  }
 
-    let image1 = req.files.productimage1
-    let image2 = req.files.productimage2
-    let image3 = req.files.productimage3
-    let image4 = req.files.productimage4
-    let id = req.body.id
-    // console.log(req.body);
-    adminHelpers.updateProduct(req.body).then((product) => {
+    adminHelpers.updateProduct(product).then((product) => {
 
       res.redirect('/admin/products')
-      image1.mv('./public/user/images/productImage/' + id + '1.jpg', (err, done) => {
+      let image1 = req.body.image1
+      let image2 = req.body.image2
+      let image3 = req.body.image3
+      let image4 = req.body.image4
 
-        if (!err) {
+      let path1 = './public/user/images/productImage/' + id + '1.jpg'
+      let path2 = './public/user/images/productImage/' + id + '2.jpg'
+      let path3 = './public/user/images/productImage/' + id + '3.jpg'
+      let path4 = './public/user/images/productImage/' + id + '4.jpg'
 
-          image2.mv('./public/user/images/productImage/' + id + '2.jpg', (err, done) => {
+      let img1 = image1.replace(/^data:([A-Za-z+/]+);base64,/, "")
+      let img2 = image2.replace(/^data:([A-Za-z+/]+);base64,/, "")
+      let img3 = image3.replace(/^data:([A-Za-z+/]+);base64,/, "")
+      let img4 = image4.replace(/^data:([A-Za-z+/]+);base64,/, "")
 
-            if (!err) {
+      fs.writeFileSync(path1, img1, { encoding: 'base64' })
+      fs.writeFileSync(path2, img2, { encoding: 'base64' })
+      fs.writeFileSync(path3, img3, { encoding: 'base64' })
+      fs.writeFileSync(path4, img4, { encoding: 'base64' })
 
-              image3.mv('./public/user/images/productImage/' + id + '3.jpg', (err, done) => {
-
-                if (!err) {
-
-                  image4.mv('./public/user/images/productImage/' + id + '4.jpg', (err, done) => {
-
-                    if (!err) {
-
-                      res.redirect('/admin/products')
-
-                    } else {
-                      console.log(err + "err 1");
-                    }
-                  })
-
-                } else {
-                  console.log(err + "err 2");
-                }
-              })
-
-            } else {
-              console.log(err + "err 3");
-            }
-          })
-
-        } else {
-          console.log(err + "err 4");
-        }
-      })
       console.log(product);
 
     })
 
-  } else {
-
-    let id = req.body.id
-
-    adminHelpers.updateProduct(req.body).then((product) => {
-      // console.log(product);
-      res.redirect('/admin/products')
-
-    })
-  }
 })
+
 
 // Delete subCategory
 router.post('/deletesSubCategory', (req, res) => {
@@ -339,68 +313,56 @@ router.post('/deletesSubCategory', (req, res) => {
         }
       });
       fs.unlink('./public/user/images/productImage/' + productId + '4.jpg', (err) => {
-        if (err) {1
-          1
-          1
+        if (err) {
           console.log("failed to delete local image: 4" + err);
         } else {
           console.log('successfully deleted local image 4');
         }
       });
-
       res.redirect('/admin/categories')
     })
   })
 })
 
+
 /* Add product */
 router.post('/add_product', function (req, res) {
 
-  let image1 = req.files.productimage1
-  let image2 = req.files.productimage2
-  let image3 = req.files.productimage3
-  let image4 = req.files.productimage4
-  console.log(req.body);
-  console.log(req.files);
-  adminHelpers.addProduct(req.body).then((data) => {
+  let product = {
 
-    image1.mv('./public/user/images/productImage/' + data + '1.jpg', (err, done) => {
+    producttitle: req.body.producttitle,
+    productname: req.body.productname,
+    productdiscription: req.body.productdiscription,
+    productprice: req.body.productprice,
+    productquantity: req.body.productquantity,
+    productcategory: req.body.productcategory,
+    productsubcategory: req.body.productsubcategory
+  }
 
-      if (!err) {
+  adminHelpers.addProduct(product).then((id) => {
 
-        image2.mv('./public/user/images/productImage/' + data + '2.jpg', (err, done) => {
+    let image1 = req.body.image1
+    let image2 = req.body.image2
+    let image3 = req.body.image3
+    let image4 = req.body.image4
 
-          if (!err) {
+    let path1 = './public/user/images/productImage/' + id + '1.jpg'
+    let path2 = './public/user/images/productImage/' + id + '2.jpg'
+    let path3 = './public/user/images/productImage/' + id + '3.jpg'
+    let path4 = './public/user/images/productImage/' + id + '4.jpg'
 
-            image3.mv('./public/user/images/productImage/' + data + '3.jpg', (err, done) => {
+    let img1 = image1.replace(/^data:([A-Za-z+/]+);base64,/, "")
+    let img2 = image2.replace(/^data:([A-Za-z+/]+);base64,/, "")
+    let img3 = image3.replace(/^data:([A-Za-z+/]+);base64,/, "")
+    let img4 = image4.replace(/^data:([A-Za-z+/]+);base64,/, "")
 
-              if (!err) {
+    fs.writeFileSync(path1, img1, { encoding: 'base64' })
+    fs.writeFileSync(path2, img2, { encoding: 'base64' })
+    fs.writeFileSync(path3, img3, { encoding: 'base64' })
+    fs.writeFileSync(path4, img4, { encoding: 'base64' })
 
-                image4.mv('./public/user/images/productImage/' + data + '4.jpg', (err, done) => {
+    res.redirect('/admin/add_products')
 
-                  if (!err) {
-
-                    res.redirect('/admin/add_products')
-
-                  } else {
-                    console.log(err + "err 1");
-                  }
-                })
-
-              } else {
-                console.log(err + "err 2");
-              }
-            })
-
-          } else {
-            console.log(err + "err 3");
-          }
-        })
-
-      } else {
-        console.log(err + "err 4");
-      }
-    })
   })
 })
 
@@ -414,24 +376,42 @@ router.get('/logout', function (req, res) {
 
 
 // view more Orders
-router.get('/viewMoreOrders/:orderId',async(req,res)=>{
+router.get('/viewMoreOrders/:orderId', async (req, res) => {
   let id = req.params.orderId
   let orderDetail = await userHelpers.getOrderedProduct(req.params.orderId)
 
-  res.render('./admin/order-details', { admin, title: "Orders",orderDetail})
+  res.render('./admin/order-details', { admin, title: "Orders", orderDetail })
 
 })
 
 
 
 // change status
-router.post('/change-status',(req,res)=>{
+router.post('/change-status', (req, res) => {
 
-  adminHelpers.changeOrderStatus(req.body).then(()=>{
+  adminHelpers.changeOrderStatus(req.body).then(() => {
     res.json({})
   })
 })
 
+
+router.post('/addbanner', (req, res) => {
+let data = {
+  
+  bannerTitle : req.body.bannerTitle,
+  bannerHeading : req.body.bannerHeading,
+  bannerContent : req.body.bannerContent
+}
+  adminHelpers.addBanner(data).then((id)=>{
+
+    console.log("ethyyyyyy");
+    let image = req.body.image
+    let path = './public/user/images/productImage/' + id + '1.jpg'
+    let img = image.replace(/^data:([A-Za-z+/]+);base64,/, "")
+    fs.writeFileSync(path, img, { encoding: 'base64' })
+
+  })
+})
 
 
 module.exports = router;

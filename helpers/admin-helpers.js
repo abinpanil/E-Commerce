@@ -199,6 +199,14 @@ module.exports = {
             db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId(data.orderId)},{$set:{status:data.status}})
             resolve()
         })
+    },
+    addBanner:(data)=>{
+        return new Promise(async(resolve,reject)=>{
+            db.get().collection(collection.HOMEPAGE_COLLECTION).insertOne(data).then((data)=>{
+                let objId = ObjectId(data.insertedId).toString()
+                resolve(objId)
+            })
+        })
     }
     
 
