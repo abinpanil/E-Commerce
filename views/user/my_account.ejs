@@ -349,6 +349,7 @@
                                         <label class="text-dark" for="cur-password">Enter Current Password</label>
                                         <input type="password" class="form-control form-control-md" id="cur-password"
                                             name="cur_password">
+                                            <p id="incorrectpass_warning" style="color: red;"> </p>
                                     </div>
                                     <div class="form-group">
                                         <label class="text-dark" for="new-password">Enter New Password</label>
@@ -392,7 +393,7 @@
             }
         }
 
-        let newPassError = true;confPass
+        let newPassError = true; confPass
 
         function newPass() {
 
@@ -429,35 +430,58 @@
         confPass()
 
         let passObj = {
-            username : $('#pass_username').val(),
-            currentPass : $('#cur-password').val(),
-            newPass : $('#new-password').val(),
-            confPass : $('#conf-password').val()
+            username: $('#pass_username').val(),
+            currentPass: $('#cur-password').val(),
+            newPass: $('#new-password').val(),
+            confPass: $('#conf-password').val()
         }
         console.log(passObj);
 
-        if( currPassError === true && newPassError === true && confPassError === true ){
+        if (currPassError === true && newPassError === true && confPassError === true) {
 
-            
 
-            if(passObj.newPass === passObj.confPass){
+
+            if (passObj.newPass === passObj.confPass) {
 
                 $.ajax({
-                    url:'/edit_password',
-                    method:'post',
-                    data:passObj,
-                    success:(responce)=>{
+                    url: '/edit_password',
+                    method: 'post',
+                    data: passObj,
+                    success: (responce) => {
 
-                        if(responce.status){
+                        if (responce.status) {
 
-                        }else{
-                            
+                            var toastMixin = Swal.mixin({
+                                toast: true,
+                                icon: 'success',
+                                title: 'General Title',
+                                animation: false,
+                                position: 'top-right',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            });
+
+                            toastMixin.fire({
+                                animation: true,
+                                title: 'Password changed Successfully'
+                            });
+
+                            $("#account-details").load(location.href + " #account-details");
+
+                        } else {
+
+                            $('#incorrectpass_warning').text('Enter currect Password')
                         }
 
                     }
                 })
 
-            }else{
+            } else {
 
                 console.log("out");
                 $('#pass_warning').text('Enter same password')
@@ -465,7 +489,7 @@
             }
 
         }
-        
+
     }
 
     function cancelEditPassword() {

@@ -269,6 +269,9 @@ $.ajax({
     success: (response) => {
                 if(response.status){
 
+                    let count = $('#cart_count').html()
+                    $('#cart_count').html(parseInt(count)+1)    
+
                     Swal.fire({
                     position: 'top-end',
                     icon: 'success',

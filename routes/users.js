@@ -539,6 +539,7 @@ router.post('/cancel', (req, res) => {
 // change password
 router.post('/edit_password',(req,res)=>{
   userHelpers.editPassword(req.body).then((response)=>{
+    console.log(response);
     res.json(response)
   })
 })
@@ -554,9 +555,18 @@ router.post('/place-order', async (req, res) => {
     products: products
   }
   req.session.order = lastOrder
-  await userHelpers.placeOrder(req.body, products, totalPrice, address, req.session.user._id)
-    console.log("donee");
-    res.redirect('/order-placed')
+  console.log(req.session.order);
+  let orderId = await userHelpers.placeOrder(req.body, products, totalPrice, address, req.session.user._id)
+    if(req.body.payment === 'Cash On Delivery'){
+
+      res.redirect('/order-placed')
+    }else{
+      userHelpers.generateRazorpay(orderId,totalPrice).then((response)=>{
+        res.json(response)
+      })
+    }
+    
+    
 })
 
 
@@ -573,9 +583,16 @@ router.post('/place-order-direct', async (req, res) => {
   }
   req.body.direct = true
   req.session.order = lastOrder
-  await userHelpers.placeOrder(req.body, products, totalPrice, address, req.session.user._id)
-    console.log("donee");
+  let orderId = await userHelpers.placeOrder(req.body, products, totalPrice, address, req.session.user._id)
+  if(req.body.payment === 'Cash On Delivery'){
+
     res.redirect('/order-placed')
+  }else{
+    userHelpers.generateRazorpay(orderId,totalPrice).then((response)=>{
+      res.json(response)
+    })
+  }
+    
 })
 
 
@@ -587,6 +604,21 @@ router.post('/cancel-order',(req,res)=>{
   })
 })
 
+
+// verifyPayment
+router.post('/verify-payment',(req,res)=>{
+  console.log(req.body);
+  console.log("in varify");
+  userHelpers.verifyPayment(req.body).then(()=>{
+    userHelpers.changePayementStatus(req.body['order[receipt]']).then(()=>{
+      console.log("Payment success");
+      res.json({status:true})
+    })
+  }).catch((err)=>{
+    console.log(err);
+    res.json({status:false,errMsg:''})
+  })
+})
 
 
 module.exports = router;

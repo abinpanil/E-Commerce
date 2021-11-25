@@ -81,10 +81,15 @@ router.get('/categories', varifyLogin, function (req, res) {
 /* Get orders. */
 router.get('/orders', varifyLogin, async (req, res)=> {
   let orders = await adminHelpers.getOrderforAdmin()
-  // console.log(orders);
   res.render('./admin/orders', { admin, title: "Orders", orders})
 })
 
+
+// home banners
+router.get('/homepage-customization',(req,res)=>{
+
+  
+})
 
 /* Get users. */
 router.get('/users', varifyLogin, function (req, res) {
@@ -92,7 +97,6 @@ router.get('/users', varifyLogin, function (req, res) {
     // console.log(usersList);
     res.render('./admin/user', { admin, title: "Users", usersList })
   })
-
 })
 
 
@@ -104,8 +108,6 @@ router.post('/signin', (req, res) => {
     password: "pass"
   }
 
-
-
   if (adminData.username === req.body.username) {
     if (adminData.password === req.body.password) {
       req.session.admin = req.body
@@ -113,21 +115,15 @@ router.post('/signin', (req, res) => {
       logErr = ""
       res.json({})
       res.redirect('/admin')
-
-
-
     }
     logErr = "Wrong Password"
     res.json({})
     res.redirect('/admin/login')
-
   }
   logErr = "wrong Username"
   res.json({})
   res.redirect('/admin/login')
-
 })
-
 
 
 /* Add category */
@@ -141,6 +137,7 @@ router.post('/add_category', function (req, res) {
   })
 })
 
+
 // Add subcatetgory
 router.post('/add_subcategory', (req, res) => {
 
@@ -149,6 +146,7 @@ router.post('/add_subcategory', (req, res) => {
     res.redirect('/admin/categories')
   })
 })
+
 
 // Get SubCategory
 router.post('/getSubCategory', (req, res) => {
@@ -162,18 +160,15 @@ router.post('/getSubCategory', (req, res) => {
   })
 })
 
+
 /* Block user */
 router.post('/block', (req, res) => {
 
-
   adminHelpers.blockUser(req.body.id).then(data => {
 
-    // console.log(req.session.user);
-    // console.log(req.body.id);
     if (req.session.user) {
       if (req.session.user._id === req.body.id) {
         delete req.session.user
-        // console.log(req.session.user);
       }
     } else {
 
@@ -185,6 +180,7 @@ router.post('/block', (req, res) => {
     res.json(err)
   })
 })
+
 
 // Delete Category
 router.post('/deleteCategory', (req, res) => {
@@ -320,8 +316,7 @@ router.post('/deletesSubCategory', (req, res) => {
   adminHelpers.deleteSubCategory(req.body).then(() => {
     res.redirect('/admin/categories')
     adminHelpers.deleteProductSubcategory(req.body).then((productId) => {
-      console.log(productId);
-      console.log("looooooooooooooooooooooggggggggggggggsubbbbbbbbbbb");
+
       fs.unlink('./public/user/images/productImage/' + productId + '1.jpg', (err) => {
         if (err) {
           console.log("failed to delete local image: 1" + err);
@@ -361,7 +356,6 @@ router.post('/deletesSubCategory', (req, res) => {
 /* Add product */
 router.post('/add_product', function (req, res) {
 
-  console.log("'hiiiiii");
   let image1 = req.files.productimage1
   let image2 = req.files.productimage2
   let image3 = req.files.productimage3
@@ -407,12 +401,9 @@ router.post('/add_product', function (req, res) {
         console.log(err + "err 4");
       }
     })
-
-
   })
-
-
 })
+
 
 /* Logout. */
 router.get('/logout', function (req, res) {
@@ -425,11 +416,7 @@ router.get('/logout', function (req, res) {
 // view more Orders
 router.get('/viewMoreOrders/:orderId',async(req,res)=>{
   let id = req.params.orderId
-  console.log(id);
   let orderDetail = await userHelpers.getOrderedProduct(req.params.orderId)
-  console.log('********');
-  console.log(orderDetail);
-  console.log('********');
 
   res.render('./admin/order-details', { admin, title: "Orders",orderDetail})
 

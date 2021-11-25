@@ -17,7 +17,7 @@
     <div class="page-content" id="container">
         <div class="container">
 
-            <form class="form checkout-form" onsubmit="return submitform()" id="checkout-form" action="place-order" method="post">
+            <form class="form checkout-form" id="checkout-form" >
                 <div class="row mb-9">
                     <div class="col-lg-7 pr-lg-4 mb-4">
                         <div class="head pb-5">
@@ -27,61 +27,78 @@
                             <span style="font-size: 12px;">We will deliver your order to this address</span>
                         </div>
                         <%for(var i=0;i<address.length;i++){%>
-                        <div id="edit_<%=address[i]._id%>" class="ecommerce-address shipping-address pr-lg-8 pt-5">
-                       
-                            <div class="row align-items-center">
-                                <div class="col-md-1 col-1">
-                                    <input type="radio" name="address" value="<%=address[i]._id%>" checked>
-                                </div>
-                                <div class="col-md-5 col-11">
-                                    <address class="mb-4">
-                                        <table class="address-table">
-                                            <tbody>
-                                                <tr>
-                                                    <th>Name:</th>
-                                                    <td id="name_<%=address[i]._id%>"><%=address[i].name%></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Address:</th>
-                                                    <td id="address_<%=address[i]._id%>"><%=address[i].address%></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Town:</th>
-                                                    <td id="town_<%=address[i]._id%>"><%=address[i].town%></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>State:</th>
-                                                    <td id="state_<%=address[i]._id%>"><%=address[i].state%></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Postcode:</th>
-                                                    <td id="zip_<%=address[i]._id%>"><%=address[i].zip%></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Mobile:</th>
-                                                    <td id="mobile_<%=address[i]._id%>"><%=address[i].mobile%></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </address>
-                                </div>  
-                                <div class="col-md-6">
-                                    <a onclick="editAddress('<%=address[i]._id%>')" class="btn btn-link btn-underline btn-icon-right text-primary pt-5">Edit your
-                                        shipping address<i class="w-icon-long-arrow-right"></i></a>
-                                        <a onclick="deleteAddress('<%=address[i]._id%>')" class="btn btn-link btn-underline btn-icon-right text-success pt-5">Delete Address<i class="w-icon-long-arrow-right"></i></a>
-                                </div>
-                                
-                            </div>   
-                        </div>
-                        <hr>
-                        <%}%>
+                            <div id="edit_<%=address[i]._id%>" class="ecommerce-address shipping-address pr-lg-8 pt-5">
 
-                        <div class="new_address pt-5">
-                            <a onclick="addressRow()" class="btn btn-link btn-underline btn-icon-right text-primary">Add
-                                New Address<i class="w-icon-long-arrow-right"></i></a>
-                        </div>
-                        <input id="identification" type="text" value="close" style="display: none;">
-                        <div id="add_address_div"></div>
+                                <div class="row align-items-center">
+                                    <div class="col-md-1 col-1">
+                                        <input type="radio" name="address" value="<%=address[i]._id%>" checked>
+                                    </div>
+                                    <div class="col-md-5 col-11">
+                                        <address class="mb-4">
+                                            <table class="address-table">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Name:</th>
+                                                        <td id="name_<%=address[i]._id%>">
+                                                            <%=address[i].name%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Address:</th>
+                                                        <td id="address_<%=address[i]._id%>">
+                                                            <%=address[i].address%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Town:</th>
+                                                        <td id="town_<%=address[i]._id%>">
+                                                            <%=address[i].town%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>State:</th>
+                                                        <td id="state_<%=address[i]._id%>">
+                                                            <%=address[i].state%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Postcode:</th>
+                                                        <td id="zip_<%=address[i]._id%>">
+                                                            <%=address[i].zip%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Mobile:</th>
+                                                        <td id="mobile_<%=address[i]._id%>">
+                                                            <%=address[i].mobile%>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </address>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a onclick="editAddress('<%=address[i]._id%>')"
+                                            class="btn btn-link btn-underline btn-icon-right text-primary pt-5">Edit
+                                            your
+                                            shipping address<i class="w-icon-long-arrow-right"></i></a>
+                                        <a onclick="deleteAddress('<%=address[i]._id%>')"
+                                            class="btn btn-link btn-underline btn-icon-right text-success pt-5">Delete
+                                            Address<i class="w-icon-long-arrow-right"></i></a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <hr>
+                            <%}%>
+
+                                <div class="new_address pt-5">
+                                    <a onclick="addressRow()"
+                                        class="btn btn-link btn-underline btn-icon-right text-primary">Add
+                                        New Address<i class="w-icon-long-arrow-right"></i></a>
+                                </div>
+                                <input id="identification" type="text" value="close" style="display: none;">
+                                <div id="add_address_div"></div>
                     </div>
                     <div class="col-lg-5 mb-4 sticky-sidebar-wrapper">
                         <div class="order-summary-wrapper sticky-sidebar">
@@ -97,14 +114,19 @@
                                     </thead>
                                     <tbody>
                                         <%for(i=0;i<cart.length;i++){%>
-                                        <tr class="bb-no">
-                                            <td class="product-name"><%=cart[i].product.producttitle%><i class="fas fa-times"></i>
-                                                <span class="product-quantity"><%=cart[i].quantity%></span>
-                                            </td>
-                                            <td class="product-total">RS.<span><%=cart[i].subTotal%></span></td>
-                                        </tr>
-                                        <%}%>
-                                        <!-- <tr class="cart-subtotal bb-no">
+                                            <tr class="bb-no">
+                                                <td class="product-name">
+                                                    <%=cart[i].product.producttitle%><i class="fas fa-times"></i>
+                                                        <span class="product-quantity">
+                                                            <%=cart[i].quantity%>
+                                                        </span>
+                                                </td>
+                                                <td class="product-total">RS.<span>
+                                                        <%=cart[i].subTotal%>
+                                                    </span></td>
+                                            </tr>
+                                            <%}%>
+                                                <!-- <tr class="cart-subtotal bb-no">
                                             <td>
                                                 <b>Subtotal</b>
                                             </td>
@@ -113,30 +135,30 @@
                                             </td>
                                         </tr> -->
                                     </tbody>
-                                   
+
                                     <tfoot>
                                         <tr class="shipping-methods">
                                             <td colspan="2" class="text-left">
-                                                <h4 class="title title-simple bb-no mb-1 pb-0 pt-3" >Shipping
+                                                <h4 class="title title-simple bb-no mb-1 pb-0 pt-3">Shipping
                                                 </h4>
                                                 <ul id="shipping-method" class="mb-4">
                                                     <li>
-                                                        
-                                                            
-                                                            <label for="free-shipping"
-                                                                class="custom-control-label color-dark">Free
-                                                                Shipping</label>
-                                                       
+
+
+                                                        <label for="free-shipping"
+                                                            class="custom-control-label color-dark">Free
+                                                            Shipping</label>
+
                                                     </li>
                                                     <li>
-                                                        
-                                                            
-                                                            <label for="local-pickup"
-                                                                class="custom-control-label color-dark">Local
-                                                                Pickup</label>
-                                                      
+
+
+                                                        <label for="local-pickup"
+                                                            class="custom-control-label color-dark">Local
+                                                            Pickup</label>
+
                                                     </li>
-                                                    
+
                                                 </ul>
                                             </td>
                                         </tr>
@@ -145,7 +167,9 @@
                                                 <b>Total</b>
                                             </th>
                                             <td>
-                                                <b>RS.<span><%=total%></span></b>
+                                                <b>RS.<span>
+                                                        <%=total%>
+                                                    </span></b>
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -155,55 +179,19 @@
                                     <h4 class="title font-weight-bold ls-25 pb-0 mb-1">Payment Methods</h4>
                                     <div class="accordion payment-accordion">
                                         <div class="card">
-                                            <!-- <div class="card-header">
-                                                <a href="#cash-on-delivery" class="collapse">Direct Bank Transfor</a>
-                                            </div>
-                                            <div id="cash-on-delivery" class="card-body expanded">
-                                                <p class="mb-0">
-                                                    Make your payment directly into our bank account.
-                                                    Please use your Order ID as the payment reference.
-                                                    Your order will not be shipped until the funds have cleared in our
-                                                    account.
-                                                </p>
-                                            </div> -->
-                                        </div>
-                                        <div class="card">
-                                            <!-- <div class="card-header">
-                                                <a href="#payment" class="expand">Check Payments</a>
-                                            </div>
-                                            <div id="payment" class="card-body collapsed">
-                                                <p class="mb-0">
-                                                    Please send a check to Store Name, Store Street, Store Town, Store
-                                                    State / County, Store Postcode.
-                                                </p>
-                                            </div> -->
-                                        </div>
-                                        <div class="card">
                                             <div class="card-header">
-                                                <label style="color: #6e6b6b; font-weight: 500;" for="" ><input type="radio" name="payment" value="Cash On Delivery" checked> Cash On Delivery</label>
+                                                <label style="color: #6e6b6b; font-weight: 500;" for=""><input
+                                                        type="radio" name="payment" value="Cash On Delivery" checked>
+                                                    Cash On Delivery</label>
                                             </div>
-                                            <div id="delivery" class="card-body collapsed">
-                                                <p class="mb-0">
-                                                    Pay with cash upon delivery.
-                                                </p>
+                                            <div class="card-header">
+                                                <label style="color: #6e6b6b; font-weight: 500;" for=""><input
+                                                        type="radio" name="payment" value="Razorpay" checked>
+                                                    RazorPay</label>
                                             </div>
+
                                         </div>
-                                        <div class="card p-relative">
-                                            <!-- <div class="card-header">
-                                                <a href="#paypal" class="expand">Paypal</a>
-                                            </div>
-                                            <a href="https://www.paypal.com/us/webapps/mpp/paypal-popup"
-                                                class="text-primary paypal-que" onclick="javascript:window.open('https://www.paypal.com/us/webapps/mpp/paypal-popup','WIPaypal',
-                                                'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); 
-                                                return false;">What is PayPal?
-                                            </a>
-                                            <div id="paypal" class="card-body collapsed">
-                                                <p class="mb-0">
-                                                    Pay via PayPal, you can pay with your credit cart if you
-                                                    don't have a PayPal account.
-                                                </p>
-                                            </div> -->
-                                        </div>
+
                                     </div>
                                 </div>
 
@@ -222,50 +210,123 @@
 </main>
 <!-- End of Main -->
 
-
+<!-- razorpay -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
 
-    function submitform(){
-        
+    function submitform() {
+
         return true
     }
 
+    $('#checkout-form').submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/place-order',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
 
-    
+                razorpayPayment(response)
+            }
+        })
+    })
+
+    function razorpayPayment(order) {
+
+        var options = {
+            "key": "rzp_test_0nLdeWwVk1f3M2", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Shopify",
+            "description": "Test Transaction",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                console.log('ethyyyyyy');
+                // alert(response.razorpay_payment_id);
+                // alert(response.razorpay_order_id);
+                // alert(response.razorpay_signature)
+
+                verifyPayment(response, order)
+            },
+            "prefill": {
+                "name": "Abin P Anil",
+                "email": "abinpanil9@gmail.com",
+                "contact": "9567915361"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            // alert(response.error.code);
+            // alert(response.error.description);
+            // alert(response.error.source);
+            // alert(response.error.step);
+            // alert(response.error.reason);
+            // alert(response.error.metadata.order_id);
+            // alert(response.error.metadata.payment_id);
+        });
+        rzp1.open();
+    }
+
+    function verifyPayment(payment, order) {
+
+        $.ajax({
+            url: '/verify-payment',
+            method: 'post',
+            data: {
+                payment, order
+            },
+            success:(response)=>{
+                if(response.status){
+
+                    location.href = '/order-placed'
+
+                }else{
+                    alert('Payment failed')
+                }
+            }
+        })
+    }
 
 
-    function deleteAddress(id){
+    function deleteAddress(id) {
 
         event.preventDefault()
 
         $.ajax({
-            url:'deleteAddress',
-            method:'post',
-            data:{id:id},
-            success:()=>{
+            url: 'deleteAddress',
+            method: 'post',
+            data: { id: id },
+            success: () => {
                 $("#container").load(location.href + " #container");
             }
         })
     }
 
 
-    function cancelEdit(){
+    function cancelEdit() {
         event.preventDefault()
         $.ajax({
 
-            url:'/cancel',
-            method:'post',
-            success:()=>{
+            url: '/cancel',
+            method: 'post',
+            success: () => {
                 $("#container").load(location.href + " #container");
             }
-        })  
+        })
     }
 
-    function updateAddress(id){
+    function updateAddress(id) {
 
         event.preventDefault()
-        
+
 
         // name validation
         let nameError = true;
@@ -414,40 +475,40 @@
             zip: $('#zip').val(),
             state: $('#state').val(),
             mobile: $('#mobile').val(),
-            id : id
+            id: id
         }
 
         console.log(updateAddress);
 
         if (mobileError === true && stateError === true && zipError === true && townError === true && addressError === true && nameError === true) {
 
-           
+
             $.ajax({
-                url:'/update_address',
-                method:'post',
-                data:updateAddress,
-                success:()=>{
-                    
+                url: '/update_address',
+                method: 'post',
+                data: updateAddress,
+                success: () => {
+
                     $("#container").load(location.href + " #container");
-                    
+
                 }
             })
         }
 
     }
 
-    function editAddress(id){
+    function editAddress(id) {
 
-        let name = $('#name_'+id).html()
-        let address = $('#address_'+id).html()
-        let town = $('#town_'+id).html()
-        let state = $('#state_'+id).html()
-        let zip = $('#zip_'+id).html()
-        let mobile = $('#mobile_'+id).html()
+        let name = $('#name_' + id).html()
+        let address = $('#address_' + id).html()
+        let town = $('#town_' + id).html()
+        let state = $('#state_' + id).html()
+        let zip = $('#zip_' + id).html()
+        let mobile = $('#mobile_' + id).html()
 
         console.log(name);
 
-        let changediv = document.getElementById('edit_'+id)
+        let changediv = document.getElementById('edit_' + id)
         changediv.innerHTML = `
         
         <div class=" mb-4 pt-5">
@@ -678,13 +739,13 @@
 
             console.log(newAddress);
             $.ajax({
-                url:'/add_address',
-                method:'post',
-                data:newAddress,
-                success:()=>{
-                    
+                url: '/add_address',
+                method: 'post',
+                data: newAddress,
+                success: () => {
+
                     $("#container").load(location.href + " #container");
-                    
+
                 }
             })
         }
