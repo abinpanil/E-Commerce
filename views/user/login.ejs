@@ -117,6 +117,40 @@
                     </div>
 
                 </div>
+
+                <div class="tab-pane" id="sign-up">
+                    <form>
+                        <div class="form-group">
+                            <label>Enter OTP *</label>
+
+                            <div id="otp"
+                                class="inputs d-flex flex-row justify-content-center justify-content-between mt-2">
+                                <input class="m-2 inputs text-center rounded" type="text" id="first" maxlength="1" />
+                                <input class="m-2 inputs text-center rounded" type="text" id="second" maxlength="1" />
+                                <input class="m-2 inputs text-center rounded" type="text" id="third" maxlength="1" />
+                                <input class="m-2 inputs text-center rounded" type="text" id="fourth" maxlength="1" />
+                                <input class="m-2 inputs text-center rounded" type="text" id="fifth" maxlength="1" />
+                                <input class="m-2 inputs text-center rounded" type="text" id="sixth" maxlength="1" />
+                            </div>
+
+                            <p id="invalidotp1" style="color: red;"> </p>
+                        </div>
+                        <div class="row">
+                            <div class=" col-6">
+                                <p id="invalidnumber" style="color: red;"> </p>
+                            </div>
+                            <div class=" col-6">
+                                <a href="javascript:void(0)" href="/resend" id="resend" class="nav-link active"
+                                    style="display:none">Resend</a>
+                                <a href="javascript:void(0)" style="cursor: default;" id="counter"
+                                    class="nav-link active"></a>
+                            </div>
+                        </div>
+                        <button type="submit" style="width: 100%;" onclick="Otp()" class="btn btn-success">Verify
+                            Number</button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
@@ -142,9 +176,15 @@
 <script>
 
 
-    function otpLogin() {
-
-    }
+    $(".inputs").keyup(function () {
+        if (this.value.length == this.maxLength) {
+            var $next = $(this).next('.inputs');
+            if ($next.length)
+                $(this).next('.inputs').focus();
+            else
+                $(this).blur();
+        }
+    });
 
 
     // signIn validation started.
@@ -208,7 +248,7 @@
                 method: 'post',
                 data: userValue,
                 success: (data) => {
-                    
+
                     if (data.status === false) {
 
                         block_err.text(data.errormsg)
@@ -371,7 +411,7 @@
 
 
         if (usernameError === true && passwordError === true && emailError === true) {
-            
+
             $.ajax({
 
                 url: '/validate',
@@ -407,23 +447,23 @@
                                                     <button type="submit" style="width: 100%;" onclick="Otp()" class="btn btn-success">Verify Number</button>
                                                 </form>
                                             </div>`
-                                            
+
                             $("#invalidnumber").text('OTP Sent Successfully')
                             $('#otp').removeAttr('disabled')
                             $('#Otpsubmit').removeAttr('disabled')
 
-                                    let resendButton = document.getElementById('resend').style.display = 'none'
-                                    // resendButton.style.display = ""
-                                    const StringMinitue = .5
-                                    let time = StringMinitue * 60
-                                    var countdownElement = document.getElementById('counter')
-                                    let timer = setInterval(updateCounter, 1000)
-                                    function updateCounter() {
-                                        const minutes = Math.floor(time / 60)
-                                        let seconds = time % 60
-                                        seconds = seconds < 2 ? '0' + seconds : seconds
-                                        countdownElement.innerHTML = `${minutes}:${seconds}`
-                                        time--
+                            let resendButton = document.getElementById('resend').style.display = 'none'
+                            // resendButton.style.display = ""
+                            const StringMinitue = .5
+                            let time = StringMinitue * 60
+                            var countdownElement = document.getElementById('counter')
+                            let timer = setInterval(updateCounter, 1000)
+                            function updateCounter() {
+                                const minutes = Math.floor(time / 60)
+                                let seconds = time % 60
+                                seconds = seconds < 2 ? '0' + seconds : seconds
+                                countdownElement.innerHTML = `${minutes}:${seconds}`
+                                time--
                                 if (minutes == 0 && seconds == 0) {
 
                                     let resendButton = document.getElementById('resend').style.display = 'block'
@@ -484,13 +524,13 @@
                 success: (response) => {
 
                     if (response.err === true) {
-                       
+
                         $('#invalidotp1').text('Something Went wrong')
                     } else if (response.valid === false) {
-                        
+
                         $('#invalidotp1').text('Invalid OTP')
                     } else {
-                        
+
                         location.reload()
                     }
                 }

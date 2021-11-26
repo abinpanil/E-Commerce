@@ -21266,10 +21266,22 @@ aside .sp-sidebar-banner span {
   margin-bottom: 0.5rem;
 }
 
+.inputs input {
+  width: 50px;
+  height: 50px;
+  background:#00000029;
+  border: none;
+  border-bottom: 2px solid black;
+  border-radius: 6px;
+  color: #000;
+  font-size: 20px;
+}
+
+
 .user-wrap {
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex;
+  display: flex
 }
 .user-wrap .review-ratings {
   display: block;
@@ -21567,6 +21579,8 @@ label.cabinet input.file{
 	height: 250px;
   padding-bottom:25px;
 }
+
+
 
 .img-thumbnail{
   max-width: 18% !important;
