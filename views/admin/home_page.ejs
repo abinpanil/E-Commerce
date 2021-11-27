@@ -27,12 +27,12 @@
             </div>
             <!-- end page title -->
 
-            <div class="card">
-                <div class="card-body">
+            <div class="card" id="table_change">
+                <div class="card-body" id="">
                     <div class="row">
                         <div class="col-md-4">
 
-                            <form id="form" action="/admin/addbanner" method="post">
+                            <form id="form" action="/admin/addbanner" method="post" enctype="multipart/form-data">
 
 
                                 <div class="mb-4 mb-3">
@@ -107,19 +107,32 @@
                                 style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th>Image</th>
-                                        <th>Product Title</th>
-                                        <th>Product Name</th>
-                                        <th>Category</th>
-                                        <th>Subcategory</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-
+                                        <th>banner</th>
+                                        <th>Title</th>
+                                        <th>Headding</th>
+                                        <th>Content</th>
                                         <th class="text-end">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    <%for(i=0;i<data.length;i++){%>
+                                        <tr id="tr_<%=data[i]._id%>">
+                                            <td><img style="width: 50px;height: 50px;"
+                                                    src="/user/images/productImage/<%=data[i]._id%>1.jpg" alt="image">
+                                            </td>
+                                            <td>
+                                                <%=data[i].bannerTitle%>
+                                            </td>
+                                            <td>
+                                                <%=data[i].bannerHeading%>
+                                            </td>
+                                            <td>
+                                                <%=data[i].bannerContent%>
+                                            </td>
+                                            <td><a class="btn btn-danger"
+                                                    onclick="deleteBanner('<%=data[i]._id%>')">Delete</a></td>
+                                        </tr>
+                                        <%}%>
                                 </tbody>
                             </table>
                         </div> <!-- .col// -->
@@ -167,6 +180,47 @@
 
 
 <script>
+
+    function deleteBanner(id) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+
+                    url: '/admin/deleteBanner',
+                    type: 'post',
+                    data: { id: id },
+                    success: () => {
+
+                        Swal.fire(
+
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success',
+
+                        )
+                        $("#table_change").load(location.href + " #table_change");
+
+                    }
+
+                })
+
+            }
+        })
+    }
+
+
+
+
 
 
 
@@ -281,8 +335,8 @@
 
         $('#crop1').click(function () {
             canvas = cropper1.getCroppedCanvas({
-                width: 800,
-                height: 252
+                width: 1903,
+                height: 600
             });
 
             canvas.toBlob(function (blob) {

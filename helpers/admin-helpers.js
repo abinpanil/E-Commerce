@@ -212,6 +212,18 @@ module.exports = {
                 let objId = ObjectId(data.insertedId).toString()
                 resolve(objId)
             })
+        })  
+    },
+    getHomeData:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let data = await db.get().collection(collection.HOMEPAGE_COLLECTION).aggregate().toArray()
+            resolve(data)
+        })
+    },
+    deleteBanner:(id)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.HOMEPAGE_COLLECTION).deleteOne({_id:objectId(id)})
+            resolve()
         })
     },
     getReportData: (type) => {

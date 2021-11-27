@@ -70,7 +70,8 @@
                                 <div class="col-sm-6 mb-3">
                                     <button type="submit" style="width: 100%;" id="submitbtn"
                                         class="btn btn-primary">Google</button>
-                                    <p class="pt-1" style="font-size: 10px;">Login using Google Account</p>
+                                    <p class="pt-1" style="font-size: 10px;"><span class="fa fa-google"></span>Login
+                                        using Google Account</p>
                                 </div>
                             </div> <!-- row.// -->
                             <!-- End sample -->
@@ -139,10 +140,13 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 <script>
 
 
-    
+
 
 
     // signIn validation started.
@@ -377,6 +381,14 @@
                 data: userSignupValue,
                 success: (data) => {
                     console.log(data);
+                    if (data.err) {
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Otp Server Down Try again after some times!',
+                        })
+                    }
                     if (data.status) {
 
                         if (data.otp) {
@@ -389,6 +401,7 @@
                                                 <form>
                                                     <div class="form-group">
                                                         <label>Enter OTP *</label>
+                                                        <input type="text" class="form-control your-class" value="${userSignupValue.mobile}" name="mobile" id="resend_otp_mobile" style="display:none">
                                                         <div id="otp" class=" inputs d-flex flex-row justify-content-center justify-content-between mt-2">
                                                             <input class="m-2 inputs text-center rounded" type="text" id="first" maxlength="1" />
                                                             <input class="m-2 inputs text-center rounded" type="text" id="second" maxlength="1" />
@@ -405,14 +418,20 @@
                                                             <p id="invalidnumber" style="color: red;"> </p>
                                                         </div>
                                                         <div class=" col-6">
-                                                            <a href="javascript:void(0)" href="/resend" id="resend" class="nav-link active" style="display:none" >Resend</a>
+                                                            <a href="javascript:void(0)" onclick='resend()' id="resend" class="nav-link active" style="display:none" >Resend</a>
                                                             <a href="javascript:void(0)" style="cursor: default;" id="counter" class="nav-link active"></a>
                                                         </div>
                                                     </div>
                                                     <button type="submit" style="width: 100%;" onclick="Otp()" class="btn btn-success">Verify Number</button>
                                                 </form>
                                             </div>`
-
+                            Swal.fire({
+                                position: 'bottom-center',
+                                icon: 'success',
+                                title: 'OTP Send successfully',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
                             $("#invalidnumber").text('OTP Sent Successfully')
                             $('#otp').removeAttr('disabled')
                             $('#Otpsubmit').removeAttr('disabled')
@@ -462,6 +481,56 @@
         }
     };
 
+
+    function resend() {
+        alert('here')
+        event.preventDefault()
+        let mobile = $('#resend_otp_mobile').val()
+        alert(mobile)
+        $.ajax({
+            url: '/resend',
+            method: 'post',
+            data: { mobile: mobile },
+            success: () => {
+                Swal.fire({
+                    position: 'bottom-center',
+                    icon: 'success',
+                    title: 'OTP Send successfully',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+
+                let resendButton = document.getElementById('resend').style.display = 'none'
+                let counter = document.getElementById('counter').style.display = 'block'
+
+
+                $("#invalidnumber").text('OTP Sent Successfully')
+                $('#otp').removeAttr('disabled')
+                $('#Otpsubmit').removeAttr('disabled')
+
+                document.getElementById('resend').style.display = 'none'
+                // resendButton.style.display = ""
+                const StringMinitue = .5
+                let time = StringMinitue * 60
+                var countdownElement = document.getElementById('counter')
+                let timer = setInterval(updateCounter, 1000)
+                function updateCounter() {
+                    const minutes = Math.floor(time / 60)
+                    let seconds = time % 60
+                    seconds = seconds < 2 ? '0' + seconds : seconds
+                    countdownElement.innerHTML = `${minutes}:${seconds}`
+                    time--
+                    if (minutes == 0 && seconds == 0) {
+
+                        let resendButton = document.getElementById('resend').style.display = 'block'
+                        let counter = document.getElementById('counter').style.display = 'none'
+                        clearInterval(timer)
+                    }
+                }
+            }
+
+        })
+    }
 
 
 
@@ -670,6 +739,14 @@
                             success: (response) => {
 
                                 if (response.send) {
+
+                                    Swal.fire({
+                                        position: 'bottom-center',
+                                        icon: 'success',
+                                        title: 'OTP Send successfully',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    })
 
                                     $("#invalidnumber").text('OTP Sent Successfully')
                                     $('#first').removeAttr('disabled')

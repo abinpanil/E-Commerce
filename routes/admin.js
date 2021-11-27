@@ -3,6 +3,7 @@ var router = express.Router();
 const adminHelpers = require('../helpers/admin-helpers')
 const fs = require('fs');
 const userHelpers = require('../helpers/user-helpers');
+const { Db } = require('mongodb');
 
 let logErr = ""
 let pid = 123
@@ -86,9 +87,10 @@ router.get('/orders', varifyLogin, async (req, res) => {
 
 
 // home banners
-router.get('/homepage-customization', (req, res) => {
-
-  res.render('./admin/home_page', { admin, title: "Home Custom" })
+router.get('/homepage-customization',varifyLogin, async(req, res) => {
+  let data = await adminHelpers.getHomeData()
+  console.log(data);
+  res.render('./admin/home_page', { admin, title: "Home Custom", data })
 })
 
 /* Get users. */
@@ -411,17 +413,27 @@ let data = {
   bannerHeading : req.body.bannerHeading,
   bannerContent : req.body.bannerContent
 }
+console.log(data);
   adminHelpers.addBanner(data).then((id)=>{
 
     console.log("ethyyyyyy");
     let image = req.body.image
+    console.log(image);  
     let path = './public/user/images/productImage/' + id + '1.jpg'
     let img = image.replace(/^data:([A-Za-z+/]+);base64,/, "")
     fs.writeFileSync(path, img, { encoding: 'base64' })
-
+    res.redirect('/admin/homepage-customization')
   })
 })
 
+
+// delete banner
+router.post('/deleteBanner',(req,res)=>{
+  console.log(req.body)
+  adminHelpers.deleteBanner(req.body.id).then(()=>{
+    res.json({})
+  })
+})
 
 // sales report
 router.post('/reportdate',async(req,res)=>{
@@ -429,6 +441,6 @@ router.post('/reportdate',async(req,res)=>{
   type = req.body.value
   res.redirect('/admin/sales-report')
 
-})
+}) 
 
 module.exports = router;

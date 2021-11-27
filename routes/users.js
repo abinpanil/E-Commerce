@@ -44,6 +44,8 @@ function varifyLogin(req, res, next) {
 /* GET users Home. */
 router.get('/', async (req, res, next) => {
 
+  let home = await adminHelpers.getHomeData()
+  console.log(home);
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   } else {
@@ -51,12 +53,12 @@ router.get('/', async (req, res, next) => {
     user.name = ''
     delete req.session.user
     console.log("false in userrrrrrrrrrr");
-  }
+  } 
   console.log(user);
   adminHelpers.getCategory().then((data) => {
     adminHelpers.getAllProducts().then((products) => {
       // console.log(products);
-      res.render('./user/home', { admin, user, title: "Home", data, products, cartCount });
+      res.render('./user/home', { admin, user, title: "Home", data, products, cartCount,home });
     })
   })
 });
@@ -306,7 +308,7 @@ router.post('/signUp', function (req, res) {
     if (userResponse.status) {
       res.redirect('/login')
     }
-  })
+  }) 
 })
 
 
@@ -343,6 +345,7 @@ router.post('/validate', function (req, res) {
           req.session.number = req.body.mobile
           res.json(userResponse)
         }).catch((e) => {
+          res.json({err:true})
           userResponse.otp = "Otp not send"
           console.log(e, "errroooorrrrrrrrrr");
         })
@@ -355,22 +358,20 @@ router.post('/validate', function (req, res) {
 
 // resend
 router.post('/resend', (req, res) => {
-
+  console.log("ethyyyyyyyyyyyy");
+  console.log(req.body);
   client.verify.services(serviceID)
     .verifications.create({
       to: `+91${req.body.mobile}`,
       channel: "sms"
     })
-    .then((response) => {
-      console.log("hereeeeeeee");
-      console.log(response);
-      req.session.signup = req.body
-      req.session.number = req.body.mobile
-      res.json(userResponse)
+    .then(() => {
+      console.log("ethyyyyy");
+      res.json(response)
     }).catch((e) => {
       userResponse.otp = "Otp not send"
       console.log(e, "errroooorrrrrrrrrr");
-      res.json(userResponse)
+      res.json({err:true})
     })
 })
 

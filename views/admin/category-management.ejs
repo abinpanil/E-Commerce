@@ -92,7 +92,7 @@
                                         <tbody>
                                              <%for(var i=0;i<data.length;i++){%>
                                                   <tr>
-                                                       <td><b><%=data[i].category%></b></td>
+                                                       <td class="text-dark"><b><%=data[i].category%></b></td>
                                                        <td></td>
                                                        <td class="text-end"><a class="btn btn-danger"
                                                             onclick="deleteCategory('<%=data[i].category%>')">Delete
@@ -101,7 +101,7 @@
                                                   <%for(var j=0;j<data[i].subCategory.length;j++){%>
                                                        <tr>
                                                             <td></td>
-                                                            <td><%=data[i].subCategory[j]%></td>
+                                                            <td class="text-dark"><%=data[i].subCategory[j]%></td>
                                                             <td class="text-end"><a class="btn btn-secondary"
                                                                  onclick="deleteSubCategory('<%=data[i].category%>','<%=data[i].subCategory[j]%>')">Delete
                                                                  Subcategory</a></td>

@@ -12,9 +12,10 @@
             }">
             <div class="swiper-wrapper">
                 <!-- End of .intro-slide1 -->
+                <%for(i=0;i<home.length;i++){%>
                 <div class="swiper-slide banner banner-fixed intro-slide3">
                     <figure class="banner-media">
-                        <img src="/user/images/demos/demo15/sliders/slide-3.jpg" alt="Slide" width="1903" height="600"
+                        <img src="/user/images/productImage/<%=home[i]._id%>1.jpg" alt="Slide" width="1903" height="600"
                             style="background-color: #CECECE;">
                     </figure>
                     <div class="banner-content y-50 ml-4 mr-4">
@@ -35,6 +36,7 @@
                     </div>
                     <!-- End of .banner-content -->
                 </div>
+                <%}%>
                 <!-- End of .intro-slide1 -->
             </div>
         </div>
