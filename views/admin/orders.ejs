@@ -1,143 +1,163 @@
 <!-- ============================================================== -->
-            <!-- Start right Content here -->
-            <!-- ============================================================== -->
-            <div class="main-content">
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
 
-                <div class="page-content">
-                    <div class="container-fluid">
+    <div class="page-content">
+        <div class="container-fluid">
 
-                        <!-- start page title -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Orders</h4>
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Orders</h4>
 
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
-                                            <li class="breadcrumb-item active">Orders</li>
-                                        </ol>
-                                    </div>
-
-                                </div>
-                            </div>
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                                <li class="breadcrumb-item active">Orders</li>
+                            </ol>
                         </div>
-                        <!-- end page title -->
 
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="table-rep-plugin">
-                                            <div class="table-responsive mb-0" data-pattern="priority-columns" id="change">
-                                                <table id="tech-companies-1" class="table table-striped"  >
-                                                    <thead>
-                                                    <tr>
-                                                        <th>OrderId</th>
-                                                        <th data-priority="1">Date</th>
-                                                        <th data-priority="3">User Name</th>
-                                                        <th data-priority="1">Price</th>
-                                                        <th data-priority="3">Status</th>
-                                                        <th data-priority="3">Patment Method</th>
-                                                        <th data-priority="6">More</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <%for(i=0;i<orders.length;i++){%>
-                                                    <tr>
-                                                        <th><%=orders[i]._id%></th>
-                                                        <td><%=orders[i].displayDate%></td>
-                                                        <td><%=orders[i].deliveryDetails.name%></td>
-                                                        <td><%=orders[i].totalPrice%></td>
-                                                        <%if(orders[i].status === 'cancel'){%>
-                                                            <td><span style="color: red;"><b>Canceled</b></span></td>
-                                                        <%}else if(orders[i].status === 'delivered' ){%>
-                                                            <td><span style="color: rgb(39, 214, 23);"><b>Delivered</b></span></td>
-                                                        <%}else{%>
-                                                            <td>
-                                                                <select id="status_<%=orders[i]._id%>" onchange="status('<%=orders[i]._id%>')" class="form-select">
-    
-                                                                    <option><%=orders[i].status%></option>
-                                                                    <option>placed</option>
-                                                                    <option>shipped</option>
-                                                                    <option>confirmed</option>
-                                                                    <option>delivered</option>
-                                                                    <option>cancel</option>
-                                                
-                                                                </select>
-                                                            </td>
-                                                        
-                                                        <%}%>
-                                                        <td><%=orders[i].paymentMethod%></td>
-                                                        <td><a href="/admin/viewMoreOrders/<%=orders[i]._id%>"  class="btn btn-outline-dark">View More</a></td>
-                                                    </tr>
-                                                    <%}%>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-        
-                                        </div>
-        
-                                    </div>
-                                </div>
-                            </div> <!-- end col -->
-                        </div> <!-- end row -->
-                    </div> <!-- container-fluid -->
+                    </div>
                 </div>
-                <!-- End Page-content -->
-                
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> © Upzet.
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="text-sm-end d-none d-sm-block">
-                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-rep-plugin">
+                                <div class="table-responsive mb-0" data-pattern="priority-columns" id="change">
+                                    <table id="table_id" class=" display table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>OrderId</th>
+                                                <th data-priority="1">Date</th>
+                                                <th data-priority="3">User Name</th>
+                                                <th data-priority="1">Price</th>
+                                                <th data-priority="3">Status</th>
+                                                <th data-priority="3">Patment Method</th>
+                                                <th data-priority="6">More</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%for(i=0;i<orders.length;i++){%>
+                                                <tr>
+                                                    <th>
+                                                        <%=orders[i]._id%>
+                                                    </th>
+                                                    <td>
+                                                        <%=orders[i].displayDate%>
+                                                    </td>
+                                                    <td>
+                                                        <%=orders[i].deliveryDetails.name%>
+                                                    </td>
+                                                    <td>
+                                                        <%=orders[i].totalPrice%>
+                                                    </td>
+                                                    <%if(orders[i].status==='cancel' ){%>
+                                                        <td><span style="color: red;"><b>Canceled</b></span></td>
+                                                        <%}else if(orders[i].status==='delivered' ){%>
+                                                            <td><span
+                                                                    style="color: rgb(39, 214, 23);"><b>Delivered</b></span>
+                                                            </td>
+                                                            <%}else{%>
+                                                                <td>
+                                                                    <select id="status_<%=orders[i]._id%>"
+                                                                        onchange="status('<%=orders[i]._id%>')"
+                                                                        class="form-select">
+
+                                                                        <option>
+                                                                            <%=orders[i].status%>
+                                                                        </option>
+                                                                        <option>placed</option>
+                                                                        <option>shipped</option>
+                                                                        <option>confirmed</option>
+                                                                        <option>delivered</option>
+                                                                        <option>cancel</option>
+
+                                                                    </select>
+                                                                </td>
+
+                                                                <%}%>
+                                                                    <td>
+                                                                        <%=orders[i].paymentMethod%>
+                                                                    </td>
+                                                                    <td><a href="/admin/viewMoreOrders/<%=orders[i]._id%>"
+                                                                            class="btn btn-outline-dark">View More</a>
+                                                                    </td>
+                                                </tr>
+                                                <%}%>
+                                        </tbody>
+                                    </table>
                                 </div>
+
                             </div>
+
                         </div>
                     </div>
-                </footer>
-                
-            </div>
-            <!-- end main content-->
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
 
-        </div>
-        <!-- END layout-wrapper -->
+</div>
+<!-- end main content-->
 
-        <!-- JAVASCRIPT -->
-        <script src="/admin/libs/jquery/jquery.min.js"></script>
-        <script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="/admin/libs/metismenu/metisMenu.min.js"></script>
-        <script src="/admin/libs/simplebar/simplebar.min.js"></script>
-        <script src="/admin/libs/node-waves/waves.min.js"></script>
+</div>
+<!-- END layout-wrapper -->
 
-        <script src="/admin/js/app.js"></script>
+<!-- JAVASCRIPT -->
+<script src="/admin/libs/jquery/jquery.min.js"></script>
+<script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/libs/metismenu/metisMenu.min.js"></script>
+<script src="/admin/libs/simplebar/simplebar.min.js"></script>
+<script src="/admin/libs/node-waves/waves.min.js"></script>
 
-    </body>
-
-    <script>
-
-        function status(id){
-
-            let status = $(`#status_${id}`).val()
-            $.ajax({
-                url:'/admin/change-status',
-                method:'post',
-                data:{
-                    orderId:id,
-                    status:status
-                },
-                success:()=>{
-                    $("#change").load(location.href + " #change");
-                    let change = document.getElementById(`status_${id}`).value = status
-                }
-            })
-
-        }
-        
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.js"></script>
 
 
-    </script>
+<script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
+
+<script src="/admin/js/app.js"></script>
+
+
+
+</body>
+
+<script>
+
+
+    $(document).ready(function () {
+        $('#table_id').DataTable();
+    });
+
+
+    function status(id) {
+
+        let status = $(`#status_${id}`).val()
+        $.ajax({
+            url: '/admin/change-status',
+            method: 'post',
+            data: {
+                orderId: id,
+                status: status
+            },
+            success: () => {
+                $("#change").load(location.href + " #change");
+                let change = document.getElementById(`status_${id}`).value = status
+            }
+        })
+
+    }
+
+
+
+</script>

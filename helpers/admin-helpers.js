@@ -18,7 +18,7 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
 
             let category = categoryObj.category
-            
+
             let findCategory = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ category: category })
             console.log(findCategory);
             if (findCategory) {
@@ -26,16 +26,16 @@ module.exports = {
                 let showCat = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ category: category })
                 resolve(showCat)
             } else {
-                await db.get().collection(collection.CATEGORY_COLLECTION).insertOne({ category: category , subCategory:[]})
+                await db.get().collection(collection.CATEGORY_COLLECTION).insertOne({ category: category, subCategory: [] })
                 let showCat = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ category: category })
-               
+
                 resolve(showCat)
             }
         })
     },
     addSubcategory: (categoryObj) => {
 
-        return new Promise(async (resolve, reject)=>{
+        return new Promise(async (resolve, reject) => {
 
             let category = categoryObj.category
             let subCategory = categoryObj.subcategory
@@ -52,21 +52,21 @@ module.exports = {
 
         return new Promise(async (resolve, reject) => {
             let data = await db.get().collection(collection.CATEGORY_COLLECTION).find().toArray()
-                
-            if(data.subCategory){
+
+            if (data.subCategory) {
                 console.log("true");
-            }else{
-                
+            } else {
+
             }
 
-            resolve(data)      
-        })  
+            resolve(data)
+        })
     },
     getSubCategory: (cat) => {
 
         return new Promise(async (resolve, reject) => {
             let subCat = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ category: cat.category })
-            
+
             resolve(subCat)
         })
     },
@@ -76,7 +76,7 @@ module.exports = {
 
             await db.get().collection(collection.CATEGORY_COLLECTION).updateOne(
                 { category: category.catName },
-                { $pull: { subCategory:category.subCatName } },
+                { $pull: { subCategory: category.subCatName } },
             );
 
             resolve()
@@ -95,9 +95,9 @@ module.exports = {
 
 
     },
-    deleteProductcategory:(category)=>{
+    deleteProductcategory: (category) => {
 
-        return new Promise(async(resolve,reject)=>{
+        return new Promise(async (resolve, reject) => {
             let productId = await db.get().collection(collection.PRODUCTS_COLLECTION).findOne({ productcategory: category.catName })
             await db.get().collection(collection.PRODUCTS_COLLECTION).deleteOne({ productcategory: category.catName })
             console.log("hereeeeeeeeeeeeeeeeeeee");
@@ -106,12 +106,12 @@ module.exports = {
             resolve(objId)
         })
     },
-    deleteProductSubcategory:(category)=>{
+    deleteProductSubcategory: (category) => {
 
-        return new Promise(async(resolve,reject)=>{
-            let productId = await db.get().collection(collection.PRODUCTS_COLLECTION).findOne({ productcategory: category.catName ,  productsubcategory: category.subCatName })
-            await db.get().collection(collection.PRODUCTS_COLLECTION).deleteOne({ productcategory: category.catName ,  productsubcategory: category.subCatName })
-           
+        return new Promise(async (resolve, reject) => {
+            let productId = await db.get().collection(collection.PRODUCTS_COLLECTION).findOne({ productcategory: category.catName, productsubcategory: category.subCatName })
+            await db.get().collection(collection.PRODUCTS_COLLECTION).deleteOne({ productcategory: category.catName, productsubcategory: category.subCatName })
+
             let objId = ObjectId(productId._id).toString()
             resolve(objId)
         })
@@ -129,7 +129,7 @@ module.exports = {
 
     },
     updateProduct: (data) => {
-        
+
         data.productquantity = parseInt(data.productquantity)
         data.productprice = parseInt(data.productprice)
         return new Promise(async (resolve, reject) => {
@@ -170,7 +170,7 @@ module.exports = {
     addProduct: (product) => {
         product.productquantity = parseInt(product.productquantity)
         product.productprice = parseInt(product.productprice)
-        
+
         return new Promise((resolve, reject) => {
 
             db.get().collection(collection.PRODUCTS_COLLECTION).insertOne(product).then((data) => {
@@ -188,26 +188,86 @@ module.exports = {
             resolve(products)
         })
     },
-    getOrderforAdmin:()=>{
-        return new Promise(async(resolve,reject)=>{
-            let orders = await db.get().collection(collection.ORDER_COLLECTION).find().toArray()
+    getOrderforAdmin: () => {
+        return new Promise(async (resolve, reject) => {
+            let orders = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
+                [
+                    {
+                        $sort:{displayDate:-1}
+                    }
+                ]
+            ).toArray()
             resolve(orders)
         })
     },
-    changeOrderStatus:(data)=>{
-        return new Promise((resolve,reject)=>{
-            db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId(data.orderId)},{$set:{status:data.status}})
+    changeOrderStatus: (data) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(data.orderId) }, { $set: { status: data.status } })
             resolve()
         })
     },
-    addBanner:(data)=>{
-        return new Promise(async(resolve,reject)=>{
-            db.get().collection(collection.HOMEPAGE_COLLECTION).insertOne(data).then((data)=>{
+    addBanner: (data) => {
+        return new Promise(async (resolve, reject) => {
+            db.get().collection(collection.HOMEPAGE_COLLECTION).insertOne(data).then((data) => {
                 let objId = ObjectId(data.insertedId).toString()
                 resolve(objId)
             })
         })
+    },
+    getReportData: (type) => {
+        console.log(type);
+        const numberOfDays = type === 'Daily' ? 1 : type === 'Weekly' ? 7 : type === 'Monthly' ? 30 : type === 'Yearly' ? 365 : 0
+        const dayOfYear = (date) =>
+            Math.floor(
+                (date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24
+            )
+        return new Promise(async (resolve, reject) => {
+            let report = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
+                [
+                    {
+                        $match: {
+                            date: { $gte: new Date(new Date() - numberOfDays * 60 * 60 * 24 * 1000) }
+                        }
+                    },
+                    {
+                        $unwind: '$products'
+                    },
+                    {
+                        $project: {
+                            displayDate: 1, 
+                            paymentMethod: 1,
+                            status: 1,
+                            deliveryDetails: 1,
+                            date: 1,
+                            totalPrice: 1,
+                            item: '$products.item',
+                            quantity: '$products.quantity'
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: collection.PRODUCTS_COLLECTION,
+                            localField: 'item',
+                            foreignField: '_id',
+                            as: 'product'
+                        }
+                    },
+                    {
+                        $project: {
+                            displayDate: 1, paymentMethod: 1, status: 1, deliveryDetails: 1, date: 1, totalPrice: 1, item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
+                        }
+                    },
+                    {
+                        $project: {
+                            displayDate: 1, paymentMethod: 1, status: 1, deliveryDetails: 1, date: 1, totalPrice: 1, item: 1, quantity: 1, product: 1, subTotal: { $multiply: ['$quantity', '$product.productprice'] }
+                        }
+                    },
+                    {
+                        $sort:{displayDate:-1}
+                    }
+                ]
+            ).toArray()
+            resolve(report)
+        })
     }
-    
-
 }

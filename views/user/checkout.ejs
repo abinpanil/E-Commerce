@@ -181,13 +181,18 @@
                                         <div class="card">
                                             <div class="card-header">
                                                 <label style="color: #6e6b6b; font-weight: 500;" for=""><input
-                                                        type="radio" name="payment" value="Cash On Delivery" checked>
+                                                        type="radio" name="payment" value="COD" checked>
                                                     Cash On Delivery</label>
                                             </div>
                                             <div class="card-header">
                                                 <label style="color: #6e6b6b; font-weight: 500;" for=""><input
                                                         type="radio" name="payment" value="Razorpay" checked>
                                                     RazorPay</label>
+                                            </div>
+                                            <div class="card-header">
+                                                <label style="color: #6e6b6b; font-weight: 500;" for=""><input
+                                                        type="radio" name="payment" value="Paypal" checked>
+                                                    Paypal</label>
                                             </div>
 
                                         </div>
@@ -228,7 +233,14 @@
             data: $('#checkout-form').serialize(),
             success: (response) => {
 
-                razorpayPayment(response)
+                if(response.cod){
+
+                    location.href = '/order-placed'
+
+                }else{
+                    razorpayPayment(response)
+                }
+
             }
         })
     })

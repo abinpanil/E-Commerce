@@ -101,8 +101,8 @@
                                 <div class="product-action-horizontal">
                                     <a onclick="addToCart('<%=products[i]._id%>')" class="btn-product-icon  w-icon-cart"
                                         title="Add to cart"></a>
-                                    <!-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                        title="Wishlist"></a> -->
+                                    <a onclick="addToWishlist('<%=products[i]._id%>')" class="btn-product-icon btn-wishlist w-icon-heart"
+                                        title="Wishlist"></a>
                                     <a href="/product-buy-now/<%=products[i]._id%>" class="btn-product-icon w-icon-shipping"
                                         title="Buy Now"></a>
                                 </div>
@@ -191,6 +191,34 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+
+
+    function addToWishlist(id){
+
+        $.ajax({
+            url: '/add-to-wishlist',
+            method: 'post',
+            data: { proId: id },
+            success: (response) => {
+                if(response.status){
+
+                    
+                    
+                    Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Product Added to cart',
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+
+                }else{
+                    window.location.assign('/login')
+                }
+                
+            }
+        })
+    }
 
 
     function addToCart(id) {

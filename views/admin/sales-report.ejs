@@ -1,0 +1,142 @@
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Orders</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                                <li class="breadcrumb-item active">Orders</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card" id="">
+                        <div class="card-body">
+                            <div class="row pb-3">
+                                <div class="col-2">
+                                    <label class="form-label">Sort by</label>
+                                    <select class="form-select" onchange="date()" id="date">
+                                        <option><%=type%></option>
+                                        <option>Daily</option>
+                                        <option>Weekly</option>
+                                        <option>Monthly</option>
+                                        <option>Yearly</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-rep-plugin">
+                                <div class="table-responsive mb-0" data-pattern="priority-columns" id="change">
+                                    <table id="table_id" class=" display table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>OrderId</th>
+                                                <th data-priority="1">Status</th>
+                                                <th data-priority="3">Product</th>
+                                                <th data-priority="3">Quantity</th>
+                                                <th data-priority="3">Patment Method</th>
+                                                <th data-priority="6">Customer Name</th>
+                                                <th data-priority="7">Date</th>
+                                                <th data-priority="8">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <%for(i=0;i<data.length;i++){%>
+
+                                                <tr>
+                                                    <th><%=data[i]._id%></th>
+                                                    <th><%=data[i].status%></th>
+                                                    <th><%=data[i].product.productname%></th>
+                                                    <th><%=data[i].quantity%></th>
+                                                    <th><%=data[i].paymentMethod%></th>
+                                                    <th><%=data[i].deliveryDetails.name%></th>
+                                                    <th><%=data[i].displayDate%></th>
+                                                    <th><%=data[i].subTotal%></th>
+                                                </tr>
+
+                                            <%}%>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+</div>
+<!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+<!-- JAVASCRIPT -->
+<script src="/admin/libs/jquery/jquery.min.js"></script>
+<script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/libs/metismenu/metisMenu.min.js"></script>
+<script src="/admin/libs/simplebar/simplebar.min.js"></script>
+<script src="/admin/libs/node-waves/waves.min.js"></script>
+
+<link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript"
+    src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.js"></script>
+
+
+<script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
+
+<script src="/admin/js/app.js"></script>
+
+
+
+</body>
+
+<script>
+
+    $(document).ready(function () {
+        $('#table_id').DataTable();
+    });
+
+    function date() {
+
+        let value = $('#date').val()
+        console.log(value);
+        $.ajax({
+
+            url: '/admin/reportdate',
+            type: 'post',
+            data: { value: value },
+            success:()=>{
+
+                location.href = '/admin/sales-report'
+            }
+        })
+
+    }
+
+</script>

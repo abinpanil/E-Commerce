@@ -11,7 +11,7 @@ let admin = {
   status: true
 
 }
-let catData
+let type = 'Daily'
 
 const varifyLogin = (req, res, next) => {
   if (req.session.admin) {
@@ -99,6 +99,15 @@ router.get('/users', varifyLogin, function (req, res) {
   })
 })
 
+router.get('/sales-report', varifyLogin,async(req,res)=>{
+
+  console.log(type);
+  let data = await adminHelpers.getReportData(type)
+  console.log(data);
+  
+  res.render('./admin/sales-report', { admin, title: "Sales Report",data,type})
+  res.json({})
+})
 
 /* Login admin. */
 router.post('/signin', (req, res) => {
@@ -413,5 +422,13 @@ let data = {
   })
 })
 
+
+// sales report
+router.post('/reportdate',async(req,res)=>{
+  
+  type = req.body.value
+  res.redirect('/admin/sales-report')
+
+})
 
 module.exports = router;

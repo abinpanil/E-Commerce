@@ -114,7 +114,7 @@
                             </div>
                         </div>
 
-                        <table class="shop-table account-orders-table mb-6">
+                        <table class="shop-table account-orders-table mb-6" id="table_id">
                             <thead>
                                 <tr>
                                     <th class="order-id">Address</th>
@@ -158,6 +158,11 @@
                                     <%}%>
                             </tbody>
                         </table>
+                        <script>
+                            $(document).ready(function () {
+                                $('#table_id').DataTable();
+                            });
+                        </script>
 
                         <a href="/" class="btn btn-dark btn-rounded btn-icon-right">Go
                             Shop<i class="w-icon-long-arrow-right"></i></a>
@@ -322,11 +327,18 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
 
+<link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript"
+    src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.js"></script>
 
 
+<script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
 
 <script>
-
 
     function viewOrder(orderId) {
 

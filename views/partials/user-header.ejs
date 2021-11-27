@@ -9,24 +9,26 @@
             <div class="header-top">
                 <div class="container">
                     <div class="header-left">
-                        
+
                     </div>
                     <div class="header-right">
-                        
+
                         <!-- End of Dropdown Menu -->
                         <%if(user.status){%>
-                            <a href="javascript:void(0)" style="font-size: 12px;" class="d-lg-show"><b>Hi <%=user.name%></b></a>
+                            <a href="javascript:void(0)" style="font-size: 12px;" class="d-lg-show"><b>Hi <%=user.name%>
+                                        </b></a>
                             <a href="/myaccount" style="font-size: 12px;" class="d-lg-show">My Account</a>
-                            <a href="javascript:void(0);" onclick="signOut()" style="font-size: 12px;" class="d-lg-show"><i
-                                class="w-icon-account" ></i>Sign out</a>
-                        <%}else{%>
+                            <a href="javascript:void(0);" onclick="signOut()" style="font-size: 12px;"
+                                class="d-lg-show"><i class="w-icon-account"></i>Sign out</a>
+                            <%}else{%>
 
-                            <a href="/login" style="font-size: 14px;" class="d-lg-show"><i
-                                class="w-icon-account"></i>Sign In <span class="delimiter d-lg-show">/</span>Register</a>
-                            <!-- <span class="delimiter d-lg-show">/</span>
+                                <a href="/login" style="font-size: 14px;" class="d-lg-show"><i
+                                        class="w-icon-account"></i>Sign In <span
+                                        class="delimiter d-lg-show">/</span>Register</a>
+                                <!-- <span class="delimiter d-lg-show">/</span>
                             <a href="/user/ajax/login.html" class="ml-0 d-lg-show login register">Register</a> -->
-                        <%}%>
-                        
+                                <%}%>
+
                     </div>
                 </div>
             </div>
@@ -40,67 +42,79 @@
                         <a href="/" class="logo ml-lg-0" style="padding-top: 8px;">
                             <img src="/user/images/logo.png" alt="logo" width="40" height="13" style="margin: auto;" />
                         </a>
-                        <form method="get" action="#" class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper justify-content-end">
-                            
+                        <form id="form-search " action="/productsearch/" method="get"
+                            class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper justify-content-end">
+
                             <input type="text" class="form-control" name="search" id="search"
-                                placeholder="Search for items and brands" style="font-family: 'PT Sans', sans-serif; font-size: 15px;" required />
-                            <button class="" style="background: none; border: none; border-bottom: 2px solid #666; cursor: pointer; color: #666;" type="submit"><i class="w-icon-search"></i>
+                                placeholder="Search for items and brands"
+                                style="font-family: 'PT Sans', sans-serif; font-size: 15px;" required />
+                            <button class=""
+                                style="background: none; border: none; border-bottom: 2px solid #666; cursor: pointer; color: #666;"
+                                type="submit"><i class="w-icon-search"></i>
                             </button>
                         </form>
                     </div>
                     <%if(user.status){%>
-                    <div class="header-right ml-4">
-                        
-                        <a class="wishlist label-down link d-xs-show" href="/wishlist">
-                            <i class="w-icon-heart"></i>
-                            <span class="wishlist-label d-lg-show">Wishlist</span>
-                        </a>
-                       
-                        <div class="dropdown cart-dropdown  mr-0 mr-lg-2">
-                            <a href="/cart" class="cart-toggle label-down link">
-                                <i class="w-icon-cart">
-                                    <span class="cart-count" id="cart_count" ><%=cartCount%></span>
-                                </i>
-                                <span class="cart-label">Cart</span>
+                        <div class="header-right ml-4">
+
+                            <a class="wishlist label-down link d-xs-show" href="/wishlist">
+                                <i class="w-icon-heart"></i>
+                                <span class="wishlist-label d-lg-show">Wishlist</span>
                             </a>
-                            
+
+                            <div class="dropdown cart-dropdown  mr-0 mr-lg-2">
+                                <a href="/cart" class="cart-toggle label-down link">
+                                    <i class="w-icon-cart">
+                                        <span class="cart-count" id="cart_count">
+                                            <%=cartCount%>
+                                        </span>
+                                    </i>
+                                    <span class="cart-label">Cart</span>
+                                </a>
+
+                            </div>
+                            <%}%>
                         </div>
-                        <%}%>
-                    </div>
                 </div>
             </div>
             <!-- End of Header Middle -->
 
-            <div class="header-bottom sticky-content fix-top sticky-header" style="background-color: #2d2d2d; color: #dccfcf;" >
+            <div class="header-bottom sticky-content fix-top sticky-header"
+                style="background-color: #2d2d2d; color: #dccfcf;">
                 <div class="container">
                     <div class="inner-wrap">
-                        <div class="header-left"> 
-                            <nav class="main-nav">  
+                        <div class="header-left">
+                            <nav class="main-nav">
                                 <ul class="menu active-underline">
-                                   <%if(data){%> 
-                                    <%for(var i=0;i<data.length;i++){%>
-                                        
-                                    <li>
-                                        <a href="/listproductscat/<%=data[i].category%>"><%=data[i].category%></a>
-                                        
-                                        <ul style="background-color: #2d2d2d; color: #dccfcf;">
-                                            <%for(var j=0;j<data[i].subCategory.length;j++){%>
-                                                <li>
-                                                    <a href="/listproductssubcat/<%=data[i].subCategory[j]%>/<%=data[i].category%>"><%=data[i].subCategory[j]%></a>
-                                            
-                                                </li>
+                                    <%if(data){%>
+                                        <%for(var i=0;i<data.length;i++){%>
+
+                                            <li>
+                                                <a href="/listproductscat/<%=data[i].category%>">
+                                                    <%=data[i].category%>
+                                                </a>
+
+                                                <ul style="background-color: #2d2d2d; color: #dccfcf;">
+                                                    <%for(var j=0;j<data[i].subCategory.length;j++){%>
+                                                        <li>
+                                                            <a
+                                                                href="/listproductssubcat/<%=data[i].subCategory[j]%>/<%=data[i].category%>">
+                                                                <%=data[i].subCategory[j]%>
+                                                            </a>
+
+                                                        </li>
+                                                        <%}%>
+                                                </ul>
+
+                                            </li>
                                             <%}%>
-                                        </ul>
-                                        
-                                    </li>
-                                    <%}%>
-                                    <%}%>
-                                    
+                                                <%}%>
+
                                 </ul>
                             </nav>
                         </div>
                         <div class="header-right">
-                           
+
                         </div>
                     </div>
                 </div>
@@ -111,15 +125,25 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 
         <script>
-            
+
+            // $('#form-search').submit((e) => {
+            //     // e.preventDefault()
+            //     let value = $('#search').val()
+            //     value = value.toUpperCase();
+            //     $.ajax({
+            //         url: `/productsearch/${value}`,
+            //         method: 'get',
+            //     })
+            // })
+
             // signOut
-            function signOut(){
+            function signOut() {
                 console.log("inside");
                 $.ajax({
 
-                    url:'/signout',
-                    method:'post',
-                    success:()=>{
+                    url: '/signout',
+                    method: 'post',
+                    success: () => {
                         location.reload()
                     }
 

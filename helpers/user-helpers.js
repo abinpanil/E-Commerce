@@ -199,6 +199,9 @@ module.exports = {
             }
         })
     },
+    addToWishlist:()=>{
+
+    },
     getCartProducts: (userId) => {
         return new Promise(async (resolve, reject) => {
             let cartItems = await db.get().collection(collection.CART_COLLECTION).aggregate(
@@ -490,9 +493,51 @@ module.exports = {
             })
         })
     },
+    placeOrderDirect:(order, products, totalPrice, address, user)=>{
+        let proObj = {
+            item: objectId(products),
+            quantity: 1
+        }
+        return new Promise((resolve, reject) => {
+            // console.log(order,products,totalPrice,address);
+            let status = order.payment === 'Cash On Delivery' ? 'placed' : 'pending'
+            let orderObj = {
+                deliveryDetails: {
+                    name: address.name,
+                    address: address.address,
+                    town: address.town,
+                    zip: address.zip,
+                    state: address.state,
+                    mobile: address.mobile
+                },
+                userId: objectId(user),
+                paymentMethod: order.payment,
+                products: [proObj],
+                status: status,
+                totalPrice: totalPrice,
+                date: new Date(),
+                displayDate: moment(new Date()).format('DD-MM-YYYY')
+            }
+            db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((data) => {
+
+                let orderId = ObjectId(data.insertedId).toString()
+                // console.log(orderId);
+                resolve(orderId)
+            })
+        })
+    },
     getOrder: (userId) => {
         return new Promise(async (resolve, reject) => {
-            let order = await db.get().collection(collection.ORDER_COLLECTION).find({ userId: objectId(userId) }).toArray()
+            let order = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
+                [
+                    {
+                        $match:{userId:objectId(userId)}
+                    },
+                    {
+                        $sort:{displayDate:-1}
+                    }
+                ]
+            ).toArray()
 
             resolve(order)
         })
@@ -527,6 +572,8 @@ module.exports = {
                     },
                     {
                         $project: {
+                            displayDate: 1, 
+                            paymentMethod: 1,
                             status: 1,
                             deliveryDetails: 1,
                             date: 1,
@@ -545,17 +592,17 @@ module.exports = {
                     },
                     {
                         $project: {
-                            status: 1, deliveryDetails: 1, date: 1, totalPrice: 1, item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
+                            displayDate: 1, paymentMethod: 1, status: 1, deliveryDetails: 1, date: 1, totalPrice: 1, item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
                         }
                     },
                     {
                         $project: {
-                            status: 1, deliveryDetails: 1, date: 1, totalPrice: 1, item: 1, quantity: 1, product: 1, subTotal: { $multiply: ['$quantity', '$product.productprice'] }
+                            displayDate: 1, paymentMethod: 1, status: 1, deliveryDetails: 1, date: 1, totalPrice: 1, item: 1, quantity: 1, product: 1, subTotal: { $multiply: ['$quantity', '$product.productprice'] }
                         }
                     }
                 ]
             ).toArray()
-            console.log(order);
+            // console.log(order);
             resolve(order)
 
         })
@@ -603,6 +650,24 @@ module.exports = {
             await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId(orderId)},{$set:{status:'placed'}})
             console.log("change status");
             resolve()
+        })
+    },
+    getSearchProducts:(value)=>{
+        return new Promise(async(resolve,reject)=>{
+            let products = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
+                [
+                    {
+                        $match:{
+                            $or:[
+                                {productcategory:value},
+                                {productsubcategory:value}
+                            ]
+                        }
+                    }
+                ]
+            ).toArray()
+            console.log(products);
+            resolve(products)
         })
     }
 }

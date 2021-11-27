@@ -117,40 +117,6 @@
                     </div>
 
                 </div>
-
-                <div class="tab-pane" id="sign-up">
-                    <form>
-                        <div class="form-group">
-                            <label>Enter OTP *</label>
-
-                            <div id="otp"
-                                class="inputs d-flex flex-row justify-content-center justify-content-between mt-2">
-                                <input class="m-2 inputs text-center rounded" type="text" id="first" maxlength="1" />
-                                <input class="m-2 inputs text-center rounded" type="text" id="second" maxlength="1" />
-                                <input class="m-2 inputs text-center rounded" type="text" id="third" maxlength="1" />
-                                <input class="m-2 inputs text-center rounded" type="text" id="fourth" maxlength="1" />
-                                <input class="m-2 inputs text-center rounded" type="text" id="fifth" maxlength="1" />
-                                <input class="m-2 inputs text-center rounded" type="text" id="sixth" maxlength="1" />
-                            </div>
-
-                            <p id="invalidotp1" style="color: red;"> </p>
-                        </div>
-                        <div class="row">
-                            <div class=" col-6">
-                                <p id="invalidnumber" style="color: red;"> </p>
-                            </div>
-                            <div class=" col-6">
-                                <a href="javascript:void(0)" href="/resend" id="resend" class="nav-link active"
-                                    style="display:none">Resend</a>
-                                <a href="javascript:void(0)" style="cursor: default;" id="counter"
-                                    class="nav-link active"></a>
-                            </div>
-                        </div>
-                        <button type="submit" style="width: 100%;" onclick="Otp()" class="btn btn-success">Verify
-                            Number</button>
-                    </form>
-                </div>
-
             </div>
         </div>
     </div>
@@ -176,15 +142,7 @@
 <script>
 
 
-    $(".inputs").keyup(function () {
-        if (this.value.length == this.maxLength) {
-            var $next = $(this).next('.inputs');
-            if ($next.length)
-                $(this).next('.inputs').focus();
-            else
-                $(this).blur();
-        }
-    });
+    
 
 
     // signIn validation started.
@@ -431,8 +389,15 @@
                                                 <form>
                                                     <div class="form-group">
                                                         <label>Enter OTP *</label>
-                                                        <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2"> <input class="m-2 text-center form-control rounded" type="text" id="first" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="second" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="third" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="fourth" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="fifth" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="sixth" maxlength="1" /> </div>
-                                                        <input placeholder="Enter 6 digit OTP" type="text" class="form-control your-class" name="otp" id="otp">
+                                                        <div id="otp" class=" inputs d-flex flex-row justify-content-center justify-content-between mt-2">
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="first" maxlength="1" />
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="second" maxlength="1" />
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="third" maxlength="1" />
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="fourth" maxlength="1" />
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="fifth" maxlength="1" />
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="sixth" maxlength="1" />
+                                                        </div>
+                                                        <span style="color: red;" id="validation"></span>
                                                         <p id="invalidotp1" style="color: red;"> </p>
                                                     </div>
                                                     <div class="row">
@@ -471,7 +436,18 @@
                                     clearInterval(timer)
                                 }
                             }
+
+                            $(".inputs").keyup(function () {
+                                if (this.value.length == this.maxLength) {
+                                    var $next = $(this).next('.inputs');
+                                    if ($next.length)
+                                        $(this).next('.inputs').focus();
+                                    else
+                                        $(this).blur();
+                                }
+                            });
                         }
+
 
                     } else {
                         console.log(data);
@@ -493,23 +469,29 @@
 
         console.log("otp");
         event.preventDefault()
+        let first = $('#first').val()
+        let second = $('#second').val()
+        let third = $('#third').val()
+        let fourth = $('#fourth').val()
+        let fifth = $('#fifth').val()
+        let sixth = $('#sixth').val()
 
-        let otp = $('#otp').val()
+        let otp = first + second + third + fourth + fifth + sixth
+
+
+
         let mobilenumber = $('#mobilenumber').val()
         let otp_Err = true
         let regnum = new RegExp("^[0-9]+$");
         if (otp.length == '') {
 
-            $('#otp').css('border-color', '#c70d0d')
-            $('#otp').attr("placeholder", "Enter Number")
+            $('#validation').html("Enter OTP")
 
         } else if (!regnum.test(otp)) {
 
-            $('#otp').css('border-color', '#c70d0d')
             $('#invalidotp1').text('Only Number Allowed')
         } else if (otp.length != 6) {
 
-            $('#otp').css('border-color', '#c70d0d')
             $('#invalidotp1').text("OTP must 6 number")
         } else {
 
@@ -577,7 +559,14 @@
                                 </div>
                                 <div class="form-group mb-5">
                                     <label>Enter OTP (6 Digit)<span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control your-class" name="otp" id="otp" disabled>
+                                    <div id="otp" class="inputs d-flex flex-row justify-content-center justify-content-between mt-2">
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="first" maxlength="1" disabled/>
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="second" maxlength="1" disabled/>
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="third" maxlength="1" disabled/>
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="fourth" maxlength="1" disabled/>
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="fifth" maxlength="1" disabled/>
+                                                            <input class="m-2 inputs text-center rounded" type="text" id="sixth" maxlength="1" disabled/>
+                                                        </div>
                                     <p id="invalidotp" style="color: red;"> </p>
 
                                     <p id="block_warning" style="color: red;"> </p>
@@ -597,6 +586,15 @@
 
 
         `)
+        $(".inputs").keyup(function () {
+            if (this.value.length == this.maxLength) {
+                var $next = $(this).next('.inputs');
+                if ($next.length)
+                    $(this).next('.inputs').focus();
+                else
+                    $(this).blur();
+            }
+        });
 
 
     }
@@ -674,8 +672,16 @@
                                 if (response.send) {
 
                                     $("#invalidnumber").text('OTP Sent Successfully')
-                                    $('#otp').removeAttr('disabled')
+                                    $('#first').removeAttr('disabled')
+                                    $('#second').removeAttr('disabled')
+                                    $('#third').removeAttr('disabled')
+                                    $('#fourth').removeAttr('disabled')
+                                    $('#fifth').removeAttr('disabled')
+                                    $('#sixth').removeAttr('disabled')
                                     $('#Otpsubmit').removeAttr('disabled')
+
+                                    // let resendButton = document.getElementById('resend').style.display = 'none'
+                                    let counter = document.getElementById('counter').style.display = 'block'
 
                                     let resendButton = document.getElementById('resend').style.display = 'none'
                                     // resendButton.style.display = ""
@@ -720,8 +726,15 @@
         event.preventDefault()
 
         let mobilenumber = $('#mobilenumber').val()
-        let otp = $('#otp').val()
 
+        let first = $('#first').val()
+        let second = $('#second').val()
+        let third = $('#third').val()
+        let fourth = $('#fourth').val()
+        let fifth = $('#fifth').val()
+        let sixth = $('#sixth').val()
+
+        let otp = first + second + third + fourth + fifth + sixth
 
 
         $.ajax({
