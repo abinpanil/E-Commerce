@@ -64,7 +64,7 @@
                                                     <td><%=usersList[i].mobile%></td>
                                                     <td><span class="badge rounded-pill alert-success" id="status_<%=usersList[i]._id%>" ><%=usersList[i].blockStatus%></span></td>
                                                     <td class="text-end">
-                                                        <a href="javascript:void(0);" class="btn btn-light" id="block_<%=usersList[i]._id%>" onclick="block('<%=usersList[i]._id%>')" style="width: 110px;"><%=usersList[i].isActive%></a>
+                                                        <a href="javascript:void(0);" class="btn btn-secondary" id="block_<%=usersList[i]._id%>" onclick="block('<%=usersList[i]._id%>')" style="width: 110px;"><%=usersList[i].isActive%></a>
                                                     </td>
                                                 </tr>
                                             <%}%>

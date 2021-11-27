@@ -80,97 +80,38 @@
 
 
 
-                                   <table id="table_id" class="table table-striped table-bordered dt-responsive nowrap"
+                                   <table id="" class="table table-striped table-bordered dt-responsive nowrap"
                                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                              <tr>
-                                                  <th>#</th>
                                                   <th>Category</th>
                                                   <th>Sub Category</th>
                                                   <th class="text-end">Action</th>
                                              </tr>
                                         </thead>
-                                        
                                         <tbody>
-
-                                             <%let a=0%>
-
-                                                  <%for(var i=0;i<data.length;i++){%>
-
-
-
-                                                       <%if(data[i].subCategory.length){%>
-
-                                                            <%for(var j=0;j<data[i].subCategory.length;j++){%>
-                                                                 <tr id="row_<%=a%>">
-                                                                      <%a++%>
-                                                                           <td><b>
-                                                                                     <%=a%>
-                                                                                </b></td>
-                                                                           <td id="category_<%=a%>"><b>
-                                                                                     <%=data[i].category%>
-                                                                                </b></td>
-
-                                                                           <%if(data[i].subCategory.length!=0){%>
-                                                                                <td id="subCategory_<%=a%>">
-                                                                                     <%=data[i].subCategory[j]%>
-                                                                                </td>
-                                                                                <%}else{%>
-                                                                                     <td>
-
-                                                                                     </td>
-                                                                                     <%}%>
-
-                                                                                          <td class="text-end">
-                                                                                               <a class="btn btn-outline-dark"
-                                                                                                    onclick="deleteCategory('category_<%=a%>')">Delete
-                                                                                                    Category</a>
-                                                                                               <a class="btn btn-outline-dark"
-                                                                                                    onclick="deleteSubCategory('category_<%=a%>','subCategory_<%=a%>')">Delete
-                                                                                                    Subcategory</a>
-
-                                                                                          </td>
-                                                                 </tr>
-                                                                 <%}%>
-                                                                      <%}else{%>
-
-                                                                           <tr id="row_<%=a%>">
-                                                                                <%a++%>
-                                                                                     <td><b>
-                                                                                               <%=a%>
-                                                                                          </b></td>
-                                                                                     <td id="category_<%=a%>"><b>
-                                                                                               <%=data[i].category%>
-                                                                                          </b></td>
-
-                                                                                     <%if(data[i].subCategory.length!=0){%>
-                                                                                          <td id="subCategory_<%=a%>">
-                                                                                               <%=data[i].subCategory[j]%>
-                                                                                          </td>
-                                                                                          <%}else{%>
-                                                                                               <td>
-
-                                                                                               </td>
-                                                                                               <%}%>
-
-                                                                                                    <td
-                                                                                                         class="text-end">
-                                                                                                         <a class="btn btn-outline-dark"
-                                                                                                              onclick="deleteCategory('category_<%=a%>')">Delete
-                                                                                                              Category</a>
-                                                                                                         <a class="btn btn-outline-dark"
-                                                                                                              onclick="deleteSubCategory('category_<%=a%>','subCategory_<%=a%>')">Delete
-                                                                                                              Subcategory</a>
-
-                                                                                                    </td>
-                                                                           </tr>
-
-
-                                                                           <%}%>
-                                                                                <%}%>
+                                             <%for(var i=0;i<data.length;i++){%>
+                                                  <tr>
+                                                       <td><b><%=data[i].category%></b></td>
+                                                       <td></td>
+                                                       <td class="text-end"><a class="btn btn-danger"
+                                                            onclick="deleteCategory('<%=data[i].category%>')">Delete
+                                                            Category</a></td>
+                                                  </tr>
+                                                  <%for(var j=0;j<data[i].subCategory.length;j++){%>
+                                                       <tr>
+                                                            <td></td>
+                                                            <td><%=data[i].subCategory[j]%></td>
+                                                            <td class="text-end"><a class="btn btn-secondary"
+                                                                 onclick="deleteSubCategory('<%=data[i].category%>','<%=data[i].subCategory[j]%>')">Delete
+                                                                 Subcategory</a></td>
+                                                       </tr>
+                                                  <%}%>
+                                             <%}%>
 
                                         </tbody>
                                    </table>
+                                        
                               </div> <!-- .col// -->
                          </div> <!-- .row // -->
                     </div> <!-- card body .// -->
@@ -335,7 +276,7 @@
      // function for delete category
      function deleteCategory(cat) {
 
-          let catName = document.getElementById(cat).innerText
+          let catName = cat
           // console.log(catName);
           Swal.fire({
                title: 'Are you sure?',
@@ -374,10 +315,11 @@
      // function for delete subcategory
      function deleteSubCategory(cat, sub) {
 
+          console.log(cat,sub);
           let categorys = {
 
-               catName: document.getElementById(cat).innerText,
-               subCatName: document.getElementById(sub).innerText
+               catName: cat,
+               subCatName: sub
           }
 
           Swal.fire({
