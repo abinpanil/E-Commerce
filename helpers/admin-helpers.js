@@ -193,7 +193,7 @@ module.exports = {
             let orders = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
                 [
                     {
-                        $sort:{displayDate:-1}
+                        $sort: { date: -1 }
                     }
                 ]
             ).toArray()
@@ -212,17 +212,17 @@ module.exports = {
                 let objId = ObjectId(data.insertedId).toString()
                 resolve(objId)
             })
-        })  
+        })
     },
-    getHomeData:()=>{
-        return new Promise(async(resolve,reject)=>{
+    getHomeData: () => {
+        return new Promise(async (resolve, reject) => {
             let data = await db.get().collection(collection.HOMEPAGE_COLLECTION).aggregate().toArray()
             resolve(data)
         })
     },
-    deleteBanner:(id)=>{
-        return new Promise((resolve,reject)=>{
-            db.get().collection(collection.HOMEPAGE_COLLECTION).deleteOne({_id:objectId(id)})
+    deleteBanner: (id) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.HOMEPAGE_COLLECTION).deleteOne({ _id: objectId(id) })
             resolve()
         })
     },
@@ -246,7 +246,7 @@ module.exports = {
                     },
                     {
                         $project: {
-                            displayDate: 1, 
+                            displayDate: 1,
                             paymentMethod: 1,
                             status: 1,
                             deliveryDetails: 1,
@@ -275,11 +275,239 @@ module.exports = {
                         }
                     },
                     {
-                        $sort:{displayDate:-1}
+                        $sort: { date: -1 }
                     }
                 ]
             ).toArray()
             resolve(report)
+        })
+    },
+    getTotalSales: () => {
+        return new Promise(async (resolve, reject) => {
+            let totalSales = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
+                [
+                    {
+                        $project: { total: { $sum: '$totalPrice' } }
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            total: { $sum: '$total' }
+                        }
+                    }
+                ]
+            ).toArray()
+            console.log(totalSales);
+            resolve(totalSales[0].total)
+        })
+    },
+    getTotalOrder: () => {
+        return new Promise(async (resolve, reject) => {
+            let totalOrder = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
+                [
+                    {
+                        $group: {
+                            _id: null,
+                            total: { $sum: 1 }
+                        }
+                    }
+                ]
+            ).toArray()
+            console.log(totalOrder);
+            resolve(totalOrder[0].total)
+        })
+    },
+    getTotalProducts: () => {
+        return new Promise(async (resolve, reject) => {
+            let totalProducts = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
+                [
+                    {
+                        $group: {
+                            _id: null,
+                            productname: { $sum: 1 }
+                        }
+                    }
+                ]
+            ).toArray()
+            console.log(totalProducts);
+            resolve(totalProducts[0].productname)
+        })
+    },
+    getCompletedOrder: () => {
+        return new Promise(async (resolve, reject) => {
+            let completedOrder = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
+                [
+                    {
+                        $match: { status: 'delivered' }
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            status: { $sum: 1 }
+                        }
+                    }
+                ]
+            ).toArray()
+            console.log(completedOrder);
+            resolve(completedOrder[0].status)
+        })
+    },
+    getPendingOrder: () => {
+        return new Promise(async (resolve, reject) => {
+            let pendingOrder = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
+                [
+                    {
+                        $match: { status: 'pending' }
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            status: { $sum: 1 }
+                        }
+                    }
+                ]
+            ).toArray()
+            console.log(pendingOrder);
+            resolve(pendingOrder[0].status)
+        })
+    },
+    getCancellOrder: () => {
+        return new Promise(async (resolve, reject) => {
+            let cancelOrder = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
+                [
+                    {
+                        $match: { status: 'cancel' }
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            status: { $sum: 1 }
+                        }
+                    }
+                ]
+            ).toArray()
+            console.log(cancelOrder);
+            resolve(cancelOrder[0].status)
+        })
+    },
+    getLastOrder: () => {
+        return new Promise(async (resolve, reject) => {
+            let latestOrders = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
+                [
+                    {
+                        $unwind: '$products'
+                    },
+                    {
+                        $project: {
+                            displayDate: 1,
+                            paymentMethod: 1,
+                            status: 1,
+                            deliveryDetails: 1,
+                            date: 1,
+                            totalPrice: 1,
+                            item: '$products.item',
+                            quantity: '$products.quantity'
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: collection.PRODUCTS_COLLECTION,
+                            localField: 'item',
+                            foreignField: '_id',
+                            as: 'product'
+                        }
+                    },
+                    {
+                        $project: {
+                            displayDate: 1, paymentMethod: 1, status: 1, deliveryDetails: 1, date: 1, totalPrice: 1, item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
+                        }
+                    },
+                    {
+                        $project: {
+                            displayDate: 1, paymentMethod: 1, status: 1, deliveryDetails: 1, date: 1, totalPrice: 1, item: 1, quantity: 1, product: 1, subTotal: { $multiply: ['$quantity', '$product.productprice'] }
+                        }
+                    },
+                    {
+                        $sort: { date: -1 }
+                    },
+                    {
+                        $limit: 5
+                    }
+                ]
+            ).toArray()
+            resolve(latestOrders)
+            console.log(latestOrders);
+        })
+    },
+    getWeeklyUsers: async () => {
+        const dayOfYear = (date) =>
+            Math.floor(
+                (date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24
+            )
+        return new Promise(async (resolve, reject) => {
+            const data = await db.get().collection(collection.USERS_COLLECTION).aggregate([
+                {
+                    $match: {
+                        date: { $gte: new Date(new Date() - 7 * 60 * 60 * 24 * 1000) },
+                    },
+                },
+
+                {
+                    $group: { _id: { $dayOfYear: '$date' }, count: { $sum: 1 } }
+                },
+            ]).toArray()
+            const thisday = dayOfYear(new Date())
+            let salesOfLastWeekData = []
+            for (let i = 0; i < 8; i++) {
+                let count = data.find((d) => d._id === thisday + i - 7)
+
+                if (count) {
+                    salesOfLastWeekData.push(count.count)
+                } else {
+                    salesOfLastWeekData.push(0)
+                }
+            }
+            console.log(salesOfLastWeekData);
+            resolve(salesOfLastWeekData)
+
+        })
+    },
+    getWeeklySales: () => {
+        const dayOfYear = (date) =>
+            Math.floor(
+                (date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24
+            )
+        return new Promise(async (resolve, reject) => {
+            const data = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match: {
+                        date: { $gte: new Date(new Date() - 7 * 60 * 60 * 24 * 1000) },
+                    },
+                },
+
+                {
+                    $group: { _id: { $dayOfYear: '$date' }, count: { $sum: 1 } }
+                },
+            ]).toArray()
+            const thisday = dayOfYear(new Date())
+            let salesOfLastWeekData = []
+            for (let i = 0; i < 8; i++) {
+                let count = data.find((d) => d._id === thisday + i - 7)
+
+                if (count) {
+                    salesOfLastWeekData.push(count.count)
+                } else {
+                    salesOfLastWeekData.push(0)
+                }
+            }
+            console.log(salesOfLastWeekData);
+            resolve(salesOfLastWeekData)
+
+        })
+    },
+    getCategories:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let categories = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate
         })
     }
 }

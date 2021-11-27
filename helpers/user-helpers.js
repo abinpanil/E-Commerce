@@ -82,9 +82,7 @@ module.exports = {
 
             let response = {}
             let user = await db.get().collection(collection.USERS_COLLECTION).findOne({ username: userData.username })
-            console.log("***********");
-            console.log(user);
-            console.log("***********");
+            
             if (user) {
                 bcrypt.compare(userData.password, user.password).then((status) => {
                     if (status) {
@@ -145,13 +143,25 @@ module.exports = {
     },
     getSubCatProducts: (cat, sub) => {
         return new Promise(async (resolve, reject) => {
-            let subProduct = await db.get().collection(collection.PRODUCTS_COLLECTION).find({ productcategory: cat, productsubcategory: sub }).toArray()
+            let subProduct = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
+                [
+                    {
+                        $match:{ productcategory: cat, productsubcategory: sub }
+                    }
+                ]
+            ).toArray()
             resolve(subProduct)
         })
     },
     getCatProducts: (cat) => {
         return new Promise(async (resolve, reject) => {
-            let subProduct = await db.get().collection(collection.PRODUCTS_COLLECTION).find({ productcategory: cat }).toArray()
+            let subProduct = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
+                [
+                    {
+                        $match:{ productcategory: cat }
+                    } 
+                ]
+            ).toArray()
             resolve(subProduct)
         })
     },
@@ -534,7 +544,7 @@ module.exports = {
                         $match:{userId:objectId(userId)}
                     },
                     {
-                        $sort:{displayDate:-1}
+                        $sort:{date:-1}
                     }
                 ]
             ).toArray()
@@ -544,7 +554,7 @@ module.exports = {
     },
     getProductsforOrder: () => {
         return new Promise(async (resolve, reject) => {
-            let products = await db.get().collection(collection.PRODUCTS_COLLECTION).find().toArray()
+            let products = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate().toArray()
             resolve(products)
         })
     },

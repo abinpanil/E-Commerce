@@ -24,8 +24,8 @@ const varifyLogin = (req, res, next) => {
   }
 }
 /* GET home page. */
-router.get('/', varifyLogin, function (req, res, next) {
-
+router.get('/', varifyLogin, async (req, res, next) => {
+  
   res.redirect('/admin/dashboard')
 });
 
@@ -40,8 +40,21 @@ router.get('/login', function (req, res) {
 })
 
 /* Get dashboard. */
-router.get('/dashboard', varifyLogin, function (req, res) {
-  res.render('./admin/dashboard', { admin, title: "Dashboard" })
+router.get('/dashboard', varifyLogin, async (req, res)=> {
+  let totalSales = await adminHelpers.getTotalSales()
+  let totalOrder = await adminHelpers.getTotalOrder()
+  let totalProducts = await adminHelpers.getTotalProducts()
+  let completedOrder = await adminHelpers.getCompletedOrder()
+  let pendingOrder = await adminHelpers.getPendingOrder()
+  let cancelOrder = await adminHelpers.getCancellOrder()
+  let LastOrders = await adminHelpers.getLastOrder()
+  
+  let orderStatus = {
+    completedOrder : completedOrder,
+    pendingOrder : pendingOrder,
+    cancelOrder : cancelOrder
+  } 
+  res.render('./admin/dashboard', { admin, title: "Dashboard",totalSales,totalOrder,totalProducts,orderStatus,LastOrders})
 })
 
 /* Get products. */
@@ -443,4 +456,17 @@ router.post('/reportdate',async(req,res)=>{
 
 }) 
 
+
+// Get chart data
+router.post('/dashboard/weeklychart',async(req,res)=>{
+  let response = {}
+  let weeklyUsers = await adminHelpers.getWeeklyUsers()
+  let weeklyTotalSales = await adminHelpers.getWeeklySales()
+  let categories = await adminHelpers.getCategories()
+  response = {
+    weeklyUsers : weeklyUsers,
+    weeklyTotalSales : weeklyTotalSales
+  }
+  res.json(response)
+})
 module.exports = router;
