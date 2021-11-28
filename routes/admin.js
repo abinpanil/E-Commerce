@@ -81,6 +81,28 @@ router.get('/add_products', varifyLogin, function (req, res) {
 
 })
 
+
+// Coupon
+router.get('/coupon',async(req,res)=>{
+  let coupons= await adminHelpers.getCoupon()
+  console.log(coupons);
+  res.render('./admin/coupon', { admin, title: "Coupons" ,coupons})
+})
+
+
+// Category Offer
+router.get('/category_offer',(req,res)=>{
+
+  res.render('./admin/category-offer', { admin, title: "Category-offer" })
+})
+
+// product Offer
+router.get('/product_offers',(req,res)=>{
+
+  res.render('./admin/product-offer', { admin, title: "Product-offer" })
+})
+
+
 /* Get categories. */
 router.get('/categories', varifyLogin, function (req, res) {
 
@@ -463,10 +485,36 @@ router.post('/dashboard/weeklychart',async(req,res)=>{
   let weeklyUsers = await adminHelpers.getWeeklyUsers()
   let weeklyTotalSales = await adminHelpers.getWeeklySales()
   let categories = await adminHelpers.getCategories()
+  let orderStatus = await adminHelpers.getOrdersStatus()
+  let sales = await adminHelpers.getSalesData()
   response = {
     weeklyUsers : weeklyUsers,
-    weeklyTotalSales : weeklyTotalSales
+    weeklyTotalSales : weeklyTotalSales,
+    catName : categories.catNames,
+    catData : categories.catData,
+    placedOrd : orderStatus.placed,
+    cancelOrd : orderStatus.cancel,
+    pendingOrd : orderStatus.pending,
+    deliveredOrd : orderStatus.delivered,
+    confirmOrd : orderStatus.confirm,
+    totalSales:sales
   }
+  console.log(response);
   res.json(response)
 })
+
+
+// coupon adding
+router.post('/add-coupon',async(req,res)=>{
+  await adminHelpers.addCoupon(req.body)
+  res.redirect('/admin/coupon')
+})
+
+// delete coupon
+router.post('/deleteCoupon',(req,res)=>{
+  adminHelpers.deleteCoupon(req.body).then(()=>{
+    res.json({})
+  })
+})
+
 module.exports = router;

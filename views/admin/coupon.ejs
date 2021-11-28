@@ -1,0 +1,528 @@
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="">Coupons</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                                <li class="breadcrumb-item active">Coupons</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <section class="content-main">
+
+                <div class="card" id="table_change">
+                    <div class="card-body" id="">
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <form id="form">
+                                    <div class="mb-4">
+                                        <label class="form-label">Coupon Title</label>
+                                        <input type="text" placeholder="Type here" name="title" class="form-control"
+                                            id="title" />
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Code</label>
+                                        <input type="text" placeholder="Type here" name="code" class="form-control"
+                                            id="code" />
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Coupon Discount</label>
+                                        <input type="text" placeholder="Discount in Percentage" name="discount"
+                                            class="form-control" id="discount" />
+                                        <p id="discountp" style="color: red;"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Minimum Amount</label>
+                                        <input type="text" placeholder="Minimum Amount" name="min_amount"
+                                            class="form-control" id="min_amount" />
+                                        <p id="min_amountp" style="color: red;"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Maximum Use</label>
+                                        <input type="text" placeholder="MAximum Usage" name="Max_use"
+                                            class="form-control" id="max_use" />
+                                        <p id="max_usep" style="color: red;"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Expire Date</label>
+                                        <input type="date" placeholder="Select Date" name="date" class="form-control"
+                                            id="date" />
+                                        <p id="datep" style="color: red;"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Coupon Description</label>
+                                        <input type="text" placeholder="Type here" name="description"
+                                            class="form-control" id="description" />
+                                    </div>
+
+                                    <div class="d-grid pb-3">
+                                        <button class="btn btn-primary" type="submit">Add Coupon</button>
+
+                                    </div>
+                                </form>
+                                <hr>
+                            </div>
+                            <div class="col-md-8">
+                                <table id="datatable-buttons"
+                                    class="table table-striped table-bordered dt-responsive nowrap"
+                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Code</th>
+                                            <th>Discount <b>%</b></th>
+                                            <th>Min Amount</th>
+                                            <th>Max Use</th>
+                                            <th>Expire</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%for(i=0;i<coupons.length;i++){%>
+                                            <tr id="tr_<%=coupons[i]._id%>">
+                                                <td>
+                                                    <%=coupons[i].title%>
+                                                </td>
+                                                <td>
+                                                    <%=coupons[i].code%>
+                                                </td>
+                                                <td>
+                                                    <%=coupons[i].discount%>
+                                                </td>
+                                                <td>
+                                                    <%=coupons[i].min_amount%>
+                                                </td>
+                                                <td>
+                                                    <%=coupons[i].Max_use%>
+                                                </td>
+                                                <td>
+                                                    <%=coupons[i].date%>
+                                                </td>
+                                                <td class="text-end">
+                                                    <!-- <a class="btn btn-success"
+                                                        onclick="editCoupon('<%=coupons[i]._id%>','<%=coupons[i].title%>','<%=coupons[i].code%>','<%=coupons[i].discount%>','<%=coupons[i].min_amount%>','<%=coupons[i].Max_use%>','<%=coupons[i].date%>')">Edit</a> -->
+                                                    <a class="btn btn-danger"
+                                                        onclick="deleteCoupon('<%=coupons[i]._id%>')">Delete</a>
+                                                </td>
+                                            </tr>
+                                            <%}%>
+                                    </tbody>
+                                </table>
+                            </div> <!-- .col// -->
+                        </div> <!-- .row // -->
+                    </div> <!-- card body .// -->
+                </div> <!-- card .// -->
+
+
+
+            </section> <!-- content-main end// -->
+        </div>
+        <!-- End Page-content -->
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+</body>
+
+
+<!-- JAVASCRIPT -->
+<script src="/admin/libs/jquery/jquery.min.js"></script>
+<script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/libs/metismenu/metisMenu.min.js"></script>
+<script src="/admin/libs/simplebar/simplebar.min.js"></script>
+<script src="/admin/libs/node-waves/waves.min.js"></script>
+
+<!-- card end// -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<!-- sweat alert -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+
+    function editCoupon() {
+        console.log("here");
+        event.preventDefault()
+
+        // vlidate title
+        let titleErr = true
+        function validateTitle() {
+            $('#edit_title').css('border-color', '#2d3448')
+            let title = $('#edit_title').val()
+            if (title.length == '') {
+
+                $('#edit_title').css('border-color', '#f30000')
+                $('#edit_title').attr("placeholder", "Enter Title")
+                titleErr = false;
+                return false;
+            }
+        }
+
+        // validate date
+        let dateErr = true
+        function validateDate() {
+            $('#edit_date').css('border-color', '#2d3448')
+            let date = $('#edit_date').val()
+            if (date.length == '') {
+
+                $('#edit_date').css('border-color', '#f30000')
+                $('#edit_date').html("Select Date")
+                dateErr = false;
+                return false;
+            }
+        }
+
+        // validate discount
+        let discountErr = true
+        function validatediscount() {
+            let regnum = new RegExp("^[0-9]+$");
+            $('#edit_discount').css('border-color', '#2d3448')
+            let discount = $('#edit_discount').val()
+            if (discount.length == '') {
+
+                $('#edit_discount').css('border-color', '#f30000')
+                $('#edit_discount').attr("placeholder", "Enter Discount")
+                discountErr = false;
+                return false;
+            }
+            if (!regnum.test(discount)) {
+                $('#edit_discount').css('border-color', '#f30000')
+                discountErr = false;
+                return false;
+            } else if (discount < 0 || discount > 100) {
+                console.log("here");
+                $('#edit_discount').css('border-color', '#f30000')
+                discountErr = false;
+                return false;
+            }
+
+        }
+
+        // validate min amount
+        let minAmountErr = true
+        function validateMinAmount() {
+            let regnum = new RegExp("^[0-9]+$");
+            $('#edit_min_amount').css('border-color', '#2d3448')
+            let minAmount = $('#edit_min_amount').val()
+            if (minAmount.length == '') {
+
+                $('#edit_min_amount').css('border-color', '#f30000')
+                $('#edit_min_amount').attr("placeholder", "Enter Min Amount")
+                minAmountErr = false;
+                return false;
+            }
+            if (!regnum.test(minAmount)) {
+                $('#edit_min_amount').css('border-color', '#f30000')
+                minAmountErr = false;
+                return false;
+            }
+
+        }
+
+        // validate max use
+        let maxUseErr = true
+        function validateMaxUse() {
+            let regnum = new RegExp("^[0-9]+$");
+            $('#edit_max_use').css('border-color', '#2d3448')
+            let maxUse = $('#edit_max_use').val()
+            if (maxUse.length == '') {
+
+                $('#edit_max_use').css('border-color', '#f30000')
+                $('#edit_max_use').attr("placeholder", "Enter Max Use")
+                maxUseErr = false;
+                return false;
+            }
+            if (!regnum.test(maxUse)) {
+                $('#edit_max_use').css('border-color', '#f30000')
+                maxUseErr = false;
+                return false;
+            }
+
+        }
+
+        // validate code
+        let codeErr = true
+        function validateCode() {
+            $('#edit_code').css('border-color', '#2d3448')
+            let code = $('#edit_code').val()
+            if (code.length == '') {
+
+                $('#edit_code').css('border-color', '#f30000')
+                $('#edit_code').attr("placeholder", "Enter Code")
+                codeErr = false;
+                return false;
+            }
+        }
+
+        validateTitle()
+        validateDate()
+        validateMinAmount()
+        validateMaxUse()
+        validatediscount()
+        validateCode()
+
+        if (titleErr === true && dateErr === true && discountErr === true && codeErr === true && minAmountErr === true && maxUseErr === true) {
+
+            $.ajax({
+                url: '/admin/add-coupon',
+                method: 'post',
+                data: $('#form').serialize(),
+                success: () => {
+
+                    $("#table_change").load(location.href + " #table_change");
+
+                }
+            })
+        }
+    }
+
+
+    $('#form').submit((e) => {
+        e.preventDefault()
+
+        // vlidate title
+        let titleErr = true
+        function validateTitle() {
+            $('#title').css('border-color', '#2d3448')
+            let title = $('#title').val()
+            if (title.length == '') {
+
+                $('#title').css('border-color', '#f30000')
+                $('#title').attr("placeholder", "Enter Title")
+                titleErr = false;
+                return false;
+            }
+        }
+
+        // validate date
+        let dateErr = true
+        function validateDate() {
+            $('#date').css('border-color', '#2d3448')
+            $('#datep').html("")
+            let date = $('#date').val()
+            if (date.length == '') {
+
+                $('#date').css('border-color', '#f30000')
+                $('#datep').html("Select Date")
+                dateErr = false;
+                return false;
+            }
+        }
+
+        // validate discount
+        let discountErr = true
+        function validatediscount() {
+            let regnum = new RegExp("^[0-9]+$");
+            $('#discount').css('border-color', '#2d3448')
+            $('#discountp').html("")
+            let discount = $('#discount').val()
+            if (discount.length == '') {
+
+                $('#discount').css('border-color', '#f30000')
+                $('#discount').attr("placeholder", "Enter Discount")
+                discountErr = false;
+                return false;
+            }
+            if (!regnum.test(discount)) {
+                $('#discount').css('border-color', '#f30000')
+                $('#discountp').html("Only numbers allowed")
+                discountErr = false;
+                return false;
+            } else if (discount < 0 || discount > 100) {
+                console.log("here");
+                $('#discount').css('border-color', '#f30000')
+                $('#discountp').html("Enter value between 0 to 100")
+                discountErr = false;
+                return false;
+            }
+
+        }
+
+        // validate min amount
+        let minAmountErr = true
+        function validateMinAmount() {
+            let regnum = new RegExp("^[0-9]+$");
+            $('#min_amount').css('border-color', '#2d3448')
+            $('#min_amountp').html("")
+            let minAmount = $('#min_amount').val()
+            if (minAmount.length == '') {
+
+                $('#min_amount').css('border-color', '#f30000')
+                $('#min_amount').attr("placeholder", "Enter Min Amount")
+                minAmountErr = false;
+                return false;
+            }
+            if (!regnum.test(minAmount)) {
+                $('#min_amount').css('border-color', '#f30000')
+                $('#min_amountp').html("Only numbers allowed")
+                minAmountErr = false;
+                return false;
+            }
+
+        }
+
+        // validate max use
+        let maxUseErr = true
+        function validateMaxUse() {
+            let regnum = new RegExp("^[0-9]+$");
+            $('#max_use').css('border-color', '#2d3448')
+            $('#max_usep').html("")
+            let maxUse = $('#max_use').val()
+            if (maxUse.length == '') {
+
+                $('#max_use').css('border-color', '#f30000')
+                $('#max_use').attr("placeholder", "Enter Max Use")
+                maxUseErr = false;
+                return false;
+            }
+            if (!regnum.test(maxUse)) {
+                $('#max_use').css('border-color', '#f30000')
+                $('#max_usep').html("Only numbers allowed")
+                maxUseErr = false;
+                return false;
+            }
+
+        }
+
+        // validate description
+        let descriptionErr = true
+        function validateDescription() {
+            $('#description').css('border-color', '#2d3448')
+            let description = $('#description').val()
+            if (description.length == '') {
+
+                $('#description').css('border-color', '#f30000')
+                $('#description').attr("placeholder", "Enter Description")
+                descriptionErr = false;
+                return false;
+            }
+        }
+
+        // validate code
+        let codeErr = true
+        function validateCode() {
+            $('#code').css('border-color', '#2d3448')
+            let code = $('#code').val()
+            if (code.length == '') {
+
+                $('#code').css('border-color', '#f30000')
+                $('#code').attr("placeholder", "Enter Code")
+                codeErr = false;
+                return false;
+            }
+        }
+
+        validateTitle()
+        validateDate()
+        validateMinAmount()
+        validateMaxUse()
+        validatediscount()
+        validateDescription()
+        validateCode()
+
+        if (titleErr === true && dateErr === true && descriptionErr === true && discountErr === true && codeErr === true && minAmountErr === true && maxUseErr === true) {
+
+            $.ajax({
+                url: '/admin/add-coupon',
+                method: 'post',
+                data: $('#form').serialize(),
+                success: () => {
+
+                    $("#table_change").load(location.href + " #table_change");
+
+                }
+            })
+        }
+
+
+    })
+
+    // delete coupon
+    function deleteCoupon(id) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success',
+                    $.ajax({
+
+                        url: '/admin/deleteCoupon',
+                        type: 'post',
+                        data: { id: id },
+                        success: () => {
+
+                            $("#table_change").load(location.href + " #table_change");
+
+                        }
+                    })
+                )
+            }
+        })
+    }
+
+    // edit coupon 
+    function editCoupon(id, title, code, discount, minAmount, maxUse, date) {
+
+        $(`#tr_${id}`).html(
+            `
+            <form id="edit_form">
+            <td>
+                <input id="edit_title" type="text" style="width:153px" value="${title}" name="title">
+            </td>
+            <td>
+                <input id='edit_code' type="text" value="${code}" name="code">
+            </td>
+            <td>
+                <input id="edit_discount" type="text" style="width:81px" value="${discount}" name="discount">
+            </td>
+            <td>
+                <input id="edit_min_amount" type="text" style="width:100px" value="${minAmount}" name="min_amount">
+            </td>
+            <td>
+                <input id="edit_Max_use" type="text" style="width:81px" value="${maxUse}" name="Max_use">
+            </td>
+            <td>
+                <input id="edit_expire" type="text" style="width:110px" value="${date}" name="expire">
+                <input type="text" style="width:110px; display:none" value="${id}" name="id">
+            </td>
+            <td class="text-end">
+                <a class="btn btn-success" onclick="editCoupon()" >Save</a>
+            </td>
+            </form>
+            `
+        )
+
+    }
+
+</script>

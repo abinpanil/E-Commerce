@@ -135,10 +135,14 @@ module.exports = {
         })
     },
     getProduct: (id) => {
-
+        console.log(id);
         return new Promise(async (resolve, reject) => {
-            let product = await db.get().collection(collection.PRODUCTS_COLLECTION).findOne({ _id: objectId(id) })
-            resolve(product)
+            let product = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate([
+                {
+                    $match:{_id: objectId(id) , status:true}
+                }
+            ]).toArray()
+            resolve(product[0])
         })
     },
     getSubCatProducts: (cat, sub) => {
@@ -146,7 +150,7 @@ module.exports = {
             let subProduct = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
                 [
                     {
-                        $match:{ productcategory: cat, productsubcategory: sub }
+                        $match:{ productcategory: cat, productsubcategory: sub, status:true}
                     }
                 ]
             ).toArray()
@@ -158,7 +162,7 @@ module.exports = {
             let subProduct = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
                 [
                     {
-                        $match:{ productcategory: cat }
+                        $match:{ productcategory: cat, status:true }
                     } 
                 ]
             ).toArray()
@@ -673,6 +677,9 @@ module.exports = {
                                 {productsubcategory:value}
                             ]
                         }
+                    },
+                    {
+                        $match:{status:true}
                     }
                 ]
             ).toArray()

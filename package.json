@@ -6,6 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "@paypal/checkout-server-sdk": "^1.0.3",
     "bcrypt": "^5.0.1",
     "chart.js": "^3.6.0",
     "cookie-parser": "~1.4.4",

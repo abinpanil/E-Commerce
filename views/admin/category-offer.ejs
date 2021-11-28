@@ -1,0 +1,114 @@
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="">Category Offers</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                                <li class="breadcrumb-item active">Category Offers</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <section class="content-main">
+
+                <div class="card" id="table_change">
+                    <div class="card-body" id="">
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <form id="form">
+                                    
+                                    <div class="mb-4">
+                                        <label class="form-label">category</label>
+                                        <select name="category" id="category">
+                                            <option value="">Select</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Discount</label>
+                                        <input type="text" placeholder="Discount in Percentage" name="discount"
+                                            class="form-control" id="discount" />
+                                        <p id="discountp" style="color: red;"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Minimum Amount</label>
+                                        <input type="text" placeholder="Minimum Amount" name="min_amount"
+                                            class="form-control" id="min_amount" />
+                                        <p id="min_amountp" style="color: red;"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Maximum Use</label>
+                                        <input type="text" placeholder="MAximum Usage" name="Max_use"
+                                            class="form-control" id="max_use" />
+                                        <p id="max_usep" style="color: red;"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Expire Date</label>
+                                        <input type="date" placeholder="Select Date" name="date" class="form-control"
+                                            id="date" />
+                                        <p id="datep" style="color: red;"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Offer Description</label>
+                                        <input type="text" placeholder="Type here" name="description"
+                                            class="form-control" id="description" />
+                                    </div>
+
+                                    <div class="d-grid pb-3">
+                                        <button class="btn btn-primary" type="submit">Add Coupon</button>
+
+                                    </div>
+                                </form>
+                                <hr>
+                            </div>
+                            <div class="col-md-8">
+                                <table id="datatable-buttons"
+                                    class="table table-striped table-bordered dt-responsive nowrap"
+                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Code</th>
+                                            <th>Discount <b>%</b></th>
+                                            <th>Min Amount</th>
+                                            <th>Max Use</th>
+                                            <th>Expire</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div> <!-- .col// -->
+                        </div> <!-- .row // -->
+                    </div> <!-- card body .// -->
+                </div> <!-- card .// -->
+
+
+
+            </section> <!-- content-main end// -->
+        </div>
+        <!-- End Page-content -->
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+</body>

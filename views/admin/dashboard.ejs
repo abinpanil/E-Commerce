@@ -127,6 +127,15 @@
                             <canvas id="pie-chart" width="800" height="450"></canvas>
                         </div>
                         <!-- end card-body -->
+                        <div class="card-body border-top">
+                            <div class="text-muted text-center">
+                                <div class="row">
+
+
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- end card -->
                 </div>
@@ -245,26 +254,67 @@
                             <canvas id="line-chart" width="800" height="450"></canvas>
 
                         </div>
+                        <div class="card-body border-top">
+                            <div class="text-muted text-center">
+                                <div class="row">
+
+
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- end col -->
 
-                <!-- <div class="col-lg-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title mb-3">Revenue by Location</h5>
-                        
-                                        <div>
-                                            <div id="usa" style="height: 226px"></div>
-                                        </div>
-                        
-                                        <div class="text-center mt-4">
-                                            <a href="#" class="btn btn-primary btn-sm">View More</a>
-                                        </div>
-                                    </div>
-                                    
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Revenue (Last Week)</h5>
+                            <canvas id="bar-chart" width="800" height="450"></canvas>
+                            <div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end row -->
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <h5 class="card-title">Order Overview(Last Week)</h5>
                                 </div>
-                            </div> -->
+
+                            </div>
+
+                            <div>
+                                <canvas id="order-status" width="800" height="450"></canvas>
+                            </div>
+                        </div>
+                        <!-- end card-body -->
+
+                        <div class="card-body border-top">
+                            <div class="text-muted text-center">
+                                <div class="row">
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end card-body -->
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+
+                
+                <!-- end col -->
             </div>
             <!-- end row -->
 
@@ -454,10 +504,10 @@
                 chart: {
                     height: 350,
                     type: 'line',
-                    stacked: false,
+                    stacked: true,
                 },
                 stroke: {
-                    width: [0, 2, 5],
+                    width: [0, 5, 2],
                     curve: 'smooth'
                 },
                 plotOptions: {
@@ -467,9 +517,9 @@
                 },
 
                 fill: {
-                    opacity: [0.85, 0.25, 1],
+                    opacity: [0.85, 1, 0.25],
                     gradient: {
-                        inverseColors: false,
+                        inverseColors: true,
                         shade: 'light',
                         type: "vertical",
                         opacityFrom: 0.85,
@@ -514,17 +564,83 @@
             new Chart(document.getElementById("pie-chart"), {
                 type: 'pie',
                 data: {
-                    labels: ["Africa", "Asia", "Europe" ],
+                    labels: response.catName,
                     datasets: [{
                         label: "Population (millions)",
                         backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                        data: [2478, 5267, 734]
+                        data: response.catData
                     }]
                 },
                 options: {
                     title: {
                         display: true,
                         text: 'Category'
+                    }
+                }
+            });
+
+
+
+            // order Status
+            new Chart(document.getElementById("order-status"), {
+                type: 'line',
+                data: {
+                    labels: _labels,
+                    datasets: [{
+                        data: response.pendingOrd,
+                        label: "Pending",
+                        borderColor: "#3e95cd",
+                        fill: false
+                    }, {
+                        data: response.placedOrd,
+                        label: "Placed",
+                        borderColor: "#8e5ea2",
+                        fill: false
+                    }, {
+                        data: response.cancelOrd,
+                        label: "Cancel",
+                        borderColor: "#3cba9f",
+                        fill: false
+                    }, {
+                        data: response.confirmOrd,
+                        label: "Confirmed",
+                        borderColor: "#e8c3b9",
+                        fill: false
+                    }, {
+                        data: response.deliveredOrd,
+                        label: "Delivered",
+                        borderColor: "#c45850",
+                        fill: false
+                    }
+                    ]
+                },
+                options: {
+                    title: {
+                        display: false,
+                        text: 'World population per region (in millions)'
+                    }
+                }
+            });
+
+
+            // Sales Flow
+            new Chart(document.getElementById("bar-chart"), {
+                type: 'bar',
+                data: {
+                    labels: _labels,
+                    datasets: [
+                        {
+                            label: "Population (millions)",
+                            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850","#ffd11a","#0000b3"],
+                            data: response.totalSales
+                        }
+                    ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: false,
+                        text: 'Predicted world population (millions) in 2050'
                     }
                 }
             });

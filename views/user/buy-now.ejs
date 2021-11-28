@@ -82,6 +82,7 @@
                         </div>
                         <input id="identification" type="text" value="close" style="display: none;">
                         <div id="add_address_div"></div>
+                        
                     </div>
                     <div class="col-lg-5 mb-4 sticky-sidebar-wrapper">
                         <div class="order-summary-wrapper sticky-sidebar">
@@ -180,6 +181,15 @@
                                     <button type="submit" class="btn btn-dark btn-block btn-rounded">Place
                                         Order</button>
                                 </div>
+                                <div id="coupon_div" class="pt-4">
+                                    <form class="coupon" id="apply_coupon" >
+                                        <h5 class="title coupon-title font-weight-bold text-uppercase">Coupon Discount</h5>
+                                        <input type="text" id="coupon_inp" name="coupon" class="form-control mb-4" placeholder="Enter coupon code here..."
+                                            required />
+                                            <p id="coupon_error" style="color: red;"></p>
+                                        <button class="btn btn-dark btn-outline btn-rounded" onclick="applyCoupon()">Apply Coupon</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -196,13 +206,54 @@
 
 <script>
 
+    function applyCoupon(){
+
+        event.preventDefault()
+
+        let couponError = true;
+
+        function validateName() {
+
+            let nameValue = $('#coupon_inp').val()
+
+            if (nameValue.length == '') {
+
+                $('#coupon_inp').css('border-color', '#c70d0d')
+                $('#coupon_inp').attr("placeholder", "Enter Coupon")
+
+                couponError = false;
+                return false;
+            }
+        }
+
+        validateName()
+
+        if(couponError === true){
+
+            $.ajax({
+                url:'/apply-coupon',
+                method:'post',
+                date:$('#apply_coupon').serialize(),
+                success:(response)=>{
+                    if(response.status === true){
+                        $('#coupon_div').html('<h5 class="title coupon-title font-weight-bold text-uppercase" style="color:yellow">Coupon Applied</h5>')
+                    }else{
+                        $('#coupon_error').html('Invalid Coupon')
+                    }
+                }
+            })
+        }
+    }
+
     function submitform(){
         
         return true
     }
 
     $('#checkout-form').submit((e) => {
+
         e.preventDefault()
+
         $.ajax({
             url: '/place-order-direct',
             method: 'post',
@@ -212,12 +263,10 @@
                 if(response.cod){
 
                     location.href = '/order-placed'
-
                 }else{
+                    
                     razorpayPayment(response)
                 }
-
-               
             }
         })
     })

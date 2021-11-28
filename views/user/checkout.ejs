@@ -17,7 +17,7 @@
     <div class="page-content" id="container">
         <div class="container">
 
-            <form class="form checkout-form" id="checkout-form" >
+            <form class="form checkout-form" id="checkout-form">
                 <div class="row mb-9">
                     <div class="col-lg-7 pr-lg-4 mb-4">
                         <div class="head pb-5">
@@ -99,6 +99,12 @@
                                 </div>
                                 <input id="identification" type="text" value="close" style="display: none;">
                                 <div id="add_address_div"></div>
+                                <form class="coupon">
+                                    <h5 class="title coupon-title font-weight-bold text-uppercase">Coupon Discount</h5>
+                                    <input type="text" class="form-control mb-4" placeholder="Enter coupon code here..."
+                                        required />
+                                    <button class="btn btn-dark btn-outline btn-rounded">Apply Coupon</button>
+                                </form>
                     </div>
                     <div class="col-lg-5 mb-4 sticky-sidebar-wrapper">
                         <div class="order-summary-wrapper sticky-sidebar">
@@ -233,11 +239,11 @@
             data: $('#checkout-form').serialize(),
             success: (response) => {
 
-                if(response.cod){
+                if (response.cod) {
 
                     location.href = '/order-placed'
 
-                }else{
+                } else {
                     razorpayPayment(response)
                 }
 
@@ -295,12 +301,12 @@
             data: {
                 payment, order
             },
-            success:(response)=>{
-                if(response.status){
+            success: (response) => {
+                if (response.status) {
 
                     location.href = '/order-placed'
 
-                }else{
+                } else {
                     alert('Payment failed')
                 }
             }

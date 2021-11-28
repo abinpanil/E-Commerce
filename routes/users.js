@@ -10,13 +10,13 @@ const serviceID = "	VAa5e077df7a059df1d1bae9a32df93ca9"
 const accountSID = "AC29e0de96271489ac12f1c32008d70906"
 const authToken = "2975bf30634d92615dab33cee7689014"
 const client = require("twilio")(accountSID, authToken)
-
 const paypal = require('paypal-rest-sdk');
 
+// configure paypal with the credentials you got when you created your paypal app
 paypal.configure({
-  'mode': 'sandbox', //sandbox or live
-  'client_id': 'AUPW2bX7QjjAvfg1WeAOHkwE9h6SibPmPjDf3bjBQA5UKPXqdet5C9b067NG4BB9_GQKQHfyHWhRmr5d',
-  'client_secret': 'EAqdQ1NTNQRDAtmZt-4H64ps_NZfKZaFnUEu4H50UE8XT0QUPhmzEbs8lVCsEB0FH1C7r16w_pVo60dE'
+  'mode': 'sandbox', //sandbox or live 
+  'client_id': 'AUPW2bX7QjjAvfg1WeAOHkwE9h6SibPmPjDf3bjBQA5UKPXqdet5C9b067NG4BB9_GQKQHfyHWhRmr5d', // please provide your client id here 
+  'client_secret': 'EAqdQ1NTNQRDAtmZt-4H64ps_NZfKZaFnUEu4H50UE8XT0QUPhmzEbs8lVCsEB0FH1C7r16w_pVo60dE' // provide your client secret here 
 });
 
 
@@ -53,12 +53,12 @@ router.get('/', async (req, res, next) => {
     user.name = ''
     delete req.session.user
     console.log("false in userrrrrrrrrrr");
-  } 
+  }
   console.log(user);
   adminHelpers.getCategory().then((data) => {
     adminHelpers.getAllProducts().then((products) => {
       // console.log(products);
-      res.render('./user/home', { admin, user, title: "Home", data, products, cartCount,home });
+      res.render('./user/home', { admin, user, title: "Home", data, products, cartCount, home });
     })
   })
 });
@@ -143,6 +143,7 @@ router.get('/product-buy-now/:id', varifyLogin, async (req, res) => {
   req.session.buyNowProId = req.params.id
   let product = await userHelpers.getProduct(req.params.id)
   let address = await userHelpers.getAddress(req.session.user._id)
+  console.log(product);
   adminHelpers.getCategory().then((data) => {
     res.render('./user/buy-now', { admin, user, title: "Check Out", data, address, product, cartCount });
   })
@@ -308,7 +309,7 @@ router.post('/signUp', function (req, res) {
     if (userResponse.status) {
       res.redirect('/login')
     }
-  }) 
+  })
 })
 
 
@@ -345,7 +346,7 @@ router.post('/validate', function (req, res) {
           req.session.number = req.body.mobile
           res.json(userResponse)
         }).catch((e) => {
-          res.json({err:true})
+          res.json({ err: true })
           userResponse.otp = "Otp not send"
           console.log(e, "errroooorrrrrrrrrr");
         })
@@ -371,7 +372,7 @@ router.post('/resend', (req, res) => {
     }).catch((e) => {
       userResponse.otp = "Otp not send"
       console.log(e, "errroooorrrrrrrrrr");
-      res.json({err:true})
+      res.json({ err: true })
     })
 })
 
@@ -498,12 +499,12 @@ router.post('/add-to-cart', (req, res) => {
 })
 
 
-router.post('/add-to-wishlist',(req,res)=>{
+router.post('/add-to-wishlist', (req, res) => {
   let response = {}
-  if(user.status === true){
+  if (user.status === true) {
     let proId = req.body.proId
     let userId = req.session.user._id
-    userHelpers.addToWishlist(proId, userId).then(()=>{
+    userHelpers.addToWishlist(proId, userId).then(() => {
       response.status = true
       res.json(response)
     })
@@ -701,47 +702,57 @@ router.post('/place-order-direct', async (req, res) => {
     })
   } else if (req.body.payment === 'Paypal') {
     console.log("ivdeeeeeeeeee");
-    const create_payment_json = {
-      "intent": "sale",
+    // create payment object 
+    var payment = {
+      "intent": "authorize",
       "payer": {
         "payment_method": "paypal"
       },
       "redirect_urls": {
-        "return_url": "http://localhost:3000/success",
-        "cancel_url": "http://localhost:3000/cancel"
+        "return_url": "http://127.0.0.1:2000/success",
+        "cancel_url": "http://127.0.0.1:2000/err"
       },
       "transactions": [{
-        "item_list": {
-          "items": [{
-            "name": "Redhock Bar Soap",
-            "sku": "001",
-            "price": "25.00",
-            "currency": "USD",
-            "quantity": 1
-          }]
-        },
         "amount": {
-          "currency": "USD",
-          "total": "25.00"
+          "total": 39.00,
+          "currency": "USD"
         },
-        "description": "Washing Bar soap"
+        "description": " a book on mean stack "
       }]
-    };
-
-    paypal.payment.create(create_payment_json, function (error, payment) {
-      if (error) {
-        throw error;
-      } else {
-        for (let i = 0; i < payment.links.length; i++) {
-          if (payment.links[i].rel === 'approval_url') {
-            res.redirect(payment.links[i].href);
+    }
+    // call the create Pay method 
+    createPay(payment)
+      .then((transaction) => {
+        var id = transaction.id;
+        var links = transaction.links;
+        var counter = links.length;
+        while (counter--) {
+          if (links[counter].method == 'REDIRECT') {
+            // redirect to paypal where user approves the transaction 
+            return res.redirect(links[counter].href)
           }
         }
-      }
-    });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.redirect('/err');
+      });
   }
 
 })
+
+
+router.get('/success' , (req ,res ) => {
+  console.log(req.query); 
+  res.redirect('/success.html'); 
+})
+
+// error page 
+router.get('/err' , (req , res) => {
+  console.log(req.query); 
+  res.redirect('/err.html'); 
+})
+
 
 
 // cancel order
@@ -768,5 +779,19 @@ router.post('/verify-payment', (req, res) => {
   })
 })
 
+
+// helper functions 
+var createPay = ( payment ) => {
+  return new Promise( ( resolve , reject ) => {
+      paypal.payment.create( payment , function( err , payment ) {
+       if ( err ) {
+           reject(err); 
+       }
+      else {
+          resolve(payment); 
+      }
+      }); 
+  });
+}		
 
 module.exports = router;
