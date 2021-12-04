@@ -70,6 +70,7 @@ module.exports = {
             userData.isActive = "Block"
             userData.blockStatus = "Active"
             userData.date = new Date()
+            userData.coupon = []
             console.log(userData);
             db.get().collection(collection.USERS_COLLECTION).insertOne(userData).then((data) => {
 
@@ -82,7 +83,7 @@ module.exports = {
 
             let response = {}
             let user = await db.get().collection(collection.USERS_COLLECTION).findOne({ username: userData.username })
-            
+
             if (user) {
                 bcrypt.compare(userData.password, user.password).then((status) => {
                     if (status) {
@@ -139,7 +140,7 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             let product = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate([
                 {
-                    $match:{_id: objectId(id) , status:true}
+                    $match: { _id: objectId(id), status: true }
                 }
             ]).toArray()
             resolve(product[0])
@@ -150,7 +151,7 @@ module.exports = {
             let subProduct = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
                 [
                     {
-                        $match:{ productcategory: cat, productsubcategory: sub, status:true}
+                        $match: { productcategory: cat, productsubcategory: sub, status: true }
                     }
                 ]
             ).toArray()
@@ -162,8 +163,8 @@ module.exports = {
             let subProduct = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
                 [
                     {
-                        $match:{ productcategory: cat, status:true }
-                    } 
+                        $match: { productcategory: cat, status: true }
+                    }
                 ]
             ).toArray()
             resolve(subProduct)
@@ -213,7 +214,7 @@ module.exports = {
             }
         })
     },
-    addToWishlist:()=>{
+    addToWishlist: () => {
 
     },
     getCartProducts: (userId) => {
@@ -247,12 +248,14 @@ module.exports = {
                     },
                     {
                         $project: {
-                            item: 1, quantity: 1, product: 1, subTotal: { $multiply: ['$quantity', '$product.productprice'] }
+                            item: 1, quantity: 1, product: 1, subTotal: { $multiply: ['$quantity', '$product.productprice'] },
+                            offerSubTotal: { $multiply: ['$quantity', '$product.offer_price'] },
+                            proOfferSubTotal:{ $multiply: ['$quantity', '$product.productoffer_price'] }
                         }
                     }
                 ]
             ).toArray()
-
+            console.log(cartItems);
             resolve(cartItems)
         })
     },
@@ -303,7 +306,7 @@ module.exports = {
 
             if (checkPro.products != 0) {
 
-                let total = await db.get().collection(collection.CART_COLLECTION).aggregate(
+                let totalPrice = await db.get().collection(collection.CART_COLLECTION).aggregate(
                     [
                         {
                             $match: { user: objectId(userId) }
@@ -329,17 +332,41 @@ module.exports = {
                             $project: {
                                 item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
                             }
-                        },
-                        {
-                            $group: {
-                                _id: null,
-                                total: { $sum: { $multiply: ['$quantity', '$product.productprice'] } }
-                            }
                         }
                     ]
                 ).toArray()
+                let total = 0
 
-                resolve(total[0].total)
+                for (i = 0; i < totalPrice.length; i++) {
+
+                    let subtotal = 0
+
+                    if(totalPrice[i].product.isOfferActive === true){
+
+                        if(totalPrice[i].product.isProOfferActive === true){
+
+                            if(totalPrice[i].product.offer_price > totalPrice[i].product.productoffer_price){
+
+                                subtotal = totalPrice[i].quantity * totalPrice[i].product.productoffer_price
+                            }else{
+
+                                subtotal = totalPrice[i].quantity * totalPrice[i].product.offer_price
+                            }
+                        }else{
+
+                            subtotal = totalPrice[i].quantity * totalPrice[i].product.offer_price
+                        }
+                    }else if(totalPrice[i].product.isProOfferActive === true){
+                        subtotal = totalPrice[i].quantity * totalPrice[i].product.productoffer_price
+                    }else{
+                        subtotal = totalPrice[i].quantity * totalPrice[i].product.productprice
+                    }
+
+                    console.log(subtotal);
+                    total = subtotal + total
+                }
+                console.log(total);
+                resolve(total)
             } else {
                 resolve(0)
             }
@@ -349,6 +376,7 @@ module.exports = {
     getSubTotalAmount: (details) => {
 
         return new Promise(async (resolve, reject) => {
+
             let Subtotal = await db.get().collection(collection.CART_COLLECTION).aggregate(
                 [
                     {
@@ -383,12 +411,17 @@ module.exports = {
                     },
                     {
                         $project: {
-                            subTotal: { $multiply: ['$quantity', '$product.productprice'] }
+                            product:1,
+                            subTotal: { $multiply: ['$quantity', '$product.productprice'] },
+                            offerSubTotal: { $multiply: ['$quantity', '$product.offer_price'] },
+                            proOfferSubTotal:{ $multiply: ['$quantity', '$product.productoffer_price'] }
                         }
                     }
                 ]
             ).toArray()
+            console.log(Subtotal);
             resolve(Subtotal[0])
+            
         })
     },
     addAddress: (newAddress) => {
@@ -475,7 +508,7 @@ module.exports = {
             resolve(address)
         })
     },
-    placeOrder: (order, products, totalPrice, address, user) => {
+    placeOrderCOD: (order, products, totalPrice, address, user) => {
         return new Promise((resolve, reject) => {
             // console.log(order,products,totalPrice,address);
             let status = order.payment === 'Cash On Delivery' ? 'placed' : 'pending'
@@ -507,7 +540,49 @@ module.exports = {
             })
         })
     },
-    placeOrderDirect:(order, products, totalPrice, address, user)=>{
+    placeOrderOnline: (order, products, totalPrice, address, user) => {
+        return new Promise((resolve, reject) => {
+            // console.log(order,products,totalPrice,address);
+            let status = order.payment === 'Cash On Delivery' ? 'placed' : 'pending'
+            let orderObj = {
+                deliveryDetails: {
+                    name: address.name,
+                    address: address.address,
+                    town: address.town,
+                    zip: address.zip,
+                    state: address.state,
+                    mobile: address.mobile
+                },
+                userId: objectId(user),
+                paymentMethod: order.payment,
+                products: products,
+                status: status,
+                totalPrice: totalPrice,
+                date: new Date(),
+                displayDate: moment(new Date()).format('DD-MM-YYYY')
+            }
+            db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((data) => {
+
+                let orderId = ObjectId(data.insertedId).toString()
+                // console.log(orderId);
+                resolve(orderId)
+            })
+        })
+    },
+    deletePendingOrder: () => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.ORDER_COLLECTION).deleteMany({ status: 'pending' })
+            resolve()
+        })
+    },
+    clearUserCart: (user) => {
+        return new Promise(async (resolve, reject) => {
+            console.log("hereeeeeeeeeee");
+            await db.get().collection(collection.CART_COLLECTION).updateOne({ user: objectId(user) }, { $set: { 'products': [] } })
+            resolve()
+        })
+    },
+    placeOrderDirect: (order, products, totalPrice, address, user) => {
         let proObj = {
             item: objectId(products),
             quantity: 1
@@ -545,10 +620,10 @@ module.exports = {
             let order = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
                 [
                     {
-                        $match:{userId:objectId(userId)}
+                        $match: { userId: objectId(userId) }
                     },
                     {
-                        $sort:{date:-1}
+                        $sort: { date: -1 }
                     }
                 ]
             ).toArray()
@@ -586,7 +661,7 @@ module.exports = {
                     },
                     {
                         $project: {
-                            displayDate: 1, 
+                            displayDate: 1,
                             paymentMethod: 1,
                             status: 1,
                             deliveryDetails: 1,
@@ -629,62 +704,107 @@ module.exports = {
         })
     },
     generateRazorpay: (orderId, total) => {
-        console.log(orderId,total);
+        console.log(orderId, total);
         return new Promise((resolve, reject) => {
             var options = {
                 amount: total * 100,
                 currency: "INR",
-                receipt: ""+orderId
+                receipt: "" + orderId
             }
-            instance.orders.create(options, function(err,order){
+            instance.orders.create(options, function (err, order) {
                 resolve(order)
             })
         })
     },
-    verifyPayment:(details)=>{
-        return new Promise((resolve,reject)=>{
+    verifyPayment: (details) => {
+        return new Promise((resolve, reject) => {
             const crypto = require('crypto')
-            let hmac = crypto.createHmac('sha256','XmQRWY1GycJfrZEdtSVHRhY2')
+            let hmac = crypto.createHmac('sha256', 'XmQRWY1GycJfrZEdtSVHRhY2')
 
             hmac.update(details['payment[razorpay_order_id]'] + "|" + details['payment[razorpay_payment_id]'])
             hmac = hmac.digest("hex")
             console.log(hmac);
-            if(hmac==details['payment[razorpay_signature]']){
+            if (hmac == details['payment[razorpay_signature]']) {
                 console.log("resolve");
                 resolve()
-              }else{
-                  console.log('reject');
+            } else {
+                console.log('reject');
                 reject()
-              }
+            }
         })
     },
-    changePayementStatus:(orderId)=>{
+    changePayementStatus: (orderId) => {
         console.log("in change");
-        return new Promise(async(resolve,reject)=>{
-            await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId(orderId)},{$set:{status:'placed'}})
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, { $set: { status: 'placed' } })
             console.log("change status");
             resolve()
         })
     },
-    getSearchProducts:(value)=>{
-        return new Promise(async(resolve,reject)=>{
+    getSearchProducts: (value) => {
+       
+        return new Promise(async (resolve, reject) => {
             let products = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
                 [
                     {
-                        $match:{
-                            $or:[
-                                {productcategory:value},
-                                {productsubcategory:value}
+                        $match: {
+                            $or: [
+                                { productcategory: value },
+                                { productsubcategory: value }
                             ]
                         }
                     },
                     {
-                        $match:{status:true}
+                        $match: { status: true }
                     }
                 ]
             ).toArray()
             console.log(products);
             resolve(products)
+        })
+    },
+    applyCoupon: (couponCode, userId) => {
+        
+        return new Promise(async (resolve, reject) => {
+            let coupon = await db.get().collection(collection.COUPONS_COLLECTION).aggregate(
+                [
+                    {
+                        $match: { code: couponCode }
+                    }
+                ]
+            ).toArray()
+            response.coupon = null
+            if (coupon[0]) {
+
+                response.coupon = coupon[0]
+                let user = await db.get().collection(collection.USERS_COLLECTION).findOne({ _id: objectId(userId) })
+                /* checking this user this coupon used or not */
+                response.err = null
+                for (i = 0; i < user.coupon.length; i++) {
+                    console.log('bottom:',user.coupon[i], user.coupon[i].length, couponCode);
+                    if (user.coupon[i] === couponCode) {
+                        response.err = 1 /* user already used this coupon */
+                    }
+                }
+            }
+            resolve(response)
+        })
+    },
+    addCouponToUser: (userId, coupon) => {
+        console.log(coupon, userId);
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.USERS_COLLECTION).updateOne(
+                {
+                    _id: objectId(userId)
+                },
+                {
+                    $push: { coupon: coupon }
+                }
+            ).then((e) => {
+                console.log(e);
+            })
+            resolve()
+
         })
     }
 }

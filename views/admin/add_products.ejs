@@ -112,10 +112,10 @@
                       <img style=" width: 100px;" src="/user/images/imgplaceholder.png"
                         class="gambar img-responsive img-thumbnail" id="chekPreview1" style="max-width: 200px; " />
                     </figure>
-                    <input type="file" id="image1"
-                    accept="image/gif, image/jpeg, image/png" class="item-img1 file center-block" name="productimage1" />
-                    <textarea name="image1" id="imageValue1" cols="30" rows="10"
-                      hidden></textarea>
+                    <input type="file" id="image1" accept="image/gif, image/jpeg, image/png"
+                      onchange="validateMultipleImage('image1')" class="item-img1 file center-block"
+                      name="productimage1" />
+                    <textarea name="image1" id="imageValue1" cols="30" rows="10" hidden></textarea>
                   </label>
                   <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                     aria-hidden="true">
@@ -130,8 +130,7 @@
                         <div class="modal-body">
                           <div id="upload-demo1" style="width: 250px; height: 250px; padding-bottom:25px;"
                             class="center-block">
-                            <img src="" id="sampleImage1"
-                            style="width:100px; height:100px" />
+                            <img src="" id="sampleImage1" style="width:100px; height:100px" />
                           </div>
                         </div>
                         <div class="modal-footer">
@@ -148,10 +147,10 @@
                       <img style=" width: 100px;" src="/user/images/imgplaceholder.png"
                         class="gambar img-responsive img-thumbnail" id="chekPreview2" style="max-width: 200px; " />
                     </figure>
-                    <input type="file" id="image2"
-                    accept="image/gif, image/jpeg, image/png" class="item-img2 file center-block" name="productimage2" />
-                    <textarea name="image2" id="imageValue2" cols="30" rows="10"
-                                                                 hidden></textarea>
+                    <input type="file" id="image2" accept="image/gif, image/jpeg, image/png"
+                      onchange="validateMultipleImage('image2')" class="item-img2 file center-block"
+                      name="productimage2" />
+                    <textarea name="image2" id="imageValue2" cols="30" rows="10" hidden></textarea>
                   </label>
                   <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                     aria-hidden="true">
@@ -166,8 +165,7 @@
                         <div class="modal-body">
                           <div id="upload-demo2" style="width: 250px; height: 250px; padding-bottom:25px;"
                             class="center-block">
-                            <img src="" id="sampleImage2"
-                            style="width:100px; height:100px" />
+                            <img src="" id="sampleImage2" style="width:100px; height:100px" />
                           </div>
                         </div>
                         <div class="modal-footer">
@@ -184,10 +182,10 @@
                       <img style=" width: 100px;" src="/user/images/imgplaceholder.png"
                         class="gambar img-responsive img-thumbnail" id="chekPreview3" style="max-width: 200px; " />
                     </figure>
-                    <input type="file" id="image3"
-                    accept="image/gif, image/jpeg, image/png" class="item-img3 file center-block" name="productimage3" />
-                    <textarea name="image3" id="imageValue3" cols="30" rows="10"
-                                                                 hidden></textarea>
+                    <input type="file" id="image3" accept="image/gif, image/jpeg, image/png"
+                      onchange="validateMultipleImage('image3')" class="item-img3 file center-block"
+                      name="productimage3" />
+                    <textarea name="image3" id="imageValue3" cols="30" rows="10" hidden></textarea>
                   </label>
                   <div class="modal fade" id="modal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                     aria-hidden="true">
@@ -202,8 +200,7 @@
                         <div class="modal-body">
                           <div id="upload-demo3" style="width: 250px; height: 250px; padding-bottom:25px;"
                             class="center-block">
-                            <img src="" id="sampleImage3"
-                            style="width:100px; height:100px" />
+                            <img src="" id="sampleImage3" style="width:100px; height:100px" />
                           </div>
                         </div>
                         <div class="modal-footer">
@@ -220,16 +217,16 @@
                       <img style=" width: 100px;" src="/user/images/imgplaceholder.png"
                         class="gambar img-responsive img-thumbnail" id="chekPreview4" style="max-width: 200px; " />
                     </figure>
-                    <input type="file" id="image4"
-                    accept="image/gif, image/jpeg, image/png" class="item-img4 file center-block" name="productimage4" />
-                    <textarea name="image4" id="imageValue4" cols="30" rows="10"
-                      hidden></textarea>
+                    <input type="file" id="image4" accept="image/gif, image/jpeg, image/png"
+                      onchange="validateMultipleImage('image4')" class="item-img4 file center-block"
+                      name="productimage4" />
+                    <textarea name="image4" id="imageValue4" cols="30" rows="10" hidden></textarea>
                   </label>
                   <div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
-                        <div class="modal-header"> 
+                        <div class="modal-header">
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           <h4 class="modal-title" id="myModalLabel">
                             <?=multiLanguage( "Edit Foto" , "Edit Photo" )?>
@@ -238,8 +235,7 @@
                         <div class="modal-body">
                           <div id="upload-demo4" style="width: 250px; height: 250px; padding-bottom:25px;"
                             class="center-block">
-                            <img src="" id="sampleImage4"
-                            style="width:100px; height:100px" />
+                            <img src="" id="sampleImage4" style="width:100px; height:100px" />
                           </div>
                         </div>
                         <div class="modal-footer">
@@ -281,9 +277,10 @@
 <!-- card end// -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <link rel="stylesheet" href="https://unpkg.com/dropzone/dist/dropzone.css" />
-<link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
+<link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet" />
 
 <script src="https://unpkg.com/dropzone"></script>
 <script src="https://unpkg.com/cropperjs"></script>
@@ -291,6 +288,23 @@
 
 
 <script>
+
+
+  function validateMultipleImage(id) {
+    console.log(id);
+    var formData = new FormData();
+    var file = document.getElementById(id).files[0];
+    formData.append("Filedata", file);
+    var t = file.type.split('/').pop().toLowerCase();
+    if (t != "jpeg" && t != "jpg" && t != "png" && t != "bmp" && t != "gif") {
+      Swal.fire(
+        'Not a valid Image file',
+        'Select A correct Image file'
+      )
+      document.getElementById(id).value = '';
+      return false;
+    }
+  }
 
 
   $('document').ready(function () {

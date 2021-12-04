@@ -17,7 +17,7 @@
     <div class="page-content" id="container">
         <div class="container">
 
-            <form class="form checkout-form"  id="checkout-form" >
+            <form class="form checkout-form" id="checkout-form">
                 <div class="row mb-9">
                     <div class="col-lg-7 pr-lg-4 mb-4">
                         <div class="head pb-5">
@@ -27,62 +27,80 @@
                             <span style="font-size: 12px;">We will deliver your order to this address</span>
                         </div>
                         <%for(var i=0;i<address.length;i++){%>
-                        <div id="edit_<%=address[i]._id%>" class="ecommerce-address shipping-address pr-lg-8 pt-5">
-                       
-                            <div class="row align-items-center">
-                                <div class="col-md-1 col-1">
-                                    <input type="radio" name="address" value="<%=address[i]._id%>" checked>
-                                </div>
-                                <div class="col-md-5 col-11">
-                                    <address class="mb-4">
-                                        <table class="address-table">
-                                            <tbody>
-                                                <tr>
-                                                    <th>Name:</th>
-                                                    <td id="name_<%=address[i]._id%>"><%=address[i].name%></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Address:</th>
-                                                    <td id="address_<%=address[i]._id%>"><%=address[i].address%></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Town:</th>
-                                                    <td id="town_<%=address[i]._id%>"><%=address[i].town%></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>State:</th>
-                                                    <td id="state_<%=address[i]._id%>"><%=address[i].state%></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Postcode:</th>
-                                                    <td id="zip_<%=address[i]._id%>"><%=address[i].zip%></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Mobile:</th>
-                                                    <td id="mobile_<%=address[i]._id%>"><%=address[i].mobile%></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </address>
-                                </div>  
-                                <div class="col-md-6">
-                                    <a onclick="editAddress('<%=address[i]._id%>')" class="btn btn-link btn-underline btn-icon-right text-primary pt-5">Edit your
-                                        shipping address<i class="w-icon-long-arrow-right"></i></a>
-                                        <a onclick="deleteAddress('<%=address[i]._id%>')" class="btn btn-link btn-underline btn-icon-right text-success pt-5">Delete Address<i class="w-icon-long-arrow-right"></i></a>
-                                </div>
-                                
-                            </div>   
-                        </div>
-                        <hr>
-                        <%}%>
+                            <div id="edit_<%=address[i]._id%>" class="ecommerce-address shipping-address pr-lg-8 pt-5">
 
-                        <div class="new_address pt-5">
-                            <a onclick="addressRow()" class="btn btn-link btn-underline btn-icon-right text-primary">Add
-                                New Address<i class="w-icon-long-arrow-right"></i></a>
-                        </div>
-                        <input id="identification" type="text" value="close" style="display: none;">
-                        <div id="add_address_div"></div>
-                        
+                                <div class="row align-items-center">
+                                    <div class="col-md-1 col-1">
+                                        <input type="radio" name="address" value="<%=address[i]._id%>" checked>
+                                    </div>
+                                    <div class="col-md-5 col-11">
+                                        <address class="mb-4">
+                                            <table class="address-table">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Name:</th>
+                                                        <td id="name_<%=address[i]._id%>">
+                                                            <%=address[i].name%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Address:</th>
+                                                        <td id="address_<%=address[i]._id%>">
+                                                            <%=address[i].address%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Town:</th>
+                                                        <td id="town_<%=address[i]._id%>">
+                                                            <%=address[i].town%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>State:</th>
+                                                        <td id="state_<%=address[i]._id%>">
+                                                            <%=address[i].state%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Postcode:</th>
+                                                        <td id="zip_<%=address[i]._id%>">
+                                                            <%=address[i].zip%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Mobile:</th>
+                                                        <td id="mobile_<%=address[i]._id%>">
+                                                            <%=address[i].mobile%>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </address>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a onclick="editAddress('<%=address[i]._id%>')"
+                                            class="btn btn-link btn-underline btn-icon-right text-primary pt-5">Edit
+                                            your
+                                            shipping address<i class="w-icon-long-arrow-right"></i></a>
+                                        <a onclick="deleteAddress('<%=address[i]._id%>')"
+                                            class="btn btn-link btn-underline btn-icon-right text-success pt-5">Delete
+                                            Address<i class="w-icon-long-arrow-right"></i></a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <hr>
+                            <%}%>
+
+                                <div class="new_address pt-5">
+                                    <a onclick="addressRow()"
+                                        class="btn btn-link btn-underline btn-icon-right text-primary">Add
+                                        New Address<i class="w-icon-long-arrow-right"></i></a>
+                                </div>
+                                <input id="identification" type="text" value="close" style="display: none;">
+                                <div id="add_address_div"></div>
+
+
                     </div>
                     <div class="col-lg-5 mb-4 sticky-sidebar-wrapper">
                         <div class="order-summary-wrapper sticky-sidebar">
@@ -97,70 +115,176 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+
                                         <tr class="bb-no">
-                                            <td class="product-name"><%=product.productname%><i class="fas fa-times"></i>
-                                                <span class="product-quantity">1</span>
+                                            <td class="product-name">
+                                                <%=product.productname%><i class="fas fa-times"></i>
+                                                    <span class="product-quantity">1</span>
                                             </td>
-                                            <td class="product-total">RS.<span><%=product.productprice%></span></td>
-                                            <input type="text" name="product" value="<%=product._id%>" style="display: none;">
+
+                                            <td class="product-total">RS.<span>
+                                                    <%=product.productprice%>
+                                                </span></td>
+
+
+                                            <input type="text" name="product" value="<%=product._id%>"
+                                                style="display: none;">
                                             <input type="text" name="quantity" value=1 style="display: none;">
                                         </tr>
-                                        
-                                        <!-- <tr class="cart-subtotal bb-no">
-                                            <td>
-                                                <b>Subtotal</b>
-                                            </td>
-                                            <td>
-                                                <b>$100.00</b>
-                                            </td>
-                                        </tr> -->
+
+                                        <tr class="">
+                                            <%if(product.isOfferActive===true){%>
+
+                                                <%if(product.isProOfferActive===true){%>
+            
+                                                    <%if(product.offer_price > product.productoffer_price){%>
+                                                        
+                                                        <td>
+                                                            Discount <%=product.productoffer_discount%>%
+                                                        </td>
+                                                        <td class="product-total"><span>
+                                                            <%=product.productoffer_price-product.productprice%>
+                                                        </span></td>
+        
+                                                    <%}else{%>
+                                                            
+                                                        <td>
+                                                            Discount <%=product.categoryoffer_discount%>%
+                                                        </td>
+                                                        <td class="product-total"><span>
+                                                                <%=product.offer_price-product.productprice%>
+                                                        </span></td>
+            
+                                                    <%}%>
+            
+                                                <%}else{%>
+            
+                                                    <td>
+                                                        Discount <%=product.categoryoffer_discount%>%
+                                                    </td>
+                                                    <td class="product-total"><span>
+                                                            <%=product.offer_price-product.productprice%>
+                                                    </span></td>
+            
+                                                <%}%>
+            
+                                            <%}else if(product.isProOfferActive === true){%>
+                                                
+                                                <td>
+                                                    Discount <%=product.productoffer_discount%>%
+                                                </td>
+                                                <td class="product-total"><span>
+                                                    <%=product.productoffer_price-product.productprice%>
+                                                </span></td>
+            
+                                            <%}else{%>
+        
+                                                <td>
+                                                    Discount
+                                                </td>
+                                                <td class="product-total"><span>
+                                                        0
+                                                </span></td>
+        
+                                            <%}%>
+                                            
+                                        </tr>
                                     </tbody>
-                                   
+
                                     <tfoot>
                                         <tr class="shipping-methods">
                                             <td colspan="2" class="text-left">
-                                                <h4 class="title title-simple bb-no mb-1 pb-0 pt-3" >Shipping
+                                                <h4 class="title title-simple bb-no mb-1 pb-0 pt-3">Shipping
                                                 </h4>
                                                 <ul id="shipping-method" class="mb-4">
                                                     <li>
-                                                        
-                                                            
-                                                            <label for="free-shipping"
-                                                                class="custom-control-label color-dark">Free
-                                                                Shipping</label>
-                                                       
+
+
+                                                        <label for="free-shipping"
+                                                            class="custom-control-label color-dark">Free
+                                                            Shipping</label>
+
                                                     </li>
                                                     <li>
-                                                        
-                                                            
-                                                            <label for="local-pickup"
-                                                                class="custom-control-label color-dark">Local
-                                                                Pickup</label>
-                                                      
+
+
+                                                        <label for="local-pickup"
+                                                            class="custom-control-label color-dark">Local
+                                                            Pickup</label>
+
                                                     </li>
-                                                    
+
                                                 </ul>
                                             </td>
                                         </tr>
-                                        <tr class="order-total">
+                                        <tr id="discount_count">
+                                            
+                                        </tr>
+                                        <tr class="order-total" id="total_change">
                                             <th>
                                                 <b>Total</b>
                                             </th>
                                             <td>
-                                                <b>RS.<span><%=product.productprice%></span></b>
+
+
+                                                <%if(product.isOfferActive===true){%>
+
+                                                    <%if(product.isProOfferActive===true){%>
+                
+                                                        <%if(product.offer_price > product.productoffer_price){%>
+                                                            
+                                                            <b>RS.<span id="total_price">
+                                                                <%=product.productoffer_price%>
+                                                            </span></b>
+            
+                                                        <%}else{%>
+                                                                
+                                                            <b>RS.<span id="total_price">
+                                                                <%=product.offer_price%>
+                                                            </span></b>
+                
+                                                        <%}%>
+                
+                                                    <%}else{%>
+                
+                                                        <b>RS.<span id="total_price">
+                                                            <%=product.offer_price%>
+                                                        </span></b>
+                
+                                                    <%}%>
+                
+                                                <%}else if(product.isProOfferActive === true){%>
+                                                    
+                                                    <b>RS.<span id="total_price">
+                                                        <%=product.productoffer_price%>
+                                                    </span></b>
+                
+                                                <%}else{%>
+            
+                                                    <b>RS.<span id="total_price">
+                                                        <%=product.productprice%>
+                                                    </span></b>
+            
+                                                <%}%>
+                                                
                                             </td>
                                         </tr>
                                     </tfoot>
                                 </table>
-
+                                <input type="text" style="display: none;" name="totalPrice" id="totalPrice" value="<%=product.productprice%>">
+                                <input type="text" style="display: none;" name="coupon_status" id="coupon_status" value="false">
+                                <input type="text" style="display: none;" name="discount" id="discount" value="0">
+                                <input style="display: none;" id="coupon_code" name="coupon_code" value="" type="text" >
+ 
                                 <div class="payment-methods" id="payment_method">
                                     <h4 class="title font-weight-bold ls-25 pb-0 mb-1">Payment Methods</h4>
                                     <div class="accordion payment-accordion">
-                                        
+
                                         <div class="card">
                                             <div class="card-header">
-                                                <label style="color: #6e6b6b; font-weight: 500;" for="" ><input type="radio" name="payment" value="Cash On Delivery" checked> Cash On Delivery</label>
+                                                <label style="color: #6e6b6b; font-weight: 500;" for=""><input
+                                                        type="radio" name="payment" value="Cash On Delivery" checked>
+                                                    Cash On Delivery</label>
                                             </div>
                                             <div class="card-header">
                                                 <label style="color: #6e6b6b; font-weight: 500;" for=""><input
@@ -173,23 +297,66 @@
                                                     Paypal</label>
                                             </div>
                                         </div>
-                                        
+                                        <!-- <input style="display: none;" id="coupon_status" value="false" type="text" >
+                                        <input style="display: none;" id="coupon_id" value="" type="text" >
+                                        <input style="display: none;" id="coupon_code" value="" type="text" > -->
                                     </div>
                                 </div>
 
-                                <div class="form-group place-order pt-6">
-                                    <button type="submit" class="btn btn-dark btn-block btn-rounded">Place
-                                        Order</button>
+                                <div class="form-group place-order pt-6" >
+                                    <button type="submit" class="btn btn-dark btn-block btn-rounded">Place Order</button>
                                 </div>
-                                <div id="coupon_div" class="pt-4">
-                                    <form class="coupon" id="apply_coupon" >
-                                        <h5 class="title coupon-title font-weight-bold text-uppercase">Coupon Discount</h5>
-                                        <input type="text" id="coupon_inp" name="coupon" class="form-control mb-4" placeholder="Enter coupon code here..."
-                                            required />
-                                            <p id="coupon_error" style="color: red;"></p>
-                                        <button class="btn btn-dark btn-outline btn-rounded" onclick="applyCoupon()">Apply Coupon</button>
+                                <div id="coupon_div" class="pt-4" >
+                                    <form class="coupon" id="apply_coupon">
+                                        <h5 class="title coupon-title font-weight-bold text-uppercase">Coupon Discount
+                                        </h5>
+                                        <input type="text" id="coupon_inp" name="coupon" class="form-control mb-4"
+                                            placeholder="Enter coupon code here..." />
+                                        <p id="coupon_error" style="color: red;"></p>
+
+
+
+                                        <%if(product.isOfferActive===true){%>
+
+                                            <%if(product.isProOfferActive===true){%>
+        
+                                                <%if(product.offer_price > product.productoffer_price){%>
+                                                   
+                                                    <button class="btn btn-dark btn-outline btn-rounded"
+                                                        onclick="applyCoupon('<%=product.productoffer_price%>')">Apply Coupon</button>
+
+                                                <%}else{%>
+                                                        
+                                                    <button class="btn btn-dark btn-outline btn-rounded"
+                                                        onclick="applyCoupon('<%=product.offer_price%>')">Apply Coupon</button>
+        
+                                                <%}%>
+        
+                                            <%}else{%>
+        
+                                                <button class="btn btn-dark btn-outline btn-rounded"
+                                                    onclick="applyCoupon('<%=product.offer_price%>')">Apply Coupon</button>
+        
+                                            <%}%>
+        
+                                        <%}else if(product.isProOfferActive === true){%>
+                                            
+                                            <button class="btn btn-dark btn-outline btn-rounded"
+                                                onclick="applyCoupon('<%=product.productoffer_price%>')">Apply Coupon</button>
+
+        
+                                        <%}else{%>
+    
+                                            <button class="btn btn-dark btn-outline btn-rounded"
+                                                onclick="applyCoupon('<%=product.productprice%>')">Apply
+                                                Coupon</button>
+    
+                                        <%}%>
+                                    
+
                                     </form>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -206,47 +373,73 @@
 
 <script>
 
-    function applyCoupon(){
-
+    function applyCoupon(productPrice) {
         event.preventDefault()
 
-        let couponError = true;
-
-        function validateName() {
-
-            let nameValue = $('#coupon_inp').val()
-
-            if (nameValue.length == '') {
-
-                $('#coupon_inp').css('border-color', '#c70d0d')
-                $('#coupon_inp').attr("placeholder", "Enter Coupon")
-
-                couponError = false;
-                return false;
-            }
+        let coupon = $('#coupon_inp').val()
+        $('#coupon_error').html('')
+        let couponErr = true
+        if (coupon.length == '') {
+            $('#coupon_inp').css('border-color', '#c70d0d')
+            $('#coupon_inp').attr("placeholder", "Enter Coupon")
+            couponErr = false
         }
-
-        validateName()
-
-        if(couponError === true){
-
+        if (couponErr === true) {
+            console.log(coupon);
             $.ajax({
-                url:'/apply-coupon',
-                method:'post',
-                date:$('#apply_coupon').serialize(),
-                success:(response)=>{
-                    if(response.status === true){
-                        $('#coupon_div').html('<h5 class="title coupon-title font-weight-bold text-uppercase" style="color:yellow">Coupon Applied</h5>')
-                    }else{
-                        $('#coupon_error').html('Invalid Coupon')
+                url: '/apply-coupon',
+                method: 'post',
+                data: {
+                    coupon: coupon,
+                    price: productPrice
+                },
+                success: (response) => {
+                    console.log("ethy");
+                    console.log(response.coupon);
+                    if (response.coupon) {
+
+                        if (response.err === 1) {
+                            $('#coupon_error').html('Already this coupon used')
+                        } else if (response.coupon.min_amount > productPrice) {
+                            $('#coupon_error').html(`This coupon is only applicable for purchase more than Rs.` + response.coupon.min_amount)
+                        } else {
+
+                            $('#coupon_div').html(
+                                `
+                                <div id="coupon_div" class="pt-4 text-center">
+                                    <h4 class="pt-5 pb-5" style="border: 1px solid green; color: green;">Coupon Applied</h4>
+                                </div>
+                                `
+                            )
+                            $('#coupon_status').val('true')
+                            let priceAfterDiscount = productPrice * response.coupon.discount / 100
+                            $('#discount_count').html(
+                                `
+                                <th>Coupon Discount</th>
+                                <td>${priceAfterDiscount}</td>
+                                `
+                            )
+                            $('#coupon_code').val(response.coupon.code)
+                            $('#discount').val(priceAfterDiscount)
+                            $('#total_change').html(
+                                `
+                                <th><b>Total</b></th>
+                                <td><b>RS.<span>${productPrice-priceAfterDiscount}</span></b></td>
+                                `
+                            )
+                            $('#totalPrice').val(productPrice-priceAfterDiscount)
+                        }
+
+                    } else {
+                        $('#coupon_error').html('Coupon is not valid')
                     }
                 }
             })
         }
     }
 
-    function submitform(){
-        
+    function submitform() {
+
         return true
     }
 
@@ -260,12 +453,14 @@
             data: $('#checkout-form').serialize(),
             success: (response) => {
 
-                if(response.cod){
+                if (response.cod) {
 
                     location.href = '/order-placed'
-                }else{
-                    
+                } else if (response.razorpay === true) {
                     razorpayPayment(response)
+                } else if (response.paypal === true) {
+                    console.log("ethyyyy");
+                    location.href = response.link
                 }
             }
         })
@@ -287,6 +482,15 @@
                 // alert(response.razorpay_signature)
 
                 verifyPayment(response, order)
+            },
+            "modal": {
+                "ondismiss": function () {
+                   $.ajax({
+                       url:'/delete-pendng-order',
+                       method:'post'
+
+                   })
+                }
             },
             "prefill": {
                 "name": "Abin P Anil",
@@ -321,51 +525,51 @@
             data: {
                 payment, order
             },
-            success:(response)=>{
-                if(response.status){
+            success: (response) => {
+                if (response.status) {
 
                     location.href = '/order-placed'
 
-                }else{
+                } else {
                     alert('Payment failed')
                 }
             }
         })
     }
-    
 
 
-    function deleteAddress(id){
+
+    function deleteAddress(id) {
 
         event.preventDefault()
 
         $.ajax({
-            url:'deleteAddress',
-            method:'post',
-            data:{id:id},
-            success:()=>{
+            url: 'deleteAddress',
+            method: 'post',
+            data: { id: id },
+            success: () => {
                 $("#container").load(location.href + " #container");
             }
         })
     }
 
 
-    function cancelEdit(){
+    function cancelEdit() {
         event.preventDefault()
         $.ajax({
 
-            url:'/cancel',
-            method:'post',
-            success:()=>{
+            url: '/cancel',
+            method: 'post',
+            success: () => {
                 $("#container").load(location.href + " #container");
             }
-        })  
+        })
     }
 
-    function updateAddress(id){
+    function updateAddress(id) {
 
         event.preventDefault()
-        
+
 
         // name validation
         let nameError = true;
@@ -514,40 +718,40 @@
             zip: $('#zip').val(),
             state: $('#state').val(),
             mobile: $('#mobile').val(),
-            id : id
+            id: id
         }
 
         console.log(updateAddress);
 
         if (mobileError === true && stateError === true && zipError === true && townError === true && addressError === true && nameError === true) {
 
-           
+
             $.ajax({
-                url:'/update_address',
-                method:'post',
-                data:updateAddress,
-                success:()=>{
-                    
+                url: '/update_address',
+                method: 'post',
+                data: updateAddress,
+                success: () => {
+
                     $("#container").load(location.href + " #container");
-                    
+
                 }
             })
         }
 
     }
 
-    function editAddress(id){
+    function editAddress(id) {
 
-        let name = $('#name_'+id).html()
-        let address = $('#address_'+id).html()
-        let town = $('#town_'+id).html()
-        let state = $('#state_'+id).html()
-        let zip = $('#zip_'+id).html()
-        let mobile = $('#mobile_'+id).html()
+        let name = $('#name_' + id).html()
+        let address = $('#address_' + id).html()
+        let town = $('#town_' + id).html()
+        let state = $('#state_' + id).html()
+        let zip = $('#zip_' + id).html()
+        let mobile = $('#mobile_' + id).html()
 
         console.log(name);
 
-        let changediv = document.getElementById('edit_'+id)
+        let changediv = document.getElementById('edit_' + id)
         changediv.innerHTML = `
         
         <div class=" mb-4 pt-5">
@@ -778,13 +982,13 @@
 
             console.log(newAddress);
             $.ajax({
-                url:'/add_address',
-                method:'post',
-                data:newAddress,
-                success:()=>{
-                    
+                url: '/add_address',
+                method: 'post',
+                data: newAddress,
+                success: () => {
+
                     $("#container").load(location.href + " #container");
-                    
+
                 }
             })
         }

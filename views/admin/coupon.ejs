@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="mb-4">
                                         <label class="form-label">Expire Date</label>
-                                        <input type="date" placeholder="Select Date" name="date" class="form-control"
+                                        <input type="datetime-local" placeholder="Select Date" name="date" class="form-control"
                                             id="date" />
                                         <p id="datep" style="color: red;"></p>
                                     </div>
@@ -159,6 +159,24 @@
 
 <script>
 
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate()+1;
+        var year = dtToday.getFullYear();
+        var time = dtToday.getHours() + ":" + dtToday.getMinutes();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+            var maxDate = year + '-' + month + '-' + day+'T'+time;
+
+        // or instead:
+        // var maxDate = dtToday.toISOString().substr(0, 10) + "T" + time;
+        $('#date').attr('min', maxDate);
+    });
 
     function editCoupon() {
         console.log("here");
@@ -182,6 +200,7 @@
         let dateErr = true
         function validateDate() {
             $('#edit_date').css('border-color', '#2d3448')
+            
             let date = $('#edit_date').val()
             if (date.length == '') {
 
@@ -319,11 +338,19 @@
         function validateDate() {
             $('#date').css('border-color', '#2d3448')
             $('#datep').html("")
+            
             let date = $('#date').val()
+            let thisDate = new Date(date)
+            let currDate = new Date()
             if (date.length == '') {
 
                 $('#date').css('border-color', '#f30000')
                 $('#datep').html("Select Date")
+                dateErr = false;
+                return false;
+            }else if(thisDate<currDate){
+                $('#date').css('border-color', '#f30000')
+                $('#datep').html("Select A Valid Expire Date")
                 dateErr = false;
                 return false;
             }

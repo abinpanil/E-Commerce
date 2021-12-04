@@ -93,11 +93,89 @@
                                             </div> -->
                                             <!-- <a href="product-default.html" class="rating-reviews">(1 reviews)</a> -->
                                         </div>
-                                        <div class="product-pa-wrapper">
-                                            <div class="product-price">
-                                                RS.<%=pro[i].productprice%>
+
+
+                                        <%if(pro[i].isOfferActive===true){%>
+
+                                            <%if(pro[i].isProOfferActive===true){%>
+        
+                                                <%if(pro[i].offer_price> pro[i].productoffer_price){%>
+                                                    
+                                                    <p style="color: green; padding: 0; margin: 0;"><%=pro[i].productoffer_description%></p>
+                                                    <div class="product-pa-wrapper">
+                                                        <div class="product-price" style="color: grey;">Rs.
+                                                             <del><%=pro[i].productprice%></del>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-pa-wrapper">
+                                                        <div class="product-price" style="color: green;">Rs.
+                                                            <%=pro[i].productoffer_price%>
+                                                        </div>
+                                                    </div>
+                                                    <p style="color: green;"></p>
+        
+                                                <%}else{%>
+                                                        
+                                                    <p style="color: green; padding: 0; margin: 0;"><%=pro[i].categoryoffer_description%></p>
+                                                    <div class="product-pa-wrapper">
+                                                        <div class="product-price" style="color: grey;">Rs.
+                                                            <del><%=pro[i].productprice%></del>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-pa-wrapper">
+                                                        <div class="product-price" style="color: green;">Rs.
+                                                            <%=pro[i].offer_price%>
+                                                        </div>
+                                                    </div>
+                                                    <p style="color: green;"></p>
+        
+                                                <%}%>
+        
+                                            <%}else{%>
+        
+                                                <p style="color: green; padding: 0; margin: 0;"><%=pro[i].categoryoffer_description%></p>
+                                                <div class="product-pa-wrapper">
+                                                    <div class="product-price" style="color: grey;">Rs.
+                                                        <del><%=pro[i].productprice%></del>
+                                                    </div>
+                                                </div>
+                                                <div class="product-pa-wrapper">
+                                                <div class="product-price" style="color: green;">Rs.
+                                                    <%=pro[i].offer_price%>
+                                                </div>
+                                                </div>
+                                                <p style="color: green;"></p>
+        
+                                            <%}%>
+
+                                        <%}else if(pro[i].isProOfferActive === true){%>
+
+                                            <p style="color: green; padding: 0; margin: 0;"><%=pro[i].productoffer_description%></p>
+                                            <div class="product-pa-wrapper">
+                                                <div class="product-price" style="color: grey;">Rs.
+                                                    <del><%=pro[i].productprice%></del>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="product-pa-wrapper">
+                                                <div class="product-price" style="color: green;">Rs.
+                                                    <%=pro[i].productoffer_price%>
+                                                </div>
+                                            </div>
+                                            <p style="color: green;"></p>
+        
+                                        <%}else{%>
+                                            
+                                            <div class="product-pa-wrapper">
+                                                <div class="product-price">Rs.
+                                                    <%=pro[i].productprice%>
+                                                </div>
+                                            </div>
+        
+                                        <%}%>
+
+
+                                        
+                                        
                                     </div>
                                 </div>
                             </div>

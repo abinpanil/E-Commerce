@@ -25,7 +25,7 @@ const varifyLogin = (req, res, next) => {
 }
 /* GET home page. */
 router.get('/', varifyLogin, async (req, res, next) => {
-  
+
   res.redirect('/admin/dashboard')
 });
 
@@ -40,7 +40,7 @@ router.get('/login', function (req, res) {
 })
 
 /* Get dashboard. */
-router.get('/dashboard', varifyLogin, async (req, res)=> {
+router.get('/dashboard', varifyLogin, async (req, res) => {
   let totalSales = await adminHelpers.getTotalSales()
   let totalOrder = await adminHelpers.getTotalOrder()
   let totalProducts = await adminHelpers.getTotalProducts()
@@ -48,13 +48,13 @@ router.get('/dashboard', varifyLogin, async (req, res)=> {
   let pendingOrder = await adminHelpers.getPendingOrder()
   let cancelOrder = await adminHelpers.getCancellOrder()
   let LastOrders = await adminHelpers.getLastOrder()
-  
+
   let orderStatus = {
-    completedOrder : completedOrder,
-    pendingOrder : pendingOrder,
-    cancelOrder : cancelOrder
-  } 
-  res.render('./admin/dashboard', { admin, title: "Dashboard",totalSales,totalOrder,totalProducts,orderStatus,LastOrders})
+    completedOrder: completedOrder,
+    pendingOrder: pendingOrder,
+    cancelOrder: cancelOrder
+  }
+  res.render('./admin/dashboard', { admin, title: "Dashboard", totalSales, totalOrder, totalProducts, orderStatus, LastOrders })
 })
 
 /* Get products. */
@@ -75,7 +75,6 @@ router.get('/add_products', varifyLogin, function (req, res) {
 
   adminHelpers.getCategory().then((data) => {
 
-    // console.log(data);
     res.render('./admin/add_products', { admin, title: "Add Products", data })
   })
 
@@ -83,23 +82,26 @@ router.get('/add_products', varifyLogin, function (req, res) {
 
 
 // Coupon
-router.get('/coupon',async(req,res)=>{
-  let coupons= await adminHelpers.getCoupon()
-  console.log(coupons);
-  res.render('./admin/coupon', { admin, title: "Coupons" ,coupons})
+router.get('/coupon', varifyLogin, async (req, res) => {
+  let coupons = await adminHelpers.getCoupon()
+  res.render('./admin/coupon', { admin, title: "Coupons", coupons })
 })
 
 
 // Category Offer
-router.get('/category_offer',(req,res)=>{
+router.get('/category_offer', varifyLogin, async (req, res) => {
+  let category = await adminHelpers.getCategory()
+  let offerCat = await adminHelpers.getOfferCategory()
 
-  res.render('./admin/category-offer', { admin, title: "Category-offer" })
+  res.render('./admin/category-offer', { admin, title: "Category-offer", category, offerCat })
+  res.json({})
 })
 
 // product Offer
-router.get('/product_offers',(req,res)=>{
-
-  res.render('./admin/product-offer', { admin, title: "Product-offer" })
+router.get('/product_offers', async (req, res) => {
+  let category = await adminHelpers.getCategory()
+  let products = await adminHelpers.getActiveOfferProducts()
+  res.render('./admin/product-offer', { admin, title: "Product-offer", category, products })
 })
 
 
@@ -107,7 +109,7 @@ router.get('/product_offers',(req,res)=>{
 router.get('/categories', varifyLogin, function (req, res) {
 
   adminHelpers.getCategory().then((data) => {
-    // console.log(data);
+
     res.render('./admin/category-management', { admin, title: "Categories", data })
 
   })
@@ -122,27 +124,25 @@ router.get('/orders', varifyLogin, async (req, res) => {
 
 
 // home banners
-router.get('/homepage-customization',varifyLogin, async(req, res) => {
+router.get('/homepage-customization', varifyLogin, async (req, res) => {
   let data = await adminHelpers.getHomeData()
-  console.log(data);
+
   res.render('./admin/home_page', { admin, title: "Home Custom", data })
 })
 
 /* Get users. */
 router.get('/users', varifyLogin, function (req, res) {
   adminHelpers.getAllUsers().then((usersList) => {
-    // console.log(usersList);
+
     res.render('./admin/user', { admin, title: "Users", usersList })
   })
 })
 
-router.get('/sales-report', varifyLogin,async(req,res)=>{
+router.get('/sales-report', varifyLogin, async (req, res) => {
 
-  console.log(type);
   let data = await adminHelpers.getReportData(type)
-  console.log(data);
-  
-  res.render('./admin/sales-report', { admin, title: "Sales Report",data,type})
+
+  res.render('./admin/sales-report', { admin, title: "Sales Report", data, type })
   res.json({})
 })
 
@@ -174,8 +174,6 @@ router.post('/signin', (req, res) => {
 
 /* Add category */
 router.post('/add_category', function (req, res) {
-
-  // console.log(req.body);
 
   adminHelpers.addCategory(req.body).then((data) => {
 
@@ -230,43 +228,11 @@ router.post('/block', (req, res) => {
 
 // Delete Category
 router.post('/deleteCategory', (req, res) => {
-  console.log(req.body);
-  adminHelpers.deleteCategory(req.body).then(() => {
 
+  adminHelpers.deleteCategory(req.body).then(() => {
     res.redirect('/admin/categories')
     adminHelpers.deleteProductcategory(req.body).then((productId) => {
 
-      fs.unlink('./public/user/images/productImage/' + productId + '1.jpg', (err) => {
-        if (err) {
-          console.log("failed to delete local image: 1" + err);
-        } else {
-          console.log('successfully deleted local image 1');
-        }
-      });
-      fs.unlink('./public/user/images/productImage/' + productId + '2.jpg', (err) => {
-        if (err) {
-          console.log("failed to delete local image: 2" + err);
-        } else {
-          console.log('successfully deleted local image 2');
-        }
-      });
-      fs.unlink('./public/user/images/productImage/' + productId + '3.jpg', (err) => {
-        if (err) {
-          console.log("failed to delete local image: 3" + err);
-        } else {
-          console.log('successfully deleted local image 3');
-        }
-      });
-      fs.unlink('./public/user/images/productImage/' + productId + '4.jpg', (err) => {
-        if (err) {
-          1
-          1
-          1
-          console.log("failed to delete local image: 4" + err);
-        } else {
-          console.log('successfully deleted local image 4');
-        }
-      });
       res.redirect('/admin/categories')
     })
   })
@@ -282,7 +248,6 @@ router.post('/deleteProduct', (req, res) => {
 // get details for edit
 router.post('/editproduct_get', (req, res) => {
   pid = req.body.id
-  //  console.log(pid);
 
 })
 
@@ -290,7 +255,7 @@ router.post('/editproduct_get', (req, res) => {
 router.post('/edit_product', (req, res) => {
 
   let product = {
-
+    id: req.body.id,
     producttitle: req.body.producttitle,
     productname: req.body.productname,
     productdiscription: req.body.productdiscription,
@@ -300,71 +265,40 @@ router.post('/edit_product', (req, res) => {
     productsubcategory: req.body.productsubcategory
   }
 
-    adminHelpers.updateProduct(product).then((product) => {
+  adminHelpers.updateProduct(product).then((product) => {
 
-      res.redirect('/admin/products')
-      let image1 = req.body.image1
-      let image2 = req.body.image2
-      let image3 = req.body.image3
-      let image4 = req.body.image4
+    res.redirect('/admin/products')
+    let image1 = req.body.image1
+    let image2 = req.body.image2
+    let image3 = req.body.image3
+    let image4 = req.body.image4
 
-      let path1 = './public/user/images/productImage/' + id + '1.jpg'
-      let path2 = './public/user/images/productImage/' + id + '2.jpg'
-      let path3 = './public/user/images/productImage/' + id + '3.jpg'
-      let path4 = './public/user/images/productImage/' + id + '4.jpg'
+    let path1 = './public/user/images/productImage/' + id + '1.jpg'
+    let path2 = './public/user/images/productImage/' + id + '2.jpg'
+    let path3 = './public/user/images/productImage/' + id + '3.jpg'
+    let path4 = './public/user/images/productImage/' + id + '4.jpg'
 
-      let img1 = image1.replace(/^data:([A-Za-z+/]+);base64,/, "")
-      let img2 = image2.replace(/^data:([A-Za-z+/]+);base64,/, "")
-      let img3 = image3.replace(/^data:([A-Za-z+/]+);base64,/, "")
-      let img4 = image4.replace(/^data:([A-Za-z+/]+);base64,/, "")
+    let img1 = image1.replace(/^data:([A-Za-z+/]+);base64,/, "")
+    let img2 = image2.replace(/^data:([A-Za-z+/]+);base64,/, "")
+    let img3 = image3.replace(/^data:([A-Za-z+/]+);base64,/, "")
+    let img4 = image4.replace(/^data:([A-Za-z+/]+);base64,/, "")
 
-      fs.writeFileSync(path1, img1, { encoding: 'base64' })
-      fs.writeFileSync(path2, img2, { encoding: 'base64' })
-      fs.writeFileSync(path3, img3, { encoding: 'base64' })
-      fs.writeFileSync(path4, img4, { encoding: 'base64' })
+    fs.writeFileSync(path1, img1, { encoding: 'base64' })
+    fs.writeFileSync(path2, img2, { encoding: 'base64' })
+    fs.writeFileSync(path3, img3, { encoding: 'base64' })
+    fs.writeFileSync(path4, img4, { encoding: 'base64' })
 
-      console.log(product);
-
-    })
+  })
 
 })
 
 
 // Delete subCategory
 router.post('/deletesSubCategory', (req, res) => {
-  console.log(req.body);
   adminHelpers.deleteSubCategory(req.body).then(() => {
     res.redirect('/admin/categories')
     adminHelpers.deleteProductSubcategory(req.body).then((productId) => {
 
-      fs.unlink('./public/user/images/productImage/' + productId + '1.jpg', (err) => {
-        if (err) {
-          console.log("failed to delete local image: 1" + err);
-        } else {
-          console.log('successfully deleted local image 1');
-        }
-      });
-      fs.unlink('./public/user/images/productImage/' + productId + '2.jpg', (err) => {
-        if (err) {
-          console.log("failed to delete local image: 2" + err);
-        } else {
-          console.log('successfully deleted local image 2');
-        }
-      });
-      fs.unlink('./public/user/images/productImage/' + productId + '3.jpg', (err) => {
-        if (err) {
-          console.log("failed to delete local image: 3" + err);
-        } else {
-          console.log('successfully deleted local image 3');
-        }
-      });
-      fs.unlink('./public/user/images/productImage/' + productId + '4.jpg', (err) => {
-        if (err) {
-          console.log("failed to delete local image: 4" + err);
-        } else {
-          console.log('successfully deleted local image 4');
-        }
-      });
       res.redirect('/admin/categories')
     })
   })
@@ -442,18 +376,15 @@ router.post('/change-status', (req, res) => {
 
 
 router.post('/addbanner', (req, res) => {
-let data = {
-  
-  bannerTitle : req.body.bannerTitle,
-  bannerHeading : req.body.bannerHeading,
-  bannerContent : req.body.bannerContent
-}
-console.log(data);
-  adminHelpers.addBanner(data).then((id)=>{
+  let data = {
 
-    console.log("ethyyyyyy");
+    bannerTitle: req.body.bannerTitle,
+    bannerHeading: req.body.bannerHeading,
+    bannerContent: req.body.bannerContent
+  }
+  adminHelpers.addBanner(data).then((id) => {
+
     let image = req.body.image
-    console.log(image);  
     let path = './public/user/images/productImage/' + id + '1.jpg'
     let img = image.replace(/^data:([A-Za-z+/]+);base64,/, "")
     fs.writeFileSync(path, img, { encoding: 'base64' })
@@ -463,24 +394,23 @@ console.log(data);
 
 
 // delete banner
-router.post('/deleteBanner',(req,res)=>{
-  console.log(req.body)
-  adminHelpers.deleteBanner(req.body.id).then(()=>{
+router.post('/deleteBanner', (req, res) => {
+  adminHelpers.deleteBanner(req.body.id).then(() => {
     res.json({})
   })
 })
 
 // sales report
-router.post('/reportdate',async(req,res)=>{
-  
+router.post('/reportdate', async (req, res) => {
+
   type = req.body.value
   res.redirect('/admin/sales-report')
 
-}) 
+})
 
 
 // Get chart data
-router.post('/dashboard/weeklychart',async(req,res)=>{
+router.post('/dashboard/weeklychart', async (req, res) => {
   let response = {}
   let weeklyUsers = await adminHelpers.getWeeklyUsers()
   let weeklyTotalSales = await adminHelpers.getWeeklySales()
@@ -488,33 +418,73 @@ router.post('/dashboard/weeklychart',async(req,res)=>{
   let orderStatus = await adminHelpers.getOrdersStatus()
   let sales = await adminHelpers.getSalesData()
   response = {
-    weeklyUsers : weeklyUsers,
-    weeklyTotalSales : weeklyTotalSales,
-    catName : categories.catNames,
-    catData : categories.catData,
-    placedOrd : orderStatus.placed,
-    cancelOrd : orderStatus.cancel,
-    pendingOrd : orderStatus.pending,
-    deliveredOrd : orderStatus.delivered,
-    confirmOrd : orderStatus.confirm,
-    totalSales:sales
+    weeklyUsers: weeklyUsers,
+    weeklyTotalSales: weeklyTotalSales,
+    catName: categories.catNames,
+    catData: categories.catData,
+    placedOrd: orderStatus.placed,
+    cancelOrd: orderStatus.cancel,
+    deliveredOrd: orderStatus.delivered,
+    confirmOrd: orderStatus.confirm,
+    totalSales: sales
   }
-  console.log(response);
   res.json(response)
 })
 
 
 // coupon adding
-router.post('/add-coupon',async(req,res)=>{
+router.post('/add-coupon', async (req, res) => {
   await adminHelpers.addCoupon(req.body)
   res.redirect('/admin/coupon')
 })
 
 // delete coupon
-router.post('/deleteCoupon',(req,res)=>{
-  adminHelpers.deleteCoupon(req.body).then(()=>{
+router.post('/deleteCoupon', (req, res) => {
+  adminHelpers.deleteCoupon(req.body).then(() => {
     res.json({})
   })
+})
+
+// add category offer
+router.post('/add-category-offer', async (req, res) => {
+
+  await adminHelpers.addCategoryOffer(req.body)
+  res.redirect('/admin/category_offer')
+  res.json({})
+})
+
+// delete category offer
+router.post('/delete_categoryoffer', (req, res) => {
+  adminHelpers.deleteCategoryOffer(req.body.category)
+  res.redirect('/admin/category_offer')
+})
+
+// sort sales report datewise
+router.post('/sales-report/sort-date', async (req, res) => {
+  let from = req.body.from
+  let to = req.body.to
+  let report = await adminHelpers.getOrderSortedRange(from, to)
+  res.json(report)
+})
+
+
+// get products for product offer
+router.post('/product-offer/get-products', async (req, res) => {
+
+  let products = await adminHelpers.getProductforOffer(req.body)
+  res.json(products)
+})
+
+// add product offer
+router.post('/add-product-offer', async (req, res) => {
+  let offerProduct = await adminHelpers.addProductOffer(req.body)
+  res.json(offerProduct)
+})
+
+// delete product offer
+router.post('/delete-product-offer', async (req, res) => {
+  await adminHelpers.deleteProductOffer(req.body.id)
+  res.json({})
 })
 
 module.exports = router;

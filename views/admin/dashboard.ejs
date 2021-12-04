@@ -178,7 +178,7 @@
                                                 </div>
                                             </div>
                                             <div class="flex-grow-1">
-                                                <p class="text-muted mb-2">Pending</p>
+                                                <p class="text-muted mb-2">Placed</p>
                                                 <div class="progress progress-sm animated-progess">
                                                     <div class="progress-bar bg-warning" role="progressbar"
                                                         style="width: <%=orderStatus.pendingOrder%>%"
@@ -224,7 +224,7 @@
                                     </div>
                                     <div class="col-4">
                                         <div class="mt-2">
-                                            <p class="text-muted mb-2">Pending</p>
+                                            <p class="text-muted mb-2">Placed</p>
                                             <h5 class="font-size-16 mb-0">
                                                 <%=orderStatus.pendingOrder%>
                                             </h5>
@@ -587,11 +587,6 @@
                 data: {
                     labels: _labels,
                     datasets: [{
-                        data: response.pendingOrd,
-                        label: "Pending",
-                        borderColor: "#3e95cd",
-                        fill: false
-                    }, {
                         data: response.placedOrd,
                         label: "Placed",
                         borderColor: "#8e5ea2",

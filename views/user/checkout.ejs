@@ -99,12 +99,7 @@
                                 </div>
                                 <input id="identification" type="text" value="close" style="display: none;">
                                 <div id="add_address_div"></div>
-                                <form class="coupon">
-                                    <h5 class="title coupon-title font-weight-bold text-uppercase">Coupon Discount</h5>
-                                    <input type="text" class="form-control mb-4" placeholder="Enter coupon code here..."
-                                        required />
-                                    <button class="btn btn-dark btn-outline btn-rounded">Apply Coupon</button>
-                                </form>
+
                     </div>
                     <div class="col-lg-5 mb-4 sticky-sidebar-wrapper">
                         <div class="order-summary-wrapper sticky-sidebar">
@@ -127,9 +122,63 @@
                                                             <%=cart[i].quantity%>
                                                         </span>
                                                 </td>
-                                                <td class="product-total">RS.<span>
-                                                        <%=cart[i].subTotal%>
-                                                    </span></td>
+
+
+                                                <%if(cart[i].product.isOfferActive===true){%>
+
+                                                    <%if(cart[i].product.isProOfferActive===true){%>
+                
+                                                        <%if(cart[i].product.offer_price > cart[i].product.productoffer_price){%>
+                                                            
+                                                            <td class="product-subtotal">
+                                                                <span class="amount">RS.<span
+                                                                        id="subtotal_<%=cart[i].product._id%>">
+                                                                        <%=cart[i].proOfferSubTotal%>
+                                                                    </span></span>
+                                                            </td>
+            
+                                                        <%}else{%>
+                                                                
+                                                            <td class="product-subtotal">
+                                                                <span class="amount">RS.<span
+                                                                        id="subtotal_<%=cart[i].product._id%>">
+                                                                        <%=cart[i].offerSubTotal%>
+                                                                    </span></span>
+                                                            </td>
+                
+                                                        <%}%>
+                
+                                                    <%}else{%>
+                
+                                                        <td class="product-subtotal">
+                                                            <span class="amount">RS.<span
+                                                                    id="subtotal_<%=cart[i].product._id%>">
+                                                                    <%=cart[i].offerSubTotal%>
+                                                                </span></span>
+                                                        </td>
+                
+                                                    <%}%>
+                
+                                                <%}else if(cart[i].product.isProOfferActive === true){%>
+                                                    
+                                                    <td class="product-subtotal">
+                                                        <span class="amount">RS.<span
+                                                                id="subtotal_<%=cart[i].product._id%>">
+                                                                <%=cart[i].proOfferSubTotal%>
+                                                            </span></span>
+                                                    </td>
+                
+                                                <%}else{%>
+            
+                                                    <td class="product-subtotal">
+                                                        <span class="amount">RS.<span
+                                                                id="subtotal_<%=cart[i].product._id%>">
+                                                                <%=cart[i].subTotal%>
+                                                            </span></span>
+                                                    </td>
+            
+                                                <%}%>
+
                                             </tr>
                                             <%}%>
                                                 <!-- <tr class="cart-subtotal bb-no">
@@ -168,7 +217,10 @@
                                                 </ul>
                                             </td>
                                         </tr>
-                                        <tr class="order-total">
+                                        <tr id="discount_count">
+                                            
+                                        </tr>
+                                        <tr id="total_change" class="order-total">
                                             <th>
                                                 <b>Total</b>
                                             </th>
@@ -180,6 +232,10 @@
                                         </tr>
                                     </tfoot>
                                 </table>
+                                <input type="text" style="display: none;" name="totalPrice" id="totalPrice" value="<%=total%>">
+                                <input type="text" style="display: none;" name="coupon_status" id="coupon_status" value="false">
+                                <input type="text" style="display: none;" name="discount" id="discount" value="0">
+                                <input style="display: none;" id="coupon_code" name="coupon_code" value="" type="text" >
 
                                 <div class="payment-methods" id="payment_method">
                                     <h4 class="title font-weight-bold ls-25 pb-0 mb-1">Payment Methods</h4>
@@ -210,6 +266,17 @@
                                     <button type="submit" class="btn btn-dark btn-block btn-rounded">Place
                                         Order</button>
                                 </div>
+                                <div id="coupon_div" class="pt-4">
+                                    <form class="coupon" id="apply_coupon">
+                                        <h5 class="title coupon-title font-weight-bold text-uppercase">Coupon Discount
+                                        </h5>
+                                        <input type="text" id="coupon_inp" name="coupon" class="form-control mb-4"
+                                            placeholder="Enter coupon code here..." />
+                                        <p id="coupon_error" style="color: red;"></p>
+                                        <button class="btn btn-dark btn-outline btn-rounded"
+                                            onclick="applyCoupon('<%=total%>')">Apply Coupon</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -225,6 +292,76 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
+
+
+    function applyCoupon(productPrice) {
+        event.preventDefault()
+
+        let coupon = $('#coupon_inp').val()
+        $('#coupon_error').html('')
+        let couponErr = true
+        if (coupon.length == '') {
+            $('#coupon_inp').css('border-color', '#c70d0d')
+            $('#coupon_inp').attr("placeholder", "Enter Coupon")
+            couponErr = false
+        }
+        if (couponErr === true) {
+            console.log(coupon);
+            $.ajax({
+                url: '/apply-coupon',
+                method: 'post',
+                data: {
+                    coupon: coupon,
+                    price: productPrice
+                },
+                success: (response) => {
+                    console.log(response);
+                    console.log("ethy");
+                    console.log(response.err);
+                    if (response.coupon) {
+
+                        if (response.err === 1) {
+                            $('#coupon_error').html('Already this coupon used')
+                        } else if (response.coupon.min_amount > productPrice) {
+                            $('#coupon_error').html(`This coupon is only applicable for purchase more than Rs.` + response.coupon.min_amount)
+                        } else {
+
+                            $('#coupon_div').html(
+                                `
+                                <div id="coupon_div" class="pt-4 text-center">
+                                    <h4 class="pt-5 pb-5" style="border: 1px solid green; color: green;">Coupon Applied</h4>
+                                </div>
+                                `
+                            )
+                            $('#coupon_status').val('true')
+                            let priceAfterDiscount = productPrice * response.coupon.discount / 100
+                            $('#discount_count').html(
+                                `
+                                <th>Coupon Discount</th>
+                                <td>${priceAfterDiscount}</td>
+                                `
+                            )
+                            $('#coupon_code').val(response.coupon.code)
+                            $('#discount').val(priceAfterDiscount)
+                            $('#total_change').html(
+                                `
+                                <th><b>Total</b></th>
+                                <td><b>RS.<span>${productPrice-priceAfterDiscount}</span></b></td>
+                                `
+                            )
+                            $('#totalPrice').val(productPrice-priceAfterDiscount)
+
+                        }
+
+                    } else {
+                        $('#coupon_error').html('Coupon is not valid')
+                    }
+                }
+            })
+        }
+    }
+
+
 
     function submitform() {
 
@@ -243,8 +380,10 @@
 
                     location.href = '/order-placed'
 
-                } else {
+                } else if (response.razorpay === true) {
                     razorpayPayment(response)
+                } else if (response.paypal === true) {
+                    location.href = response.link
                 }
 
             }
@@ -267,6 +406,16 @@
                 // alert(response.razorpay_signature)
 
                 verifyPayment(response, order)
+            },
+            "modal": {
+                "ondismiss": function () {
+                    console.log("del");
+                    $.ajax({
+                        url: '/delete-pendng-order',
+                        method: 'post'
+
+                    })
+                }
             },
             "prefill": {
                 "name": "Abin P Anil",
@@ -303,8 +452,13 @@
             },
             success: (response) => {
                 if (response.status) {
-
-                    location.href = '/order-placed'
+                    $.ajax({
+                        url: "/clear-cart",
+                        method: 'post',
+                        success: () => {
+                            location.href = '/order-placed'
+                        }
+                    })
 
                 } else {
                     alert('Payment failed')

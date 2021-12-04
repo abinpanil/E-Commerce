@@ -13,31 +13,32 @@
             <div class="swiper-wrapper">
                 <!-- End of .intro-slide1 -->
                 <%for(i=0;i<home.length;i++){%>
-                <div class="swiper-slide banner banner-fixed intro-slide3">
-                    <figure class="banner-media">
-                        <img src="/user/images/productImage/<%=home[i]._id%>1.jpg" alt="Slide" width="1903" height="600"
-                            style="background-color: #CECECE;">
-                    </figure>
-                    <div class="banner-content y-50 ml-4 mr-4">
-                        <span class="d-block text-dark text-uppercase font-weight-normal slide-animate"
-                            data-animation-options="{'name': 'fadeInRightShorter', 'duration': '.5s', 'delay': '.5s'}">
-                            Deals and Promotions</span>
-                        <h4 class="banner-subtitle text-primary mb-0 ml-0 slide-animate"
-                            data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '.5s', 'delay': '.5s'}">
-                            Summer Season
-                        </h4>
-                        <h3 class="banner-title text-dark font-weight-bold slide-animate" data-animation-options="{
+                    <div class="swiper-slide banner banner-fixed intro-slide3">
+                        <figure class="banner-media">
+                            <img src="/user/images/productImage/<%=home[i]._id%>1.jpg" alt="Slide" width="1903"
+                                height="600" style="background-color: #CECECE;">
+                        </figure>
+                        <div class="banner-content y-50 ml-4 mr-4">
+                            <span class="d-block text-dark text-uppercase font-weight-normal slide-animate"
+                                data-animation-options="{'name': 'fadeInRightShorter', 'duration': '.5s', 'delay': '.5s'}">
+                                <%=home[i].bannerTitle%>
+                            </span>
+                            <h4 class="banner-subtitle text-primary mb-0 ml-0 slide-animate"
+                                data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '.5s', 'delay': '.5s'}">
+                                <%=home[i].bannerHeading%>
+                            </h4>
+                            <h3 class="banner-title text-dark font-weight-bold slide-animate" data-animation-options="{
                             'name': 'fadeInRightShorter',
                             'duration': '1s',
                             'delay': '.2s'
                             }">
-                            Fashion Lifestyle<br>Collection
-                        </h3>
+                                <%=home[i].bannerContent%>
+                            </h3>
+                        </div>
+                        <!-- End of .banner-content -->
                     </div>
-                    <!-- End of .banner-content -->
-                </div>
-                <%}%>
-                <!-- End of .intro-slide1 -->
+                    <%}%>
+                        <!-- End of .intro-slide1 -->
             </div>
         </div>
         <!-- End of .swiper-container -->
@@ -83,7 +84,7 @@
 
 
             <div class="shop-content toolbox-horizontal">
-                
+
                 <!-- Start of Selected Items -->
                 <div class="selected-items mb-3">
                     <a href="#" class="filter-clean text-primary">Clean All</a>
@@ -93,50 +94,136 @@
                 <!-- Start of Product Wrapper -->
                 <div class="product-wrapper row cols-lg-4 cols-md-3 cols-sm-2 cols-2">
                     <%for(var i=0;i<products.length;i++){%>
-                    <div class="product-wrap">
-                        <div class="product text-center">
-                            <figure class="product-media">
-                                <a href="/viewproduct/<%=products[i]._id%>">
-                                    <img src="/user/images/productImage/<%=products[i]._id%>1.jpg" alt="Product" width="300"
-                                        height="338" />
-                                </a>
-                                <div class="product-action-horizontal">
-                                    <a onclick="addToCart('<%=products[i]._id%>')" class="btn-product-icon  w-icon-cart"
-                                        title="Add to cart"></a>
-                                    <a onclick="addToWishlist('<%=products[i]._id%>')" class="btn-product-icon btn-wishlist w-icon-heart"
-                                        title="Wishlist"></a>
-                                    <a href="/product-buy-now/<%=products[i]._id%>" class="btn-product-icon w-icon-shipping"
-                                        title="Buy Now"></a>
-                                </div>
-                            </figure>
-                            <div class="product-details">
-                                <div class="product-cat">
-                                    <a href="/viewproduct/<%=products[i]._id%>"><%=products[i].productcategory%></a>
-                                </div>
-                                <h3 class="product-name">
-                                    <a href="/viewproduct/<%=products[i]._id%>"><%=products[i].productname%></a>
-                                </h3>
-                                <!-- <div class="ratings-container">
+                        <div class="product-wrap">
+                            <div class="product text-center">
+                                <figure class="product-media">
+                                    <a href="/viewproduct/<%=products[i]._id%>">
+                                        <img src="/user/images/productImage/<%=products[i]._id%>1.jpg" alt="Product"
+                                            width="300" height="338" />
+                                    </a>
+                                    <div class="product-action-horizontal">
+                                        <a onclick="addToCart('<%=products[i]._id%>')"
+                                            class="btn-product-icon  w-icon-cart" title="Add to cart"></a>
+                                        <!-- <a onclick="addToWishlist('<%=products[i]._id%>')" class="btn-product-icon btn-wishlist w-icon-heart"
+                                        title="Wishlist"></a> -->
+                                        <a href="/product-buy-now/<%=products[i]._id%>"
+                                            class="btn-product-icon w-icon-shipping" title="Buy Now"></a>
+                                    </div>
+                                </figure>
+                                <div class="product-details">
+                                    <div class="product-cat">
+                                        <a href="/viewproduct/<%=products[i]._id%>">
+                                            <%=products[i].productcategory%>
+                                        </a>
+                                    </div>
+                                    <h3 class="product-name">
+                                        <a href="/viewproduct/<%=products[i]._id%>">
+                                            <%=products[i].productname%>
+                                        </a>
+                                    </h3>
+                                    <!-- <div class="ratings-container">
                                     <div class="ratings-full">
                                         <span class="ratings" style="width: 100%;"></span>
                                         <span class="tooltiptext tooltip-top"></span>
                                     </div>
                                     <a href="product-default.html" class="rating-reviews">(3 reviews)</a>
                                 </div> -->
-                                <div class="product-pa-wrapper">
-                                    <div class="product-price">
-                                        <%=products[i].productprice%>
-                                    </div>
+                                    <%if(products[i].isOfferActive===true){%>
+
+                                        <%if(products[i].isProOfferActive===true){%>
+
+                                            <%if(products[i].offer_price> products[i].productoffer_price){%>
+                                                <p style="color: green; padding: 0; margin: 0;">
+                                                    <%=products[i].productoffer_description%>
+                                                </p>
+                                                <div class="product-pa-wrapper">
+                                                    <div class="product-price" style="color: grey;">Rs.
+                                                        <del>
+                                                            <%=products[i].productprice%>
+                                                        </del>
+                                                    </div>
+                                                </div>
+                                                <div class="product-pa-wrapper">
+                                                    <div class="product-price" style="color: green;">Rs.
+                                                        <%=products[i].productoffer_price%>
+                                                    </div>
+                                                </div>
+                                                <p style="color: green;"></p>
+                                                <%}else{%>
+                                                    <p style="color: green; padding: 0; margin: 0;">
+                                                        <%=products[i].categoryoffer_description%>
+                                                    </p>
+                                                    <div class="product-pa-wrapper">
+                                                        <div class="product-price" style="color: grey;">Rs.
+                                                            <del>
+                                                                <%=products[i].productprice%>
+                                                            </del>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-pa-wrapper">
+                                                        <div class="product-price" style="color: green;">Rs.
+                                                            <%=products[i].offer_price%>
+                                                        </div>
+                                                    </div>
+                                                    <p style="color: green;"></p>
+                                                    <%}%>
+
+                                                        <%}else{%>
+
+                                                            <p style="color: green; padding: 0; margin: 0;">
+                                                                <%=products[i].categoryoffer_description%>
+                                                            </p>
+                                                            <div class="product-pa-wrapper">
+                                                                <div class="product-price" style="color: grey;">Rs.
+                                                                    <del>
+                                                                        <%=products[i].productprice%>
+                                                                    </del>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-pa-wrapper">
+                                                                <div class="product-price" style="color: green;">Rs.
+                                                                    <%=products[i].offer_price%>
+                                                                </div>
+                                                            </div>
+                                                            <p style="color: green;"></p>
+
+                                                            <%}%>
+
+                                                            <%}else if(products[i].isProOfferActive === true){%>
+
+                                                                <p style="color: green; padding: 0; margin: 0;">
+                                                                    <%=products[i].productoffer_description%>
+                                                                </p>
+                                                                <div class="product-pa-wrapper">
+                                                                    <div class="product-price" style="color: grey;">Rs.
+                                                                        <del>
+                                                                            <%=products[i].productprice%>
+                                                                        </del>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="product-pa-wrapper">
+                                                                    <div class="product-price" style="color: green;">Rs.
+                                                                        <%=products[i].productoffer_price%>
+                                                                    </div>
+                                                                </div>
+                                                                <p style="color: green;"></p>
+
+                                                                <%}else{%>
+                                                                    <div class="product-pa-wrapper">
+                                                                        <div class="product-price">Rs.
+                                                                            <%=products[i].productprice%>
+                                                                        </div>
+                                                                    </div>
+                                                                    <%}%>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <%}%>
-                    
-                <!-- End of Product Wrapper -->
+                        <%}%>
 
-                <!-- Start of Pagination -->
-                <!-- <div class="toolbox toolbox-pagination justify-content-between">
+                            <!-- End of Product Wrapper -->
+
+                            <!-- Start of Pagination -->
+                            <!-- <div class="toolbox toolbox-pagination justify-content-between">
                     <p class="showing-info mb-2 mb-sm-0">
                         Showing<span>1-12 of 60</span>Products
                     </p>
@@ -159,10 +246,10 @@
                         </li>
                     </ul>
                 </div> -->
-                <!-- End of Pagination -->
+                            <!-- End of Pagination -->
+                </div>
             </div>
-        </div>
-        <!-- End of Banner Product Wrapper -->
+            <!-- End of Banner Product Wrapper -->
 
 
 
@@ -195,29 +282,29 @@
 <script>
 
 
-    function addToWishlist(id){
+    function addToWishlist(id) {
 
         $.ajax({
             url: '/add-to-wishlist',
             method: 'post',
             data: { proId: id },
             success: (response) => {
-                if(response.status){
+                if (response.status) {
 
-                    
-                    
+
+
                     Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Product Added to cart',
-                    showConfirmButton: false,
-                    timer: 1500
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Product Added to cart',
+                        showConfirmButton: false,
+                        timer: 1500
                     })
 
-                }else{
+                } else {
                     window.location.assign('/login')
                 }
-                
+
             }
         })
     }
@@ -231,23 +318,23 @@
             method: 'post',
             data: { proId: id },
             success: (response) => {
-                if(response.status){
+                if (response.status) {
 
                     let count = $('#cart_count').html()
-                    $('#cart_count').html(parseInt(count)+1)                    
+                    $('#cart_count').html(parseInt(count) + 1)
 
                     Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Product Added to cart',
-                    showConfirmButton: false,
-                    timer: 1500
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Product Added to cart',
+                        showConfirmButton: false,
+                        timer: 1500
                     })
 
-                }else{
+                } else {
                     window.location.assign('/login')
                 }
-                
+
             }
         })
 

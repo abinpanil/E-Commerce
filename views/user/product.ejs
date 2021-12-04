@@ -128,23 +128,81 @@
 
                                 <hr class="product-divider">
 
-                                <div class="product-price"><ins class="new-price">RS.<%=products.productprice%></ins></div>
+
+                                <%if(products.isOfferActive===true){%>
+
+                                    <%if(products.isProOfferActive===true){%>
+
+                                        <%if(products.offer_price> products.productoffer_price){%>
+                                            
+                                            <div class="product-price"><h3 class="new-price" style="color: rgb(112, 109, 109);"> <del>RS.<%=products.productprice%></del> </h3></div>
+                                            <div class="product-price"><ins class="new-price" style="color: green;">RS.<%=products.productoffer_price%></ins></div>
+
+                                        <%}else{%>
+                                                
+                                            <div class="product-price"><h3 class="new-price" style="color: rgb(112, 109, 109);"> <del>RS.<%=products.productprice%></del> </h3></div>
+                                            <div class="product-price"><ins class="new-price" style="color: green;">RS.<%=products.offer_price%></ins></div>
+
+                                        <%}%>
+
+                                    <%}else{%>
+
+                                        <div class="product-price"><h3 class="new-price" style="color: rgb(112, 109, 109);"> <del>RS.<%=products.productprice%></del> </h3></div>
+                                        <div class="product-price"><ins class="new-price" style="color: green;">RS.<%=products.offer_price%></ins></div>
+
+                                    <%}%>
+
+                                <%}else if(products.isProOfferActive === true){%>
+
+                                    <div class="product-price"><h3 class="new-price" style="color: rgb(112, 109, 109);"> <del>RS.<%=products.productprice%></del> </h3></div>
+                                    <div class="product-price"><ins class="new-price" style="color: green;">RS.<%=products.productoffer_price%></ins></div>
+
+                                <%}else{%>
+                                    
+                                    <div class="product-price"><ins class="new-price">RS.<%=products.productprice%></ins></div>
+
+                                <%}%>
+
+
+                                  
+
+                                
 
                                 <div class="ratings-container">
-                                    <!-- <div class="ratings-full">
-                                        <span class="ratings" style="width: 80%;"></span>
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div> -->
-                                    <!-- <a href=" class="rating-reviews scroll-to">(3
-                                        Reviews)</a> -->
+
+
+                                    <%if(products.isOfferActive===true){%>
+
+                                        <%if(products.isProOfferActive===true){%>
+    
+                                            <%if(products.offer_price> products.productoffer_price){%>
+                                                
+                                                <p style="color: green;"><%=products.productoffer_description%></p>
+    
+                                            <%}else{%>
+                                                    
+                                                <p style="color: green;"><%=products.categoryoffer_description%></p>
+    
+                                            <%}%>
+    
+                                        <%}else{%>
+    
+                                            <p style="color: green;"><%=products.categoryoffer_description%></p>
+    
+                                        <%}%>
+    
+                                    <%}else if(products.isProOfferActive===true){%>
+                                        
+                                        <p style="color: green;"><%=products.productoffer_description%></p>
+    
+                                    <%}%>
+
+
+                                    
                                 </div>
 
-                                <div class="product-short-desc" style="min-height: 20vh;">
-                                    <ul class="list-type-check list-style-none">
-                                        <li>""</li>
-                                        <li>""</li>
-                                        <li>""</li>
-                                    </ul>
+                                <div class="product-short-desc" style="min-height: 10vh;">
+                                    
                                 </div>
 
                                 <hr class="product-divider">
@@ -205,14 +263,6 @@
                                     <div class="col-md-6 mb-5">
                                         <h4 class="title tab-pane-title font-weight-bold mb-2">Detail</h4>
                                         <p class="mb-4"><%=products.productdiscription%></p>
-                                        <!-- <ul class="list-type-check">
-                                            <li>Nunc nec porttitor turpis. In eu risus enim. In vitae mollis
-                                                elit.
-                                            </li>
-                                            <li>Vivamus finibus vel mauris ut vehicula.</li>
-                                            <li>Nullam a magna porttitor, dictum risus nec, faucibus sapien.
-                                            </li>
-                                        </ul> -->
                                     </div>
                                     <div class="col-md-6 mb-5">
                                         

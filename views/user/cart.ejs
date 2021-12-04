@@ -49,8 +49,42 @@
                                             <%=cart[i].product.producttitle%>
                                         </a>
                                     </td>
-                                    <td class="product-price"><span class="amount">RS.<%=cart[i].product.productprice%>
+
+
+                                    <%if(cart[i].product.isOfferActive===true){%>
+
+                                        <%if(cart[i].product.isProOfferActive===true){%>
+    
+                                            <%if(cart[i].product.offer_price > cart[i].product.productoffer_price){%>
+                                                
+                                                <td class="product-price"><del>Rs.<%=cart[i].product.productprice%></del><span class="amount" style="color: green;">Rs.<%=cart[i].product.productoffer_price%></span></td>
+
+                                            <%}else{%>
+                                                    
+                                                <td class="product-price"><del>Rs.<%=cart[i].product.productprice%></del><span class="amount" style="color: green;">Rs.<%=cart[i].product.offer_price%></span></td>
+    
+                                            <%}%>
+    
+                                        <%}else{%>
+    
+                                            <td class="product-price"><del>Rs.<%=cart[i].product.productprice%></del><span class="amount" style="color: green;">Rs.<%=cart[i].product.offer_price%></span></td>
+    
+                                        <%}%>
+    
+                                    <%}else if(cart[i].product.isProOfferActive === true){%>
+                                        
+                                        <td class="product-price"><del>Rs.<%=cart[i].product.productprice%></del><span class="amount" style="color: green;">Rs.<%=cart[i].product.productoffer_price%></span></td>
+    
+                                    <%}else{%>
+
+                                        <td class="product-price"><span class="amount">RS.<%=cart[i].product.productprice%>
                                         </span></td>
+
+                                    <%}%>
+
+
+
+                                   
                                     <td class="product-quantity">
                                         <div id="div" class="input-group">
                                             <input class=" form-control" type="number" min=""
@@ -67,17 +101,70 @@
                                                 <%}%>
                                         </div>
                                     </td>
-                                    <td class="product-subtotal">
-                                        <span class="amount">RS.<span id="subtotal_<%=cart[i].product._id%>">
+
+
+                                    <%if(cart[i].product.isOfferActive===true){%>
+
+                                        <%if(cart[i].product.isProOfferActive===true){%>
+    
+                                            <%if(cart[i].product.offer_price > cart[i].product.productoffer_price){%>
+                                                
+                                                <td class="product-subtotal">
+                                                    <span class="amount">RS.<span id="subtotal_<%=cart[i].product._id%>">
+                                                        <%=cart[i].proOfferSubTotal%>
+                                                    </span></span>
+                                                </td>
+
+                                            <%}else{%>
+                                                    
+                                                <td class="product-subtotal">
+                                                    <span class="amount">RS.<span id="subtotal_<%=cart[i].product._id%>">
+                                                        <%=cart[i].offerSubTotal%>
+                                                    </span></span>
+                                                </td>
+    
+                                            <%}%>
+    
+                                        <%}else{%>
+    
+                                            <td class="product-subtotal">
+                                                <span class="amount">RS.<span id="subtotal_<%=cart[i].product._id%>">
+                                                    <%=cart[i].offerSubTotal%>
+                                                </span></span>
+                                            </td>
+    
+                                        <%}%>
+    
+                                    <%}else if(cart[i].product.isProOfferActive === true){%>
+                                        
+                                        <td class="product-subtotal">
+                                            <span class="amount">RS.<span id="subtotal_<%=cart[i].product._id%>">
+                                                <%=cart[i].proOfferSubTotal%>
+                                            </span></span>
+                                        </td>
+    
+                                    <%}else{%>
+
+                                        <td class="product-subtotal">
+                                            <span class="amount">RS.<span id="subtotal_<%=cart[i].product._id%>">
                                                 <%=cart[i].subTotal%>
                                             </span></span>
-                                    </td>
+                                        </td>
+
+                                    <%}%>
+
+
+                                    
+                                    
                                 </tr>
+                                
+
                                 <%}%>
                         </tbody>
                         <%}else{%>
 
                         </table>
+
 
                             <div class="row justify-content-center">
                                 <div class="col-12 pt-5" style="min-height: 33vh; display: flex; justify-content: center; align-items: center;">
@@ -246,8 +333,8 @@
             success: (response) => {
 
                 let quantity = $('#quantity_' + productId).val()
-                console.log(quantity);
-
+                console.log(response);
+                
 
                 if (count == -1) {
                     quantity = parseInt(quantity) - 1
@@ -261,7 +348,30 @@
                 }
                 $('#quantity_' + productId).val(quantity)
                 $('#total_price').html(response.total)
-                $('#subtotal_' + productId).html(response.subTotal)
+                
+                if(response.subTotal.product.isOfferActive === true){
+                   
+                    if(response.subTotal.product.isProOfferActive === true){
+                        
+                        if(response.subTotal.offerSubTotal > response.subTotal.proOfferSubTotal){
+                            console.log(response.subTotal.proOfferSubTotal);
+                            $('#subtotal_' + productId).html(response.subTotal.proOfferSubTotal)
+                        }else{
+                            
+                            $('#subtotal_' + productId).html(response.subTotal.offerSubTotal)
+                        }
+                    }else{
+                        
+                        $('#subtotal_' + productId).html(response.subTotal.offerSubTotal)
+                    }
+                }else if(response.subTotal.product.isProOfferActive === true){
+                    
+                    $('#subtotal_' + productId).html(response.subTotal.proOfferSubTotal)
+                }else{
+                    
+                    $('#subtotal_' + productId).html(response.subTotal.subTotal )
+                }
+                // $('#subtotal_' + productId).html(response.subTotal)
                 if(quantity === 1 || quantity === 2){
 
                     $("#container").load(location.href + " #container");

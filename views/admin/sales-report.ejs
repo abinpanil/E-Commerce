@@ -28,21 +28,40 @@
                 <div class="col-12">
                     <div class="card" id="">
                         <div class="card-body">
-                            <div class="row pb-3">
-                                <div class="col-2">
+                            <div class="row pb-3 justify-content-between">
+                                <div class="col-md-2">
                                     <label class="form-label">Sort by</label>
                                     <select class="form-select" onchange="date()" id="date">
-                                        <option><%=type%></option>
+                                        <option>
+                                            <%=type%>
+                                        </option>
                                         <option>Daily</option>
                                         <option>Weekly</option>
                                         <option>Monthly</option>
                                         <option>Yearly</option>
                                     </select>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="row"><label class="form-label">Sort by Date</label></div>
+                                    <div class="row">
+                                        <div class="col-md-4"><input class="form-control" type="date"
+                                                id="sort_date_from">
+                                            <p style="color: red;" id="fromdate"></p>
+                                        </div>
+
+                                        <div class="col-md-4"><input class="form-control" type="date" id="sort_date_to">
+
+                                            <p style="color: red;" id="todate"></p>
+                                        </div>
+
+                                        <div class="col-md-2"><button onclick="sortByDate()"
+                                                class="btn btn-secondary">Sort</button></div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="table-rep-plugin">
                                 <div class="table-responsive mb-0" data-pattern="priority-columns" id="change">
-                                    <table id="table_id" class=" display table table-striped">
+                                    <table id="example" class=" display table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>OrderId</th>
@@ -55,22 +74,38 @@
                                                 <th data-priority="8">Price</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="update_table">
 
                                             <%for(i=0;i<data.length;i++){%>
 
                                                 <tr>
-                                                    <th><%=data[i]._id%></th>
-                                                    <th><%=data[i].status%></th>
-                                                    <th><%=data[i].product.productname%></th>
-                                                    <th><%=data[i].quantity%></th>
-                                                    <th><%=data[i].paymentMethod%></th>
-                                                    <th><%=data[i].deliveryDetails.name%></th>
-                                                    <th><%=data[i].displayDate%></th>
-                                                    <th><%=data[i].subTotal%></th>
+                                                    <th>
+                                                        <%=data[i]._id%>
+                                                    </th>
+                                                    <th>
+                                                        <%=data[i].status%>
+                                                    </th>
+                                                    <th>
+                                                        <%=data[i].product.productname%>
+                                                    </th>
+                                                    <th>
+                                                        <%=data[i].quantity%>
+                                                    </th>
+                                                    <th>
+                                                        <%=data[i].paymentMethod%>
+                                                    </th>
+                                                    <th>
+                                                        <%=data[i].deliveryDetails.name%>
+                                                    </th>
+                                                    <th>
+                                                        <%=data[i].displayDate%>
+                                                    </th>
+                                                    <th>
+                                                        <%=data[i].subTotal%>
+                                                    </th>
                                                 </tr>
 
-                                            <%}%>
+                                                <%}%>
 
                                         </tbody>
                                     </table>
@@ -118,8 +153,133 @@
 
 <script>
 
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        var time = dtToday.getHours() + ":" + dtToday.getMinutes();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        // var maxDate = year + '-' + month + '-' + day;
+
+        // or instead:
+        var maxDate = dtToday.toISOString().substr(0, 10);
+        $('#sort_date_from').attr('max', maxDate);
+        $('#sort_date_to').attr('max', maxDate);
+    });
+
+
+    function sortByDate() {
+
+        let fromDateErr = true
+
+        function valFromDate() {
+            let fromDate = $('#sort_date_from').val()
+            $('#sort_date_from').css('border-color', '#2d3448')
+            $('#fromdate').html("")
+            let thisDate = new Date(fromDate)
+            let currDate = new Date()
+            if (fromDate.length == '') {
+                $('#sort_date_from').css('border-color', '#f30000')
+                $('#fromdate').html("Select Date")
+                fromDateErr = false;
+                return false;
+            } else if (thisDate > currDate) {
+                $('#sort_date_from').css('border-color', '#f30000')
+                $('#fromdate').html("Select A Valid Date")
+                fromDateErr = false;
+                return false;
+            }
+        }
+
+        let toDateErr = true
+
+        function valtoDate() {
+            let toDate = $('#sort_date_to').val()
+            console.log(toDate);
+            $('#sort_date_to').css('border-color', '#2d3448')
+            $('#todate').html("")
+            let thisDate = new Date(toDate)
+            let currDate = new Date()
+            if (toDate.length == '') {
+                $('#sort_date_to').css('border-color', '#f30000')
+                $('#todate').html("Select Date")
+                toDateErr = false;
+                return false;
+            } else if (thisDate > currDate) {
+                $('#sort_date_to').css('border-color', '#f30000')
+                $('#todate').html("Select A Valid Date")
+                toDateErr = false;
+                return false;
+            }
+        }
+
+        valFromDate()
+        valtoDate()
+
+        if (fromDateErr === true && toDateErr === true) {
+            $.ajax({
+                url:'/admin/sales-report/sort-date',
+                method:'post',
+                data:{
+                    from : $('#sort_date_from').val(),
+                    to : $('#sort_date_to').val()
+                },
+                success:(report)=>{
+                    console.log(report);
+                    $('#update_table').html('')
+                    
+                    for(i=0;i<report.length;i++){
+                        let html = `<tr> <th>${report[i]._id}</th><th>${report[i].status}</th><th>${report[i].product.productname}</th><th> ${report[i].quantity}</th><th>${report[i].paymentMethod}</th><th>${report[i].deliveryDetails.name}</th><th>${report[i].displayDate}</th><th>${report[i].subTotal}</th></tr>` 
+                        $('#update_table').append(html)
+                    }
+                    if(report.length === 0){
+                        let html = "No Data Awailable this date"
+                        
+                    }
+                }
+            })
+        }
+    }
+
+
     $(document).ready(function () {
-        $('#table_id').DataTable();
+        $('#example').DataTable({
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                // Total over all pages
+                total = api
+                    .column(4)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+
+                // Update footer
+                $(api.column(4).footer()).html(
+                    ' ( $' + total + ' total)'
+                );
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'excel', 'pdf', 'print'
+            ],
+        });
     });
 
     function date() {
@@ -131,7 +291,7 @@
             url: '/admin/reportdate',
             type: 'post',
             data: { value: value },
-            success:()=>{
+            success: () => {
 
                 location.href = '/admin/sales-report'
             }

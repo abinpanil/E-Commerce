@@ -3,40 +3,408 @@
 <!-- ============================================================== -->
 <div class="main-content">
 
-    <div class="page-content">
-      <div class="container-fluid">
-  
-        <!-- start page title -->
-        <div class="row">
-          <div class="col-12">
-            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-              <h4 class="">Product Offers</h4>
-  
-              <div class="page-title-right">
-                <ol class="breadcrumb m-0">
-                  <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
-                  <li class="breadcrumb-item active">Product Offers</li>
-                </ol>
-              </div>
-  
+  <div class="page-content">
+    <div class="container-fluid">
+
+      <!-- start page title -->
+      <div class="row">
+        <div class="col-12">
+          <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="">Product Offers</h4>
+
+            <div class="page-title-right">
+              <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                <li class="breadcrumb-item active">Product Offers</li>
+              </ol>
             </div>
+
           </div>
         </div>
-        <!-- end page title -->
-  
-        <section class="content-main" style="max-width: 720px">
-  
-          
-          
-  
-  
-        </section> <!-- content-main end// -->
       </div>
-      <!-- End Page-content -->
+      <!-- end page title -->
+
+      <section class="content-main">
+
+        <div class="card" id="">
+          <div class="card-body" id="table_change">
+            <div class="row">
+              <div class="col-md-6">
+
+                <form id="form">
+
+                  <div class="row">
+                    <div class="text-center pb-4"><h5>Add Offer</h5></div>
+                    <div class="col-md-6">
+                      
+                      <div class="mb-4">
+                        <label class="form-label">Select Category</label>
+                        <select id="category" onchange="getSubcategory()" class="form-select" name="offer_category">
+                          <option value="">Select</option>
+                          <%for(i=0;i<category.length;i++){%>
+                            <option>
+                              <%=category[i].category%>
+                            </option>
+                            <%}%>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-4">
+                        <label class="form-label">Select Sub Category</label>
+                        <select id="subcategory" onchange="getProduct()" class="form-select" name="offer_category">
+                          <option value="">Select</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                </form>
+                <hr>
+                <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
+                  style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Product </th>
+                      <th>Category</th>
+                      <th class="text-end">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="show_product">
+
+                  </tbody>
+                </table>
+                <!-- after selecting category this will hide -->
+                <div id="no_product" class="d-flex justify-content-center">
+                  <h5>Select Category</h5>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="text-center">
+                  <h5>Active Offers</h5>
+                </div>
+                <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap"
+                  style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Product</th>
+                      <th>Discount<b>%</b></th>
+                      <th>Expire</th>
+                      <th class="text-end">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="display_offer">
+                    <%for(i=0;i<products.length;i++){%>
+                      <tr id="trdis_<%=products[i]._id%>">
+                        <td>
+                          <img style="width: 50px;height: 50px;"
+                            src="/user/images/productImage/<%=products[i]._id%>1.jpg" alt="image">
+                        </td>
+                        <td>
+                          <%=products[i].producttitle%>
+                        </td>
+                        <td>
+                          <%=products[i].productoffer_discount%>
+                        </td>
+                        <td>
+                          <%=products[i].productoffer_expiredate%>
+                        </td>
+                        <td class="text-end"><a class="btn btn-danger"
+                            onclick="deleteProductOffer('<%=products[i]._id%>')">Delete Offer</a></td>
+                      </tr>
+                      <%}%>
+                  </tbody>
+                </table>
+              </div> <!-- .col// -->
+            </div> <!-- .row // -->
+          </div> <!-- card body .// -->
+        </div> <!-- card .// -->
+
+        <!-- add offer form -->
+        <div id="productofferform">
+
+          <div class="text-center">
+            <h1>Add Offer</h1>
+          </div>
+
+          <form id="offer-form">
+            <label class="form-label">Discount</label>
+            <input type="text" placeholder="Discount in Percentage" name="productoffer_discount" class="form-control"
+              id="discount" />
+            <p id="discountp" style="color: red;"></p>
+            <label class="form-label">Expire Date</label>
+            <input type="date" placeholder="Select Date" name="productoffer_expiredate" class="form-control"
+              id="date" />
+            <p id="datep" style="color: red;"></p>
+            <input type="text" value="" name="id" id="product-id" style="display: none;">
+            <label class="form-label">Offer Description</label>
+            <input type="text" placeholder="Type here" name="productoffer_description" class="form-control"
+              id="description" />
+            <div class="pt-3 d-flex justify-content-end">
+              <a onclick="addOffer()" class="btn btn-warning">Add Offer</a>
+              <a onclick="closeModal()" class="btn btn-secondary">Close</a>
+            </div>
+          </form>
+        </div>
+
+
+      </section> <!-- content-main end// -->
     </div>
-    <!-- end main content-->
-  
+    <!-- End Page-content -->
   </div>
-  <!-- END layout-wrapper -->
-  
-  </body>
+  <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+</body>
+
+<!-- JAVASCRIPT -->
+<script src="/admin/libs/jquery/jquery.min.js"></script>
+<script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/libs/metismenu/metisMenu.min.js"></script>
+<script src="/admin/libs/simplebar/simplebar.min.js"></script>
+<script src="/admin/libs/node-waves/waves.min.js"></script>
+
+<!-- card end// -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<!-- sweat alert -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+
+
+  $(function () {
+    var dtToday = new Date();
+
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate() + 1;
+    var year = dtToday.getFullYear();
+    var time = dtToday.getHours() + ":" + dtToday.getMinutes();
+    if (month < 10)
+      month = '0' + month.toString();
+    if (day < 10)
+      day = '0' + day.toString();
+
+    var maxDate = year + '-' + month + '-' + day
+    console.log(maxDate);
+    // or instead:
+    // var maxDate1 = dtToday.toISOString().substr(0, 10)+"T"+time;
+    // console.log(maxDate1);
+
+    $('#date').attr('min', maxDate);
+  });
+
+
+  // get subcategory 
+  function getSubcategory() {
+
+    let category = $('#category').val()
+    $.ajax({
+
+      url: '/admin/getSubCategory',
+      method: 'post',
+      data: { category: category },
+      success: (response) => {
+        console.log(response);
+        // $('#subcategory').html = ''
+        $("#subcategory").find('option').remove();
+        $("#subcategory").append('<option > Select </option>');
+        for (var i = 0; i < response.length; i++) {
+
+          $("#subcategory").append('<option >' + response[i] + '</option>');
+          // let sub = <option>response[i].name</option>
+          // $('#subcategory').html+= sub
+        }
+
+      }
+
+    })
+  }
+
+  function getProduct() {
+
+    let category = $('#category').val()
+    let subCategory = $('#subcategory').val()
+
+    $.ajax({
+      url: '/admin/product-offer/get-products',
+      method: 'post',
+      data: {
+        category: category,
+        subCategory: subCategory
+      },
+      success: (response) => {
+        $('#show_product').html('')
+        $('#no_product').html('')
+        if (response.length) {
+          for (i = 0; i < response.length; i++) {
+
+            $('#show_product').append(`<tr id="tr_${response[i]._id}"><th><img style="width: 50px;height: 50px;"
+                           src="/user/images/productImage/${response[i]._id}1.jpg" alt="image">
+                           </th><td>${response[i].producttitle}</td><td>${response[i].productcategory}</td><td class="text-end"><a onclick="getModal('${response[i]._id}')" class="btn btn-primary">Add Offer</a></td></tr>`)
+          }
+        } else {
+          $('#no_product').html('<h5>No Product, try different Category</h5>')
+        }
+
+      }
+    })
+  }
+
+  function addOffer() {
+
+    // validate date
+    let dateErr = true
+    function validateDate() {
+      $('#date').css('border-color', '#2d3448')
+      $('#datep').html("")
+
+      let date = $('#date').val()
+      let thisDate = new Date(date)
+      let currDate = new Date()
+      console.log(thisDate);
+      console.log(currDate);
+      if (date.length == '') {
+
+        $('#date').css('border-color', '#f30000')
+        $('#datep').html("Select Date")
+        dateErr = false;
+        return false;
+      } else if (thisDate < currDate) {
+        $('#date').css('border-color', '#f30000')
+        $('#datep').html("Select A Valid Expire Date")
+        dateErr = false;
+        return false;
+      }
+    }
+
+    // validate discount
+    let discountErr = true
+    function validatediscount() {
+      let regnum = new RegExp("^[0-9]+$");
+      $('#discount').css('border-color', '#2d3448')
+      $('#discountp').html("")
+      let discount = $('#discount').val()
+      if (discount.length == '') {
+
+        $('#discount').css('border-color', '#f30000')
+        $('#discount').attr("placeholder", "Enter Discount")
+        discountErr = false;
+        return false;
+      }
+      if (!regnum.test(discount)) {
+        $('#discount').css('border-color', '#f30000')
+        $('#discountp').html("Only numbers allowed")
+        discountErr = false;
+        return false;
+      } else if (discount < 0 || discount > 100) {
+        console.log("here");
+        $('#discount').css('border-color', '#f30000')
+        $('#discountp').html("Enter value between 0 to 100")
+        discountErr = false;
+        return false;
+      }
+
+    }
+
+    // validate description
+    let descriptionErr = true
+    function validateDescription() {
+      $('#description').css('border-color', '#2d3448')
+      let description = $('#description').val()
+      if (description.length == '') {
+
+        $('#description').css('border-color', '#f30000')
+        $('#description').attr("placeholder", "Enter Description")
+        descriptionErr = false;
+        return false;
+      }
+    }
+
+    validateDate()
+    validatediscount()
+    validateDescription()
+
+    if (dateErr === true && descriptionErr === true && discountErr === true) {
+
+      $.ajax({
+        url: '/admin/add-product-offer',
+        method: 'post',
+        data: $('#offer-form').serialize(),
+        success: (response) => {
+          console.log(response);
+          let html = `<tr id="trdis_${response._id}">
+                      <td>
+                        <img style="width: 50px;height: 50px;"
+                           src="/user/images/productImage/${response._id}1.jpg" alt="image">
+                      </td>
+                      <td>${response.producttitle}</td>
+                      <td>${response.productoffer_discount}</td>
+                      <td>${response.productoffer_expiredate}</td>
+                      <td class="text-end"><a class="btn btn-danger" onclick="deleteProductOffer('${response._id}')" >Delete Offer</a></td>
+                    </tr>`
+          let id =  $('#product-id').val()
+          $('#tr_'+id).remove()
+          $('#discount').val('')
+          $('#date').val('')
+          $('#description').val('')
+          $('#display_offer').append(html)
+          $('#productofferform').fadeToggle();
+
+        }
+      })
+    }
+
+  }
+
+  function deleteProductOffer(id) {
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+
+          'Deleted!',
+          'Your file has been deleted.',
+          'success',
+          $.ajax({
+            url: '/admin/delete-product-offer',
+            method: 'post',
+            data: { id: id },
+            success: () => {
+
+              $('#trdis_'+id).remove()
+            }
+          })
+        )
+      }
+    })
+
+
+
+
+  }
+
+  function getModal(id) {
+    $('#product-id').val(id)
+    $('#productofferform').fadeToggle();
+
+  }
+
+  function closeModal() {
+    $('#productofferform').fadeOut();
+  }
+
+</script>

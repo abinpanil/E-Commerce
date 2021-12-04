@@ -11,12 +11,13 @@ const accountSID = "AC29e0de96271489ac12f1c32008d70906"
 const authToken = "2975bf30634d92615dab33cee7689014"
 const client = require("twilio")(accountSID, authToken)
 const paypal = require('paypal-rest-sdk');
+const alert = require('alert')
 
 // configure paypal with the credentials you got when you created your paypal app
 paypal.configure({
   'mode': 'sandbox', //sandbox or live 
-  'client_id': 'AUPW2bX7QjjAvfg1WeAOHkwE9h6SibPmPjDf3bjBQA5UKPXqdet5C9b067NG4BB9_GQKQHfyHWhRmr5d', // please provide your client id here 
-  'client_secret': 'EAqdQ1NTNQRDAtmZt-4H64ps_NZfKZaFnUEu4H50UE8XT0QUPhmzEbs8lVCsEB0FH1C7r16w_pVo60dE' // provide your client secret here 
+  'client_id': 'AT6H-G_gbyroSDzPVER3LucI3LT9_1io5kBfdLEyQu-yVp24XBL53VN3c5S_D_XPPUiwQ8BWCmpFLLHc', // please provide your client id here 
+  'client_secret': 'EOpLtk41XdMai82BEiJY49s1XI4AHH2w7aC8Sy6D2K6Yq-xPCErtP1mJFy-OmVhVMkeXU6ZLbsclWxFW' // provide your client secret here 
 });
 
 
@@ -45,19 +46,16 @@ function varifyLogin(req, res, next) {
 router.get('/', async (req, res, next) => {
 
   let home = await adminHelpers.getHomeData()
-  console.log(home);
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   } else {
     user.status = false
     user.name = ''
     delete req.session.user
-    console.log("false in userrrrrrrrrrr");
   }
-  console.log(user);
+  adminHelpers.checExpire()
   adminHelpers.getCategory().then((data) => {
     adminHelpers.getAllProducts().then((products) => {
-      // console.log(products);
       res.render('./user/home', { admin, user, title: "Home", data, products, cartCount, home });
     })
   })
@@ -137,17 +135,17 @@ router.get('/checkout', varifyLogin, async (req, res) => {
 
 // Buy now From Direct Product
 router.get('/product-buy-now/:id', varifyLogin, async (req, res) => {
+  userHelpers.deletePendingOrder()  
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
   req.session.buyNowProId = req.params.id
   let product = await userHelpers.getProduct(req.params.id)
   let address = await userHelpers.getAddress(req.session.user._id)
-  console.log(product);
   adminHelpers.getCategory().then((data) => {
     res.render('./user/buy-now', { admin, user, title: "Check Out", data, address, product, cartCount });
   })
-})
+}) 
 
 
 // order placed
@@ -156,7 +154,6 @@ router.get('/order-placed', varifyLogin, async (req, res) => {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
   let order = req.session.order
-  console.log(order);
   adminHelpers.getCategory().then((data) => {
     res.render('./user/order-placed', { admin, user, title: "Order Placed", data, order, cartCount });
   })
@@ -183,7 +180,6 @@ router.get('/view-order/:_id', varifyLogin, async (req, res) => {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
   let orderDetail = await userHelpers.getOrderedProduct(req.params._id)
-  console.log(orderDetail);
   adminHelpers.getCategory().then((data) => {
     res.render('./user/view-order-details', { admin, user, title: "View Order", data, orderDetail, cartCount });
   })
@@ -217,8 +213,6 @@ router.get('/listproductscat/:cat', async function (req, res, next) {
 // product search
 router.get('/productsearch', async (req, res) => {
 
-  console.log(req.query.search);
-
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
@@ -238,7 +232,6 @@ router.get('/listproductssubcat/:subcat/:cat', async function (req, res, next) {
 
   adminHelpers.getCategory().then((data) => {
     userHelpers.getSubCatProducts(req.params.cat, req.params.subcat).then((pro) => {
-      console.log(pro);
       res.render('./user/productlist', { admin, user, title: "Products", data, pro, cartCount })
     })
   })
@@ -265,7 +258,6 @@ router.post('/login', function (req, res) {
 
 /* Sign in. */
 router.post('/signIn', function (req, res) {
-  console.log(req.session.location);
   let data = {
     username: req.body.username,
     password: req.body.password
@@ -332,7 +324,6 @@ router.post('/edit_validate', (req, res) => {
 router.post('/validate', function (req, res) {
 
   userHelpers.validate(req.body).then((userResponse) => {
-    console.log(userResponse);
     if (userResponse.status) {
       client.verify.services(serviceID)
         .verifications.create({
@@ -340,8 +331,6 @@ router.post('/validate', function (req, res) {
           channel: "sms"
         })
         .then((response) => {
-          console.log("hereeeeeeee");
-          console.log(response);
           req.session.signup = req.body
           req.session.number = req.body.mobile
           res.json(userResponse)
@@ -359,15 +348,12 @@ router.post('/validate', function (req, res) {
 
 // resend
 router.post('/resend', (req, res) => {
-  console.log("ethyyyyyyyyyyyy");
-  console.log(req.body);
   client.verify.services(serviceID)
     .verifications.create({
       to: `+91${req.body.mobile}`,
       channel: "sms"
     })
     .then(() => {
-      console.log("ethyyyyy");
       res.json(response)
     }).catch((e) => {
       userResponse.otp = "Otp not send"
@@ -445,9 +431,6 @@ router.post('/otpvalidate', (req, res) => {
 
   let otp = req.body.otp
   let number = req.session.number
-  console.log(number);
-  console.log("bodyyyyyyyy");
-  console.log(req.body);
 
   client.verify
     .services(serviceID)
@@ -456,11 +439,8 @@ router.post('/otpvalidate', (req, res) => {
       code: `${otp}`
     })
     .then((data) => {
-      console.log("dataaaaaaaaaaaaa");
-      console.log(data);
       if (data.valid) {
         userHelpers.doSignup(req.session.signup).then((userResponse) => {
-          console.log(userResponse);
           res.redirect('/login')
         })
       } else {
@@ -480,10 +460,8 @@ router.post('/otpvalidate', (req, res) => {
 
 // add to cart
 router.post('/add-to-cart', (req, res) => {
-  console.log(user.status);
   let response = {}
   if (user.status === true) {
-    console.log("innnn");
     let proId = req.body.proId
     let userId = req.session.user._id
     userHelpers.addToCart(proId, userId).then(() => {
@@ -492,7 +470,6 @@ router.post('/add-to-cart', (req, res) => {
     })
   } else {
     response.status = false
-    console.log("outtt");
     req.session.product = req.body.proId
     res.json(response)
   }
@@ -514,15 +491,14 @@ router.post('/add-to-wishlist', (req, res) => {
 
 // product increment
 router.post('/change-product-quantity', (req, res) => {
-  console.log(req.body);
   userHelpers.changeProductQuantity(req.body).then((response) => {
     userHelpers.getTotalAmount(req.session.user._id).then((total) => {
       userHelpers.getSubTotalAmount(req.body).then((subTotal) => {
+        console.log(subTotal);
         let response = {
           total: total,
-          subTotal: subTotal.subTotal
+          subTotal: subTotal
         }
-        console.log(response);
         res.json(response)
       })
     })
@@ -544,7 +520,7 @@ router.post('/removeCartProduct', (req, res) => {
 router.post('/add_address', (req, res) => {
   let newAddress = req.body
   newAddress.user = req.session.user._id
-  console.log(newAddress);
+  
   userHelpers.addAddress(newAddress).then(() => {
     res.redirect('/checkout')
     res.json({})
@@ -580,7 +556,6 @@ router.post('/cancel', (req, res) => {
 // change password
 router.post('/edit_password', (req, res) => {
   userHelpers.editPassword(req.body).then((response) => {
-    console.log(response);
     res.json(response)
   })
 })
@@ -588,47 +563,58 @@ router.post('/edit_password', (req, res) => {
 // place order
 router.post('/place-order', async (req, res) => {
   let products = await userHelpers.getCartProductForOrder(req.session.user._id)
-  let totalPrice = await userHelpers.getTotalAmount(req.session.user._id)
+  // let totalPrice = await userHelpers.getTotalAmount(req.session.user._id)
   let address = await userHelpers.getAddressForOrder(req.body.address)
+  let totalPrice = req.body.totalPrice
   let lastOrder = {
     address: address,
     totalPrice: totalPrice,
-    products: products
+    products: products,
+    coupon: req.body.coupon_status,
+    discount: req.body.discount,
+    coupon_code : req.body.coupon_code
   }
   req.session.order = lastOrder
-  console.log(req.session.order);
-  let orderId = await userHelpers.placeOrder(req.body, products, totalPrice, address, req.session.user._id)
-  if (req.body.payment === 'Cash On Delivery') {
 
+  if (req.body.payment === 'Cash On Delivery') {
+    let orderId = await userHelpers.placeOrderCOD(req.body, products, totalPrice, address, req.session.user._id)
+    if(req.session.order.coupon === 'true'){
+      userHelpers.addCouponToUser(req.session.user._id,req.session.order.coupon_code)
+    }
     res.json({ cod: true })
   } else if (req.body.payment === 'Razorpay') {
+    let orderId = await userHelpers.placeOrderOnline(req.body, products, totalPrice, address, req.session.user._id)
     userHelpers.generateRazorpay(orderId, totalPrice).then((response) => {
+      response.razorpay = true
       res.json(response)
     })
   } else if (req.body.payment === 'Paypal') {
-    console.log("ivdeeeeeeee");
+    let orderId = await userHelpers.placeOrderOnline(req.body, products, totalPrice, address, req.session.user._id)
+    console.log(orderId);
+    let payPrice = totalPrice/75.15
+    payPrice = Math.round(payPrice)
     const create_payment_json = {
       "intent": "sale",
       "payer": {
         "payment_method": "paypal"
       },
       "redirect_urls": {
-        "return_url": "http://localhost:3000/success",
-        "cancel_url": "http://localhost:3000/cancel"
+        "return_url": "http://localhost:2000/done/"+orderId,
+        "cancel_url": "http://localhost:2000/cancel-paypal"
       },
       "transactions": [{
         "item_list": {
           "items": [{
             "name": "Redhock Bar Soap",
             "sku": "001",
-            "price": "25.00",
+            "price":payPrice,
             "currency": "USD",
             "quantity": 1
           }]
         },
         "amount": {
           "currency": "USD",
-          "total": "25.00"
+          "total": payPrice
         },
         "description": "Washing Bar soap"
       }]
@@ -640,7 +626,7 @@ router.post('/place-order', async (req, res) => {
       } else {
         for (let i = 0; i < payment.links.length; i++) {
           if (payment.links[i].rel === 'approval_url') {
-            res.redirect(payment.links[i].href);
+            res.json({ paypal: true, link: payment.links[i].href })
           }
         }
       }
@@ -648,6 +634,21 @@ router.post('/place-order', async (req, res) => {
   }
 })
 
+// delete cart and change order status after paypal payment
+router.get('/done/:id',async(req,res)=>{
+  await userHelpers.changePayementStatus(req.params.id)
+  if(req.session.order.coupon === 'true'){
+    userHelpers.addCouponToUser(req.session.user._id,req.session.order.coupon_code)
+  }
+  await userHelpers.clearUserCart(req.session.user._id)
+  res.redirect('/order-placed')
+})
+
+// Delete order if paypal payment cancel
+router.get('/cancel-paypal',(req,res)=>{
+  userHelpers.deletePendingOrder()
+  res.redirect('/checkout')
+})
 
 router.get('/success', (req, res) => {
   const payerId = req.query.PayerID;
@@ -674,82 +675,116 @@ router.get('/success', (req, res) => {
   });
 });
 
-
+// clear cart after place online payment
+router.post('/clear-cart',async(req,res)=>{
+  await userHelpers.clearUserCart(req.session.user._id)
+  res.json({})
+})
 
 // direct buy place order
 router.post('/place-order-direct', async (req, res) => {
   let products = await userHelpers.getProduct(req.body.product)
   let address = await userHelpers.getAddressForOrder(req.body.address)
-  let totalPrice = products.productprice
+  let totalPrice = 0
+  if(products.isOfferActive === true){
+    if(products.isProOfferActive === true){
+      if(products.offer_price > products.productoffer_price){
+        totalPrice = products.productoffer_price
+      }else{
+        totalPrice = products.offer_price
+      }
+    }else{
+      totalPrice = products.offer_price
+    }
+  }else if(products.isProOfferActive === true){
+    totalPrice = products.productoffer_price
+  }else{
+    totalPrice = products.productprice
+  }
+  console.log(totalPrice);
   let lastOrder = {
     address: address,
-    totalPrice: products.productprice,
-    products: req.body.product
+    totalPrice: totalPrice,
+    products: req.body.product,
+    coupon:req.body.coupon_status,
+    discount: req.body.discount,
+    coupon_code : req.body.coupon_code
   }
   console.log(req.body);
+  console.log(req.body.coupon_status);
   req.body.direct = true
   req.session.order = lastOrder
   let orderId =
     await userHelpers.placeOrderDirect(req.body, req.body.product, totalPrice, address, req.session.user._id)
   if (req.body.payment === 'Cash On Delivery') {
-
-
+    if(req.session.order.coupon === 'true'){
+      userHelpers.addCouponToUser(req.session.user._id,req.session.order.coupon_code)
+    }
     res.json({ cod: true })
   } else if (req.body.payment === 'Razorpay') {
 
     userHelpers.generateRazorpay(orderId, totalPrice).then((response) => {
+      response.razorpay = true
       res.json(response)
     })
   } else if (req.body.payment === 'Paypal') {
-    console.log("ivdeeeeeeeeee");
-    // create payment object 
-    var payment = {
-      "intent": "authorize",
+    let payPrice = totalPrice/75.15
+    payPrice = Math.round(payPrice)
+    const create_payment_json = {
+      "intent": "sale",
       "payer": {
         "payment_method": "paypal"
       },
       "redirect_urls": {
-        "return_url": "http://127.0.0.1:2000/success",
-        "cancel_url": "http://127.0.0.1:2000/err"
+        "return_url": "http://localhost:2000/done/"+orderId,
+        "cancel_url": "http://localhost:2000/product-buy-now/"+products._id
       },
       "transactions": [{
-        "amount": {
-          "total": 39.00,
-          "currency": "USD"
+        "item_list": {
+          "items": [{
+            "name": "Redhock Bar Soap",
+            "sku": "001",
+            "price": payPrice,
+            "currency": "USD",
+            "quantity": 1
+          }]
         },
-        "description": " a book on mean stack "
+        "amount": {
+          "currency": "USD",
+          "total": payPrice
+        },
+        "description": "Washing Bar soap"
       }]
-    }
-    // call the create Pay method 
-    createPay(payment)
-      .then((transaction) => {
-        var id = transaction.id;
-        var links = transaction.links;
-        var counter = links.length;
-        while (counter--) {
-          if (links[counter].method == 'REDIRECT') {
-            // redirect to paypal where user approves the transaction 
-            return res.redirect(links[counter].href)
+    };
+
+    paypal.payment.create(create_payment_json, function (error, payment) {
+      if (error) {
+        throw error;
+      } else {
+        for (let i = 0; i < payment.links.length; i++) {
+          if (payment.links[i].rel === 'approval_url') {
+            res.json({ paypal: true, link: payment.links[i].href })
           }
         }
-      })
-      .catch((err) => {
-        console.log(err);
-        res.redirect('/err');
-      });
+      }
+    });
   }
 
 })
 
 
+// delete pending order Razorpay
+router.post('/delete-pendng-order',(req,res)=>{
+  userHelpers.deletePendingOrder()
+})
+
+
 router.get('/success' , (req ,res ) => {
-  console.log(req.query); 
-  res.redirect('/success.html'); 
+  
 })
 
 // error page 
 router.get('/err' , (req , res) => {
-  console.log(req.query); 
   res.redirect('/err.html'); 
 })
 
@@ -757,7 +792,6 @@ router.get('/err' , (req , res) => {
 
 // cancel order
 router.post('/cancel-order', (req, res) => {
-  console.log(req.body);
   userHelpers.changeStatus(req.body.id).then(() => {
     res.json({})
   })
@@ -766,10 +800,11 @@ router.post('/cancel-order', (req, res) => {
 
 // verifyPayment
 router.post('/verify-payment', (req, res) => {
-  console.log(req.body);
-  console.log("in varify");
   userHelpers.verifyPayment(req.body).then(() => {
     userHelpers.changePayementStatus(req.body['order[receipt]']).then(() => {
+      if(req.session.order.coupon === 'true'){
+        userHelpers.addCouponToUser(req.session.user._id,req.session.order.coupon_code)
+      }
       console.log("Payment success");
       res.json({ status: true })
     })
@@ -793,5 +828,17 @@ var createPay = ( payment ) => {
       }); 
   });
 }		
+
+
+// apply coupon
+router.post('/apply-coupon',async(req,res)=>{
+  let couponCode = req.body.coupon
+  let price = req.body.price
+  let user = req.session.user._id
+  let response = await userHelpers.applyCoupon(couponCode,user)
+  console.log(response);
+  res.json(response)
+
+})
 
 module.exports = router;

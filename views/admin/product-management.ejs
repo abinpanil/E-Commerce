@@ -113,14 +113,19 @@
         <!-- sweat alert -->
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <!-- <script src="sweetalert2.all.min.js"></script> -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script src="/admin/js/app.js"></script>
 
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.css"/>
- 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.js"></script>
+        <link rel="stylesheet" type="text/css"
+            href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.css" />
+
+        <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script type="text/javascript"
+            src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.js"></script>
 
         <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
 
@@ -136,6 +141,24 @@
 
         <script>
 
+            
+
+
+            function validateMultipleImage(id) {
+                console.log(id);
+                var formData = new FormData();
+                var file = document.getElementById(id).files[0];
+                formData.append("Filedata", file);
+                var t = file.type.split('/').pop().toLowerCase();
+                if (t != "jpeg" && t != "jpg" && t != "png" && t != "bmp" && t != "gif") {
+                    Swal.fire(
+                        'Not a valid Image file',
+                        'Select A correct Image file'
+                    )
+                    document.getElementById(id).value = '';
+                    return false;
+                }
+            }
 
             $(document).ready(function () {
                 $('#table_id').DataTable();
@@ -428,7 +451,7 @@
                       <img style=" width: 100px;" src="/user/images/productImage/${id}1.jpg" class="gambar img-responsive img-thumbnail" id="chekPreview1"
                         style="max-width: 200px; " />
                     </figure>
-                    <input type="file" id="image1"
+                    <input type="file" id="image1" onchange="validateMultipleImage('image1')"
                     accept="image/gif, image/jpeg, image/png" class="item-img1 file center-block" name="productimage1" />
                     <textarea name="image1" id="imageValue1" cols="30" rows="10"
                       hidden></textarea>
@@ -463,7 +486,7 @@
                       <img style=" width: 100px;" src="/user/images/productImage/${id}2.jpg" class="gambar img-responsive img-thumbnail" id="chekPreview2"
                         style="max-width: 200px; " />
                     </figure>
-                    <input type="file" id="image2"
+                    <input type="file" id="image2" onchange="validateMultipleImage('image2')"
                     accept="image/gif, image/jpeg, image/png" class="item-img2 file center-block" name="productimage2" />
                     <textarea name="image2" id="imageValue2" cols="30" rows="10"
                                                                  hidden></textarea>
@@ -498,7 +521,7 @@
                       <img style=" width: 100px;" src="/user/images/productImage/${id}3.jpg" class="gambar img-responsive img-thumbnail" id="chekPreview3"
                         style="max-width: 200px; " />
                     </figure>
-                    <input type="file" id="image3"
+                    <input type="file" id="image3" onchange="validateMultipleImage('image3')"
                     accept="image/gif, image/jpeg, image/png" class="item-img3 file center-block" name="productimage3" />
                     <textarea name="image3" id="imageValue3" cols="30" rows="10"
                                                                  hidden></textarea>
@@ -533,7 +556,7 @@
                       <img style=" width: 100px;" src="/user/images/productImage/${id}4.jpg" class="gambar img-responsive img-thumbnail" id="chekPreview4"
                         style="max-width: 200px; " />
                     </figure>
-                    <input type="file" id="image4"
+                    <input type="file" id="image4" onchange="validateMultipleImage('image4')"
                     accept="image/gif, image/jpeg, image/png" class="item-img4 file center-block" name="productimage4" />
                     <textarea name="image4" id="imageValue4" cols="30" rows="10"
                       hidden></textarea>
@@ -574,6 +597,7 @@
                 </section>
 
                 `
+
 
 
                 $('document').ready(function () {

@@ -26,51 +26,52 @@
 
             <section class="content-main">
 
-                <div class="card" id="table_change">
-                    <div class="card-body" id="">
+                <div class="card" id="">
+                    <div class="card-body" id="table_change">
                         <div class="row">
                             <div class="col-md-4">
 
                                 <form id="form">
-                                    
+
                                     <div class="mb-4">
-                                        <label class="form-label">category</label>
-                                        <select name="category" id="category">
+                                        <label class="form-label">Select Category</label>
+                                        <select id="category" class="form-select" name="offer_category">
+
                                             <option value="">Select</option>
+                                            <%for(var i=0;i<category.length;i++){%>
+                                                <%if(category[i].isOfferActive){%>
+
+                                                    <%}else{%>
+                                                        <option>
+                                                            <%=category[i].category%>
+                                                        </option>
+                                                        <%}%>
+                                                            <%}%>
+
+
+
                                         </select>
                                     </div>
                                     <div class="mb-4">
                                         <label class="form-label">Discount</label>
-                                        <input type="text" placeholder="Discount in Percentage" name="discount"
-                                            class="form-control" id="discount" />
+                                        <input type="text" placeholder="Discount in Percentage"
+                                            name="categoryoffer_discount" class="form-control" id="discount" />
                                         <p id="discountp" style="color: red;"></p>
                                     </div>
                                     <div class="mb-4">
-                                        <label class="form-label">Minimum Amount</label>
-                                        <input type="text" placeholder="Minimum Amount" name="min_amount"
-                                            class="form-control" id="min_amount" />
-                                        <p id="min_amountp" style="color: red;"></p>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="form-label">Maximum Use</label>
-                                        <input type="text" placeholder="MAximum Usage" name="Max_use"
-                                            class="form-control" id="max_use" />
-                                        <p id="max_usep" style="color: red;"></p>
-                                    </div>
-                                    <div class="mb-4">
                                         <label class="form-label">Expire Date</label>
-                                        <input type="date" placeholder="Select Date" name="date" class="form-control"
-                                            id="date" />
+                                        <input type="datetime-local" placeholder="Select Date" name="categoryoffer_expiredate"
+                                            class="form-control" id="date" />
                                         <p id="datep" style="color: red;"></p>
                                     </div>
                                     <div class="mb-4">
                                         <label class="form-label">Offer Description</label>
-                                        <input type="text" placeholder="Type here" name="description"
+                                        <input type="text" placeholder="Type here" name="categoryoffer_description"
                                             class="form-control" id="description" />
                                     </div>
 
                                     <div class="d-grid pb-3">
-                                        <button class="btn btn-primary" type="submit">Add Coupon</button>
+                                        <button class="btn btn-primary" type="submit">Add Offer</button>
 
                                     </div>
                                 </form>
@@ -82,17 +83,28 @@
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                         <tr>
-                                            <th>Title</th>
-                                            <th>Code</th>
+                                            <th>Category</th>
                                             <th>Discount <b>%</b></th>
-                                            <th>Min Amount</th>
-                                            <th>Max Use</th>
                                             <th>Expire</th>
                                             <th class="text-end">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+                                        <%for(i=0;i<offerCat.length;i++){%>
+                                            <tr>
+                                                <td>
+                                                    <%=offerCat[i].category%>
+                                                </td>
+                                                <td>
+                                                    <%=offerCat[i].categoryoffer_discount%>
+                                                </td>
+                                                <td>
+                                                    <%=offerCat[i].categoryoffer_expiredate%>
+                                                </td>
+                                                <td class="text-end"><a class="btn btn-danger"
+                                                        onclick="deleteOffer('<%=offerCat[i].category%>')">Delete</a></td>
+                                            </tr>
+                                            <%}%>
                                     </tbody>
                                 </table>
                             </div> <!-- .col// -->
@@ -112,3 +124,188 @@
 <!-- END layout-wrapper -->
 
 </body>
+
+
+<!-- JAVASCRIPT -->
+<script src="/admin/libs/jquery/jquery.min.js"></script>
+<script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/libs/metismenu/metisMenu.min.js"></script>
+<script src="/admin/libs/simplebar/simplebar.min.js"></script>
+<script src="/admin/libs/node-waves/waves.min.js"></script>
+
+<!-- card end// -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<!-- sweat alert -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+<script>
+
+$(function(){
+    var dtToday = new Date();
+    
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate()+1;
+    var year = dtToday.getFullYear();
+    var time = dtToday.getHours() + ":" + dtToday.getMinutes() ;
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+    
+    var maxDate = year + '-' + month + '-' + day+'T'+time;
+    // console.log(maxDate);
+    // or instead:
+    // var maxDate1 = dtToday.toISOString().substr(0, 10)+"T"+time;
+    // console.log(maxDate1);
+
+    $('#date').attr('min', maxDate);
+});
+
+
+    $('#form').submit((e) => {
+        e.preventDefault()
+
+        // vlidate category
+        let categoryErr = true
+        function validateCategory() {
+            $('#category').css('border-color', '#2d3448')
+            let category = $('#category').val()
+            if (category.length == '') {
+
+                $('#category').css('border-color', '#f30000')
+                $('#category').attr("placeholder", "Enter Category")
+                categoryErr = false;
+                return false;
+            }
+        }
+
+        // validate date
+        let dateErr = true
+        function validateDate() {
+            $('#date').css('border-color', '#2d3448')
+            $('#datep').html("")
+            
+            let date = $('#date').val()
+            let thisDate = new Date(date)
+            let currDate = new Date()
+            console.log(thisDate);
+            console.log(currDate);
+            if (date.length == '') {
+
+                $('#date').css('border-color', '#f30000')
+                $('#datep').html("Select Date")
+                dateErr = false;
+                return false;
+            }else if(thisDate<currDate){
+                $('#date').css('border-color', '#f30000')
+                $('#datep').html("Select A Valid Expire Date")
+                dateErr = false;
+                return false;
+            }
+        }
+
+        // validate discount
+        let discountErr = true
+        function validatediscount() {
+            let regnum = new RegExp("^[0-9]+$");
+            $('#discount').css('border-color', '#2d3448')
+            $('#discountp').html("")
+            let discount = $('#discount').val()
+            if (discount.length == '') {
+
+                $('#discount').css('border-color', '#f30000')
+                $('#discount').attr("placeholder", "Enter Discount")
+                discountErr = false;
+                return false;
+            }
+            if (!regnum.test(discount)) {
+                $('#discount').css('border-color', '#f30000')
+                $('#discountp').html("Only numbers allowed")
+                discountErr = false;
+                return false;
+            } else if (discount < 0 || discount > 100) {
+                console.log("here");
+                $('#discount').css('border-color', '#f30000')
+                $('#discountp').html("Enter value between 0 to 100")
+                discountErr = false;
+                return false;
+            }
+
+        }
+
+        // validate description
+        let descriptionErr = true
+        function validateDescription() {
+            $('#description').css('border-color', '#2d3448')
+            let description = $('#description').val()
+            if (description.length == '') {
+
+                $('#description').css('border-color', '#f30000')
+                $('#description').attr("placeholder", "Enter Description")
+                descriptionErr = false;
+                return false;
+            }
+        }
+
+        validateCategory()
+        validateDate()
+        validatediscount()
+        validateDescription()
+
+        if (categoryErr === true && dateErr === true && descriptionErr === true && discountErr === true) {
+            console.log($('#form').serialize());
+            $.ajax({
+                url: '/admin/add-category-offer',
+                method: 'post',
+                data: $('#form').serialize(),
+                success: () => {
+                    console.log("ethyyyyyyyyyyy");
+                    $("#table_change").load(location.href + " #table_change");
+
+                }
+            })
+        }
+
+
+    })
+
+
+    // delete offer
+    function deleteOffer(category) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success',
+                    $.ajax({
+
+                        url: '/admin/delete_categoryoffer',
+                        type: 'post',
+                        data: { category: category },
+                        success: () => {
+                                console.log('hereeeeeeeeee');
+                            $("#table_change").load(location.href + " #table_change");
+
+                        }
+                    })
+                )
+            }
+        })
+    }
+
+
+</script>
