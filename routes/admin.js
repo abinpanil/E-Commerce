@@ -4,6 +4,7 @@ const adminHelpers = require('../helpers/admin-helpers')
 const fs = require('fs');
 const userHelpers = require('../helpers/user-helpers');
 const { Db } = require('mongodb');
+const { response } = require('express');
 
 let logErr = ""
 let pid = 123
@@ -452,8 +453,8 @@ router.post('/dashboard/weeklychart', async (req, res) => {
 
 // coupon adding
 router.post('/add-coupon', async (req, res) => {
-  await adminHelpers.addCoupon(req.body)
-  res.redirect('/admin/coupon')
+  let response = await adminHelpers.addCoupon(req.body)
+  res.json(response)
 })
 
 // delete coupon
@@ -477,6 +478,13 @@ router.post('/delete_categoryoffer', (req, res) => {
   res.redirect('/admin/category_offer')
 })
 
+
+// search product for offer
+router.post('/product-offer/get-search-products',async(req,res)=>{
+
+  let products = await adminHelpers.getSearchedProductForProOffer(req.body.keyWord)
+  res.json(products)
+})
 
 
 // sort sales report datewise

@@ -235,46 +235,78 @@
                                                         <%if(product.offer_price> product.productoffer_price){%>
 
                                                             <b>RS.<span id="total_price">
-                                                                    <%=product.productoffer_price%>
-                                                                </span></b>
+                                                                <%=product.productoffer_price%>
+                                                            </span></b>
 
-                                                            <%}else{%>
+                                                        <%}else{%>
 
-                                                                <b>RS.<span id="total_price">
-                                                                        <%=product.offer_price%>
-                                                                    </span></b>
+                                                            <b>RS.<span id="total_price">
+                                                                <%=product.offer_price%>
+                                                            </span></b>
 
-                                                                <%}%>
+                                                        <%}%>
 
-                                                                    <%}else{%>
+                                                    <%}else{%>
 
-                                                                        <b>RS.<span id="total_price">
-                                                                                <%=product.offer_price%>
-                                                                            </span></b>
+                                                        <b>RS.<span id="total_price">
+                                                            <%=product.offer_price%>
+                                                        </span></b>
 
-                                                                        <%}%>
+                                                    <%}%>
 
-                                                                            <%}else
-                                                                                if(product.isProOfferActive===true){%>
+                                                <%}else if(product.isProOfferActive===true){%>
 
-                                                                                <b>RS.<span id="total_price">
-                                                                                        <%=product.productoffer_price%>
-                                                                                    </span></b>
+                                                    <b>RS.<span id="total_price">
+                                                        <%=product.productoffer_price%>
+                                                    </span></b>
 
-                                                                                <%}else{%>
+                                                <%}else{%>
 
-                                                                                    <b>RS.<span id="total_price">
-                                                                                            <%=product.productprice%>
-                                                                                        </span></b>
+                                                    <b>RS.<span id="total_price">
+                                                        <%=product.productprice%>
+                                                    </span></b>
 
-                                                                                    <%}%>
+                                                <%}%>
 
                                             </td>
                                         </tr>
                                     </tfoot>
                                 </table>
-                                <input type="text" style="display: none;" name="totalPrice" id="totalPrice"
-                                    value="<%=product.productprice%>">
+                                <%if(product.isOfferActive===true){%>
+
+                                    <%if(product.isProOfferActive===true){%>
+
+                                        <%if(product.offer_price> product.productoffer_price){%>
+
+                                            <input type="text" style="display: none;" name="totalPrice" id="totalPrice"
+                                                value="<%=product.productoffer_price%>">
+                                            
+                                        <%}else{%>
+
+                                            <input type="text" style="display: none;" name="totalPrice" id="totalPrice"
+                                                value="<%=product.offer_price%>">
+
+                                        <%}%>
+
+                                    <%}else{%>
+
+                                        <input type="text" style="display: none;" name="totalPrice" id="totalPrice"
+                                            value="<%=product.offer_price%>">
+
+                                    <%}%>
+
+                                <%}else if(product.isProOfferActive===true){%>
+
+                                    <input type="text" style="display: none;" name="totalPrice" id="totalPrice"
+                                        value="<%=product.productoffer_price%>">
+                                    
+                                <%}else{%>
+
+                                    <input type="text" style="display: none;" name="totalPrice" id="totalPrice"
+                                        value="<%=product.productprice%>">
+                                    
+                                <%}%>
+                                
                                 <input type="text" style="display: none;" name="coupon_status" id="coupon_status"
                                     value="false">
                                 <input type="text" style="display: none;" name="discount" id="discount" value="0">

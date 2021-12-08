@@ -45,11 +45,11 @@
                                     <div class="row"><label class="form-label">Sort by Date</label></div>
                                     <div class="row">
                                         <div class="col-md-4"><input class="form-control" type="date"
-                                                id="sort_date_from">
+                                                id="sort_date_from" onchange="setMinDate()">
                                             <p style="color: red;" id="fromdate"></p>
                                         </div>
 
-                                        <div class="col-md-4"><input class="form-control" type="date" id="sort_date_to">
+                                        <div class="col-md-4"><input class="form-control" type="date" id="sort_date_to" disabled>
 
                                             <p style="color: red;" id="todate"></p>
                                         </div>
@@ -152,6 +152,30 @@
 </body>
 
 <script>
+
+    function setMinDate(){
+
+        let fromDate = $('#sort_date_from').val()
+
+        var date = new Date(fromDate)
+
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var year = date.getFullYear();
+        var time = date.getHours() + ":" + date.getMinutes();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        // var maxDate = year + '-' + month + '-' + day;
+
+        // or instead:
+        var maxDate = date.toISOString().substr(0, 10);
+        $('#sort_date_to').attr('min', maxDate);
+        $('#sort_date_to').removeAttr('disabled')
+    }
+
 
     $(function () {
         var dtToday = new Date();
@@ -297,7 +321,7 @@
             ],
             drawCallback: function () {
                 var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
-                $('.buttons-excel')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                $('.buttons')[0].style.visibility = hasRows ? 'visible' : 'hidden';
             }
         });
     });

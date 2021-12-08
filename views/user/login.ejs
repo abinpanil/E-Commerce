@@ -1,3 +1,5 @@
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
 <!-- Start of Main -->
 <main class="main login-page">
     <!-- Start of Page Header -->
@@ -68,10 +70,7 @@
                                 </div>
                                 <!-- </form> -->
                                 <div class="col-sm-6 mb-3">
-                                    <button type="submit" style="width: 100%;" id="submitbtn"
-                                        class="btn btn-primary">Google</button>
-                                    <p class="pt-1" style="font-size: 10px;"><span class="fa fa-google"></span>Login
-                                        using Google Account</p>
+                                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
                                 </div>
                             </div> <!-- row.// -->
                             <!-- End sample -->
@@ -140,7 +139,7 @@
 <script src="/user/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 <script src="/user/js/main.min.js"></script>
 
-<script src="https://apis.google.com/js/platform.js" async defer></script>
+
 
 <!-- ajax -->
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>

@@ -757,8 +757,16 @@ module.exports = {
         couponDetails.Max_use = parseInt(couponDetails.Max_use)
         couponDetails.status = true
         return new Promise(async (resolve, reject) => {
-            await db.get().collection(collection.COUPONS_COLLECTION).insertOne(couponDetails)
-            resolve(couponDetails)
+            let valid = await db.get().collection(collection.COUPONS_COLLECTION).findOne({code:couponDetails.code})
+            if(valid){
+                response.err = 1
+                resolve(response)
+            }else{
+                
+                await db.get().collection(collection.COUPONS_COLLECTION).insertOne(couponDetails)
+                resolve(couponDetails)
+            }
+            
         })
     },
     getCoupon: () => {
@@ -996,6 +1004,23 @@ module.exports = {
                 ]
             ).toArray()
             resolve(report)
+        })
+    },
+    getSearchedProductForProOffer:(proName)=>{
+        return new Promise(async(resolve,reject)=>{
+            let products = await db.get().collection(collection.PRODUCTS_COLLECTION).find({
+                productname:{$regex:proName,$options:'i'}
+            }).toArray()
+            if(products.length){
+                resolve(products)
+            }else{
+                products = await db.get().collection(collection.PRODUCTS_COLLECTION).find({
+                    producttitle:{$regex:proName,$options:'i'}
+                }).toArray()
+                resolve(products)
+            }
+            
+            
         })
     },
     checExpire: () => {

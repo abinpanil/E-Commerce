@@ -10,8 +10,8 @@ const { ObjectId } = require('bson');
 const { resolve } = require('path');
 
 var instance = new Razorpay({
-    key_id: 'rzp_test_0nLdeWwVk1f3M2',
-    key_secret: 'XmQRWY1GycJfrZEdtSVHRhY2',
+    key_id: process.env.RAZORPAY_ID || 'rzp_test_0nLdeWwVk1f3M2' ,
+    key_secret: process.env.RAZORPAY_SECRET || 'XmQRWY1GycJfrZEdtSVHRhY2'
 });
 
 module.exports = {
@@ -913,8 +913,11 @@ module.exports = {
                     {
                         $match: {
                             $or: [
-                                { productcategory: value },
-                                { productsubcategory: value }
+                                { productcategory:{$regex:value,$options:'i'}},
+                                { productsubcategory: {$regex:value,$options:'i'}},
+                                { productname: {$regex:value,$options:'i'}},
+                                { producttitle: {$regex:value,$options:'i'}},
+                                { productdiscription: {$regex:value,$options:'i'}}
                             ]
                         }
                     },

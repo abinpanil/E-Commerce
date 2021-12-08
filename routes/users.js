@@ -6,32 +6,44 @@ const adminHelpers = require('../helpers/admin-helpers');
 const config = require('../auth/config');
 const { route } = require('./admin');
 const { Db } = require('mongodb');
-const serviceID = "	VAa5e077df7a059df1d1bae9a32df93ca9"
-const accountSID = "AC29e0de96271489ac12f1c32008d70906"
-const authToken = "2975bf30634d92615dab33cee7689014"
-const client = require("twilio")(accountSID, authToken)
+const dotenv = require('dotenv').config()
+
+const client = require("twilio")(process.env.accountSID, process.env.authToken)
 const paypal = require('paypal-rest-sdk');
 const alert = require('alert')
-// const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 
-// passport.use(new GoogleStrategy({
-//   clientID:     481449083209-baokl8eaid4h7h0k4lhulet2mijkq8jh.apps.googleusercontent.com,
-//   clientSecret: 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,
-//   callbackURL: "http://localhost:2000/auth/google/callback",
-//   passReqToCallback   : true
-// },
-// function(request, accessToken, refreshToken, profile, done) {
-//   User.findOrCreate({ googleId: profile.id }, function (err, user) {
-//     return done(err, user);
-//   });
-// }
-// ));
+
+const passport = require('passport')
+const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
+
+passport.use(new GoogleStrategy({
+  clientID:     process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:2000/auth/google/callback",
+  passReqToCallback   : true
+},
+function(request, accessToken, refreshToken, profile, done) {
+  console.log(user);
+  // User.findOrCreate({ googleId: profile.id }, function (err, user) {
+  //   return done(err, user);
+  // });
+  return done(err, user);
+}
+));
+
+passport.serializeUser(function(user,done){
+  done(null,user)
+})
+
+passport.deserializeUser(function(user,done){
+  done(null,user)
+})
 
 // configure paypal with the credentials you got when you created your paypal app
 paypal.configure({
   'mode': 'sandbox', //sandbox or live 
-  'client_id': 'AT6H-G_gbyroSDzPVER3LucI3LT9_1io5kBfdLEyQu-yVp24XBL53VN3c5S_D_XPPUiwQ8BWCmpFLLHc', // please provide your client id here 
-  'client_secret': 'EOpLtk41XdMai82BEiJY49s1XI4AHH2w7aC8Sy6D2K6Yq-xPCErtP1mJFy-OmVhVMkeXU6ZLbsclWxFW' // provide your client secret here 
+  'client_id': process.env.PAYPAL_CLIENT_ID, // please provide your client id here 
+  'client_secret': process.env.PAYPAL_CLIENT_SECRET // provide your client secret here 
 });
 
 
@@ -88,6 +100,19 @@ router.get('/login', function (req, res) {
   }
 });
 
+
+// google authetication
+router.get('/auth/google',
+  passport.authenticate('google', { scope:
+      [ 'email', 'profile' ] }
+));
+
+router.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/error' }),
+  function(req, res) {
+    
+    res.redirect('/');
+  });
 
 /* GET Account page. */
 router.get('/myaccount', varifyLogin, async (req, res) => {
@@ -367,7 +392,7 @@ router.post('/validate', function (req, res) {
 
   userHelpers.validate(req.body).then((userResponse) => {
     if (userResponse.status) {
-      client.verify.services(serviceID)
+      client.verify.services(process.env.serviceID)
         .verifications.create({
           to: `+91${req.body.mobile}`,
           channel: "sms"
@@ -390,7 +415,7 @@ router.post('/validate', function (req, res) {
 
 // resend
 router.post('/resend', (req, res) => {
-  client.verify.services(serviceID)
+  client.verify.services(process.env.serviceID)
     .verifications.create({
       to: `+91${req.body.mobile}`,
       channel: "sms"
@@ -422,7 +447,7 @@ router.post('/otpget', (req, res) => {
     send: true,
   }
   res.json(response)
-  client.verify.services(serviceID)
+  client.verify.services(process.env.serviceID)
     .verifications.create({
       to: `+91${req.body.mobilenumber}`,
       channel: "sms"
@@ -442,7 +467,7 @@ router.post('/otpcheck', (req, res) => {
   let otp = req.body.otp
   let number = req.body.number
   client.verify
-    .services(serviceID)
+    .services(process.env.serviceID)
     .verificationChecks.create({
       to: `+91${number}`,
       code: `${otp}`
@@ -475,7 +500,7 @@ router.post('/otpvalidate', (req, res) => {
   let number = req.session.number
 
   client.verify
-    .services(serviceID)
+    .services(process.env.serviceID)
     .verificationChecks.create({
       to: `+91${number}`,
       code: `${otp}`
@@ -766,7 +791,7 @@ router.post('/place-order-direct', async (req, res) => {
   let products = await userHelpers.getProduct(req.body.product)
   let address = await userHelpers.getAddressForOrder(req.body.address)
   let totalPrice = req.body.totalPrice
-  
+
   let lastOrder = {
     address: address,
     totalPrice: req.body.totalPrice,

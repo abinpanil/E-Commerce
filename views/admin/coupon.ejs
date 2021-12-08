@@ -41,6 +41,7 @@
                                         <label class="form-label">Code</label>
                                         <input type="text" placeholder="Type here" name="code" class="form-control"
                                             id="code" />
+                                            <p id="codep" style="color: red;"></p>
                                     </div>
                                     <div class="mb-4">
                                         <label class="form-label">Coupon Discount</label>
@@ -475,9 +476,15 @@
                 url: '/admin/add-coupon',
                 method: 'post',
                 data: $('#form').serialize(),
-                success: () => {
+                success: (response) => {
 
-                    $("#table_change").load(location.href + " #table_change");
+                    if(response.err === 1){
+                        $('#code').css('border-color', '#f30000')
+                        $('#codep').html("Code already Exist!!!")
+                    }else{
+                        console.log(response);
+                        $("#table_change").load(location.href + " #table_change");
+                    }
 
                 }
             })

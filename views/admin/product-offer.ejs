@@ -34,9 +34,11 @@
                 <form id="form">
 
                   <div class="row">
-                    <div class="text-center pb-4"><h5>Add Offer</h5></div>
+                    <div class="text-center pb-4">
+                      <h5>Add Offer</h5>
+                    </div>
                     <div class="col-md-6">
-                      
+
                       <div class="mb-4">
                         <label class="form-label">Select Category</label>
                         <select id="category" onchange="getSubcategory()" class="form-select" name="offer_category">
@@ -55,6 +57,10 @@
                         <select id="subcategory" onchange="getProduct()" class="form-select" name="offer_category">
                           <option value="">Select</option>
                         </select>
+                      </div>
+                      <div id="search_div" class="mb-4">
+                        <div><label class="form-label">Search</label><input onkeydown="searchProduct()" onkeyup="searchProduct()" type="search"
+                            placeholder="Search" name="search" class="form-control" id="search" /></div>
                       </div>
                     </div>
                   </div>
@@ -177,6 +183,40 @@
 
 <script>
 
+  function searchProduct() {
+
+    $('#show_product').html('')
+
+    let keyWord = $('#search').val()
+    
+    console.log(keyWord);
+    $.ajax({
+      url: '/admin/product-offer/get-search-products',
+      method: 'post',
+      data: {
+        keyWord : keyWord
+      },
+      success: (response) => {
+        $('#show_product').html('')
+        $('#no_product').html('')
+        if (response.length) {
+          for (i = 0; i < response.length; i++) {
+
+            $('#show_product').append(`<tr id="tr_${response[i]._id}"><th><img style="width: 50px;height: 50px;"
+                           src="/user/images/productImage/${response[i]._id}1.jpg" alt="image">
+                           </th><td>${response[i].producttitle}</td><td>${response[i].productcategory}</td><td class="text-end"><a onclick="getModal('${response[i]._id}')" class="btn btn-primary">Add Offer</a></td></tr>`)
+
+          }
+          
+        } else {
+          $('#no_product').html('<h5>No Product</h5>')
+        }
+
+      }
+    })
+
+  }
+
 
   $(function () {
     var dtToday = new Date();
@@ -247,7 +287,9 @@
             $('#show_product').append(`<tr id="tr_${response[i]._id}"><th><img style="width: 50px;height: 50px;"
                            src="/user/images/productImage/${response[i]._id}1.jpg" alt="image">
                            </th><td>${response[i].producttitle}</td><td>${response[i].productcategory}</td><td class="text-end"><a onclick="getModal('${response[i]._id}')" class="btn btn-primary">Add Offer</a></td></tr>`)
+
           }
+          $('#search_div').append('<div><label class="form-label">Search</label><input onkeyup="searchProduct()" type="search" placeholder="Search" name="search" class="form-control" id="search"/></div>')
         } else {
           $('#no_product').html('<h5>No Product, try different Category</h5>')
         }
@@ -348,8 +390,8 @@
                       <td>${response.productoffer_expiredate}</td>
                       <td class="text-end"><a class="btn btn-danger" onclick="deleteProductOffer('${response._id}')" >Delete Offer</a></td>
                     </tr>`
-          let id =  $('#product-id').val()
-          $('#tr_'+id).remove()
+          let id = $('#product-id').val()
+          $('#tr_' + id).remove()
           $('#discount').val('')
           $('#date').val('')
           $('#description').val('')
@@ -385,7 +427,7 @@
             data: { id: id },
             success: () => {
 
-              $('#trdis_'+id).remove()
+              $('#trdis_' + id).remove()
             }
           })
         )
