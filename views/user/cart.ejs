@@ -87,12 +87,12 @@
                                    
                                     <td class="product-quantity">
                                         <div id="div" class="input-group">
-                                            <input class=" form-control" type="number" min=""
+                                            <input style="background: white;" class=" form-control" type="number" min=""
                                                 id="quantity_<%=cart[i].product._id%>" value="<%=cart[i].quantity%>"
-                                                max="100000">
+                                                max="100000" disabled>
                                             <button
                                                 onclick="changeQuantity('<%=cart[i]._id%>','<%=cart[i].product._id%>',1)"
-                                                class="quantity-plus w-icon-plus quan_btn"></button>
+                                                class="quantity-plus w-icon-plus quan_btn" ></button>
                                                 <%if(cart[i].quantity > 1){%>
                                             <button
                                                 onclick="changeQuantity('<%=cart[i]._id%>','<%=cart[i].product._id%>',-1)"
@@ -146,7 +146,7 @@
                                     <%}else{%>
 
                                         <td class="product-subtotal">
-                                            <span class="amount">RS.<span id="subtotal_<%=cart[i].product._id%>">
+                                            <span class="amount">  RS.<span id="subtotal_<%=cart[i].product._id%>">
                                                 <%=cart[i].subTotal%>
                                             </span></span>
                                         </td>
@@ -195,8 +195,8 @@
                         <div class="cart-summary mb-4">
                             <h3 class="cart-title text-uppercase">Cart Totals</h3>
                             <div class="cart-subtotal d-flex align-items-center justify-content-between">
-                                <!-- <label class="ls-25">Subtotal</label>
-                                <span>$100.00</span> -->
+                                <label class="ls-25">Wallet Balance</label>
+                                <span>Rs.<%=userDetails[0].wallet%></span>
                             </div>
 
                             <hr class="divider">

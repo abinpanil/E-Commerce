@@ -14692,7 +14692,7 @@ body .product-popup {
 }
 
 /* 6. Header */
-/*--------------------------------
+/* --------------------------------
     Header
         -Header
         -Welcom-msg
@@ -14703,12 +14703,14 @@ body .product-popup {
             - Wishlist
         -Stick Header
         -Other Options
---------------------------------*/
+-------------------------------- */
+
 .header {
   font-family: Poppins, sans-serif;
   background: #fff;
   color: #333;
 }
+
 .header .container,
 .header .container-fluid,
 .header .inner-wrap {
@@ -14719,12 +14721,15 @@ body .product-popup {
       -ms-flex-align: center;
           align-items: center;
 }
+
 .header .inner-wrap {
   width: 100%;
 }
+
 .header a:not(.btn) {
   color: inherit;
 }
+
 .header a:not(.btn):hover {
   color: #336699;
 }
@@ -14757,36 +14762,63 @@ body .product-popup {
       -ms-flex: 1;
           flex: 1;
 }
+
 .has-center .header-right {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
 }
+
 .has-center .header-center {
   margin-left: 2rem;
   margin-right: 2rem;
 }
 
 .header-top {
-  height: 20px;
-  color: #2d2d2d;
+  height: 30px;
+  color: #1b1a1a;
   background: #fff;
   font-size: 1.1rem;
   letter-spacing: -0.027em;
   text-transform: capitalize;
 }
+
 .header-top .header-right {
   padding-right: 0.2rem;
 }
+
 .header-top .header-right > .dropdown:first-child {
   margin-left: 0;
 }
+
 .header-top .header-right > .dropdown:hover .dropdown-box::before {
   visibility: visible;
   opacity: 1;
   top: auto;
   bottom: 100%;
 }
+
+label.cabinet{
+	display: block;
+	cursor: pointer;
+}
+
+label.cabinet input.file{
+	position: relative;
+	height: 100%;
+	width: auto;
+	opacity: 0;
+	-moz-opacity: 0;
+  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+  margin-top:-30px;
+}
+
+#upload-demo{
+	width: 250px;
+	height: 250px;
+  padding-bottom:25px;
+}
+
 .header-top .header-right .dropdown-box::before {
   content: "";
   position: absolute;
@@ -14795,8 +14827,8 @@ body .product-popup {
   top: -9999px;
   -webkit-transform: translateX(-50%);
           transform: translateX(-50%);
-  border: 11px solid transparent;
-  border-bottom: 11px solid #fff;
+  /* border: 11px solid transparent; */
+  border-bottom: none;
   -webkit-transition: opacity 0.2s ease-out, -webkit-transform 0.2s ease-out;
   transition: opacity 0.2s ease-out, -webkit-transform 0.2s ease-out;
   transition: opacity 0.2s ease-out, transform 0.2s ease-out;
@@ -14893,6 +14925,10 @@ body .product-popup {
   -webkit-box-shadow: none !important;
           box-shadow: none !important;
   margin-top: 2rem;
+}
+.header-top{
+  border-bottom: 0px;
+  background-color: #7b7979;
 }
 
 .welcome-msg {

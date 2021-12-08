@@ -225,14 +225,14 @@ module.exports = {
         })
     },
     changeOrderStatus: (data) => {
-        return new Promise(async(resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(data.orderId) }, { $set: { status: data.status } })
-            if(data.status === 'delivered'){
+            if (data.status === 'delivered') {
                 let order = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
                     [
                         {
                             $match: {
-                                _id:objectId(data.orderId)
+                                _id: objectId(data.orderId)
                             }
                         },
                         {
@@ -246,12 +246,12 @@ module.exports = {
                         }
                     ]
                 ).toArray()
-                for(i=0;i<order.length;i++){
-                    let product = await db.get().collection(collection.PRODUCTS_COLLECTION).findOne({_id:order[i].item})
-                    
+                for (i = 0; i < order.length; i++) {
+                    let product = await db.get().collection(collection.PRODUCTS_COLLECTION).findOne({ _id: order[i].item })
+
                     let sale = product.sales + order[i].quantity
-                  
-                    db.get().collection(collection.PRODUCTS_COLLECTION).updateOne({_id:order[i].item},{$set:{sales:sale}})
+
+                    db.get().collection(collection.PRODUCTS_COLLECTION).updateOne({ _id: order[i].item }, { $set: { sales: sale } })
                 }
             }
             resolve()
@@ -974,40 +974,100 @@ module.exports = {
             resolve()
         })
     },
+    topSellingProducts: () => {
+        return new Promise(async (resolve, reject) => {
+            let report = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
+                [
+                    {
+                        $sort: { sales: -1 }
+                    }
+                ]
+            ).toArray()
+            resolve(report)
+        })
+    },
+    transactionReport: () => {
+        return new Promise(async (resolve, reject) => {
+            let report = await db.get().collection(collection.ORDER_COLLECTION).aggregate(
+                [
+                    {
+                        $sort: { date: -1 }
+                    }
+                ]
+            ).toArray()
+            resolve(report)
+        })
+    },
     checExpire: () => {
         return new Promise(async (resolve, reject) => {
-            db.get().collection(collection.COUPONS_COLLECTION).updateMany(
-                {
-                    date:new Date()
-                },
-                {
-                    $set:{status:false}
+            let today = new Date()
+            let coupon = await db.get().collection(collection.COUPONS_COLLECTION).aggregate().toArray()
+            if (coupon.length) {
+                for (i = 0; i < coupon.length; i++) {
+                    if (coupon[i].date < today) {
+
+                        db.get().collection(collection.COUPONS_COLLECTION).updateOne(
+                            {
+                                _id: coupon[i]._id
+                            },
+                            {
+                                $set: { status: false }
+                            }
+                        )
+                    }
                 }
-            )
-            db.get().collection(collection.CART_COLLECTION).updateMany(
-                {
-                    categoryoffer_expiredate:new Date()
-                },
-                {
-                    $set: { categoryoffer_discount: "", categoryoffer_expiredate: "", categoryoffer_description: "", isOfferActive: false }
+            }
+            let categoryOffer = await db.get().collection(collection.CATEGORY_COLLECTION).aggregate().toArray()
+
+            if (categoryOffer.length) {
+
+                for (i = 0; i < categoryOffer.length; i++) {
+
+                    if (categoryOffer[i].isOfferActive === true) {
+                        if (categoryOffer[i].categoryoffer_expiredate < today) {
+                            db.get().collection(collection.CART_COLLECTION).updateMany(
+                                {
+                                    _id: categoryOffer[i]._id
+                                },
+                                {
+                                    $set: { categoryoffer_discount: "", categoryoffer_expiredate: "", categoryoffer_description: "", isOfferActive: false }
+                                }
+                            )
+                            db.get().collection(collection.PRODUCTS_COLLECTION).updateMany(
+                                {
+                                    productcategory: categoryOffer[i].category
+                                },
+                                {
+                                    $set: { offer_price: null, categoryoffer_discount: "", categoryoffer_expiredate: "", categoryoffer_description: "", isOfferActive: false }
+                                }
+                            )
+                        }
+                    }
                 }
-            )
-            db.get().collection(collection.PRODUCTS_COLLECTION).updateMany(
-                {
-                    categoryoffer_expiredate: new Date()
-                },
-                {
-                    $set: { offer_price: null, categoryoffer_discount: "", categoryoffer_expiredate: "", categoryoffer_description: "", isOfferActive: false }
+            }
+            let proOffer = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate().toArray()
+
+            if (proOffer.length) {
+
+                for (i = 0; i < proOffer.length; i++) {
+
+                    if (proOffer[i].isProOfferActive === true) {
+
+                        if (proOffer[i].productoffer_expiredate < today) {
+
+                            db.get().collection(collection.PRODUCTS_COLLECTION).updateMany(
+                                {
+                                    _id: proOffer[i]._id
+                                },
+                                {
+                                    $set: { isProOfferActive: false, productoffer_discount: '', productoffer_expiredate: '', productoffer_description: '', productoffer_price: null }
+                                }
+                            )
+                        }
+                    }
                 }
-            )
-            db.get().collection(collection.PRODUCTS_COLLECTION).updateMany(
-                {
-                    productoffer_expiredate:new Date()
-                },
-                {
-                    $set: { isProOfferActive: false, productoffer_discount: '', productoffer_expiredate: '', productoffer_description: '', productoffer_price: null }
-                }
-            )
+            }
+
             resolve()
         })
     }

@@ -24,9 +24,48 @@
 
     <!-- Start of PageContent -->
     <div class="page-content pt-2">
-        <div class="container">
+        <div id="container" class="container">
             <div class="tab tab-vertical row gutter-lg">
                 <ul class="nav nav-tabs mb-6" role="tablist">
+                    <li class="nav-item">
+
+                        <label class="cabinet center-block">
+                            <figure>
+                                <img style="width: 150px; height: 150px; border-radius: 50%; " onerror="this.src='https://user.gadjian.com/static/images/personnel_boy.png'"
+                                    id="chekPreview1" src="/user/images/user/<%=userDetails[0]._id%>.jpg">
+                                    
+                            </figure>
+                            <input type="file" id="image1" accept="image/gif, image/jpeg, image/png"
+                                class="item-img1 file center-block" name="productimage1" />
+                            <textarea name="image1" id="imageValue1" cols="30" rows="10" hidden></textarea>
+                        </label>
+                        <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            <?=multiLanguage( "Edit Foto" , "Edit Photo" )?>
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="upload-demo1" style="width: 250px; height: 250px; padding-bottom:25px;"
+                                            class="center-block">
+                                            <img src="" id="sampleImage1" style="width:100px; height:100px" />
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="button" id="crop1" class="btn btn-primary">Crop</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
                     <li class="nav-item">
                         <a href="#account-dashboard" class="nav-link active">Dashboard</a>
                     </li>
@@ -40,9 +79,14 @@
                         <a href="#account-details" class="nav-link">Account details</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#account-details" class="nav-link">Logout</a>
+                        <a href="#account-wallet" class="nav-link">Wallet</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="javascript:void(0);" onclick="signOut()" class="nav-link">Logout</a>
                     </li>
                 </ul>
+
+
 
                 <div class="tab-content mb-6">
                     <div class="tab-pane active in" id="account-dashboard">
@@ -96,6 +140,18 @@
                                         </span>
                                         <div class="icon-box-content">
                                             <p class="text-uppercase mb-0">Account Details</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-4 col-xs-6 mb-4">
+                                <a href="#account-wallet" class="link-to-tab">
+                                    <div class="icon-box text-center">
+                                        <span class="icon-box-icon icon-download">
+                                            <i class=" w-icon-wallet"></i>
+                                        </span>
+                                        <div class="icon-box-content">
+                                            <p class="text-uppercase mb-0">wallet</p>
                                         </div>
                                     </div>
                                 </a>
@@ -237,7 +293,7 @@
                                                     your
                                                     shipping address<i class="w-icon-long-arrow-right"></i></a>
                                                 <a onclick="deleteAddress('<%=address[i]._id%>')"
-                                                    class="btn btn-link btn-underline btn-icon-right text-success pt-5">Delete
+                                                    class="btn btn-link btn-underline btn-icon-right text-danger pt-5">Delete
                                                     Address<i class="w-icon-long-arrow-right"></i></a>
                                             </div>
 
@@ -310,6 +366,28 @@
                             </form>
                         </div>
                     </div>
+                    <div class="tab-pane" id="account-wallet">
+                        <div class="icon-box icon-box-side icon-box-light">
+                            <span class="icon-box-icon icon-wallet mr-2">
+                                <i class=" w-icon-wallet"></i>
+                            </span>
+                            <div class="icon-box-content pb-5">
+                                <h4 class="icon-box-title ls-normal">wallet</h4>
+                            </div>
+                        </div>
+                        <div class="row pt-5">
+                            <div class="col-md-6 pt-5">
+                                <h4>Wallet Money : <span style="color: #636060;"> Rs.<%=userDetails[0].wallet%></span>
+                                </h4>
+                            </div>
+                            <div class="col-md-6 pt-5 text-end">
+                                <h5 style="float: right;">Refferal Code : <span style="color: #636060;">
+                                        <%=userDetails[0].refferalCode%>
+                                    </span></h5>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -336,9 +414,37 @@
     src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.js"></script>
 
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://kit.fontawesome.com/4f9ff9a3d7.js" crossorigin="anonymous"></script>
+<!-- Material Dashboard CSS -->
+<link href="/assets/css/material-dashboard.min.css?v=2.1.0" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://unpkg.com/dropzone/dist/dropzone.css" />
+<link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet" />
+
+<script src="https://unpkg.com/dropzone"></script>
+<script src="https://unpkg.com/cropperjs"></script>
+
+
 <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
 
 <script>
+
+    function cancelEdit() {
+
+        console.log("ethyyyy");
+
+        event.preventDefault()
+        $.ajax({
+
+            url: '/cancel',
+            method: 'post',
+            success: () => {
+                console.log("returnn");
+                $("#container").load(location.href + " #container");
+            }
+        })
+    }
 
     function viewOrder(orderId) {
 
@@ -347,6 +453,78 @@
             method: 'get'
         })
     }
+
+    $('#document').ready(function () {
+
+        var image1 = document.getElementById('sampleImage1');
+        var modal1 = $('#modal1');
+        var cropper1;
+
+        $('#image1').change(function (event) {
+            var files = event.target.files;
+
+            var done = function (url) {
+                image1.src = url;
+                modal1.modal('show');
+            };
+
+            if (files && files.length > 0) {
+                reader = new FileReader();
+                reader.onload = function (event) {
+                    done(reader.result);
+                };
+                reader.readAsDataURL(files[0]);
+            }
+        });
+
+        modal1.on('shown.bs.modal', function () {
+            cropper1 = new Cropper(image1, {
+                aspectRatio: 1,
+                viewMode: 1,
+                preview: '#preview1'
+            });
+        }).on('hidden.bs.modal', function () {
+            cropper1.destroy();
+            cropper1 = null;
+        });
+
+        $('#crop1').click(function () {
+            canvas = cropper1.getCroppedCanvas({
+                width: 300,
+                height: 300
+            });
+
+            canvas.toBlob(function (blob) {
+                url = URL.createObjectURL(blob);
+                var reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = function () {
+                    var base64data = reader.result;
+                    modal1.modal('hide');
+                    img1 = base64data
+                    $("#imageValue1").val(base64data)
+                    $('#chekPreview1').attr('src', base64data);
+
+
+                    let formData = new FormData();
+                    formData.append('img1', img1)
+                    $.ajax({
+                        url: "/change-avatar",
+                        data: formData,
+                        method: "post",
+                        enctype: 'multipart/formdata',
+                        processData: false,
+                        contentType: false,
+                        success: () => {
+                            alert('done')
+                        }
+
+                    })
+                };
+            });
+        });
+    })
+
 
 
     function changePassword() {
@@ -718,202 +896,22 @@
     }
 
 
-    function cancelEdit() {
-        event.preventDefault()
-        $.ajax({
-
-            url: '/cancel',
-            method: 'post',
-            success: () => {
-                $("#container").load(location.href + " #container");
-            }
-        })
-    }
-
-    function updateAddress(id) {
-
-        event.preventDefault()
 
 
-        // name validation
-        let nameError = true;
 
-        function validateName() {
-
-            let nameValue = $('#name').val()
-
-            if (nameValue.length == '') {
-
-                $('#name').css('border-color', '#c70d0d')
-                $('#name').attr("placeholder", "Enter Name")
-
-                nameError = false;
-                return false;
-            }
-        }
-
-        // address validation
-        let addressError = true;
-
-        function validateAddress() {
-
-            let adressValue = $('#adress').val()
-
-            if (adressValue.length == '') {
-
-                $('#adress').css('border-color', '#c70d0d')
-                $('#adress').attr("placeholder", "Enter Address")
-
-                addressError = false;
-                return false;
-            }
-        }
-
-        // town validation
-        let townError = true;
-
-        function validateTown() {
-
-            let townValue = $('#town').val()
-
-            if (townValue.length == '') {
-
-                $('#town').css('border-color', '#c70d0d')
-                $('#town').attr("placeholder", "Enter Town")
-
-                townError = false;
-                return false;
-            }
-        }
-
-        // zip validation
-        let zipError = true;
-
-        function validateZip() {
-
-            let regnum = new RegExp("^[0-9]+$");
-            let zipValue = $('#zip').val()
-
-            if (zipValue.length == '') {
-
-                $('#zip').css('border-color', '#c70d0d')
-                $('#zip').attr("placeholder", "Enter Zip")
-
-                zipError = false;
-                return false;
-            }
-            else if (!regnum.test(zipValue)) {
-
-                $('#zip').css('border-color', '#c70d0d')
-                $("#zip_warning").text('Enter Numbers Only')
-
-                mobileError = false;
-            }
-            else if (zipValue.length != 6) {
-
-                $('#zip').css('border-color', '#c70d0d')
-                $("#zip_warning").text('Enter a valid Zip')
-
-                mobileError = false;
-            }
-        }
-
-        // state validation
-        let stateError = true;
-
-        function validateState() {
-
-            let stateValue = $('#state').val()
-
-            if (stateValue.length == '') {
-
-                $('#state').css('border-color', '#c70d0d')
-                $('#state').attr("placeholder", "Enter State")
-
-                stateError = false;
-                return false;
-            }
-        }
-
-        // mobile validation
-        let mobileError = true;
-
-        function validateMobile() {
-
-            let regnum = new RegExp("^[0-9]+$");
-
-            let mobileValue = $('#mobile').val();
-
-            if (mobileValue.length == '') {
-
-                $('#mobile').css('border-color', '#c70d0d')
-                $('#mobile').attr("placeholder", "Enter Number")
-
-                mobileError = false;
-                return false;
-            } else if (!regnum.test(mobileValue)) {
-
-                $('#mobile').css('border-color', '#c70d0d')
-                $("#mobile_warning").text('Enter Numbers Only')
-
-                mobileError = false;
-            } else if (mobileValue.length != 10) {
-
-                $('#mobile').css('border-color', '#c70d0d')
-                $("#mobile_warning").text('Mobile number must Contain 10 Digit')
-
-                mobileError = false;
-            }
-
-        }
-
-
-        validateName()
-        validateAddress()
-        validateTown()
-        validateZip()
-        validateState()
-        validateMobile()
-
-        let updateAddress = {
-            name: $('#name').val(),
-            address: $('#adress').val(),
-            town: $('#town').val(),
-            zip: $('#zip').val(),
-            state: $('#state').val(),
-            mobile: $('#mobile').val(),
-            id: id
-        }
-
-        console.log(updateAddress);
-
-        if (mobileError === true && stateError === true && zipError === true && townError === true && addressError === true && nameError === true) {
-
-
-            $.ajax({
-                url: '/update_address',
-                method: 'post',
-                data: updateAddress,
-                success: () => {
-
-                    $("#container").load(location.href + " #container");
-
-                }
-            })
-        }
-
-    }
 
     function editAddress(id) {
 
-        let name = $('#name_' + id).html()
-        let address = $('#address_' + id).html()
-        let town = $('#town_' + id).html()
-        let state = $('#state_' + id).html()
-        let zip = $('#zip_' + id).html()
-        let mobile = $('#mobile_' + id).html()
-
-        console.log(name);
+        let name = $('#name_' + id).html().trim()
+        let address = $('#address_' + id).html().trim()
+        let town = $('#town_' + id).html().trim()
+        let state = $('#state_' + id).html().trim()
+        let zip = $('#zip_' + id).html().trim()
+        let mobile = $('#mobile_' + id).html().trim()
+        console.log(town);
+        console.log(state);
+        console.log(zip);
+        console.log(mobile);
 
         let changediv = document.getElementById('edit_' + id)
         changediv.innerHTML = `
@@ -981,6 +979,182 @@
             </div>
 
 `
+
+
+        function updateAddress(id) {
+
+            event.preventDefault()
+
+
+            // name validation
+            let nameError = true;
+
+            function validateName() {
+
+                let nameValue = $('#name').val()
+
+                if (nameValue.length == '') {
+
+                    $('#name').css('border-color', '#c70d0d')
+                    $('#name').attr("placeholder", "Enter Name")
+
+                    nameError = false;
+                    return false;
+                }
+            }
+
+            // address validation
+            let addressError = true;
+
+            function validateAddress() {
+
+                let adressValue = $('#adress').val()
+
+                if (adressValue.length == '') {
+
+                    $('#adress').css('border-color', '#c70d0d')
+                    $('#adress').attr("placeholder", "Enter Address")
+
+                    addressError = false;
+                    return false;
+                }
+            }
+
+            // town validation
+            let townError = true;
+
+            function validateTown() {
+
+                let townValue = $('#town').val()
+
+                if (townValue.length == '') {
+
+                    $('#town').css('border-color', '#c70d0d')
+                    $('#town').attr("placeholder", "Enter Town")
+
+                    townError = false;
+                    return false;
+                }
+            }
+
+            // zip validation
+            let zipError = true;
+
+            function validateZip() {
+
+                let regnum = new RegExp("^[0-9]+$");
+                let zipValue = $('#zip').val()
+
+                if (zipValue.length == '') {
+
+                    $('#zip').css('border-color', '#c70d0d')
+                    $('#zip').attr("placeholder", "Enter Zip")
+
+                    zipError = false;
+                    return false;
+                }
+                else if (!regnum.test(zipValue)) {
+
+                    $('#zip').css('border-color', '#c70d0d')
+                    $("#zip_warning").text('Enter Numbers Only')
+
+                    mobileError = false;
+                }
+                else if (zipValue.length != 6) {
+
+                    $('#zip').css('border-color', '#c70d0d')
+                    $("#zip_warning").text('Enter a valid Zip')
+
+                    mobileError = false;
+                }
+            }
+
+            // state validation
+            let stateError = true;
+
+            function validateState() {
+
+                let stateValue = $('#state').val()
+
+                if (stateValue.length == '') {
+
+                    $('#state').css('border-color', '#c70d0d')
+                    $('#state').attr("placeholder", "Enter State")
+
+                    stateError = false;
+                    return false;
+                }
+            }
+
+            // mobile validation
+            let mobileError = true;
+
+            function validateMobile() {
+
+                let regnum = new RegExp("^[0-9]+$");
+
+                let mobileValue = $('#mobile').val();
+
+                if (mobileValue.length == '') {
+
+                    $('#mobile').css('border-color', '#c70d0d')
+                    $('#mobile').attr("placeholder", "Enter Number")
+
+                    mobileError = false;
+                    return false;
+                } else if (!regnum.test(mobileValue)) {
+
+                    $('#mobile').css('border-color', '#c70d0d')
+                    $("#mobile_warning").text('Enter Numbers Only')
+
+                    mobileError = false;
+                } else if (mobileValue.length != 10) {
+
+                    $('#mobile').css('border-color', '#c70d0d')
+                    $("#mobile_warning").text('Mobile number must Contain 10 Digit')
+
+                    mobileError = false;
+                }
+
+            }
+
+
+            validateName()
+            validateAddress()
+            validateTown()
+            validateZip()
+            validateState()
+            validateMobile()
+
+            let updateAddress = {
+                name: $('#name').val(),
+                address: $('#adress').val(),
+                town: $('#town').val(),
+                zip: $('#zip').val(),
+                state: $('#state').val(),
+                mobile: $('#mobile').val(),
+                id: id
+            }
+
+            console.log(updateAddress);
+
+            if (mobileError === true && stateError === true && zipError === true && townError === true && addressError === true && nameError === true) {
+
+
+                $.ajax({
+                    url: '/update_address',
+                    method: 'post',
+                    data: updateAddress,
+                    success: () => {
+
+                        $("#container").load(location.href + " #container");
+
+                    }
+                })
+            }
+
+        }
+
 
 
     }

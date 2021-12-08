@@ -83,7 +83,7 @@
                                             your
                                             shipping address<i class="w-icon-long-arrow-right"></i></a>
                                         <a onclick="deleteAddress('<%=address[i]._id%>')"
-                                            class="btn btn-link btn-underline btn-icon-right text-success pt-5">Delete
+                                            class="btn btn-link btn-underline btn-icon-right text-danger pt-5">Delete
                                             Address<i class="w-icon-long-arrow-right"></i></a>
                                     </div>
 
@@ -225,7 +225,7 @@
                                                 <b>Total</b>
                                             </th>
                                             <td>
-                                                <b>RS.<span>
+                                                <b>RS.<span id="total_price">
                                                         <%=total%>
                                                     </span></b>
                                             </td>
@@ -236,6 +236,18 @@
                                 <input type="text" style="display: none;" name="coupon_status" id="coupon_status" value="false">
                                 <input type="text" style="display: none;" name="discount" id="discount" value="0">
                                 <input style="display: none;" id="coupon_code" name="coupon_code" value="" type="text" >
+                                <input type="text" style="display: none;" name="wallet_status" id="wallet_status" value="false">
+
+                                <div class="cart-subtotal d-flex align-items-center justify-content-between">
+                                    
+                                    <%if(userDetails[0].wallet === 0){%>
+                                        <label class="ls-25 pt-3">Wallet Balance Rs.<span id="wallet_price"><%=userDetails[0].wallet%></span></label>
+                                    <%}else{%>
+                                        <label class="ls-25">Wallet Balance Rs.<span id="wallet_price"><%=userDetails[0].wallet%></span></label>
+                                        <span><button class="btn btn-success" id="wallet_btn" onclick="useWallet('<%=userDetails[0].wallet%>')">Use Wallet</button></span>
+                                    <%}%>
+                                    
+                                </div>
 
                                 <div class="payment-methods" id="payment_method">
                                     <h4 class="title font-weight-bold ls-25 pb-0 mb-1">Payment Methods</h4>
@@ -261,11 +273,22 @@
 
                                     </div>
                                 </div>
+                                <%if(address.length){%>
 
-                                <div class="form-group place-order pt-6">
-                                    <button type="submit" class="btn btn-dark btn-block btn-rounded">Place
-                                        Order</button>
-                                </div>
+                                    <div class="form-group place-order pt-6">
+                                        <button type="submit" class="btn btn-dark btn-block btn-rounded">Place
+                                            Order</button>
+                                    </div>
+
+                                <%}else{%>
+
+                                    <div class="form-group place-order pt-6">
+                                        <button onclick="addressNull()" class="btn btn-dark btn-block btn-rounded">Place
+                                            Order</button>
+                                    </div>
+
+                                <%}%>
+                                
                                 <div id="coupon_div" class="pt-4">
                                     <form class="coupon" id="apply_coupon">
                                         <h5 class="title coupon-title font-weight-bold text-uppercase">Coupon Discount
@@ -291,12 +314,29 @@
 <!-- razorpay -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 
 
-    function applyCoupon(productPrice) {
-        event.preventDefault()
+    function useWallet(walletPrice){
 
+        let totalPrice = $('#total_price').html().trim()
+        console.log(walletPrice);
+        event.preventDefault()
+        $('#totalPrice').val(totalPrice-walletPrice)
+        $('#total_price').html(totalPrice-walletPrice)
+        $('#wallet_price').html('0')
+        $('#wallet_status').val('true')
+        $('#wallet_btn').attr('disabled','disabled');
+
+    }
+
+    function applyCoupon() {
+        event.preventDefault()
+        let productPrice = $('#total_price').html().trim()
+        console.log(productPrice);
+        console.log(productPrice);
         let coupon = $('#coupon_inp').val()
         $('#coupon_error').html('')
         let couponErr = true
@@ -361,6 +401,16 @@
         }
     }
 
+    function addressNull(){
+
+        event.preventDefault()
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Select Address!'
+        })
+    }
 
 
     function submitform() {
@@ -671,12 +721,12 @@
 
     function editAddress(id) {
 
-        let name = $('#name_' + id).html()
-        let address = $('#address_' + id).html()
-        let town = $('#town_' + id).html()
-        let state = $('#state_' + id).html()
-        let zip = $('#zip_' + id).html()
-        let mobile = $('#mobile_' + id).html()
+        let name = $('#name_' + id).html().trim()
+        let address = $('#address_' + id).html().trim()
+        let town = $('#town_' + id).html().trim()
+        let state = $('#state_' + id).html().trim()
+        let zip = $('#zip_' + id).html().trim()
+        let mobile = $('#mobile_' + id).html().trim()
 
         console.log(name);
 

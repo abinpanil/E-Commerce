@@ -219,10 +219,26 @@
             }
         }
 
+        let orderErr = true
+
+        function validateCorrect(){
+
+            let fromDate = $('#sort_date_from').val()
+            let toDate = $('#sort_date_to').val()
+
+            if(fromDate > toDate){
+
+                $('#sort_date_to').css('border-color', '#f30000')
+                $('#todate').html("Enter Correct Date Order")
+                toDateErr = false;
+            }
+        }
+
         valFromDate()
         valtoDate()
+        validateCorrect()
 
-        if (fromDateErr === true && toDateErr === true) {
+        if (fromDateErr === true && toDateErr === true && orderErr === true) {
             $.ajax({
                 url:'/admin/sales-report/sort-date',
                 method:'post',

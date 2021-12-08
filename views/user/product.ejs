@@ -5,7 +5,7 @@
             <li><a href="/">Home</a></li>
             <li>Products</li>
         </ul>
-        
+
     </nav>
     <!-- End of Breadcrumb -->
 
@@ -16,28 +16,37 @@
                 <div class="main-content">
 
                     <div class="product product-single row ">
-                        
+
                         <!-- image zoom -->
 
 
-                        <span id="show" style="width: 500px; height: 200px; position: absolute; z-index: 1000; right: 0; display: none; " >
-                            <div id="myresult" class="img-zoom-result" style="width: 500px;height: 500px; z-index: 10000;"  ></div>
+                        <span id="show"
+                            style="width: 500px; height: 200px; position: absolute; z-index: 1000; right: 0; display: none; ">
+                            <div id="myresult" class="img-zoom-result"
+                                style="width: 500px;height: 500px; z-index: 10000;"></div>
                         </span>
-                        <span id="show1" style="width: 500px; height: 200px; position: absolute; z-index: 1000; right: 0; display: none;" >
-                            <div id="myresult1" class="img-zoom-result1" style="width: 500px;height: 500px; z-index: 10000;"  ></div>
+                        <span id="show1"
+                            style="width: 500px; height: 200px; position: absolute; z-index: 1000; right: 0; display: none;">
+                            <div id="myresult1" class="img-zoom-result1"
+                                style="width: 500px;height: 500px; z-index: 10000;"></div>
                         </span>
-                        <span id="show2" style="width: 500px; height: 200px; position: absolute; z-index: 1000; right: 0; display: none; " >
-                            <div id="myresult2" class="img-zoom-result2" style="width: 500px;height: 500px; z-index: 10000;"  ></div>
+                        <span id="show2"
+                            style="width: 500px; height: 200px; position: absolute; z-index: 1000; right: 0; display: none; ">
+                            <div id="myresult2" class="img-zoom-result2"
+                                style="width: 500px;height: 500px; z-index: 10000;"></div>
                         </span>
-                        <span id="show3" style="width: 500px; height: 200px; position: absolute; z-index: 1000; right: 0; display: none;" >
-                            <div id="myresult3" class="img-zoom-result3" style="width: 500px;height: 500px; z-index: 10000;"  ></div>
+                        <span id="show3"
+                            style="width: 500px; height: 200px; position: absolute; z-index: 1000; right: 0; display: none;">
+                            <div id="myresult3" class="img-zoom-result3"
+                                style="width: 500px;height: 500px; z-index: 10000;"></div>
                         </span>
 
                         <!-- image zoom -->
 
                         <div class="col-md-6 mb-6">
                             <div class="product-gallery product-gallery-sticky">
-                                <div class="swiper-container product-single-swiper swiper-theme nav-inner" data-swiper-options="{
+                                <div class="swiper-container product-single-swiper swiper-theme nav-inner"
+                                    data-swiper-options="{
                                     'navigation': {
                                         'nextEl': '.swiper-button-next',
                                         'prevEl': '.swiper-button-prev'
@@ -45,36 +54,40 @@
                                 }">
                                     <div class="swiper-wrapper row cols-1 gutter-no">
                                         <div id="container" onmouseover="show()" class="swiper-slide ">
-                                            <figure  class="product-image img-zoom-container" >
+                                            <figure class="product-image img-zoom-container">
                                                 <img id="myimage" src="/user/images/productImage/<%=products._id%>1.jpg"
-                                                srcset  ="/user/images/productImage/<%=products._id%>1.jpg"
-                                                    alt="" width="800" height="900">
-                                                    
+                                                    srcset="/user/images/productImage/<%=products._id%>1.jpg" alt=""
+                                                    width="800" height="900">
+
                                             </figure>
                                         </div>
                                         <div id="container" onmouseover="show1()" class="swiper-slide ">
-                                            <figure  class="product-image img-zoom-container1" >
-                                                <img id="myimage1" src="/user/images/productImage/<%=products._id%>2.jpg"
-                                                srcset  ="/user/images/productImage/<%=products._id%>2.jpg"
-                                                    alt="" width="800" height="900">
-                                                    
+                                            <figure class="product-image img-zoom-container1">
+                                                <img id="myimage1"
+                                                    src="/user/images/productImage/<%=products._id%>2.jpg"
+                                                    srcset="/user/images/productImage/<%=products._id%>2.jpg" alt=""
+                                                    width="800" height="900">
+
                                             </figure>
                                         </div>
                                         <div id="container" onmouseover="show2()" class="swiper-slide ">
-                                            <figure  class="product-image img-zoom-container2" >
-                                                <img id="myimage2" src="/user/images/productImage/<%=products._id%>3.jpg"
-                                                srcset  ="/user/images/productImage/<%=products._id%>3.jpg"
-                                                    alt="" width="800" height="900">
-                                                    
+                                            <figure class="product-image img-zoom-container2">
+                                                <img id="myimage2"
+                                                    src="/user/images/productImage/<%=products._id%>3.jpg"
+                                                    srcset="/user/images/productImage/<%=products._id%>3.jpg" alt=""
+                                                    width="800" height="900">
+
                                             </figure>
                                         </div>
                                         <div id="container" onmouseover="show3()" class="swiper-slide ">
-                                            <figure  class="product-image img-zoom-container3" >
-                                                <img id="myimage3" src="/user/images/productImage/<%=products._id%>4.jpg"
-                                                srcset  ="/user/images/productImage/<%=products._id%>4.jpg"
-                                                    alt="" width="800" height="900">
+                                            <figure class="product-image img-zoom-container3">
+                                                <img id="myimage3"
+                                                    src="/user/images/productImage/<%=products._id%>4.jpg"
+                                                    srcset="/user/images/productImage/<%=products._id%>4.jpg" alt=""
+                                                    width="800" height="900">
                                             </figure>
                                         </div>
+                                        <button class="btn-close w-icon-heart"></button>
                                     </div>
                                     <button class="swiper-button-next"></button>
                                     <button class="swiper-button-prev"></button>
@@ -102,22 +115,63 @@
                                             <img src="/user/images/productImage/<%=products._id%>4.jpg"
                                                 alt="Product Thumb" width="800" height="900">
                                         </div>
-                                    
+
                                     </div>
                                     <button class="swiper-button-next"></button>
                                     <button class="swiper-button-prev"></button>
+                                </div>
+                                <div class="social-links-wrapper">
+                                    <span class="divider d-xs-show"></span>
+                                    <div class="product-link-wrapper d-flex">
+
+                                        <%if(user.status){%>
+                                            <%let flag=0%>
+                                                <%for(j=0;j<checkWishlist.length;j++){%>
+                                                    <%if(checkWishlist[j]==products._id){%>
+                                                        <%flag=1%>
+                                                            <%break%>
+                                                                <%}%>
+                                                                    <%}%>
+                                                                        <%if(flag===1){%>
+                                                                            <a onclick="addToWishlist('active','<%=products._id%>')"
+                                                                                id="wish-btn-active_<%=products._id%>"
+                                                                                style="width: 20px; position: absolute; top: 15px; right: 4px; z-index: 1000; color: red;"
+                                                                                class="btn-product-icon w-icon-heart-full"
+                                                                                title="Wishlist"></a>
+                                                                            <%}else{%>
+                                                                                <a onclick="addToWishlist('desable','<%=products._id%>')"
+                                                                                    id="wish-btn-desable_<%=products._id%>"
+                                                                                    style="width: 20px; position: absolute; top: 15px; right: 4px; z-index: 1000; color: red;"
+                                                                                    class="btn-product-icon w-icon-heart"
+                                                                                    title="Wishlist"></a>
+                                                                                <%}%>
+                                                                                    <%}else{%>
+                                                                                        <a onclick="addToWishlist('<%=products._id%>')"
+                                                                                            style="width: 20px; position: absolute; top: 15px; right: 4px; z-index: 1000; color: red;"
+                                                                                            class="btn-product-icon w-icon-heart"
+                                                                                            title="Wishlist"></a>
+                                                                                        <%}%>
+
+
+
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 mb-4 mb-md-6">
                             <div class="product-details" data-sticky-options="{'minWidth': 767}">
-                                <h1 class="product-title" style="color: #8e8b8b;"><%=products.producttitle%></h1>
+                                <h1 class="product-title" style="color: #8e8b8b;">
+                                    <%=products.producttitle%>
+                                </h1>
                                 <div class="product-bm-wrapper">
-                                    <h4><%=products.productname%></h4>
-                                   
+                                    <h4>
+                                        <%=products.productname%>
+                                    </h4>
+
                                     <div class="product-meta">
                                         <div class="product-categories">
-                                            
+
                                             <span class="product-category"><a href="#"></a></span>
                                         </div>
                                         <div class="product-sku">
@@ -134,115 +188,157 @@
                                     <%if(products.isProOfferActive===true){%>
 
                                         <%if(products.offer_price> products.productoffer_price){%>
-                                            
-                                            <div class="product-price"><h3 class="new-price" style="color: rgb(112, 109, 109);"> <del>RS.<%=products.productprice%></del> </h3></div>
-                                            <div class="product-price"><ins class="new-price" style="color: green;">RS.<%=products.productoffer_price%></ins></div>
 
-                                        <%}else{%>
-                                                
-                                            <div class="product-price"><h3 class="new-price" style="color: rgb(112, 109, 109);"> <del>RS.<%=products.productprice%></del> </h3></div>
-                                            <div class="product-price"><ins class="new-price" style="color: green;">RS.<%=products.offer_price%></ins></div>
+                                            <div class="product-price">
+                                                <h3 class="new-price" style="color: rgb(112, 109, 109);"> <del>RS.
+                                                        <%=products.productprice%></del> </h3>
+                                            </div>
+                                            <div class="product-price"><ins class="new-price" style="color: green;">RS.
+                                                    <%=products.productoffer_price%></ins></div>
 
-                                        <%}%>
-
-                                    <%}else{%>
-
-                                        <div class="product-price"><h3 class="new-price" style="color: rgb(112, 109, 109);"> <del>RS.<%=products.productprice%></del> </h3></div>
-                                        <div class="product-price"><ins class="new-price" style="color: green;">RS.<%=products.offer_price%></ins></div>
-
-                                    <%}%>
-
-                                <%}else if(products.isProOfferActive === true){%>
-
-                                    <div class="product-price"><h3 class="new-price" style="color: rgb(112, 109, 109);"> <del>RS.<%=products.productprice%></del> </h3></div>
-                                    <div class="product-price"><ins class="new-price" style="color: green;">RS.<%=products.productoffer_price%></ins></div>
-
-                                <%}else{%>
-                                    
-                                    <div class="product-price"><ins class="new-price">RS.<%=products.productprice%></ins></div>
-
-                                <%}%>
-
-
-                                  
-
-                                
-
-                                <div class="ratings-container">
-
-
-                                    <%if(products.isOfferActive===true){%>
-
-                                        <%if(products.isProOfferActive===true){%>
-    
-                                            <%if(products.offer_price> products.productoffer_price){%>
-                                                
-                                                <p style="color: green;"><%=products.productoffer_description%></p>
-    
                                             <%}else{%>
-                                                    
-                                                <p style="color: green;"><%=products.categoryoffer_description%></p>
-    
-                                            <%}%>
-    
-                                        <%}else{%>
-    
-                                            <p style="color: green;"><%=products.categoryoffer_description%></p>
-    
-                                        <%}%>
-    
-                                    <%}else if(products.isProOfferActive===true){%>
-                                        
-                                        <p style="color: green;"><%=products.productoffer_description%></p>
-    
-                                    <%}%>
+
+                                                <div class="product-price">
+                                                    <h3 class="new-price" style="color: rgb(112, 109, 109);"> <del>RS.
+                                                            <%=products.productprice%></del> </h3>
+                                                </div>
+                                                <div class="product-price"><ins class="new-price"
+                                                        style="color: green;">RS.<%=products.offer_price%></ins></div>
+
+                                                <%}%>
+
+                                                    <%}else{%>
+
+                                                        <div class="product-price">
+                                                            <h3 class="new-price" style="color: rgb(112, 109, 109);">
+                                                                <del>RS.<%=products.productprice%></del> </h3>
+                                                        </div>
+                                                        <div class="product-price"><ins class="new-price"
+                                                                style="color: green;">RS.<%=products.offer_price%></ins>
+                                                        </div>
+
+                                                        <%}%>
+
+                                                            <%}else if(products.isProOfferActive===true){%>
+
+                                                                <div class="product-price">
+                                                                    <h3 class="new-price"
+                                                                        style="color: rgb(112, 109, 109);"> <del>RS.
+                                                                            <%=products.productprice%></del> </h3>
+                                                                </div>
+                                                                <div class="product-price"><ins class="new-price"
+                                                                        style="color: green;">RS.
+                                                                        <%=products.productoffer_price%></ins></div>
+
+                                                                <%}else{%>
+
+                                                                    <div class="product-price"><ins
+                                                                            class="new-price">RS.
+                                                                            <%=products.productprice%></ins></div>
+
+                                                                    <%}%>
 
 
-                                    
-                                </div>
 
-                                <div class="product-short-desc" style="min-height: 10vh;">
-                                    
-                                </div>
 
-                                <hr class="product-divider">
 
-                                <div class="product-form product-variation-form product-color-swatch">
-                                    <!-- <label>Color:</label> -->
-                                    <!-- <div class="d-flex align-items-center product-variations">
+
+                                                                        <div class="ratings-container">
+
+
+                                                                            <%if(products.isOfferActive===true){%>
+
+                                                                                <%if(products.isProOfferActive===true){%>
+
+                                                                                    <%if(products.offer_price>
+                                                                                        products.productoffer_price){%>
+
+                                                                                        <p style="color: green;">
+                                                                                            <%=products.productoffer_description%>
+                                                                                        </p>
+
+                                                                                        <%}else{%>
+
+                                                                                            <p style="color: green;">
+                                                                                                <%=products.categoryoffer_description%>
+                                                                                            </p>
+
+                                                                                            <%}%>
+
+                                                                                                <%}else{%>
+
+                                                                                                    <p
+                                                                                                        style="color: green;">
+                                                                                                        <%=products.categoryoffer_description%>
+                                                                                                    </p>
+
+                                                                                                    <%}%>
+
+                                                                                                        <%}else
+                                                                                                            if(products.isProOfferActive===true){%>
+
+                                                                                                            <p
+                                                                                                                style="color: green;">
+                                                                                                                <%=products.productoffer_description%>
+                                                                                                            </p>
+
+                                                                                                            <%}%>
+
+
+
+                                                                        </div>
+
+                                                                        <div class="product-short-desc"
+                                                                            style="min-height: 6vh;">
+
+                                                                        </div>
+
+                                                                        <hr class="product-divider">
+
+                                                                        <div
+                                                                            class="product-form product-variation-form product-color-swatch">
+                                                                            <!-- <label>Color:</label> -->
+                                                                            <!-- <div class="d-flex align-items-center product-variations">
                                         <a href="#" class="color" style="background-color: #ffcc01"></a>
                                         <a href="#" class="color" style="background-color: #ca6d00;"></a>
                                         <a href="#" class="color" style="background-color: #1c93cb;"></a>
                                         <a href="#" class="color" style="background-color: #ccc;"></a>
                                         <a href="#" class="color" style="background-color: #333;"></a>
                                     </div> -->
-                                </div>
+                                                                        </div>
 
 
-                                <div class="fix-bottom product-sticky-content sticky-content">
-                                    <div class=" product-form form-button container pb-2 ">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <button  onclick="addToCart('<%=products._id%>')" class="btn btn-primary btn-cart1">
-                                                    <i class="w-icon-cart "></i>
-                                                    <span>Add to Cart</span>
-                                                </button>
-                                            </div>
-                                            <div class="col-6">
-                                                <a href="/product-buy-now/<%=products._id%>" class="btn btn-dark btn-cart1">
-                                                    Buy Now
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class=" form-button container">
-                                        
-                                    </div>
-                                </div>
 
-                                <div class="social-links-wrapper">
-                                    
-                                </div>
+                                                                        <div
+                                                                            class="fix-bottom product-sticky-content sticky-content">
+                                                                            <div
+                                                                                class=" product-form form-button container pb-2 ">
+                                                                                <div class="row">
+                                                                                    <div class="col-6">
+                                                                                        <button
+                                                                                            onclick="addToCart('<%=products._id%>')"
+                                                                                            class="btn btn-primary btn-cart1">
+                                                                                            <i class="w-icon-cart "></i>
+                                                                                            <span>Add to Cart</span>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div class="col-6">
+                                                                                        <a href="/product-buy-now/<%=products._id%>"
+                                                                                            class="btn btn-dark btn-cart1">
+                                                                                            Buy Now
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class=" form-button container">
+
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="social-links-wrapper">
+
+                                                                        </div>
                             </div>
                         </div>
                     </div>
@@ -255,17 +351,19 @@
                             <li class="nav-item">
                                 <a href="#product-tab-description" class="nav-link active">Description</a>
                             </li>
-                            
+
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="product-tab-description">
                                 <div class="row mb-4">
                                     <div class="col-md-6 mb-5">
                                         <h4 class="title tab-pane-title font-weight-bold mb-2">Detail</h4>
-                                        <p class="mb-4"><%=products.productdiscription%></p>
+                                        <p class="mb-4">
+                                            <%=products.productdiscription%>
+                                        </p>
                                     </div>
                                     <div class="col-md-6 mb-5">
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -273,7 +371,7 @@
                     </div>
 
                     <!-- Discription -->
-                    
+
                 </div>
                 <!-- End of Main Content -->
                 <aside class="sidebar product-sidebar sidebar-fixed right-sidebar sticky-sidebar-wrapper">
@@ -312,7 +410,7 @@
                                 </div>
                             </div>
                             <!-- End of Widget Icon Box -->
-                            <!-- End of Widget Banner -->   
+                            <!-- End of Widget Banner -->
                         </div>
                     </div>
                 </aside>
@@ -341,58 +439,98 @@
 <script src="/user/vendor/swiper/swiper-bundle.min.js"></script>
 
 <!-- Main JS File -->
-<script src="/user/js/main.min.js"></script> 
+<script src="/user/js/main.min.js"></script>
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 
+    function addToWishlist(name, id) {
+        console.log(name);
+        $.ajax({
+            url: '/add-to-wishlist',
+            method: 'post',
+            data: { proId: id },
+            success: (response) => {
 
-function addToCart(id) {
+                if (response.login === true) {
 
-console.log(id);
-$.ajax({
-    url: '/add-to-cart',
-    method: 'post',
-    data: { proId: id },
-    success: (response) => {
-        if(response.status){
+                    if (response.status === 1) {
+                        $(`#wish-btn-${name}_${id}`).removeClass('w-icon-heart')
+                        $(`#wish-btn-${name}_${id}`).addClass('w-icon-heart-full')
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Product Added to Wishlist',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } else if (response.status === 2) {
+                        $(`#wish-btn-${name}_${id}`).removeClass('w-icon-heart-full')
+                        $(`#wish-btn-${name}_${id}`).addClass('w-icon-heart')
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Product Removed from Wishlist',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
 
-            let count = $('#cart_count').html()
-            $('#cart_count').html(parseInt(count)+1)    
+                } else {
+                    window.location.assign('/login')
+                }
 
-            Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Product Added to cart',
-                    showConfirmButton: false,
-                    timer: 1500
-            })
-        }else{
-            window.location.assign('/login')
-        }
-                
+            }
+        })
     }
-})
-
-}
 
 
-// 1 zoom start
-   
-    let imageContainer=document.querySelector(".img-zoom-container")
-    let imageZoomResultContainer=document.querySelector(".img-zoom-result");
+    function addToCart(id) {
+
+        console.log(id);
+        $.ajax({
+            url: '/add-to-cart',
+            method: 'post',
+            data: { proId: id },
+            success: (response) => {
+                if (response.status) {
+
+                    let count = $('#cart_count').html()
+                    $('#cart_count').html(parseInt(count) + 1)
+
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Product Added to cart',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                } else {
+                    window.location.assign('/login')
+                }
+
+            }
+        })
+
+    }
+
+
+    // 1 zoom start
+
+    let imageContainer = document.querySelector(".img-zoom-container")
+    let imageZoomResultContainer = document.querySelector(".img-zoom-result");
     let imagezoom = document.querySelector(".img-zoom-lens")
-    imageContainer.onmouseover=function(e){ 
-        imageZoomResultContainer.style.display="block"; 
-        imagezoom.style.display="block"
+    imageContainer.onmouseover = function (e) {
+        imageZoomResultContainer.style.display = "block";
+        imagezoom.style.display = "block"
     }
-    imageContainer.onmouseout=function(e){ 
-        imageZoomResultContainer.style.display="none"
-        imagezoom.style.display="none"
+    imageContainer.onmouseout = function (e) {
+        imageZoomResultContainer.style.display = "none"
+        imagezoom.style.display = "none"
     }
-    function show(){
-        document.getElementById('show').style.display='block'
+    function show() {
+        document.getElementById('show').style.display = 'block'
     }
 
 
@@ -400,382 +538,382 @@ $.ajax({
     imageZoom("myimage", "myresult");
     function imageZoom(imgID, resultID) {
 
-    console.log(imgID,resultID);
-  var img, lens, result, cx, cy;
-  img = document.getElementById(imgID);
-  result = document.getElementById(resultID);
-  /*create lens:*/
-  lens = document.createElement("DIV");
-  lens.setAttribute("class", "img-zoom-lens");
-  
-  /*insert lens:*/
-  img.parentElement.insertBefore(lens, img);
-  /*calculate the ratio between result DIV and lens:*/
-   console.log("result.offsetWidth  >>>>>", result.offsetWidth ,"lens.offsetWidth>>>>>>>>>>>",lens.offsetWidth);
-  cx = 300 / lens.offsetWidth;
-  console.log("result.offsetHeight>>>>>",result.offsetHeight ,"llens.offsetHeighth>>>>>>>>>>>",lens.offsetHeight);
-  cy = 300 / lens.offsetHeight;
-  /*set background properties for the result DIV:*/
-  result.style.backgroundImage = "url('" + img.srcset + "')";
-  result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-  /*execute a function when someone moves the cursor over the image, or the lens:*/
-  lens.addEventListener("mousemove", moveLens);
-  img.addEventListener("mousemove", moveLens);
-  /*and also for touch screens:*/
-  lens.addEventListener("touchmove", moveLens);
-  img.addEventListener("touchmove", moveLens);
- // img.addEventListener("mouseenter", bigImg);  
- 
-  
-  
-  function bigImg(x) {
-    console.log("onmouseenter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-}
+        console.log(imgID, resultID);
+        var img, lens, result, cx, cy;
+        img = document.getElementById(imgID);
+        result = document.getElementById(resultID);
+        /*create lens:*/
+        lens = document.createElement("DIV");
+        lens.setAttribute("class", "img-zoom-lens");
 
-function normalImg(x) {
-//result.style.display ="none";
-     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onmousLEAVE");
-}
+        /*insert lens:*/
+        img.parentElement.insertBefore(lens, img);
+        /*calculate the ratio between result DIV and lens:*/
+        console.log("result.offsetWidth  >>>>>", result.offsetWidth, "lens.offsetWidth>>>>>>>>>>>", lens.offsetWidth);
+        cx = 300 / lens.offsetWidth;
+        console.log("result.offsetHeight>>>>>", result.offsetHeight, "llens.offsetHeighth>>>>>>>>>>>", lens.offsetHeight);
+        cy = 300 / lens.offsetHeight;
+        /*set background properties for the result DIV:*/
+        result.style.backgroundImage = "url('" + img.srcset + "')";
+        result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+        /*execute a function when someone moves the cursor over the image, or the lens:*/
+        lens.addEventListener("mousemove", moveLens);
+        img.addEventListener("mousemove", moveLens);
+        /*and also for touch screens:*/
+        lens.addEventListener("touchmove", moveLens);
+        img.addEventListener("touchmove", moveLens);
+        // img.addEventListener("mouseenter", bigImg);  
 
 
-  
-  function moveLens(e) {
-    var pos, x, y;
-    /*prevent any other actions that may occur when moving over the image:*/
-    e.preventDefault();
-    /*get the cursor's x and y positions:*/
-    pos = getCursorPos(e);
-    /*calculate the position of the lens:*/
-    x = pos.x - (lens.offsetWidth / 1);
-    y = pos.y - (lens.offsetHeight / 1);
-  // console.log("x" , x , "and Y " , y); 
-    /*prevent the lens from being positioned outside the image:*/
-    if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;  } //else{img.addEventListener("mouseenter", bigImg);  }
-    if (x < 0) {x = 0;}
-    if (y > img.height - lens.offsetHeight) {y = img.height - lens.offsetHeight; img.addEventListener("mouseleave",  normalImg);}//else{img.addEventListener("mouseenter", bigImg);  }
-    if (y < 0) {y = 0;}
-    /*set the position of the lens:*/
-    lens.style.left = x + "px";
-    lens.style.top = y + "px";
-    /*display what the lens "sees":*/
-    result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
-  }
-  function getCursorPos(e) {
-    var a, x = 0, y = 0;
-    e = e || window.event;
-    /*get the x and y positions of the image:*/
-    a = img.getBoundingClientRect();
-    //console.log("------------------A  left" ,  a ); 
-    /*calculate the cursor's x and y coordinates, relative to the image:*/
-    x = e.pageX - a.left;
-    y = e.pageY - a.top;
-    /*consider any page scrolling:*/
-    x = x - window.pageXOffset;
-    y = y - window.pageYOffset;
-    return {x : x, y : y};
-  }
-  
-}
 
-// 1 zoom end
+        function bigImg(x) {
+            console.log("onmouseenter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        }
+
+        function normalImg(x) {
+            //result.style.display ="none";
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onmousLEAVE");
+        }
 
 
-// 2nd zoom start
 
+        function moveLens(e) {
+            var pos, x, y;
+            /*prevent any other actions that may occur when moving over the image:*/
+            e.preventDefault();
+            /*get the cursor's x and y positions:*/
+            pos = getCursorPos(e);
+            /*calculate the position of the lens:*/
+            x = pos.x - (lens.offsetWidth / 1);
+            y = pos.y - (lens.offsetHeight / 1);
+            // console.log("x" , x , "and Y " , y); 
+            /*prevent the lens from being positioned outside the image:*/
+            if (x > img.width - lens.offsetWidth) { x = img.width - lens.offsetWidth; } //else{img.addEventListener("mouseenter", bigImg);  }
+            if (x < 0) { x = 0; }
+            if (y > img.height - lens.offsetHeight) { y = img.height - lens.offsetHeight; img.addEventListener("mouseleave", normalImg); }//else{img.addEventListener("mouseenter", bigImg);  }
+            if (y < 0) { y = 0; }
+            /*set the position of the lens:*/
+            lens.style.left = x + "px";
+            lens.style.top = y + "px";
+            /*display what the lens "sees":*/
+            result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+        }
+        function getCursorPos(e) {
+            var a, x = 0, y = 0;
+            e = e || window.event;
+            /*get the x and y positions of the image:*/
+            a = img.getBoundingClientRect();
+            //console.log("------------------A  left" ,  a ); 
+            /*calculate the cursor's x and y coordinates, relative to the image:*/
+            x = e.pageX - a.left;
+            y = e.pageY - a.top;
+            /*consider any page scrolling:*/
+            x = x - window.pageXOffset;
+            y = y - window.pageYOffset;
+            return { x: x, y: y };
+        }
 
-    let imageContainer1=document.querySelector(".img-zoom-container1")
-    let imageZoomResultContainer1=document.querySelector(".img-zoom-result1");
-    imageContainer1.onmouseover=function(e){ 
-        imageZoomResultContainer1.style.display="block"; 
-    }
-    imageContainer1.onmouseout=function(e){ 
-        imageZoomResultContainer1.style.display="none"
-    }
-    function show1(){
-        document.getElementById('show1').style.display='block'
     }
 
+    // 1 zoom end
 
 
-imageZoom1("myimage1", "myresult1");
+    // 2nd zoom start
+
+
+    let imageContainer1 = document.querySelector(".img-zoom-container1")
+    let imageZoomResultContainer1 = document.querySelector(".img-zoom-result1");
+    imageContainer1.onmouseover = function (e) {
+        imageZoomResultContainer1.style.display = "block";
+    }
+    imageContainer1.onmouseout = function (e) {
+        imageZoomResultContainer1.style.display = "none"
+    }
+    function show1() {
+        document.getElementById('show1').style.display = 'block'
+    }
+
+
+
+    imageZoom1("myimage1", "myresult1");
     function imageZoom1(imgID, resultID) {
         console.log("zoom 1");
-    console.log(imgID,resultID);
-  var img, lens, result, cx, cy;
-  img = document.getElementById(imgID);
-  result = document.getElementById(resultID);
-  /*create lens:*/
-  lens = document.createElement("DIV");
-  lens.setAttribute("class", "img-zoom-lens");
-  /*insert lens:*/
-  img.parentElement.insertBefore(lens, img);
-  /*calculate the ratio between result DIV and lens:*/
-   console.log("result.offsetWidth  >>>>>", result.offsetWidth ,"lens.offsetWidth>>>>>>>>>>>",lens.offsetWidth);
-  cx = 300 / lens.offsetWidth;
-  console.log("result.offsetHeight>>>>>",result.offsetHeight ,"llens.offsetHeighth>>>>>>>>>>>",lens.offsetHeight);
-  cy = 300 / lens.offsetHeight;
-  /*set background properties for the result DIV:*/
-  result.style.backgroundImage = "url('" + img.srcset + "')";
-  result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-  /*execute a function when someone moves the cursor over the image, or the lens:*/
-  lens.addEventListener("mousemove", moveLens);
-  img.addEventListener("mousemove", moveLens);
-  /*and also for touch screens:*/
-  lens.addEventListener("touchmove", moveLens);
-  img.addEventListener("touchmove", moveLens);
- // img.addEventListener("mouseenter", bigImg);  
- 
-  
-  
-  function bigImg(x) {
-    console.log("onmouseenter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-}
-
-function normalImg(x) {
-//result.style.display ="none";
-     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onmousLEAVE");
-}
+        console.log(imgID, resultID);
+        var img, lens, result, cx, cy;
+        img = document.getElementById(imgID);
+        result = document.getElementById(resultID);
+        /*create lens:*/
+        lens = document.createElement("DIV");
+        lens.setAttribute("class", "img-zoom-lens");
+        /*insert lens:*/
+        img.parentElement.insertBefore(lens, img);
+        /*calculate the ratio between result DIV and lens:*/
+        console.log("result.offsetWidth  >>>>>", result.offsetWidth, "lens.offsetWidth>>>>>>>>>>>", lens.offsetWidth);
+        cx = 300 / lens.offsetWidth;
+        console.log("result.offsetHeight>>>>>", result.offsetHeight, "llens.offsetHeighth>>>>>>>>>>>", lens.offsetHeight);
+        cy = 300 / lens.offsetHeight;
+        /*set background properties for the result DIV:*/
+        result.style.backgroundImage = "url('" + img.srcset + "')";
+        result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+        /*execute a function when someone moves the cursor over the image, or the lens:*/
+        lens.addEventListener("mousemove", moveLens);
+        img.addEventListener("mousemove", moveLens);
+        /*and also for touch screens:*/
+        lens.addEventListener("touchmove", moveLens);
+        img.addEventListener("touchmove", moveLens);
+        // img.addEventListener("mouseenter", bigImg);  
 
 
-  
-  function moveLens(e) {
-    var pos, x, y;
-    /*prevent any other actions that may occur when moving over the image:*/
-    e.preventDefault();
-    /*get the cursor's x and y positions:*/
-    pos = getCursorPos(e);
-    /*calculate the position of the lens:*/
-    x = pos.x - (lens.offsetWidth / 2);
-    y = pos.y - (lens.offsetHeight / 2);
-  // console.log("x" , x , "and Y " , y); 
-    /*prevent the lens from being positioned outside the image:*/
-    if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;  } //else{img.addEventListener("mouseenter", bigImg);  }
-    if (x < 0) {x = 0;}
-    if (y > img.height - lens.offsetHeight) {y = img.height - lens.offsetHeight; img.addEventListener("mouseleave",  normalImg);}//else{img.addEventListener("mouseenter", bigImg);  }
-    if (y < 0) {y = 0;}
-    /*set the position of the lens:*/
-    lens.style.left = x + "px";
-    lens.style.top = y + "px";
-    /*display what the lens "sees":*/
-    result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
-  }
-  function getCursorPos(e) {
-    var a, x = 0, y = 0;
-    e = e || window.event;
-    /*get the x and y positions of the image:*/
-    a = img.getBoundingClientRect();
-    //console.log("------------------A  left" ,  a ); 
-    /*calculate the cursor's x and y coordinates, relative to the image:*/
-    x = e.pageX - a.left;
-    y = e.pageY - a.top;
-    /*consider any page scrolling:*/
-    x = x - window.pageXOffset;
-    y = y - window.pageYOffset;
-    return {x : x, y : y};
-  }
-  console.log("2 out");
-  
-}
 
-// 2nd zoom end
+        function bigImg(x) {
+            console.log("onmouseenter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        }
+
+        function normalImg(x) {
+            //result.style.display ="none";
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onmousLEAVE");
+        }
 
 
-// 3 zoom start
 
+        function moveLens(e) {
+            var pos, x, y;
+            /*prevent any other actions that may occur when moving over the image:*/
+            e.preventDefault();
+            /*get the cursor's x and y positions:*/
+            pos = getCursorPos(e);
+            /*calculate the position of the lens:*/
+            x = pos.x - (lens.offsetWidth / 2);
+            y = pos.y - (lens.offsetHeight / 2);
+            // console.log("x" , x , "and Y " , y); 
+            /*prevent the lens from being positioned outside the image:*/
+            if (x > img.width - lens.offsetWidth) { x = img.width - lens.offsetWidth; } //else{img.addEventListener("mouseenter", bigImg);  }
+            if (x < 0) { x = 0; }
+            if (y > img.height - lens.offsetHeight) { y = img.height - lens.offsetHeight; img.addEventListener("mouseleave", normalImg); }//else{img.addEventListener("mouseenter", bigImg);  }
+            if (y < 0) { y = 0; }
+            /*set the position of the lens:*/
+            lens.style.left = x + "px";
+            lens.style.top = y + "px";
+            /*display what the lens "sees":*/
+            result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+        }
+        function getCursorPos(e) {
+            var a, x = 0, y = 0;
+            e = e || window.event;
+            /*get the x and y positions of the image:*/
+            a = img.getBoundingClientRect();
+            //console.log("------------------A  left" ,  a ); 
+            /*calculate the cursor's x and y coordinates, relative to the image:*/
+            x = e.pageX - a.left;
+            y = e.pageY - a.top;
+            /*consider any page scrolling:*/
+            x = x - window.pageXOffset;
+            y = y - window.pageYOffset;
+            return { x: x, y: y };
+        }
+        console.log("2 out");
 
-let imageContainer2=document.querySelector(".img-zoom-container2")
-    let imageZoomResultContainer2=document.querySelector(".img-zoom-result2");
-    imageContainer2.onmouseover=function(e){ 
-        imageZoomResultContainer2.style.display="block"; 
-    }
-    imageContainer2.onmouseout=function(e){ 
-        imageZoomResultContainer2.style.display="none"
-    }
-    function show2(){
-        document.getElementById('show2').style.display='block'
     }
 
+    // 2nd zoom end
 
 
-imageZoom2("myimage2", "myresult2");
+    // 3 zoom start
+
+
+    let imageContainer2 = document.querySelector(".img-zoom-container2")
+    let imageZoomResultContainer2 = document.querySelector(".img-zoom-result2");
+    imageContainer2.onmouseover = function (e) {
+        imageZoomResultContainer2.style.display = "block";
+    }
+    imageContainer2.onmouseout = function (e) {
+        imageZoomResultContainer2.style.display = "none"
+    }
+    function show2() {
+        document.getElementById('show2').style.display = 'block'
+    }
+
+
+
+    imageZoom2("myimage2", "myresult2");
     function imageZoom2(imgID, resultID) {
         console.log("zoom 2");
-    console.log(imgID,resultID);
-  var img, lens, result, cx, cy;
-  img = document.getElementById(imgID);
-  result = document.getElementById(resultID);
-  /*create lens:*/
-  lens = document.createElement("DIV");
-  lens.setAttribute("class", "img-zoom-lens");
-  /*insert lens:*/
-  img.parentElement.insertBefore(lens, img);
-  /*calculate the ratio between result DIV and lens:*/
-   console.log("result.offsetWidth  >>>>>", result.offsetWidth ,"lens.offsetWidth>>>>>>>>>>>",lens.offsetWidth);
-  cx = 300 / lens.offsetWidth;
-  console.log("result.offsetHeight>>>>>",result.offsetHeight ,"llens.offsetHeighth>>>>>>>>>>>",lens.offsetHeight);
-  cy = 300 / lens.offsetHeight;
-  /*set background properties for the result DIV:*/
-  result.style.backgroundImage = "url('" + img.srcset + "')";
-  result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-  /*execute a function when someone moves the cursor over the image, or the lens:*/
-  lens.addEventListener("mousemove", moveLens);
-  img.addEventListener("mousemove", moveLens);
-  /*and also for touch screens:*/
-  lens.addEventListener("touchmove", moveLens);
-  img.addEventListener("touchmove", moveLens);
- // img.addEventListener("mouseenter", bigImg);  
- 
-  
-  
-  function bigImg(x) {
-    console.log("onmouseenter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-}
-
-function normalImg(x) {
-//result.style.display ="none";
-     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onmousLEAVE");
-}
+        console.log(imgID, resultID);
+        var img, lens, result, cx, cy;
+        img = document.getElementById(imgID);
+        result = document.getElementById(resultID);
+        /*create lens:*/
+        lens = document.createElement("DIV");
+        lens.setAttribute("class", "img-zoom-lens");
+        /*insert lens:*/
+        img.parentElement.insertBefore(lens, img);
+        /*calculate the ratio between result DIV and lens:*/
+        console.log("result.offsetWidth  >>>>>", result.offsetWidth, "lens.offsetWidth>>>>>>>>>>>", lens.offsetWidth);
+        cx = 300 / lens.offsetWidth;
+        console.log("result.offsetHeight>>>>>", result.offsetHeight, "llens.offsetHeighth>>>>>>>>>>>", lens.offsetHeight);
+        cy = 300 / lens.offsetHeight;
+        /*set background properties for the result DIV:*/
+        result.style.backgroundImage = "url('" + img.srcset + "')";
+        result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+        /*execute a function when someone moves the cursor over the image, or the lens:*/
+        lens.addEventListener("mousemove", moveLens);
+        img.addEventListener("mousemove", moveLens);
+        /*and also for touch screens:*/
+        lens.addEventListener("touchmove", moveLens);
+        img.addEventListener("touchmove", moveLens);
+        // img.addEventListener("mouseenter", bigImg);  
 
 
-  
-  function moveLens(e) {
-    var pos, x, y;
-    /*prevent any other actions that may occur when moving over the image:*/
-    e.preventDefault();
-    /*get the cursor's x and y positions:*/
-    pos = getCursorPos(e);
-    /*calculate the position of the lens:*/
-    x = pos.x - (lens.offsetWidth / 2);
-    y = pos.y - (lens.offsetHeight / 2);
-  // console.log("x" , x , "and Y " , y); 
-    /*prevent the lens from being positioned outside the image:*/
-    if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;  } //else{img.addEventListener("mouseenter", bigImg);  }
-    if (x < 0) {x = 0;}
-    if (y > img.height - lens.offsetHeight) {y = img.height - lens.offsetHeight; img.addEventListener("mouseleave",  normalImg);}//else{img.addEventListener("mouseenter", bigImg);  }
-    if (y < 0) {y = 0;}
-    /*set the position of the lens:*/
-    lens.style.left = x + "px";
-    lens.style.top = y + "px";
-    /*display what the lens "sees":*/
-    result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
-  }
-  function getCursorPos(e) {
-    var a, x = 0, y = 0;
-    e = e || window.event;
-    /*get the x and y positions of the image:*/
-    a = img.getBoundingClientRect();
-    //console.log("------------------A  left" ,  a ); 
-    /*calculate the cursor's x and y coordinates, relative to the image:*/
-    x = e.pageX - a.left;
-    y = e.pageY - a.top;
-    /*consider any page scrolling:*/
-    x = x - window.pageXOffset;
-    y = y - window.pageYOffset;
-    return {x : x, y : y};
-  }
-  console.log("3 out");
-  
-}
+
+        function bigImg(x) {
+            console.log("onmouseenter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        }
+
+        function normalImg(x) {
+            //result.style.display ="none";
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onmousLEAVE");
+        }
 
 
-// 3 zoom end
 
+        function moveLens(e) {
+            var pos, x, y;
+            /*prevent any other actions that may occur when moving over the image:*/
+            e.preventDefault();
+            /*get the cursor's x and y positions:*/
+            pos = getCursorPos(e);
+            /*calculate the position of the lens:*/
+            x = pos.x - (lens.offsetWidth / 2);
+            y = pos.y - (lens.offsetHeight / 2);
+            // console.log("x" , x , "and Y " , y); 
+            /*prevent the lens from being positioned outside the image:*/
+            if (x > img.width - lens.offsetWidth) { x = img.width - lens.offsetWidth; } //else{img.addEventListener("mouseenter", bigImg);  }
+            if (x < 0) { x = 0; }
+            if (y > img.height - lens.offsetHeight) { y = img.height - lens.offsetHeight; img.addEventListener("mouseleave", normalImg); }//else{img.addEventListener("mouseenter", bigImg);  }
+            if (y < 0) { y = 0; }
+            /*set the position of the lens:*/
+            lens.style.left = x + "px";
+            lens.style.top = y + "px";
+            /*display what the lens "sees":*/
+            result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+        }
+        function getCursorPos(e) {
+            var a, x = 0, y = 0;
+            e = e || window.event;
+            /*get the x and y positions of the image:*/
+            a = img.getBoundingClientRect();
+            //console.log("------------------A  left" ,  a ); 
+            /*calculate the cursor's x and y coordinates, relative to the image:*/
+            x = e.pageX - a.left;
+            y = e.pageY - a.top;
+            /*consider any page scrolling:*/
+            x = x - window.pageXOffset;
+            y = y - window.pageYOffset;
+            return { x: x, y: y };
+        }
+        console.log("3 out");
 
-// 4zoom Start
-
-let imageContainer3=document.querySelector(".img-zoom-container3")
-    let imageZoomResultContainer3=document.querySelector(".img-zoom-result3");
-    imageContainer3.onmouseover=function(e){ 
-        imageZoomResultContainer3.style.display="block"; 
-    }
-    imageContainer3.onmouseout=function(e){ 
-        imageZoomResultContainer3.style.display="none"
-    }
-    function show3(){
-        document.getElementById('show3').style.display='block'
     }
 
 
+    // 3 zoom end
 
-imageZoom3("myimage3", "myresult3");
+
+    // 4zoom Start
+
+    let imageContainer3 = document.querySelector(".img-zoom-container3")
+    let imageZoomResultContainer3 = document.querySelector(".img-zoom-result3");
+    imageContainer3.onmouseover = function (e) {
+        imageZoomResultContainer3.style.display = "block";
+    }
+    imageContainer3.onmouseout = function (e) {
+        imageZoomResultContainer3.style.display = "none"
+    }
+    function show3() {
+        document.getElementById('show3').style.display = 'block'
+    }
+
+
+
+    imageZoom3("myimage3", "myresult3");
     function imageZoom3(imgID, resultID) {
         console.log("zoom 4");
-    console.log(imgID,resultID);
-  var img, lens, result, cx, cy;
-  img = document.getElementById(imgID);
-  result = document.getElementById(resultID);
-  /*create lens:*/
-  lens = document.createElement("DIV");
-  lens.setAttribute("class", "img-zoom-lens");
-  /*insert lens:*/
-  img.parentElement.insertBefore(lens, img);
-  /*calculate the ratio between result DIV and lens:*/
-   console.log("result.offsetWidth  >>>>>", result.offsetWidth ,"lens.offsetWidth>>>>>>>>>>>",lens.offsetWidth);
-  cx = 300 / lens.offsetWidth;
-  console.log("result.offsetHeight>>>>>",result.offsetHeight ,"llens.offsetHeighth>>>>>>>>>>>",lens.offsetHeight);
-  cy = 300 / lens.offsetHeight;
-  /*set background properties for the result DIV:*/
-  result.style.backgroundImage = "url('" + img.srcset + "')";
-  result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-  /*execute a function when someone moves the cursor over the image, or the lens:*/
-  lens.addEventListener("mousemove", moveLens);
-  img.addEventListener("mousemove", moveLens);
-  /*and also for touch screens:*/
-  lens.addEventListener("touchmove", moveLens);
-  img.addEventListener("touchmove", moveLens);
- // img.addEventListener("mouseenter", bigImg);  
- 
-  
-  
-  function bigImg(x) {
-    console.log("onmouseenter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-}
-
-function normalImg(x) {
-//result.style.display ="none";
-     console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onmousLEAVE");
-}
+        console.log(imgID, resultID);
+        var img, lens, result, cx, cy;
+        img = document.getElementById(imgID);
+        result = document.getElementById(resultID);
+        /*create lens:*/
+        lens = document.createElement("DIV");
+        lens.setAttribute("class", "img-zoom-lens");
+        /*insert lens:*/
+        img.parentElement.insertBefore(lens, img);
+        /*calculate the ratio between result DIV and lens:*/
+        console.log("result.offsetWidth  >>>>>", result.offsetWidth, "lens.offsetWidth>>>>>>>>>>>", lens.offsetWidth);
+        cx = 300 / lens.offsetWidth;
+        console.log("result.offsetHeight>>>>>", result.offsetHeight, "llens.offsetHeighth>>>>>>>>>>>", lens.offsetHeight);
+        cy = 300 / lens.offsetHeight;
+        /*set background properties for the result DIV:*/
+        result.style.backgroundImage = "url('" + img.srcset + "')";
+        result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+        /*execute a function when someone moves the cursor over the image, or the lens:*/
+        lens.addEventListener("mousemove", moveLens);
+        img.addEventListener("mousemove", moveLens);
+        /*and also for touch screens:*/
+        lens.addEventListener("touchmove", moveLens);
+        img.addEventListener("touchmove", moveLens);
+        // img.addEventListener("mouseenter", bigImg);  
 
 
-  
-  function moveLens(e) {
-    var pos, x, y;
-    /*prevent any other actions that may occur when moving over the image:*/
-    e.preventDefault();
-    /*get the cursor's x and y positions:*/
-    pos = getCursorPos(e);
-    /*calculate the position of the lens:*/
-    x = pos.x - (lens.offsetWidth / 2);
-    y = pos.y - (lens.offsetHeight / 2);
-  // console.log("x" , x , "and Y " , y); 
-    /*prevent the lens from being positioned outside the image:*/
-    if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;  } //else{img.addEventListener("mouseenter", bigImg);  }
-    if (x < 0) {x = 0;}
-    if (y > img.height - lens.offsetHeight) {y = img.height - lens.offsetHeight; img.addEventListener("mouseleave",  normalImg);}//else{img.addEventListener("mouseenter", bigImg);  }
-    if (y < 0) {y = 0;}
-    /*set the position of the lens:*/
-    lens.style.left = x + "px";
-    lens.style.top = y + "px";
-    /*display what the lens "sees":*/
-    result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
-  }
-  function getCursorPos(e) {
-    var a, x = 0, y = 0;
-    e = e || window.event;
-    /*get the x and y positions of the image:*/
-    a = img.getBoundingClientRect();
-    //console.log("------------------A  left" ,  a ); 
-    /*calculate the cursor's x and y coordinates, relative to the image:*/
-    x = e.pageX - a.left;
-    y = e.pageY - a.top;
-    /*consider any page scrolling:*/
-    x = x - window.pageXOffset;
-    y = y - window.pageYOffset;
-    return {x : x, y : y};
-  }
-  console.log("4 out");
-  
-}
+
+        function bigImg(x) {
+            console.log("onmouseenter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        }
+
+        function normalImg(x) {
+            //result.style.display ="none";
+            console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>onmousLEAVE");
+        }
+
+
+
+        function moveLens(e) {
+            var pos, x, y;
+            /*prevent any other actions that may occur when moving over the image:*/
+            e.preventDefault();
+            /*get the cursor's x and y positions:*/
+            pos = getCursorPos(e);
+            /*calculate the position of the lens:*/
+            x = pos.x - (lens.offsetWidth / 2);
+            y = pos.y - (lens.offsetHeight / 2);
+            // console.log("x" , x , "and Y " , y); 
+            /*prevent the lens from being positioned outside the image:*/
+            if (x > img.width - lens.offsetWidth) { x = img.width - lens.offsetWidth; } //else{img.addEventListener("mouseenter", bigImg);  }
+            if (x < 0) { x = 0; }
+            if (y > img.height - lens.offsetHeight) { y = img.height - lens.offsetHeight; img.addEventListener("mouseleave", normalImg); }//else{img.addEventListener("mouseenter", bigImg);  }
+            if (y < 0) { y = 0; }
+            /*set the position of the lens:*/
+            lens.style.left = x + "px";
+            lens.style.top = y + "px";
+            /*display what the lens "sees":*/
+            result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+        }
+        function getCursorPos(e) {
+            var a, x = 0, y = 0;
+            e = e || window.event;
+            /*get the x and y positions of the image:*/
+            a = img.getBoundingClientRect();
+            //console.log("------------------A  left" ,  a ); 
+            /*calculate the cursor's x and y coordinates, relative to the image:*/
+            x = e.pageX - a.left;
+            y = e.pageY - a.top;
+            /*consider any page scrolling:*/
+            x = x - window.pageXOffset;
+            y = y - window.pageYOffset;
+            return { x: x, y: y };
+        }
+        console.log("4 out");
+
+    }
 
 // 4 zoom end
 

@@ -15,7 +15,7 @@
     <!-- Start of Page Content -->
     <div class="page-content mb-10">
         <div class="container">
-           
+
             <!-- Start of Shop Content -->
             <div class="shop-content">
                 <!-- Start of Shop Main Content -->
@@ -56,150 +56,196 @@
                         </div>
                     </nav> -->
                     <%if(pro.length){%>
-                    <div class="product-wrapper row cols-lg-5 cols-md-4 cols-sm-3 cols-2 pt-5">
+                        <div class="product-wrapper row cols-lg-5 cols-md-4 cols-sm-3 cols-2 pt-5">
 
-                        
-                        <%for(i=0;i<pro.length;i++){%>
 
-                            <div class="product-wrap">
-                                <div class="product text-center">
-                                    <figure class="product-media">
-                                        <a href="/viewproduct/<%=pro[i]._id%>">
-                                            <img src="/user/images/productImage/<%=pro[i]._id%>1.jpg" alt="Product" width="300"
-                                                height="338" />
-                                            <img src="/user/images/productImage/<%=pro[i]._id%>1.jpg" alt="Product" width="300"
-                                                height="338" />
-                                        </a>
-                                        <div class="product-action-horizontal">
-                                            <a onclick="addToCart('<%=pro[i]._id%>')" class="btn-product-icon w-icon-cart"
-                                                title="Add to cart"></a>
-                                            <!-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Wishlist"></a> -->
-                                            <a href="/product-buy-now/<%=pro[i]._id%>" class="btn-product-icon w-icon-shipping"
-                                                title="Buy Now"></a>
-                                        </div>
-                                    </figure>
-                                    <div class="product-details">
-                                        <div class="product-cat">
-                                            <a href="/viewproduct/<%=pro[i]._id%>"><b><%=pro[i].producttitle%></b></a>
-                                        </div>
-                                        <h3 class="product-name">
-                                            <a href="/viewproduct/<%=pro[i]._id%>"><%=pro[i].productname%></a>
-                                        </h3>
-                                        <div class="ratings-container">
-                                            <!-- <div class="ratings-full">
+                            <%for(i=0;i<pro.length;i++){%>
+
+                                <div class="product-wrap">
+                                    <div class="product text-center">
+                                        <figure class="product-media">
+                                            <a href="/viewproduct/<%=pro[i]._id%>">
+                                                <img src="/user/images/productImage/<%=pro[i]._id%>1.jpg" alt="Product"
+                                                    width="300" height="338" />
+                                                <img src="/user/images/productImage/<%=pro[i]._id%>1.jpg" alt="Product"
+                                                    width="300" height="338" />
+                                            </a>
+                                            <div class="product-action-horizontal">
+                                                <a onclick="addToCart('<%=pro[i]._id%>')"
+                                                    class="btn-product-icon w-icon-cart" title="Add to cart"></a>
+
+                                                    <%if(user.status){%>
+                                                        <%let flag = 0%>
+                                                        <%for(j=0;j<checkWishlist.length;j++){%>
+                                                            <%if(checkWishlist[j] == pro[i]._id){%>
+                                                                <%flag = 1%>
+                                                                <%break%>
+                                                            <%}%>
+                                                        <%}%>
+                                                        <%if(flag===1){%>
+                                                            <a onclick="addToWishlist('active','<%=pro[i]._id%>')" id="wish-btn-active_<%=pro[i]._id%>"
+                                                                style="color: red;" class="btn-product-icon w-icon-heart-full" title="Wishlist"></a>
+                                                        <%}else{%>
+                                                            <a onclick="addToWishlist('desable','<%=pro[i]._id%>')" id="wish-btn-desable_<%=pro[i]._id%>"
+                                                                style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                        <%}%>
+                                                    <%}else{%>
+                                                        <a onclick="addToWishlist('<%=pro[i]._id%>')" 
+                                                            style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                    <%}%>
+
+
+
+                                                <a href="/product-buy-now/<%=pro[i]._id%>"
+                                                    class="btn-product-icon w-icon-shipping" title="Buy Now"></a>
+                                            </div>
+                                        </figure>
+                                        <div class="product-details">
+                                            <div class="product-cat">
+                                                <a href="/viewproduct/<%=pro[i]._id%>"><b>
+                                                        <%=pro[i].producttitle%>
+                                                    </b></a>
+                                            </div>
+                                            <h3 class="product-name">
+                                                <a href="/viewproduct/<%=pro[i]._id%>">
+                                                    <%=pro[i].productname%>
+                                                </a>
+                                            </h3>
+                                            <div class="ratings-container">
+                                                <!-- <div class="ratings-full">
                                                 <span class="ratings" style="width: 100%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div> -->
-                                            <!-- <a href="product-default.html" class="rating-reviews">(1 reviews)</a> -->
+                                                <!-- <a href="product-default.html" class="rating-reviews">(1 reviews)</a> -->
+                                            </div>
+
+
+                                            <%if(pro[i].isOfferActive===true){%>
+
+                                                <%if(pro[i].isProOfferActive===true){%>
+
+                                                    <%if(pro[i].offer_price> pro[i].productoffer_price){%>
+
+                                                        <p style="color: green; padding: 0; margin: 0;">
+                                                            <%=pro[i].productoffer_description%>
+                                                        </p>
+                                                        <div class="product-pa-wrapper">
+                                                            <div class="product-price" style="color: grey;">Rs.
+                                                                <del>
+                                                                    <%=pro[i].productprice%>
+                                                                </del>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-pa-wrapper">
+                                                            <div class="product-price" style="color: green;">Rs.
+                                                                <%=pro[i].productoffer_price%>
+                                                            </div>
+                                                        </div>
+                                                        <p style="color: green;"></p>
+
+                                                        <%}else{%>
+
+                                                            <p style="color: green; padding: 0; margin: 0;">
+                                                                <%=pro[i].categoryoffer_description%>
+                                                            </p>
+                                                            <div class="product-pa-wrapper">
+                                                                <div class="product-price" style="color: grey;">Rs.
+                                                                    <del>
+                                                                        <%=pro[i].productprice%>
+                                                                    </del>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-pa-wrapper">
+                                                                <div class="product-price" style="color: green;">Rs.
+                                                                    <%=pro[i].offer_price%>
+                                                                </div>
+                                                            </div>
+                                                            <p style="color: green;"></p>
+
+                                                            <%}%>
+
+                                                                <%}else{%>
+
+                                                                    <p style="color: green; padding: 0; margin: 0;">
+                                                                        <%=pro[i].categoryoffer_description%>
+                                                                    </p>
+                                                                    <div class="product-pa-wrapper">
+                                                                        <div class="product-price" style="color: grey;">
+                                                                            Rs.
+                                                                            <del>
+                                                                                <%=pro[i].productprice%>
+                                                                            </del>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="product-pa-wrapper">
+                                                                        <div class="product-price"
+                                                                            style="color: green;">Rs.
+                                                                            <%=pro[i].offer_price%>
+                                                                        </div>
+                                                                    </div>
+                                                                    <p style="color: green;"></p>
+
+                                                                    <%}%>
+
+                                                                        <%}else if(pro[i].isProOfferActive===true){%>
+
+                                                                            <p
+                                                                                style="color: green; padding: 0; margin: 0;">
+                                                                                <%=pro[i].productoffer_description%>
+                                                                            </p>
+                                                                            <div class="product-pa-wrapper">
+                                                                                <div class="product-price"
+                                                                                    style="color: grey;">Rs.
+                                                                                    <del>
+                                                                                        <%=pro[i].productprice%>
+                                                                                    </del>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="product-pa-wrapper">
+                                                                                <div class="product-price"
+                                                                                    style="color: green;">Rs.
+                                                                                    <%=pro[i].productoffer_price%>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p style="color: green;"></p>
+
+                                                                            <%}else{%>
+
+                                                                                <div class="product-pa-wrapper">
+                                                                                    <div class="product-price">Rs.
+                                                                                        <%=pro[i].productprice%>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <%}%>
+
+
+
+
                                         </div>
-
-
-                                        <%if(pro[i].isOfferActive===true){%>
-
-                                            <%if(pro[i].isProOfferActive===true){%>
-        
-                                                <%if(pro[i].offer_price> pro[i].productoffer_price){%>
-                                                    
-                                                    <p style="color: green; padding: 0; margin: 0;"><%=pro[i].productoffer_description%></p>
-                                                    <div class="product-pa-wrapper">
-                                                        <div class="product-price" style="color: grey;">Rs.
-                                                             <del><%=pro[i].productprice%></del>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-pa-wrapper">
-                                                        <div class="product-price" style="color: green;">Rs.
-                                                            <%=pro[i].productoffer_price%>
-                                                        </div>
-                                                    </div>
-                                                    <p style="color: green;"></p>
-        
-                                                <%}else{%>
-                                                        
-                                                    <p style="color: green; padding: 0; margin: 0;"><%=pro[i].categoryoffer_description%></p>
-                                                    <div class="product-pa-wrapper">
-                                                        <div class="product-price" style="color: grey;">Rs.
-                                                            <del><%=pro[i].productprice%></del>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-pa-wrapper">
-                                                        <div class="product-price" style="color: green;">Rs.
-                                                            <%=pro[i].offer_price%>
-                                                        </div>
-                                                    </div>
-                                                    <p style="color: green;"></p>
-        
-                                                <%}%>
-        
-                                            <%}else{%>
-        
-                                                <p style="color: green; padding: 0; margin: 0;"><%=pro[i].categoryoffer_description%></p>
-                                                <div class="product-pa-wrapper">
-                                                    <div class="product-price" style="color: grey;">Rs.
-                                                        <del><%=pro[i].productprice%></del>
-                                                    </div>
-                                                </div>
-                                                <div class="product-pa-wrapper">
-                                                <div class="product-price" style="color: green;">Rs.
-                                                    <%=pro[i].offer_price%>
-                                                </div>
-                                                </div>
-                                                <p style="color: green;"></p>
-        
-                                            <%}%>
-
-                                        <%}else if(pro[i].isProOfferActive === true){%>
-
-                                            <p style="color: green; padding: 0; margin: 0;"><%=pro[i].productoffer_description%></p>
-                                            <div class="product-pa-wrapper">
-                                                <div class="product-price" style="color: grey;">Rs.
-                                                    <del><%=pro[i].productprice%></del>
-                                                </div>
-                                            </div>
-                                            <div class="product-pa-wrapper">
-                                                <div class="product-price" style="color: green;">Rs.
-                                                    <%=pro[i].productoffer_price%>
-                                                </div>
-                                            </div>
-                                            <p style="color: green;"></p>
-        
-                                        <%}else{%>
-                                            
-                                            <div class="product-pa-wrapper">
-                                                <div class="product-price">Rs.
-                                                    <%=pro[i].productprice%>
-                                                </div>
-                                            </div>
-        
-                                        <%}%>
-
-
-                                        
-                                        
                                     </div>
                                 </div>
-                            </div>
-                            
-                        <%}%>
-                        
-                       
-                    </div>
 
-                    <%}else{%>
+                                <%}%>
 
 
-                        <div style="height: 50vh;" class="d-flex justify-content-center align-items-center">
-                            <h1>No Items Yet!!!!!</h1>
                         </div>
 
+                        <%}else{%>
 
-                    <%}%>
 
-                    <!-- <div class="toolbox toolbox-pagination justify-content-between"> -->
-                        <!-- <p class="showing-info mb-2 mb-sm-0">
+                            <div style="height: 50vh;" class="d-flex justify-content-center align-items-center">
+                                <h1>No Items Yet!!!!!</h1>
+                            </div>
+
+
+                            <%}%>
+
+                                <!-- <div class="toolbox toolbox-pagination justify-content-between"> -->
+                                <!-- <p class="showing-info mb-2 mb-sm-0">
                             Showing<span>1-15 of 60</span>Products
                         </p> -->
-                        <!-- <ul class="pagination">
+                                <!-- <ul class="pagination">
                             <li class="prev disabled">
                                 <a href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
                                     <i class="w-icon-long-arrow-left"></i>Prev
@@ -217,111 +263,111 @@
                                 </a>
                             </li>
                         </ul> -->
-                    </div>
                 </div>
-                <!-- End of Shop Main Content -->
-
-                <!-- Start of Sidebar, Shop Sidebar -->
-                <aside class="sidebar shop-sidebar left-sidebar sticky-sidebar-wrapper">
-                    <!-- Start of Sidebar Overlay -->
-                    <div class="sidebar-overlay"></div>
-                    <a class="sidebar-close" href="#"><i class="close-icon"></i></a>
-
-                    <!-- Start of Sidebar Content -->
-                    <div class="sidebar-content scrollable">
-                        <div class="filter-actions">
-                            <label>Filter :</label>
-                            <a href="#" class="btn btn-dark btn-link filter-clean">Clean All</a>
-                        </div>
-                        <!-- Start of Collapsible widget -->
-                        <div class="widget widget-collapsible">
-                            <h3 class="widget-title"><span>All Categories</span></h3>
-                            <ul class="widget-body filter-items search-ul">
-                                <li><a href="#">Accessories</a></li>
-                                <li><a href="#">Babies</a></li>
-                                <li><a href="#">Beauty</a></li>
-                                <li><a href="#">Decoration</a></li>
-                                <li><a href="#">Electronics</a></li>
-                                <li><a href="#">Fashion</a></li>
-                                <li><a href="#">Food</a></li>
-                                <li><a href="#">Furniture</a></li>
-                                <li><a href="#">Kitchen</a></li>
-                                <li><a href="#">Medical</a></li>
-                                <li><a href="#">Sports</a></li>
-                                <li><a href="#">Watches</a></li>
-                            </ul>
-                        </div>
-                        <!-- End of Collapsible Widget -->
-
-                        <!-- Start of Collapsible Widget -->
-                        <div class="widget widget-collapsible">
-                            <h3 class="widget-title"><span>Price</span></h3>
-                            <div class="widget-body">
-                                <ul class="filter-items search-ul">
-                                    <li><a href="#">$0.00 - $100.00</a></li>
-                                    <li><a href="#">$100.00 - $200.00</a></li>
-                                    <li><a href="#">$200.00 - $300.00</a></li>
-                                    <li><a href="#">$300.00 - $500.00</a></li>
-                                    <li><a href="#">$500.00+</a></li>
-                                </ul>
-                                <form class="price-range">
-                                    <input type="number" name="min_price" class="min_price text-center"
-                                        placeholder="$min"><span class="delimiter">-</span><input type="number"
-                                        name="max_price" class="max_price text-center" placeholder="$max"><a
-                                        href="#" class="btn btn-primary btn-rounded">Go</a>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- End of Collapsible Widget -->
-
-                        <!-- Start of Collapsible Widget -->
-                        <div class="widget widget-collapsible">
-                            <h3 class="widget-title"><span>Size</span></h3>
-                            <ul class="widget-body filter-items item-check mt-1">
-                                <li><a href="#">Extra Large</a></li>
-                                <li><a href="#">Large</a></li>
-                                <li><a href="#">Medium</a></li>
-                                <li><a href="#">Small</a></li>
-                            </ul>
-                        </div>
-                        <!-- End of Collapsible Widget -->
-
-                        <!-- Start of Collapsible Widget -->
-                        <div class="widget widget-collapsible">
-                            <h3 class="widget-title"><span>Brand</span></h3>
-                            <ul class="widget-body filter-items item-check mt-1">
-                                <li><a href="#">Elegant Auto Group</a></li>
-                                <li><a href="#">Green Grass</a></li>
-                                <li><a href="#">Node Js</a></li>
-                                <li><a href="#">NS8</a></li>
-                                <li><a href="#">Red</a></li>
-                                <li><a href="#">Skysuite Tech</a></li>
-                                <li><a href="#">Sterling</a></li>
-                            </ul>
-                        </div>
-                        <!-- End of Collapsible Widget -->
-
-                        <!-- Start of Collapsible Widget -->
-                        <div class="widget widget-collapsible">
-                            <h3 class="widget-title"><span>Color</span></h3>
-                            <ul class="widget-body filter-items item-check">
-                                <li><a href="#">Black</a></li>
-                                <li><a href="#">Blue</a></li>
-                                <li><a href="#">Brown</a></li>
-                                <li><a href="#">Green</a></li>
-                                <li><a href="#">Grey</a></li>
-                                <li><a href="#">Orange</a></li>
-                                <li><a href="#">Yellow</a></li>
-                            </ul>
-                        </div>
-                        <!-- End of Collapsible Widget -->
-                    </div>
-                    <!-- End of Sidebar Content -->
-                </aside>
-                <!-- End of Shop Sidebar -->
             </div>
-            <!-- End of Shop Content -->
+            <!-- End of Shop Main Content -->
+
+            <!-- Start of Sidebar, Shop Sidebar -->
+            <aside class="sidebar shop-sidebar left-sidebar sticky-sidebar-wrapper">
+                <!-- Start of Sidebar Overlay -->
+                <div class="sidebar-overlay"></div>
+                <a class="sidebar-close" href="#"><i class="close-icon"></i></a>
+
+                <!-- Start of Sidebar Content -->
+                <div class="sidebar-content scrollable">
+                    <div class="filter-actions">
+                        <label>Filter :</label>
+                        <a href="#" class="btn btn-dark btn-link filter-clean">Clean All</a>
+                    </div>
+                    <!-- Start of Collapsible widget -->
+                    <div class="widget widget-collapsible">
+                        <h3 class="widget-title"><span>All Categories</span></h3>
+                        <ul class="widget-body filter-items search-ul">
+                            <li><a href="#">Accessories</a></li>
+                            <li><a href="#">Babies</a></li>
+                            <li><a href="#">Beauty</a></li>
+                            <li><a href="#">Decoration</a></li>
+                            <li><a href="#">Electronics</a></li>
+                            <li><a href="#">Fashion</a></li>
+                            <li><a href="#">Food</a></li>
+                            <li><a href="#">Furniture</a></li>
+                            <li><a href="#">Kitchen</a></li>
+                            <li><a href="#">Medical</a></li>
+                            <li><a href="#">Sports</a></li>
+                            <li><a href="#">Watches</a></li>
+                        </ul>
+                    </div>
+                    <!-- End of Collapsible Widget -->
+
+                    <!-- Start of Collapsible Widget -->
+                    <div class="widget widget-collapsible">
+                        <h3 class="widget-title"><span>Price</span></h3>
+                        <div class="widget-body">
+                            <ul class="filter-items search-ul">
+                                <li><a href="#">$0.00 - $100.00</a></li>
+                                <li><a href="#">$100.00 - $200.00</a></li>
+                                <li><a href="#">$200.00 - $300.00</a></li>
+                                <li><a href="#">$300.00 - $500.00</a></li>
+                                <li><a href="#">$500.00+</a></li>
+                            </ul>
+                            <form class="price-range">
+                                <input type="number" name="min_price" class="min_price text-center"
+                                    placeholder="$min"><span class="delimiter">-</span><input type="number"
+                                    name="max_price" class="max_price text-center" placeholder="$max"><a href="#"
+                                    class="btn btn-primary btn-rounded">Go</a>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End of Collapsible Widget -->
+
+                    <!-- Start of Collapsible Widget -->
+                    <div class="widget widget-collapsible">
+                        <h3 class="widget-title"><span>Size</span></h3>
+                        <ul class="widget-body filter-items item-check mt-1">
+                            <li><a href="#">Extra Large</a></li>
+                            <li><a href="#">Large</a></li>
+                            <li><a href="#">Medium</a></li>
+                            <li><a href="#">Small</a></li>
+                        </ul>
+                    </div>
+                    <!-- End of Collapsible Widget -->
+
+                    <!-- Start of Collapsible Widget -->
+                    <div class="widget widget-collapsible">
+                        <h3 class="widget-title"><span>Brand</span></h3>
+                        <ul class="widget-body filter-items item-check mt-1">
+                            <li><a href="#">Elegant Auto Group</a></li>
+                            <li><a href="#">Green Grass</a></li>
+                            <li><a href="#">Node Js</a></li>
+                            <li><a href="#">NS8</a></li>
+                            <li><a href="#">Red</a></li>
+                            <li><a href="#">Skysuite Tech</a></li>
+                            <li><a href="#">Sterling</a></li>
+                        </ul>
+                    </div>
+                    <!-- End of Collapsible Widget -->
+
+                    <!-- Start of Collapsible Widget -->
+                    <div class="widget widget-collapsible">
+                        <h3 class="widget-title"><span>Color</span></h3>
+                        <ul class="widget-body filter-items item-check">
+                            <li><a href="#">Black</a></li>
+                            <li><a href="#">Blue</a></li>
+                            <li><a href="#">Brown</a></li>
+                            <li><a href="#">Green</a></li>
+                            <li><a href="#">Grey</a></li>
+                            <li><a href="#">Orange</a></li>
+                            <li><a href="#">Yellow</a></li>
+                        </ul>
+                    </div>
+                    <!-- End of Collapsible Widget -->
+                </div>
+                <!-- End of Sidebar Content -->
+            </aside>
+            <!-- End of Shop Sidebar -->
         </div>
+        <!-- End of Shop Content -->
+    </div>
     </div>
     <!-- End of Page Content -->
 </main>
@@ -332,35 +378,80 @@
 <script>
 
 
-function addToCart(id) {
+function addToWishlist(name,id) {
+        console.log(name);
+        $.ajax({
+            url: '/add-to-wishlist',
+            method: 'post',
+            data: { proId: id },
+            success: (response) => {
+                
+                if (response.login === true) {
 
-console.log(id);
-$.ajax({
-    url: '/add-to-cart',
-    method: 'post',
-    data: { proId: id },
-    success: (response) => {
-                if(response.status){
+                    if (response.status === 1) {
+                        $(`#wish-btn-${name}_${id}`).removeClass('w-icon-heart')
+                        
+                        $(`#wish-btn-${name}_${id}`).addClass('w-icon-heart-full')
+                        
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Product Added to Wishlist',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }else if(response.status === 2){
+                        $(`#wish-btn-${name}_${id}`).removeClass('w-icon-heart-full')
+                        
+                        $(`#wish-btn-${name}_${id}`).addClass('w-icon-heart')
+                        
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Product Removed from Wishlist',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+
+                } else {
+                    window.location.assign('/login')
+                }
+
+            }
+        })
+    }
+
+
+    function addToCart(id) {
+
+        console.log(id);
+        $.ajax({
+            url: '/add-to-cart',
+            method: 'post',
+            data: { proId: id },
+            success: (response) => {
+                if (response.status) {
 
                     let count = $('#cart_count').html()
-                    $('#cart_count').html(parseInt(count)+1)    
+                    $('#cart_count').html(parseInt(count) + 1)
 
                     Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Product Added to cart',
-                    showConfirmButton: false,
-                    timer: 1500
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Product Added to cart',
+                        showConfirmButton: false,
+                        timer: 1500
                     })
-                }else{
+                } else {
                     window.location.assign('/login')
-                    
-                }
-                
-            }
-})
 
-}
+                }
+
+            }
+        })
+
+    }
 
 
 </script>

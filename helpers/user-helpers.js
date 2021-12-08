@@ -71,11 +71,52 @@ module.exports = {
             userData.blockStatus = "Active"
             userData.date = new Date()
             userData.coupon = []
+            userData.wallet = 0
+            userData.refferalCode = Math.floor(Math.random() * 10000)
+            
             console.log(userData);
             db.get().collection(collection.USERS_COLLECTION).insertOne(userData).then((data) => {
 
-                resolve()
+                let userId = ObjectId(data.insertedId).toString()
+                resolve(userId)
             })
+        })
+    },
+    addWalletAmount:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let user = await db.get().collection(collection.USERS_COLLECTION).findOne({_id:objectId(userId)})
+            console.log(user);
+            wallet = user.wallet+20
+            await db.get().collection(collection.USERS_COLLECTION).updateOne(
+                {
+                    _id:objectId(userId)
+                },
+                {
+                    $set:{wallet:wallet}
+                }
+            )
+            resolve()
+        })
+    },
+    checkReferalcode:(referalCofe)=>{
+        console.log(referalCofe);
+        return new Promise(async(resolve,reject)=>{
+            let code = await db.get().collection(collection.USERS_COLLECTION).findOne({refferalCode:referalCofe})
+            if(code){
+                wallet = code.wallet+25
+                await db.get().collection(collection.USERS_COLLECTION).updateOne(
+                    {
+                        _id:code._id
+                    },
+                    {
+                        $set:{wallet:wallet}
+                    }
+                )
+                resolve({value : true})
+            }else{
+                resolve({value : false})
+            }
+            
         })
     },
     doLogin: (userData) => {
@@ -214,8 +255,122 @@ module.exports = {
             }
         })
     },
-    addToWishlist: () => {
+    addToWishlist: (proId,userId) => {
+        return new Promise(async(resolve, reject)=>{
+            
+            let user = await db.get().collection(collection.WISHLIST_COLLESTION).find({user:objectId(userId)}).toArray()
+            console.log(user);
+            if(user.length){
+                let flag = 0
+                let products = user[0].products
+                console.log(flag);
+                
+                for(i=0;i<products.length;i++){
+                    console.log(products[i]);
+                    if(products[i] === proId){
+                        flag = 1
+                        break;
+                    }
+                }
+                if(flag === 1){
+                    db.get().collection(collection.WISHLIST_COLLESTION).updateOne(
+                        {
+                            user:objectId(userId)
+                        },
+                        {
+                            $pull:{products:proId}
+                        }
+                    )
+                    console.log("yessss");
+                    response.status = 2
+                    resolve(response)
+                }else{
+                    db.get().collection(collection.WISHLIST_COLLESTION).updateOne(
+                        {
+                            user:objectId(userId)
+                        },
+                        {
+                            $push:{products:proId}
+                        }
+                    )
+                    console.log("noooo");
+                    response.status = 1
+                    resolve(response)
+                }
+            }else{
+                console.log("hereeeeeee");
+                let wishlistObj = {
+                    user:objectId(userId),
+                    products:[proId]
+                }
+                await db.get().collection(collection.WISHLIST_COLLESTION).insertOne(wishlistObj)
 
+                response.status = 1
+                resolve(response)
+            }
+        })
+
+    },
+    getWishlistforCheck:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let wishlist = await db.get().collection(collection.WISHLIST_COLLESTION).aggregate(
+                [
+                    {
+                        $match:{user:objectId(userId)}
+                    }
+                ]
+            ).toArray()
+            if(wishlist.length!=0){
+                resolve(wishlist[0].products)
+            }else{
+                resolve(wishlist)
+            }
+            
+        })
+    },
+    getWishlist: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            let wishlist = await db.get().collection(collection.WISHLIST_COLLESTION).aggregate(
+                [
+                    {
+                        $match: { user: objectId(userId) }
+                    },
+                    {
+                        $unwind: '$products'
+                    },
+                    {
+                        $project: {
+                            item: '$products'
+                        }
+                    }
+                ]
+            ).toArray()
+            let wish = []
+            for(i=0;i<wishlist.length;i++){
+                let product = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
+                    [
+                        {
+                            $match:{_id:objectId(wishlist[i].item)}
+                        }
+                    ]
+                ).toArray()
+                wish.push(product[0])
+            }
+            resolve(wish)
+        })
+    },
+    removeWishlistProduct:(userId,proId)=>{
+        return new Promise(async(resolve,reject)=>{
+            await db.get().collection(collection.WISHLIST_COLLESTION).updateOne(
+                {
+                    user:objectId(userId)
+                },
+                {
+                    $pull:{products:proId}
+                }
+            )
+            resolve()
+        })
     },
     getCartProducts: (userId) => {
         return new Promise(async (resolve, reject) => {
@@ -250,7 +405,7 @@ module.exports = {
                         $project: {
                             item: 1, quantity: 1, product: 1, subTotal: { $multiply: ['$quantity', '$product.productprice'] },
                             offerSubTotal: { $multiply: ['$quantity', '$product.offer_price'] },
-                            proOfferSubTotal:{ $multiply: ['$quantity', '$product.productoffer_price'] }
+                            proOfferSubTotal: { $multiply: ['$quantity', '$product.productoffer_price'] }
                         }
                     }
                 ]
@@ -303,71 +458,65 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
 
             let checkPro = await db.get().collection(collection.CART_COLLECTION).findOne({ user: objectId(userId) })
-
-            if (checkPro.products != 0) {
-
-                let totalPrice = await db.get().collection(collection.CART_COLLECTION).aggregate(
-                    [
-                        {
-                            $match: { user: objectId(userId) }
-                        },
-                        {
-                            $unwind: '$products'
-                        },
-                        {
-                            $project: {
-                                item: '$products.item',
-                                quantity: '$products.quantity'
+            if(checkPro){
+                
+                if (checkPro.products != 0) {
+                    let totalPrice = await db.get().collection(collection.CART_COLLECTION).aggregate(
+                        [
+                            {
+                                $match: { user: objectId(userId) }
+                            },
+                            {
+                                $unwind: '$products'
+                            },
+                            {
+                                $project: {
+                                    item: '$products.item',
+                                    quantity: '$products.quantity'
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: collection.PRODUCTS_COLLECTION,
+                                    localField: 'item',
+                                    foreignField: '_id',
+                                    as: 'product'
+                                }
+                            },
+                            {
+                                $project: {
+                                    item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
+                                }
                             }
-                        },
-                        {
-                            $lookup: {
-                                from: collection.PRODUCTS_COLLECTION,
-                                localField: 'item',
-                                foreignField: '_id',
-                                as: 'product'
-                            }
-                        },
-                        {
-                            $project: {
-                                item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
-                            }
-                        }
-                    ]
-                ).toArray()
-                let total = 0
-
-                for (i = 0; i < totalPrice.length; i++) {
-
-                    let subtotal = 0
-
-                    if(totalPrice[i].product.isOfferActive === true){
-
-                        if(totalPrice[i].product.isProOfferActive === true){
-
-                            if(totalPrice[i].product.offer_price > totalPrice[i].product.productoffer_price){
-
-                                subtotal = totalPrice[i].quantity * totalPrice[i].product.productoffer_price
-                            }else{
-
+                        ]
+                    ).toArray()
+                    let total = 0
+                    for (i = 0; i < totalPrice.length; i++) {
+                        let subtotal = 0
+                        if (totalPrice[i].product.isOfferActive === true) {
+                            if (totalPrice[i].product.isProOfferActive === true) {
+                                if (totalPrice[i].product.offer_price > totalPrice[i].product.productoffer_price) {
+                                    subtotal = totalPrice[i].quantity * totalPrice[i].product.productoffer_price
+                                } else {
+                                    subtotal = totalPrice[i].quantity * totalPrice[i].product.offer_price
+                                }
+                            } else {
                                 subtotal = totalPrice[i].quantity * totalPrice[i].product.offer_price
                             }
-                        }else{
-
-                            subtotal = totalPrice[i].quantity * totalPrice[i].product.offer_price
+                        } else if (totalPrice[i].product.isProOfferActive === true) {
+                            subtotal = totalPrice[i].quantity * totalPrice[i].product.productoffer_price
+                        } else {
+                            subtotal = totalPrice[i].quantity * totalPrice[i].product.productprice
                         }
-                    }else if(totalPrice[i].product.isProOfferActive === true){
-                        subtotal = totalPrice[i].quantity * totalPrice[i].product.productoffer_price
-                    }else{
-                        subtotal = totalPrice[i].quantity * totalPrice[i].product.productprice
+                        console.log(subtotal);
+                        total = subtotal + total
                     }
-
-                    console.log(subtotal);
-                    total = subtotal + total
+                    console.log(total);
+                    resolve(total)
+                } else {
+                    resolve(0)
                 }
-                console.log(total);
-                resolve(total)
-            } else {
+            }else{
                 resolve(0)
             }
 
@@ -411,17 +560,17 @@ module.exports = {
                     },
                     {
                         $project: {
-                            product:1,
+                            product: 1,
                             subTotal: { $multiply: ['$quantity', '$product.productprice'] },
                             offerSubTotal: { $multiply: ['$quantity', '$product.offer_price'] },
-                            proOfferSubTotal:{ $multiply: ['$quantity', '$product.productoffer_price'] }
+                            proOfferSubTotal: { $multiply: ['$quantity', '$product.productoffer_price'] }
                         }
                     }
                 ]
             ).toArray()
             console.log(Subtotal);
             resolve(Subtotal[0])
-            
+
         })
     },
     addAddress: (newAddress) => {
@@ -583,6 +732,9 @@ module.exports = {
         })
     },
     placeOrderDirect: (order, products, totalPrice, address, user) => {
+        console.log('*********');
+        console.log(totalPrice);
+        console.log('*********');
         let proObj = {
             item: objectId(products),
             quantity: 1
@@ -613,6 +765,18 @@ module.exports = {
                 // console.log(orderId);
                 resolve(orderId)
             })
+        })
+    },
+    userWalletClear:(userId)=>{
+        return new Promise(async(req,res)=>{
+            db.get().collection(collection.USERS_COLLECTION).updateOne(
+                {
+                    _id:objectId(userId)
+                },
+                {
+                    $set:{wallet:0}
+                }
+            )
         })
     },
     getOrder: (userId) => {
@@ -742,7 +906,7 @@ module.exports = {
         })
     },
     getSearchProducts: (value) => {
-       
+
         return new Promise(async (resolve, reject) => {
             let products = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
                 [
@@ -764,7 +928,7 @@ module.exports = {
         })
     },
     applyCoupon: (couponCode, userId) => {
-        
+
         return new Promise(async (resolve, reject) => {
             let coupon = await db.get().collection(collection.COUPONS_COLLECTION).aggregate(
                 [
@@ -781,7 +945,7 @@ module.exports = {
                 /* checking this user this coupon used or not */
                 response.err = null
                 for (i = 0; i < user.coupon.length; i++) {
-                    console.log('bottom:',user.coupon[i], user.coupon[i].length, couponCode);
+                    console.log('bottom:', user.coupon[i], user.coupon[i].length, couponCode);
                     if (user.coupon[i] === couponCode) {
                         response.err = 1 /* user already used this coupon */
                     }

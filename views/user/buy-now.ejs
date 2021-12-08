@@ -83,7 +83,7 @@
                                             your
                                             shipping address<i class="w-icon-long-arrow-right"></i></a>
                                         <a onclick="deleteAddress('<%=address[i]._id%>')"
-                                            class="btn btn-link btn-underline btn-icon-right text-success pt-5">Delete
+                                            class="btn btn-link btn-underline btn-icon-right text-danger pt-5">Delete
                                             Address<i class="w-icon-long-arrow-right"></i></a>
                                     </div>
 
@@ -136,58 +136,59 @@
                                             <%if(product.isOfferActive===true){%>
 
                                                 <%if(product.isProOfferActive===true){%>
-            
-                                                    <%if(product.offer_price > product.productoffer_price){%>
-                                                        
+
+                                                    <%if(product.offer_price> product.productoffer_price){%>
+
                                                         <td>
                                                             Discount <%=product.productoffer_discount%>%
                                                         </td>
                                                         <td class="product-total"><span>
-                                                            <%=product.productoffer_price-product.productprice%>
-                                                        </span></td>
-        
-                                                    <%}else{%>
-                                                            
-                                                        <td>
-                                                            Discount <%=product.categoryoffer_discount%>%
-                                                        </td>
-                                                        <td class="product-total"><span>
-                                                                <%=product.offer_price-product.productprice%>
-                                                        </span></td>
-            
-                                                    <%}%>
-            
-                                                <%}else{%>
-            
-                                                    <td>
-                                                        Discount <%=product.categoryoffer_discount%>%
-                                                    </td>
-                                                    <td class="product-total"><span>
-                                                            <%=product.offer_price-product.productprice%>
-                                                    </span></td>
-            
-                                                <%}%>
-            
-                                            <%}else if(product.isProOfferActive === true){%>
-                                                
-                                                <td>
-                                                    Discount <%=product.productoffer_discount%>%
-                                                </td>
-                                                <td class="product-total"><span>
-                                                    <%=product.productoffer_price-product.productprice%>
-                                                </span></td>
-            
-                                            <%}else{%>
-        
-                                                <td>
-                                                    Discount
-                                                </td>
-                                                <td class="product-total"><span>
-                                                        0
-                                                </span></td>
-        
-                                            <%}%>
-                                            
+                                                                <%=product.productoffer_price-product.productprice%>
+                                                            </span></td>
+
+                                                        <%}else{%>
+
+                                                            <td>
+                                                                Discount <%=product.categoryoffer_discount%>%
+                                                            </td>
+                                                            <td class="product-total"><span>
+                                                                    <%=product.offer_price-product.productprice%>
+                                                                </span></td>
+
+                                                            <%}%>
+
+                                                                <%}else{%>
+
+                                                                    <td>
+                                                                        Discount <%=product.categoryoffer_discount%>%
+                                                                    </td>
+                                                                    <td class="product-total"><span>
+                                                                            <%=product.offer_price-product.productprice%>
+                                                                        </span></td>
+
+                                                                    <%}%>
+
+                                                                        <%}else if(product.isProOfferActive===true){%>
+
+                                                                            <td>
+                                                                                Discount
+                                                                                <%=product.productoffer_discount%>%
+                                                                            </td>
+                                                                            <td class="product-total"><span>
+                                                                                    <%=product.productoffer_price-product.productprice%>
+                                                                                </span></td>
+
+                                                                            <%}else{%>
+
+                                                                                <td>
+                                                                                    Discount
+                                                                                </td>
+                                                                                <td class="product-total"><span>
+                                                                                        0
+                                                                                    </span></td>
+
+                                                                                <%}%>
+
                                         </tr>
                                     </tbody>
 
@@ -218,7 +219,7 @@
                                             </td>
                                         </tr>
                                         <tr id="discount_count">
-                                            
+
                                         </tr>
                                         <tr class="order-total" id="total_change">
                                             <th>
@@ -230,52 +231,61 @@
                                                 <%if(product.isOfferActive===true){%>
 
                                                     <%if(product.isProOfferActive===true){%>
-                
-                                                        <%if(product.offer_price > product.productoffer_price){%>
-                                                            
+
+                                                        <%if(product.offer_price> product.productoffer_price){%>
+
                                                             <b>RS.<span id="total_price">
-                                                                <%=product.productoffer_price%>
-                                                            </span></b>
-            
-                                                        <%}else{%>
-                                                                
-                                                            <b>RS.<span id="total_price">
-                                                                <%=product.offer_price%>
-                                                            </span></b>
-                
-                                                        <%}%>
-                
-                                                    <%}else{%>
-                
-                                                        <b>RS.<span id="total_price">
-                                                            <%=product.offer_price%>
-                                                        </span></b>
-                
-                                                    <%}%>
-                
-                                                <%}else if(product.isProOfferActive === true){%>
-                                                    
-                                                    <b>RS.<span id="total_price">
-                                                        <%=product.productoffer_price%>
-                                                    </span></b>
-                
-                                                <%}else{%>
-            
-                                                    <b>RS.<span id="total_price">
-                                                        <%=product.productprice%>
-                                                    </span></b>
-            
-                                                <%}%>
-                                                
+                                                                    <%=product.productoffer_price%>
+                                                                </span></b>
+
+                                                            <%}else{%>
+
+                                                                <b>RS.<span id="total_price">
+                                                                        <%=product.offer_price%>
+                                                                    </span></b>
+
+                                                                <%}%>
+
+                                                                    <%}else{%>
+
+                                                                        <b>RS.<span id="total_price">
+                                                                                <%=product.offer_price%>
+                                                                            </span></b>
+
+                                                                        <%}%>
+
+                                                                            <%}else
+                                                                                if(product.isProOfferActive===true){%>
+
+                                                                                <b>RS.<span id="total_price">
+                                                                                        <%=product.productoffer_price%>
+                                                                                    </span></b>
+
+                                                                                <%}else{%>
+
+                                                                                    <b>RS.<span id="total_price">
+                                                                                            <%=product.productprice%>
+                                                                                        </span></b>
+
+                                                                                    <%}%>
+
                                             </td>
                                         </tr>
                                     </tfoot>
                                 </table>
-                                <input type="text" style="display: none;" name="totalPrice" id="totalPrice" value="<%=product.productprice%>">
-                                <input type="text" style="display: none;" name="coupon_status" id="coupon_status" value="false">
+                                <input type="text" style="display: none;" name="totalPrice" id="totalPrice"
+                                    value="<%=product.productprice%>">
+                                <input type="text" style="display: none;" name="coupon_status" id="coupon_status"
+                                    value="false">
                                 <input type="text" style="display: none;" name="discount" id="discount" value="0">
-                                <input style="display: none;" id="coupon_code" name="coupon_code" value="" type="text" >
- 
+                                <input style="display: none;" id="coupon_code" name="coupon_code" value="" type="text">
+                                <input type="text" style="display: none;" name="wallet_status" id="wallet_status" value="false">
+
+                                <div class="cart-subtotal d-flex align-items-center justify-content-between">
+                                    <label class="ls-25">Wallet Balance Rs.<span id="wallet_price"><%=userDetails[0].wallet%></span></label>
+                                    
+                                    <span><button class="btn btn-success" id="wallet_btn" onclick="useWallet('<%=userDetails[0].wallet%>')">Use Wallet</button></span>
+                                </div>
                                 <div class="payment-methods" id="payment_method">
                                     <h4 class="title font-weight-bold ls-25 pb-0 mb-1">Payment Methods</h4>
                                     <div class="accordion payment-accordion">
@@ -303,59 +313,84 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group place-order pt-6" >
-                                    <button type="submit" class="btn btn-dark btn-block btn-rounded">Place Order</button>
-                                </div>
-                                <div id="coupon_div" class="pt-4" >
-                                    <form class="coupon" id="apply_coupon">
-                                        <h5 class="title coupon-title font-weight-bold text-uppercase">Coupon Discount
-                                        </h5>
-                                        <input type="text" id="coupon_inp" name="coupon" class="form-control mb-4"
-                                            placeholder="Enter coupon code here..." />
-                                        <p id="coupon_error" style="color: red;"></p>
+                                <%if(address.length){%>
 
+                                    <div class="form-group place-order pt-6">
+                                        <button type="submit" class="btn btn-dark btn-block btn-rounded">Place
+                                            Order</button>
+                                    </div>
 
+                                    <%}else{%>
 
-                                        <%if(product.isOfferActive===true){%>
+                                        <div class="form-group place-order pt-6">
+                                            <button onclick="addressNull()"
+                                                class="btn btn-dark btn-block btn-rounded">Place
+                                                Order</button>
+                                        </div>
 
-                                            <%if(product.isProOfferActive===true){%>
-        
-                                                <%if(product.offer_price > product.productoffer_price){%>
-                                                   
-                                                    <button class="btn btn-dark btn-outline btn-rounded"
-                                                        onclick="applyCoupon('<%=product.productoffer_price%>')">Apply Coupon</button>
-
-                                                <%}else{%>
-                                                        
-                                                    <button class="btn btn-dark btn-outline btn-rounded"
-                                                        onclick="applyCoupon('<%=product.offer_price%>')">Apply Coupon</button>
-        
-                                                <%}%>
-        
-                                            <%}else{%>
-        
-                                                <button class="btn btn-dark btn-outline btn-rounded"
-                                                    onclick="applyCoupon('<%=product.offer_price%>')">Apply Coupon</button>
-        
-                                            <%}%>
-        
-                                        <%}else if(product.isProOfferActive === true){%>
-                                            
-                                            <button class="btn btn-dark btn-outline btn-rounded"
-                                                onclick="applyCoupon('<%=product.productoffer_price%>')">Apply Coupon</button>
-
-        
-                                        <%}else{%>
-    
-                                            <button class="btn btn-dark btn-outline btn-rounded"
-                                                onclick="applyCoupon('<%=product.productprice%>')">Apply
-                                                Coupon</button>
-    
                                         <%}%>
-                                    
 
-                                    </form>
-                                </div>
+
+                                            <div id="coupon_div" class="pt-4">
+                                                <form class="coupon" id="apply_coupon">
+                                                    <h5 class="title coupon-title font-weight-bold text-uppercase">
+                                                        Coupon Discount
+                                                    </h5>
+                                                    <input type="text" id="coupon_inp" name="coupon"
+                                                        class="form-control mb-4"
+                                                        placeholder="Enter coupon code here..." />
+                                                    <p id="coupon_error" style="color: red;"></p>
+
+
+
+                                                    <%if(product.isOfferActive===true){%>
+
+                                                        <%if(product.isProOfferActive===true){%>
+
+                                                            <%if(product.offer_price> product.productoffer_price){%>
+
+                                                                <button class="btn btn-dark btn-outline btn-rounded"
+                                                                    onclick="applyCoupon('<%=product.productoffer_price%>')">Apply
+                                                                    Coupon</button>
+
+                                                                <%}else{%>
+
+                                                                    <button class="btn btn-dark btn-outline btn-rounded"
+                                                                        onclick="applyCoupon('<%=product.offer_price%>')">Apply
+                                                                        Coupon</button>
+
+                                                                    <%}%>
+
+                                                                        <%}else{%>
+
+                                                                            <button
+                                                                                class="btn btn-dark btn-outline btn-rounded"
+                                                                                onclick="applyCoupon('<%=product.offer_price%>')">Apply
+                                                                                Coupon</button>
+
+                                                                            <%}%>
+
+                                                                                <%}else
+                                                                                    if(product.isProOfferActive===true){%>
+
+                                                                                    <button
+                                                                                        class="btn btn-dark btn-outline btn-rounded"
+                                                                                        onclick="applyCoupon('<%=product.productoffer_price%>')">Apply
+                                                                                        Coupon</button>
+
+
+                                                                                    <%}else{%>
+
+                                                                                        <button
+                                                                                            class="btn btn-dark btn-outline btn-rounded"
+                                                                                            onclick="applyCoupon('<%=product.productprice%>')">Apply
+                                                                                            Coupon</button>
+
+                                                                                        <%}%>
+
+
+                                                </form>
+                                            </div>
 
                             </div>
                         </div>
@@ -371,11 +406,37 @@
 <!-- razorpay -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 
-    function applyCoupon(productPrice) {
+    function useWallet(walletPrice) {
+
+        let totalPrice = $('#total_price').html().trim()
+        console.log(walletPrice);
+        event.preventDefault()
+        $('#totalPrice').val(totalPrice - walletPrice)
+        $('#total_price').html(totalPrice - walletPrice)
+        $('#wallet_price').html('0')
+        $('#wallet_status').val('true')
+        $('#wallet_btn').attr('disabled', 'disabled');
+
+    }
+
+    function addressNull() {
+
         event.preventDefault()
 
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Select Address!'
+        })
+    }
+
+    function applyCoupon() {
+        event.preventDefault()
+        let productPrice = $('#total_price').html().trim()
         let coupon = $('#coupon_inp').val()
         $('#coupon_error').html('')
         let couponErr = true
@@ -424,10 +485,10 @@
                             $('#total_change').html(
                                 `
                                 <th><b>Total</b></th>
-                                <td><b>RS.<span>${productPrice-priceAfterDiscount}</span></b></td>
+                                <td><b>RS.<span>${productPrice - priceAfterDiscount}</span></b></td>
                                 `
                             )
-                            $('#totalPrice').val(productPrice-priceAfterDiscount)
+                            $('#totalPrice').val(productPrice - priceAfterDiscount)
                         }
 
                     } else {
@@ -485,11 +546,11 @@
             },
             "modal": {
                 "ondismiss": function () {
-                   $.ajax({
-                       url:'/delete-pendng-order',
-                       method:'post'
+                    $.ajax({
+                        url: '/delete-pendng-order',
+                        method: 'post'
 
-                   })
+                    })
                 }
             },
             "prefill": {
@@ -742,12 +803,12 @@
 
     function editAddress(id) {
 
-        let name = $('#name_' + id).html()
-        let address = $('#address_' + id).html()
-        let town = $('#town_' + id).html()
-        let state = $('#state_' + id).html()
-        let zip = $('#zip_' + id).html()
-        let mobile = $('#mobile_' + id).html()
+        let name = $('#name_' + id).html().trim()
+        let address = $('#address_' + id).html().trim()
+        let town = $('#town_' + id).html().trim()
+        let state = $('#state_' + id).html().trim()
+        let zip = $('#zip_' + id).html().trim()
+        let mobile = $('#mobile_' + id).html().trim()
 
         console.log(name);
 

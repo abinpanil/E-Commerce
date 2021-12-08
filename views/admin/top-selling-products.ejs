@@ -1,0 +1,295 @@
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Orders</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
+                                <li class="breadcrumb-item active">Orders</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card" id="">
+                        <div class="card-body">
+                            <!-- <div class="row pb-3 justify-content-between">
+                                <div class="col-md-2">
+                                    <label class="form-label">Sort by</label>
+                                    <select class="form-select" onchange="date()" id="date">
+                                        <option>
+                                            
+                                        </option>
+                                        <option>Daily</option>
+                                        <option>Weekly</option>
+                                        <option>Monthly</option>
+                                        <option>Yearly</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row"><label class="form-label">Sort by Date</label></div>
+                                    <div class="row">
+                                        <div class="col-md-4"><input class="form-control" type="date"
+                                                id="sort_date_from">
+                                            <p style="color: red;" id="fromdate"></p>
+                                        </div>
+
+                                        <div class="col-md-4"><input class="form-control" type="date" id="sort_date_to">
+
+                                            <p style="color: red;" id="todate"></p>
+                                        </div>
+
+                                        <div class="col-md-2"><button onclick="sortByDate()"
+                                                class="btn btn-secondary">Sort</button></div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="table-rep-plugin">
+                                <div class="table-responsive mb-0" data-pattern="priority-columns" id="change">
+                                    <table id="example" class=" display table table-striped">
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th data-priority="1">Product Id</th>
+                                                <th data-priority="3">Product</th>
+                                                <th data-priority="3">Category</th>
+                                                <th data-priority="3">Sub Category</th>
+                                                <th data-priority="6">Total Sales</th>
+                                                <th data-priority="7">Product Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="update_table">
+
+                                            <%for(i=0;i<report.length;i++){%>
+
+                                                <tr>
+                                                    <th>
+                                                        <%=report[i]._id%>
+                                                    </th>
+                                                    <th>
+                                                        <%=report[i].productname%>
+                                                    </th>
+                                                    <th>
+                                                        <%=report[i].productcategory%>
+                                                    </th>
+                                                    <th>
+                                                        <%=report[i].productsubcategory%>
+                                                    </th>
+                                                    <th>
+                                                        <%=report[i].sales%>
+                                                    </th>
+                                                    <th>
+                                                        <%=report[i].productprice%>
+                                                    </th>
+                                                </tr>
+
+                                                <%}%>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+</div>
+<!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+<!-- JAVASCRIPT -->
+<script src="/admin/libs/jquery/jquery.min.js"></script>
+<script src="/admin/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/libs/metismenu/metisMenu.min.js"></script>
+<script src="/admin/libs/simplebar/simplebar.min.js"></script>
+<script src="/admin/libs/node-waves/waves.min.js"></script>
+
+<link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript"
+    src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.js"></script>
+
+
+<script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
+
+<script src="/admin/js/app.js"></script>
+
+
+
+</body>
+
+<script>
+
+    $(function () {
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        var time = dtToday.getHours() + ":" + dtToday.getMinutes();
+        if (month < 10)
+            month = '0' + month.toString();
+        if (day < 10)
+            day = '0' + day.toString();
+
+        // var maxDate = year + '-' + month + '-' + day;
+
+        // or instead:
+        var maxDate = dtToday.toISOString().substr(0, 10);
+        $('#sort_date_from').attr('max', maxDate);
+        $('#sort_date_to').attr('max', maxDate);
+    });
+
+
+    function sortByDate() {
+
+        let fromDateErr = true
+
+        function valFromDate() {
+            let fromDate = $('#sort_date_from').val()
+            $('#sort_date_from').css('border-color', '#2d3448')
+            $('#fromdate').html("")
+            let thisDate = new Date(fromDate)
+            let currDate = new Date()
+            if (fromDate.length == '') {
+                $('#sort_date_from').css('border-color', '#f30000')
+                $('#fromdate').html("Select Date")
+                fromDateErr = false;
+                return false;
+            } else if (thisDate > currDate) {
+                $('#sort_date_from').css('border-color', '#f30000')
+                $('#fromdate').html("Select A Valid Date")
+                fromDateErr = false;
+                return false;
+            }
+        }
+
+        let toDateErr = true
+
+        function valtoDate() {
+            let toDate = $('#sort_date_to').val()
+            console.log(toDate);
+            $('#sort_date_to').css('border-color', '#2d3448')
+            $('#todate').html("")
+            let thisDate = new Date(toDate)
+            let currDate = new Date()
+            if (toDate.length == '') {
+                $('#sort_date_to').css('border-color', '#f30000')
+                $('#todate').html("Select Date")
+                toDateErr = false;
+                return false;
+            } else if (thisDate > currDate) {
+                $('#sort_date_to').css('border-color', '#f30000')
+                $('#todate').html("Select A Valid Date")
+                toDateErr = false;
+                return false;
+            }
+        }
+
+        valFromDate()
+        valtoDate()
+
+        if (fromDateErr === true && toDateErr === true) {
+            $.ajax({
+                url:'/admin/top-selling-product/sort-date',
+                method:'post',
+                data:{
+                    from : $('#sort_date_from').val(),
+                    to : $('#sort_date_to').val()
+                },
+                success:(report)=>{
+                    console.log(report);
+                    $('#update_table').html('')
+                    
+                    for(i=0;i<report.length;i++){
+                        let html = `<tr> <th>${report[i]._id}</th><th>${report[i].status}</th><th>${report[i].product.productname}</th><th> ${report[i].quantity}</th><th>${report[i].paymentMethod}</th><th>${report[i].deliveryDetails.name}</th><th>${report[i].displayDate}</th><th>${report[i].subTotal}</th></tr>` 
+                        $('#update_table').append(html)
+                    }
+                    if(report.length === 0){
+                        let html = "No Data Awailable this date"
+                        
+                    }
+                }
+            })
+        }
+    }
+
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                // Total over all pages
+                total = api
+                    .column(4)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+
+                // Update footer
+                $(api.column(4).footer()).html(
+                    ' ( $' + total + ' total)'
+                );
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'excel', 'pdf', 'print'
+            ],
+        });
+    });
+
+    function date() {
+
+        let value = $('#date').val()
+        console.log(value);
+        $.ajax({
+
+            url: '/admin/top-selling-product-date',
+            type: 'post',
+            data: { value: value },
+            success: () => {
+
+                location.href = '/admin/sales-report'
+            }
+        })
+
+    }
+
+</script>

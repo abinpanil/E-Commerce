@@ -104,8 +104,27 @@
                                     <div class="product-action-horizontal">
                                         <a onclick="addToCart('<%=products[i]._id%>')"
                                             class="btn-product-icon  w-icon-cart" title="Add to cart"></a>
-                                        <!-- <a onclick="addToWishlist('<%=products[i]._id%>')" class="btn-product-icon btn-wishlist w-icon-heart"
-                                        title="Wishlist"></a> -->
+                                            
+                                            <%if(user.status){%>
+                                                <%let flag = 0%>
+                                                <%for(j=0;j<checkWishlist.length;j++){%>
+                                                    <%if(checkWishlist[j] == products[i]._id){%>
+                                                        <%flag = 1%>
+                                                        <%break%>
+                                                    <%}%>
+                                                <%}%>
+                                                <%if(flag===1){%>
+                                                    <a onclick="addToWishlist('active','<%=products[i]._id%>')" id="wish-btn-active_<%=products[i]._id%>"
+                                                        style="color: red;" class="btn-product-icon w-icon-heart-full" title="Wishlist"></a>
+                                                <%}else{%>
+                                                    <a onclick="addToWishlist('desable','<%=products[i]._id%>')" id="wish-btn-desable_<%=products[i]._id%>"
+                                                        style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                <%}%>
+                                            <%}else{%>
+                                                <a onclick="addToWishlist('<%=products[i]._id%>')" 
+                                                    style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                            <%}%>
+                                            
                                         <a href="/product-buy-now/<%=products[i]._id%>"
                                             class="btn-product-icon w-icon-shipping" title="Buy Now"></a>
                                     </div>
@@ -189,32 +208,34 @@
 
                                                             <%}%>
 
-                                                            <%}else if(products[i].isProOfferActive === true){%>
+                                                                <%}else if(products[i].isProOfferActive===true){%>
 
-                                                                <p style="color: green; padding: 0; margin: 0;">
-                                                                    <%=products[i].productoffer_description%>
-                                                                </p>
-                                                                <div class="product-pa-wrapper">
-                                                                    <div class="product-price" style="color: grey;">Rs.
-                                                                        <del>
-                                                                            <%=products[i].productprice%>
-                                                                        </del>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product-pa-wrapper">
-                                                                    <div class="product-price" style="color: green;">Rs.
-                                                                        <%=products[i].productoffer_price%>
-                                                                    </div>
-                                                                </div>
-                                                                <p style="color: green;"></p>
-
-                                                                <%}else{%>
+                                                                    <p style="color: green; padding: 0; margin: 0;">
+                                                                        <%=products[i].productoffer_description%>
+                                                                    </p>
                                                                     <div class="product-pa-wrapper">
-                                                                        <div class="product-price">Rs.
-                                                                            <%=products[i].productprice%>
+                                                                        <div class="product-price" style="color: grey;">
+                                                                            Rs.
+                                                                            <del>
+                                                                                <%=products[i].productprice%>
+                                                                            </del>
                                                                         </div>
                                                                     </div>
-                                                                    <%}%>
+                                                                    <div class="product-pa-wrapper">
+                                                                        <div class="product-price"
+                                                                            style="color: green;">Rs.
+                                                                            <%=products[i].productoffer_price%>
+                                                                        </div>
+                                                                    </div>
+                                                                    <p style="color: green;"></p>
+
+                                                                    <%}else{%>
+                                                                        <div class="product-pa-wrapper">
+                                                                            <div class="product-price">Rs.
+                                                                                <%=products[i].productprice%>
+                                                                            </div>
+                                                                        </div>
+                                                                        <%}%>
                                 </div>
                             </div>
                         </div>
@@ -282,24 +303,37 @@
 <script>
 
 
-    function addToWishlist(id) {
-
+    function addToWishlist(name,id) {
+        console.log(name);
         $.ajax({
             url: '/add-to-wishlist',
             method: 'post',
             data: { proId: id },
             success: (response) => {
-                if (response.status) {
+                
+                if (response.login === true) {
 
-
-
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Product Added to cart',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                    if (response.status === 1) {
+                        $(`#wish-btn-${name}_${id}`).removeClass('w-icon-heart')
+                        $(`#wish-btn-${name}_${id}`).addClass('w-icon-heart-full')
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Product Added to Wishlist',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }else if(response.status === 2){
+                        $(`#wish-btn-${name}_${id}`).removeClass('w-icon-heart-full')
+                        $(`#wish-btn-${name}_${id}`).addClass('w-icon-heart')
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Product Removed from Wishlist',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
 
                 } else {
                     window.location.assign('/login')

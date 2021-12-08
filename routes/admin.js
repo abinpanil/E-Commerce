@@ -98,7 +98,7 @@ router.get('/category_offer', varifyLogin, async (req, res) => {
 })
 
 // product Offer
-router.get('/product_offers', async (req, res) => {
+router.get('/product_offers', varifyLogin, async (req, res) => {
   let category = await adminHelpers.getCategory()
   let products = await adminHelpers.getActiveOfferProducts()
   res.render('./admin/product-offer', { admin, title: "Product-offer", category, products })
@@ -138,12 +138,30 @@ router.get('/users', varifyLogin, function (req, res) {
   })
 })
 
+// sales report
 router.get('/sales-report', varifyLogin, async (req, res) => {
 
   let data = await adminHelpers.getReportData(type)
 
   res.render('./admin/sales-report', { admin, title: "Sales Report", data, type })
   res.json({})
+})
+
+
+// top selling products report
+router.get('/top-selling-products',varifyLogin, async (req, res) => {
+  
+  let report = await adminHelpers.topSellingProducts()
+  res.render('./admin/top-selling-products', { admin, title: "Sales Report", report })
+})
+
+
+// transaction report
+router.get('/transaction-report',varifyLogin,async(req,res)=>{
+
+  let report = await adminHelpers.transactionReport()
+  console.log(report);
+  res.render('./admin/transaction-report', { admin, title: "Sales Report", report })
 })
 
 /* Login admin. */
@@ -458,6 +476,8 @@ router.post('/delete_categoryoffer', (req, res) => {
   adminHelpers.deleteCategoryOffer(req.body.category)
   res.redirect('/admin/category_offer')
 })
+
+
 
 // sort sales report datewise
 router.post('/sales-report/sort-date', async (req, res) => {
