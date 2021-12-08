@@ -31,11 +31,12 @@
 
                         <label class="cabinet center-block">
                             <figure>
-                                <img style="width: 150px; height: 150px; border-radius: 50%; " onerror="this.src='https://user.gadjian.com/static/images/personnel_boy.png'"
+                                <img style="width: 150px; height: 150px; border-radius: 50%; "
+                                    onerror="this.src='https://user.gadjian.com/static/images/personnel_boy.png'"
                                     id="chekPreview1" src="/user/images/user/<%=userDetails[0]._id%>.jpg">
-                                    
+
                             </figure>
-                            <input type="file" id="image1" accept="image/gif, image/jpeg, image/png"
+                            <input type="file" id="image1" accept="image/gif, image/jpeg, image/png" onchange="validateMultipleImage('image1')"
                                 class="item-img1 file center-block" name="productimage1" />
                             <textarea name="image1" id="imageValue1" cols="30" rows="10" hidden></textarea>
                         </label>
@@ -452,6 +453,22 @@
             url: '/view-order/' + orderId,
             method: 'get'
         })
+    }
+
+    function validateMultipleImage(id) {
+        console.log(id);
+        var formData = new FormData();
+        var file = document.getElementById(id).files[0];
+        formData.append("Filedata", file);
+        var t = file.type.split('/').pop().toLowerCase();
+        if (t != "jpeg" && t != "jpg" && t != "png" && t != "bmp" && t != "gif") {
+            Swal.fire(
+                'Not a valid Image file',
+                'Select A correct Image file'
+            )
+            document.getElementById(id).value = '';
+            return false;
+        }
     }
 
     $('#document').ready(function () {

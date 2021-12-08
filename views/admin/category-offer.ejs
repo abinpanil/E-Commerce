@@ -226,7 +226,7 @@ $(function(){
                 $('#discountp').html("Only numbers allowed")
                 discountErr = false;
                 return false;
-            } else if (discount < 0 || discount > 100) {
+            } else if (discount < 1 || discount > 99) {
                 console.log("here");
                 $('#discount').css('border-color', '#f30000')
                 $('#discountp').html("Enter value between 0 to 100")

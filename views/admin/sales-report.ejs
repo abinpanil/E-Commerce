@@ -221,12 +221,12 @@
 
         let orderErr = true
 
-        function validateCorrect(){
+        function validateCorrect() {
 
             let fromDate = $('#sort_date_from').val()
             let toDate = $('#sort_date_to').val()
 
-            if(fromDate > toDate){
+            if (fromDate > toDate) {
 
                 $('#sort_date_to').css('border-color', '#f30000')
                 $('#todate').html("Enter Correct Date Order")
@@ -240,23 +240,23 @@
 
         if (fromDateErr === true && toDateErr === true && orderErr === true) {
             $.ajax({
-                url:'/admin/sales-report/sort-date',
-                method:'post',
-                data:{
-                    from : $('#sort_date_from').val(),
-                    to : $('#sort_date_to').val()
+                url: '/admin/sales-report/sort-date',
+                method: 'post',
+                data: {
+                    from: $('#sort_date_from').val(),
+                    to: $('#sort_date_to').val()
                 },
-                success:(report)=>{
+                success: (report) => {
                     console.log(report);
                     $('#update_table').html('')
-                    
-                    for(i=0;i<report.length;i++){
-                        let html = `<tr> <th>${report[i]._id}</th><th>${report[i].status}</th><th>${report[i].product.productname}</th><th> ${report[i].quantity}</th><th>${report[i].paymentMethod}</th><th>${report[i].deliveryDetails.name}</th><th>${report[i].displayDate}</th><th>${report[i].subTotal}</th></tr>` 
+
+                    for (i = 0; i < report.length; i++) {
+                        let html = `<tr> <th>${report[i]._id}</th><th>${report[i].status}</th><th>${report[i].product.productname}</th><th> ${report[i].quantity}</th><th>${report[i].paymentMethod}</th><th>${report[i].deliveryDetails.name}</th><th>${report[i].displayDate}</th><th>${report[i].subTotal}</th></tr>`
                         $('#update_table').append(html)
                     }
-                    if(report.length === 0){
+                    if (report.length === 0) {
                         let html = "No Data Awailable this date"
-                        
+
                     }
                 }
             })
@@ -295,6 +295,10 @@
             buttons: [
                 'excel', 'pdf', 'print'
             ],
+            drawCallback: function () {
+                var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
+                $('.buttons-excel')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+            }
         });
     });
 
