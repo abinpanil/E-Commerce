@@ -64,7 +64,7 @@
                                     <table id="example" class=" display table table-striped">
                                         <thead>
                                             <tr>
-                                                <th></th>
+                                                <th>#</th>
                                                 <th data-priority="1">Transaction Id</th>
                                                 <th data-priority="2">Payment Method</th>
                                                 <th data-priority="3">Amount</th>
@@ -243,37 +243,21 @@
 
 
     $(document).ready(function () {
-        $('#example').DataTable({
-            "footerCallback": function (row, data, start, end, display) {
-                var api = this.api(), data;
-
-                // Remove the formatting to get integer data for summation
-                var intVal = function (i) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '') * 1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                // Total over all pages
-                total = api
-                    .column(4)
-                    .data()
-                    .reduce(function (a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-
-                // Update footer
-                $(api.column(4).footer()).html(
-                    ' ( $' + total + ' total)'
-                );
-            },
+        var table = $('#example').DataTable({
             dom: 'Bfrtip',
             buttons: [
-                'excel', 'pdf', 'print'
-            ],
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
         });
+        if (!table.data().count()) {
+            $('#example').dataTable().fnDestroy();
+            $('#example').DataTable({
+                searching: false
+            })
+        }
     });
 
     function date() {

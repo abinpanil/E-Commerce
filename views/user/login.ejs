@@ -111,7 +111,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Refferal Code (If Any)</label>
-                                    <input type="text" class="form-control your-class" name="referal_code" id="referal_code">
+                                    <input type="text" class="form-control your-class" name="referal_code"
+                                        id="referal_code">
+                                        <p id="refferal_warning" style="color: red;"> </p>
                                 </div>
                                 <button type="submit" style="width: 100%;" onclick="signUp()" class="btn btn-dark">Sign
                                     Up</button>
@@ -151,7 +153,21 @@
 <script>
 
 
+    // google sign in
+    function onSignIn(googleUser) {
+        console.log("hereeeeeeeeee");
+        var id_token = googleUser.getAuthResponse().id_token;
+        $.ajax({
+            url: '/signin-with-google',
+            method: 'post',
+            data: { token: id_token },
+            success: (responce) => {
 
+                location.href = '/'
+
+            }
+        })
+    }
 
 
     // signIn validation started.
@@ -376,6 +392,9 @@
         let username_err = $('#username_warning')
         let email_err = $('#email_warning')
         let mobile_err = $('#mobile_warning')
+        let refferal_err = $('#refferal_warning')
+        
+        
 
 
         if (usernameError === true && passwordError === true && emailError === true) {
@@ -388,7 +407,7 @@
                 success: (data) => {
                     console.log(data);
                     if (data.err) {
-                        
+
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
@@ -479,6 +498,7 @@
                         username_err.text(data.username)
                         email_err.text(data.email)
                         mobile_err.text(data.mobile)
+                        refferal_err.text(data.referal)
 
 
                     }

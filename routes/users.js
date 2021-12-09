@@ -8,36 +8,13 @@ const { route } = require('./admin');
 const { Db } = require('mongodb');
 const dotenv = require('dotenv').config()
 
-const client = require("twilio")(process.env.accountSID, process.env.authToken)
+const twilioClient = require("twilio")(process.env.accountSID, process.env.authToken)
 const paypal = require('paypal-rest-sdk');
 const alert = require('alert')
 
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-const passport = require('passport')
-const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
-
-passport.use(new GoogleStrategy({
-  clientID:     process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:2000/auth/google/callback",
-  passReqToCallback   : true
-},
-function(request, accessToken, refreshToken, profile, done) {
-  console.log(user);
-  // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-  //   return done(err, user);
-  // });
-  return done(err, user);
-}
-));
-
-passport.serializeUser(function(user,done){
-  done(null,user)
-})
-
-passport.deserializeUser(function(user,done){
-  done(null,user)
-})
 
 // configure paypal with the credentials you got when you created your paypal app
 paypal.configure({
@@ -101,19 +78,6 @@ router.get('/login', function (req, res) {
 });
 
 
-// google authetication
-router.get('/auth/google',
-  passport.authenticate('google', { scope:
-      [ 'email', 'profile' ] }
-));
-
-router.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/error' }),
-  function(req, res) {
-    
-    res.redirect('/');
-  });
-
 /* GET Account page. */
 router.get('/myaccount', varifyLogin, async (req, res) => {
   if (req.session.user) {
@@ -138,7 +102,7 @@ router.get('/cart', varifyLogin, async (req, res) => {
     userHelpers.getCartProducts(req.session.user._id).then((cartItems) => {
       userHelpers.getTotalAmount(req.session.user._id).then((total) => {
         let cart = cartItems
-        res.render('./user/cart', { admin, user, title: "Cart", data, cart, total, cartCount,userDetails });
+        res.render('./user/cart', { admin, user, title: "Cart", data, cart, total, cartCount, userDetails });
       })
     })
   })
@@ -168,7 +132,7 @@ router.get('/checkout', varifyLogin, async (req, res) => {
       userHelpers.getCartProducts(req.session.user._id).then((cartItems) => {
         userHelpers.getTotalAmount(req.session.user._id).then((total) => {
           let cart = cartItems
-          res.render('./user/checkout', { admin, user, title: "Checkout", data, address, cart, total, cartCount,userDetails });
+          res.render('./user/checkout', { admin, user, title: "Checkout", data, address, cart, total, cartCount, userDetails });
         })
       })
     })
@@ -187,7 +151,7 @@ router.get('/product-buy-now/:id', varifyLogin, async (req, res) => {
   let product = await userHelpers.getProduct(req.params.id)
   let address = await userHelpers.getAddress(req.session.user._id)
   adminHelpers.getCategory().then((data) => {
-    res.render('./user/buy-now', { admin, user, title: "Check Out", data, address, product, cartCount,userDetails });
+    res.render('./user/buy-now', { admin, user, title: "Check Out", data, address, product, cartCount, userDetails });
   })
 })
 
@@ -197,7 +161,7 @@ router.get('/order-placed', varifyLogin, async (req, res) => {
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
-  if(req.session.order.wallet_status === 'true'){
+  if (req.session.order.wallet_status === 'true') {
     userHelpers.userWalletClear(req.session.user._id)
   }
   let order = req.session.order
@@ -346,21 +310,21 @@ router.post('/signout', (req, res) => {
 
 /* Sign Up. */
 router.post('/signUp', async function (req, res) {
-  
+
   console.log(req.body.referal_code);
   let user = {
-    name : req.body.name,
-    username : req.body.username,
-    email : req.body.email,
-    mobile : req.body.mobile,
-    password : req.body.password
+    name: req.body.name,
+    username: req.body.username,
+    email: req.body.email,
+    mobile: req.body.mobile,
+    password: req.body.password
   }
- 
+
   userHelpers.doSignup(user).then((userResponse) => {
     req.session.userResponse = userResponse
     console.log(req.body.referal_code);
-    if(req.body.referal_code != ''){
-      userHelpers.checkReferalcode(req.body.referal_code).then((response)=>{
+    if (req.body.referal_code != '') {
+      userHelpers.checkReferalcode(req.body.referal_code).then((response) => {
 
       })
     }
@@ -370,6 +334,36 @@ router.post('/signUp', async function (req, res) {
     }
   })
 })
+
+
+
+// signin with google auth
+router.post('/signin-with-google', async (req, res) => {
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: req.body.token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    let userData = await userHelpers.SignInWithGoogle(payload)
+    console.log(userData);
+    req.session.user = userData
+    user.status = true
+    user.name = req.session.user.name
+    logData = response
+    res.json({})
+
+
+
+  }
+  catch (error) {
+    console.error
+  }
+})
+
+
 
 
 // edit validate
@@ -392,7 +386,7 @@ router.post('/validate', function (req, res) {
 
   userHelpers.validate(req.body).then((userResponse) => {
     if (userResponse.status) {
-      client.verify.services(process.env.serviceID)
+      twilioClient.verify.services(process.env.serviceID)
         .verifications.create({
           to: `+91${req.body.mobile}`,
           channel: "sms"
@@ -415,7 +409,7 @@ router.post('/validate', function (req, res) {
 
 // resend
 router.post('/resend', (req, res) => {
-  client.verify.services(process.env.serviceID)
+  twilioClient.verify.services(process.env.serviceID)
     .verifications.create({
       to: `+91${req.body.mobile}`,
       channel: "sms"
@@ -447,7 +441,7 @@ router.post('/otpget', (req, res) => {
     send: true,
   }
   res.json(response)
-  client.verify.services(process.env.serviceID)
+  twilioClient.verify.services(process.env.serviceID)
     .verifications.create({
       to: `+91${req.body.mobilenumber}`,
       channel: "sms"
@@ -466,7 +460,7 @@ router.post('/otpcheck', (req, res) => {
 
   let otp = req.body.otp
   let number = req.body.number
-  client.verify
+  twilioClient.verify
     .services(process.env.serviceID)
     .verificationChecks.create({
       to: `+91${number}`,
@@ -499,7 +493,7 @@ router.post('/otpvalidate', (req, res) => {
   let otp = req.body.otp
   let number = req.session.number
 
-  client.verify
+  twilioClient.verify
     .services(process.env.serviceID)
     .verificationChecks.create({
       to: `+91${number}`,
@@ -508,12 +502,12 @@ router.post('/otpvalidate', (req, res) => {
     .then((data) => {
       if (data.valid) {
         userHelpers.doSignup(req.session.signup).then((userId) => {
-          if(req.session.signup.referal_code){
-            userHelpers.checkReferalcode(req.session.signup.referal_code).then((response)=>{
+          if (req.session.signup.referal_code) {
+            userHelpers.checkReferalcode(req.session.signup.referal_code).then((response) => {
               console.log(response);
-              if(response.value === true){
+              if (response.value === true) {
                 console.log(userId);
-                userHelpers.addWalletAmount(userId).then(()=>{
+                userHelpers.addWalletAmount(userId).then(() => {
 
                 })
               }
@@ -535,6 +529,13 @@ router.post('/otpvalidate', (req, res) => {
     })
 })
 
+
+// create password
+router.post('/create_password', async (req, res) => {
+
+  await userHelpers.createPassword(req.body)
+  res.json({})
+})
 
 // add to cart
 router.post('/add-to-cart', (req, res) => {
@@ -629,8 +630,8 @@ router.post('/deleteAddress', (req, res) => {
 
 
 // change user avatar
-router.post('/change-avatar',(req,res)=>{
- 
+router.post('/change-avatar', (req, res) => {
+
   let id = req.session.user._id
   let user1 = req.body.img1
   console.log(user1);
@@ -742,7 +743,7 @@ router.get('/done/:id', async (req, res) => {
   if (req.session.order.coupon === 'true') {
     userHelpers.addCouponToUser(req.session.user._id, req.session.order.coupon_code)
   }
-  if(req.session.order.wallet_status === 'true'){
+  if (req.session.order.wallet_status === 'true') {
     userHelpers.userWalletClear(req.session.user._id)
   }
   await userHelpers.clearUserCart(req.session.user._id)
@@ -801,7 +802,7 @@ router.post('/place-order-direct', async (req, res) => {
     coupon_code: req.body.coupon_code,
     wallet_status: req.body.wallet_status
   }
-  
+
   req.body.direct = true
   req.session.order = lastOrder
   let orderId = await userHelpers.placeOrderDirect(req.body, req.body.product, totalPrice, address, req.session.user._id)
@@ -894,7 +895,7 @@ router.post('/verify-payment', (req, res) => {
       if (req.session.order.coupon === 'true') {
         userHelpers.addCouponToUser(req.session.user._id, req.session.order.coupon_code)
       }
-      if(req.session.order.wallet_status === 'true'){
+      if (req.session.order.wallet_status === 'true') {
         userHelpers.userWalletClear(req.session.user._id)
       }
       console.log("Payment success");

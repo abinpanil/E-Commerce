@@ -1053,7 +1053,8 @@
                                 data: { id: id },
                                 success: () => {
 
-                                    $("#table_change").load(location.href + " #table_change");
+                                    $('#tr_'+id).remove()
+                                    // $("#table_change").load(location.href + " #table_change");
 
                                 }
 

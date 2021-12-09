@@ -32,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-4">
 
-                            <form id="form" action="/admin/addbanner" method="post" enctype="multipart/form-data">
+                            <form id="form" action="/admin/addbanner" onsubmit="return addbanner()" method="post" enctype="multipart/form-data">
 
 
                                 <div class="mb-4 mb-3">
@@ -44,7 +44,8 @@
                                                 style="max-width: 200px; " />
                                         </figure>
                                         <input type="file" id="image1" class="item-img1 file center-block"
-                                            accept="image/gif, image/jpeg, image/png" name="bannerimg" />
+                                            accept="image/gif, image/jpeg, image/png" name="bannerimg"
+                                            onchange="validateMultipleImage('image1')" />
                                         <textarea name="image" id="imageValue1" cols="30" rows="10" hidden></textarea>
                                     </label>
                                     <div class="modal fade" id="modal1" tabindex="-1" role="dialog"
@@ -89,6 +90,12 @@
                                     <label class="form-label">Banner Content</label>
                                     <input type="text" placeholder="Type here" name="bannerContent" class="form-control"
                                         id="banner_content" />
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Direction</label>
+                                    <input type="text" placeholder="Type here" name="direction" class="form-control"
+                                        id="banner_direction" />
+                                        <p id="banner_directionp" style="color: red;"></p>
                                 </div>
 
 
@@ -181,6 +188,24 @@
 
 <script>
 
+
+    function validateMultipleImage(id) {
+        console.log(id);
+        var formData = new FormData();
+        var file = document.getElementById(id).files[0];
+        formData.append("Filedata", file);
+        var t = file.type.split('/').pop().toLowerCase();
+        if (t != "jpeg" && t != "jpg" && t != "png" && t != "bmp" && t != "gif") {
+            Swal.fire(
+                'Not a valid Image file',
+                'Select A correct Image file'
+            )
+            document.getElementById(id).value = '';
+            return false;
+        }
+    }
+
+
     function deleteBanner(id) {
 
         Swal.fire({
@@ -229,11 +254,30 @@
         console.log("ethyyyyyyyy");
         event.preventDefault()
 
+        let bannerImageError = true;
+
+        function validateBannerImage() {
+
+            let bannerimage = $('#imageValue1').val()
+            if (bannerimage.length == '') {
+
+                Swal.fire(
+                
+                'Select A Image file'
+            )
+
+                bannerImageError = false;
+                return false;
+
+            }
+        }
+
 
         let bannerTitleError = true;
 
         function validateBannerTitle() {
 
+            $('#banner_title').css('border-color', '#2d3448')
             let bannertitle = $('#banner_title').val()
             if (bannertitle.length == '') {
 
@@ -249,6 +293,7 @@
 
         function validateBannerHeading() {
 
+            $('#banner_heading').css('border-color', '#2d3448')
             let bannerheading = $('#banner_heading').val()
             if (bannerheading.length == '') {
 
@@ -264,6 +309,8 @@
 
         function validateBannerContent() {
 
+            $('#banner_content').css('border-color', '#2d3448')
+            
             let bannercontent = $('#banner_content').val()
             if (bannercontent.length == '') {
 
@@ -275,14 +322,33 @@
             }
         }
 
-        console.log("ivdeeem");
+        let bannerdirectionError = true;
 
+        function validateBannerDirection() {
+
+            $('#banner_direction').css('border-color', '#2d3448')
+            let bannerdirection = $('#banner_direction').val().trim()
+            console.log(bannerdirection);
+            if (bannerdirection.length == '') {
+
+                $('#banner_direction').css('border-color', '#f30000')
+                $('#banner_direction').attr("placeholder", "Enter Direction")
+                $('#banner_directionp').html("Enter Direction")
+                bannerdirectionError = false;
+                return false;
+
+            }
+        }
+
+        console.log("ivdeeem");
+        validateBannerDirection()
+        validateBannerImage()
         validateBannerContent()
         validateBannerHeading()
         validateBannerTitle()
 
 
-        if (bannerTitleError === true && bannerHeadingError === true && bannerContentError === true) {
+        if (bannerImageError === true && bannerTitleError === true && bannerHeadingError === true && bannerContentError === true) {
 
             console.log("innnnnn");
             return true

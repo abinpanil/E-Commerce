@@ -49,7 +49,8 @@
                                             <p style="color: red;" id="fromdate"></p>
                                         </div>
 
-                                        <div class="col-md-4"><input class="form-control" type="date" id="sort_date_to" disabled>
+                                        <div class="col-md-4"><input class="form-control" type="date" id="sort_date_to"
+                                                disabled>
 
                                             <p style="color: red;" id="todate"></p>
                                         </div>
@@ -153,7 +154,7 @@
 
 <script>
 
-    function setMinDate(){
+    function setMinDate() {
 
         let fromDate = $('#sort_date_from').val()
 
@@ -272,13 +273,19 @@
                 },
                 success: (report) => {
                     console.log(report);
-                    $('#update_table').html('')
+                    $('#remove').remove()
 
                     for (i = 0; i < report.length; i++) {
+
                         let html = `<tr> <th>${report[i]._id}</th><th>${report[i].status}</th><th>${report[i].product.productname}</th><th> ${report[i].quantity}</th><th>${report[i].paymentMethod}</th><th>${report[i].deliveryDetails.name}</th><th>${report[i].displayDate}</th><th>${report[i].subTotal}</th></tr>`
                         $('#update_table').append(html)
+                        
                     }
                     if (report.length === 0) {
+                        $('#example').dataTable().fnDestroy();
+                        $('#example').DataTable({
+                            searching: false
+                        })
                         let html = "No Data Awailable this date"
 
                     }
@@ -289,41 +296,21 @@
 
 
     $(document).ready(function () {
-        $('#example').DataTable({
-            "footerCallback": function (row, data, start, end, display) {
-                var api = this.api(), data;
-
-                // Remove the formatting to get integer data for summation
-                var intVal = function (i) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '') * 1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                // Total over all pages
-                total = api
-                    .column(4)
-                    .data()
-                    .reduce(function (a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0);
-
-
-                // Update footer
-                $(api.column(4).footer()).html(
-                    ' ( $' + total + ' total)'
-                );
-            },
+        var table = $('#example').DataTable({
             dom: 'Bfrtip',
             buttons: [
-                'excel', 'pdf', 'print'
-            ],
-            drawCallback: function () {
-                var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
-                $('.buttons')[0].style.visibility = hasRows ? 'visible' : 'hidden';
-            }
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
         });
+        if (!table.data().count()) {
+            $('#example').dataTable().fnDestroy();
+            $('#example').DataTable({
+                searching: false
+            })
+        }
     });
 
     function date() {
@@ -338,6 +325,7 @@
             success: () => {
 
                 location.href = '/admin/sales-report'
+
             }
         })
 

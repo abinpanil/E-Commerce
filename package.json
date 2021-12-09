@@ -20,6 +20,7 @@
     "express-ejs-layouts": "^2.5.1",
     "express-fileupload": "^1.2.1",
     "express-session": "^1.17.2",
+    "google-auth-library": "^7.10.3",
     "http-errors": "~1.6.3",
     "moment": "^2.29.1",
     "mongodb": "^4.1.4",

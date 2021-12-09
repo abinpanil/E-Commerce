@@ -2,6 +2,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
 
+<style>
+    @media (max-width: 767px) {
+        .header-top {
+        display: none;
+      }
+    }
+
+    
+  </style>
+
 <body>
     <div class="page-wrapper">
         <!-- Start of Header -->
@@ -16,18 +26,18 @@
                         <!-- End of Dropdown Menu -->
                         <%if(user.status){%>
                             <a href="javascript:void(0)" style="font-size: 12px;" class="d-lg-show"><b>Hi <%=user.name%>
-                                        </b></a>
+                                </b></a>
                             <a href="/myaccount" style="font-size: 12px;" class="d-lg-show">My Account</a>
                             <a href="javascript:void(0);" onclick="signOut()" style="font-size: 12px;"
                                 class="d-lg-show"><i class="w-icon-account"></i>Sign out</a>
-                            <%}else{%>
+                        <%}else{%>
 
-                                <a href="/login" style="font-size: 14px;" class="d-lg-show"><i
-                                        class="w-icon-account"></i>Sign In <span
-                                        class="delimiter d-lg-show">/</span>Register</a>
-                                <!-- <span class="delimiter d-lg-show">/</span>
+                            <a href="/login" style="font-size: 14px;" class="d-lg-show"><i
+                                class="w-icon-account"></i>Sign In <span
+                                class="delimiter d-lg-show">/</span>Register</a>
+                            <!-- <span class="delimiter d-lg-show">/</span>
                             <a href="/user/ajax/login.html" class="ml-0 d-lg-show login register">Register</a> -->
-                                <%}%>
+                        <%}%>
 
                     </div>
                 </div>
@@ -103,12 +113,12 @@
                                                             </a>
 
                                                         </li>
-                                                        <%}%>
+                                                    <%}%>
                                                 </ul>
 
                                             </li>
-                                            <%}%>
-                                                <%}%>
+                                        <%}%>
+                                    <%}%>
 
                                 </ul>
                             </nav>

@@ -58,13 +58,13 @@
                                                         <%=orders[i].totalPrice%>
                                                     </td>
                                                     <%if(orders[i].status==='cancel' ){%>
-                                                        <td><span style="color: red;"><b>Canceled</b></span></td>
+                                                        <td ><span style="color: red;"><b>Canceled</b></span></td>
                                                         <%}else if(orders[i].status==='delivered' ){%>
                                                             <td><span
                                                                     style="color: rgb(39, 214, 23);"><b>Delivered</b></span>
                                                             </td>
                                                             <%}else{%>
-                                                                <td>
+                                                                <td id="td_<%=orders[i]._id%>">
                                                                     <select id="status_<%=orders[i]._id%>"
                                                                         onchange="status('<%=orders[i]._id%>')"
                                                                         class="form-select">
@@ -148,11 +148,27 @@
             method: 'post',
             data: {
                 orderId: id,
-                status: status
+                status: status 
             },
             success: () => {
-                $("#change").load(location.href + " #change");
-                let change = document.getElementById(`status_${id}`).value = status
+                // $("#change").load(location.href + " #change");
+
+                if(status === 'cancel' ){
+
+                    $('#td_'+id).html('<span style="color: red;"><b>Canceled</b></span>')
+
+                }else if(status === 'delivered' ){
+
+                    $('#td_'+id).html('<span style="color: rgb(39, 214, 23);"><b>Delivered</b></span>')
+                    
+                }else{
+
+                    let change = document.getElementById(`status_${id}`).value = status
+
+                }
+                $('#mytable').DataTable({ 
+                      "destroy": true, //use for reinitialize datatable
+                   });
             }
         })
 

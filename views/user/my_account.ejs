@@ -36,8 +36,9 @@
                                     id="chekPreview1" src="/user/images/user/<%=userDetails[0]._id%>.jpg">
 
                             </figure>
-                            <input type="file" id="image1" accept="image/gif, image/jpeg, image/png" onchange="validateMultipleImage('image1')"
-                                class="item-img1 file center-block" name="productimage1" />
+                            <input type="file" id="image1" accept="image/gif, image/jpeg, image/png"
+                                onchange="validateMultipleImage('image1')" class="item-img1 file center-block"
+                                name="productimage1" />
                             <textarea name="image1" id="imageValue1" cols="30" rows="10" hidden></textarea>
                         </label>
                         <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -359,11 +360,15 @@
                                     <span style="color: red;" id="emailwarn" class=""></span>
                                     <p id="email_warning" style="color: red;"> </p>
                                 </div>
-
                                 <button type="submit" class="btn btn-dark btn-rounded btn-sm mb-4"
                                     onclick="editDetails()" id="edit_button">Edit</button>
-                                <a class="btn btn-outline-secondary btn-rounded btn-sm mb-4" onclick="changePassword()"
-                                    id="chane_password">Change Password</a>
+                                <%if(userDetails[0].password='' ){%>
+                                    <a class="btn btn-outline-secondary btn-rounded btn-sm mb-4"
+                                        onclick="createPassword()" id="chane_password">Create Password</a>
+                                    <%}else{%>
+                                        <a class="btn btn-outline-secondary btn-rounded btn-sm mb-4"
+                                            onclick="changePassword()" id="chane_password">Change Password</a>
+                                        <%}%>
                             </form>
                         </div>
                     </div>
@@ -543,6 +548,35 @@
     })
 
 
+    function createPassword() {
+
+        event.preventDefault()
+
+        document.getElementById('inner').innerHTML = `
+        
+        <h4 class="title title-password ls-25 font-weight-bold">Password change</h4>
+                                <form action="">
+                                    <div class="form-group">
+                                        <label class="text-dark" for="new-password">Enter New Password</label>
+                                        <input type="password" class="form-control form-control-md" id="new-password"
+                                            name="new_password">
+                                    </div>
+                                    <div class="form-group mb-10">
+                                        <label class="text-dark" for="conf-password">Confirm Password</label>
+                                        <input type="password" class="form-control form-control-md" id="conf-password"
+                                            name="conf_password">
+                                            <p id="pass_warning" style="color: red;"> </p>
+                                        <input type="text" class="form-control your-class" style="display:none"
+                                            value="<%=userDetails[0].username%>" name="username" id="pass_username"
+                                            disabled>
+                                    </div>
+                                    <button class="btn btn-dark btn-rounded btn-sm mb-4" onclick="saveNewPassword()">Save</button>
+                                    <button class="btn btn-outline-secondary btn-rounded btn-sm mb-4" onclick="cancelEditPassword()">Cancel</button>
+                                </form>
+        `
+    }
+
+
 
     function changePassword() {
 
@@ -572,7 +606,7 @@
                                                 value="<%=userDetails[0].username%>" name="username" id="pass_username"
                                                 disabled>
                                     </div>
-                                    <button class="btn btn-dark btn-rounded btn-sm mb-4" onclick="savePassword()">Save</button>
+                                    <button class="btn btn-dark btn-rounded btn-sm mb-4" onclick="saveNewPassword()">Save</button>
                                     <button class="btn btn-outline-secondary btn-rounded btn-sm mb-4" onclick="cancelEditPassword()">Cancel</button>
                                 </form>
 
@@ -698,6 +732,102 @@
         }
 
     }
+
+
+    function saveNewPassword() {
+
+        event.preventDefault()
+
+        let newPassError = true; confPass
+
+        function newPass() {
+
+            let newPass = $('#new-password').val()
+
+            if (newPass.length == '') {
+
+                $('#new-password').css('border-color', '#c70d0d')
+                $('#new-password').attr("placeholder", "Enter New Password")
+
+                newPassError = false;
+                return false;
+            }
+        }
+
+        let confPassError = true;
+
+        function confPass() {
+
+            let confPass = $('#conf-password').val()
+
+            if (confPass.length == '') {
+
+                $('#conf-password').css('border-color', '#c70d0d')
+                $('#conf-password').attr("placeholder", "Enter Conform Password")
+
+                confPassError = false;
+                return false;
+            }
+        }
+
+
+        newPass()
+        confPass()
+
+        let passObj = {
+            username: $('#pass_username').val(),
+            newPass: $('#new-password').val(),
+            confPass: $('#conf-password').val()
+        }
+        console.log(passObj);
+
+        if (newPassError === true && confPassError === true) {
+
+
+
+            if (passObj.newPass === passObj.confPass) {
+
+                $.ajax({
+                    url: '/create_password',
+                    method: 'post',
+                    data: {pass:passObj.newPass},
+                    success: () => {
+
+                        var toastMixin = Swal.mixin({
+                            toast: true,
+                            icon: 'success',
+                            title: 'General Title',
+                            animation: false,
+                            position: 'top-right',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        });
+
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'Password changed Successfully'
+                        });
+
+                        $("#account-details").load(location.href + " #account-details");
+
+                    }
+                })
+
+            } else {
+
+                console.log("out");
+                $('#pass_warning').text('Enter same password')
+
+            }
+
+        }
+    }
+
 
     function cancelEditPassword() {
 
