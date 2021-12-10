@@ -763,7 +763,9 @@ module.exports = {
                 resolve(response)
             }else{
                 
-                await db.get().collection(collection.COUPONS_COLLECTION).insertOne(couponDetails)
+                let id = await db.get().collection(collection.COUPONS_COLLECTION).insertOne(couponDetails)
+                let objId = ObjectId(id.insertedId).toString()
+                couponDetails.id = objId
                 resolve(couponDetails)
             }
             
@@ -783,12 +785,9 @@ module.exports = {
     },
     deleteCoupon: (id) => {
         return new Promise(async (resolve, reject) => {
-            await db.get().collection(collection.COUPONS_COLLECTION).updateOne(
+            await db.get().collection(collection.COUPONS_COLLECTION).deleteOne(
                 {
                     _id: objectId(id)
-                },
-                {
-                    $set: { status: false }
                 }
             )
             resolve()
@@ -987,6 +986,9 @@ module.exports = {
             let report = await db.get().collection(collection.PRODUCTS_COLLECTION).aggregate(
                 [
                     {
+                        $match:{status:true}
+                    },
+                    {
                         $sort: { sales: -1 }
                     }
                 ]
@@ -1031,12 +1033,9 @@ module.exports = {
                 for (i = 0; i < coupon.length; i++) {
                     if (coupon[i].date < today) {
 
-                        db.get().collection(collection.COUPONS_COLLECTION).updateOne(
+                        db.get().collection(collection.COUPONS_COLLECTION).deleteOne(
                             {
                                 _id: coupon[i]._id
-                            },
-                            {
-                                $set: { status: false }
                             }
                         )
                     }

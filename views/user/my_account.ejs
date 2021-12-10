@@ -42,7 +42,7 @@
                             <textarea name="image1" id="imageValue1" cols="30" rows="10" hidden></textarea>
                         </label>
                         <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                            aria-hidden="true">
+                            aria-hidden="true"> 
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -362,7 +362,7 @@
                                 </div>
                                 <button type="submit" class="btn btn-dark btn-rounded btn-sm mb-4"
                                     onclick="editDetails()" id="edit_button">Edit</button>
-                                <%if(userDetails[0].password='' ){%>
+                                <%if(userDetails[0].password ==='' ){%>
                                     <a class="btn btn-outline-secondary btn-rounded btn-sm mb-4"
                                         onclick="createPassword()" id="chane_password">Create Password</a>
                                     <%}else{%>
@@ -786,11 +786,13 @@
 
 
             if (passObj.newPass === passObj.confPass) {
-
+                console.log("ethyyyyyyy");
                 $.ajax({
                     url: '/create_password',
                     method: 'post',
-                    data: {pass:passObj.newPass},
+                    data: {pass:passObj.newPass,
+                            username:passObj.username
+                    },
                     success: () => {
 
                         var toastMixin = Swal.mixin({
@@ -810,7 +812,7 @@
 
                         toastMixin.fire({
                             animation: true,
-                            title: 'Password changed Successfully'
+                            title: 'Password Added Successfully'
                         });
 
                         $("#account-details").load(location.href + " #account-details");

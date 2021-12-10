@@ -235,6 +235,7 @@
                                                                     <div class="product-price"><ins
                                                                             class="new-price">RS.
                                                                             <%=products.productprice%></ins></div>
+                                                                            
 
                                                                     <%}%>
 
@@ -458,23 +459,47 @@
                     if (response.status === 1) {
                         $(`#wish-btn-${name}_${id}`).removeClass('w-icon-heart')
                         $(`#wish-btn-${name}_${id}`).addClass('w-icon-heart-full')
-                        Swal.fire({
-                            position: 'top-end',
+                        var toastMixin = Swal.mixin({
+                            toast: true,
                             icon: 'success',
-                            title: 'Product Added to Wishlist',
+                            title: 'General Title',
+                            animation: false,
+                            position: 'top-right',
                             showConfirmButton: false,
-                            timer: 1500
-                        })
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        });
+
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'Product Added to Wishlist'
+                        });
                     } else if (response.status === 2) {
                         $(`#wish-btn-${name}_${id}`).removeClass('w-icon-heart-full')
                         $(`#wish-btn-${name}_${id}`).addClass('w-icon-heart')
-                        Swal.fire({
-                            position: 'top-end',
+                        var toastMixin = Swal.mixin({
+                            toast: true,
                             icon: 'success',
-                            title: 'Product Removed from Wishlist',
+                            title: 'General Title',
+                            animation: false,
+                            position: 'top-right',
                             showConfirmButton: false,
-                            timer: 1500
-                        })
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        });
+
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'Product removed from Wishlist'
+                        });
                     }
 
                 } else {
@@ -499,13 +524,25 @@
                     let count = $('#cart_count').html()
                     $('#cart_count').html(parseInt(count) + 1)
 
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Product Added to cart',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                    var toastMixin = Swal.mixin({
+                            toast: true,
+                            icon: 'success',
+                            title: 'General Title',
+                            animation: false,
+                            position: 'top-right',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        });
+
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'Item Added to Cart'
+                        });
                 } else {
                     window.location.assign('/login')
                 }

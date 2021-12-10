@@ -32,6 +32,51 @@
                             <div class="col-md-4">
 
                                 <form id="form">
+
+                                    <div class="mb-4 mb-3">
+                                        <label class="cabinet center-block">
+                                            <figure>
+                                                <img style=" width: 272px; height: 295px;"
+                                                    src="/user/images/imgplaceholder.png"
+                                                    class="gambar img-responsive img-thumbnail" id="chekPreview1"
+                                                    style="max-width: 200px; " />
+                                            </figure>
+                                            <input type="file" id="image1" class="item-img1 file center-block"
+                                                accept="image/gif, image/jpeg, image/png" name="bannerimg"
+                                                onchange="validateMultipleImage('image1')" />
+                                            <textarea name="image" id="imageValue1" cols="30" rows="10"
+                                                hidden></textarea>
+                                        </label>
+                                        <div class="modal fade" id="modal1" tabindex="-1" role="dialog"
+                                            aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                        <h4 class="modal-title" id="myModalLabel">
+                                                            <?=multiLanguage( "Edit Foto" , "Edit Photo" )?>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div id="upload-demo1"
+                                                            style=" height: 250px; padding-bottom:25px;"
+                                                            class="center-block">
+                                                            <img src="" id="sampleImage1"
+                                                                style="width:100px; height:100px" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default"
+                                                            data-dismiss="modal">Close</button>
+                                                        <button type="button" id="crop1"
+                                                            class="btn btn-primary">Crop</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="mb-4">
                                         <label class="form-label">Coupon Title</label>
                                         <input type="text" placeholder="Type here" name="title" class="form-control"
@@ -41,7 +86,7 @@
                                         <label class="form-label">Code</label>
                                         <input type="text" placeholder="Type here" name="code" class="form-control"
                                             id="code" />
-                                            <p id="codep" style="color: red;"></p>
+                                        <p id="codep" style="color: red;"></p>
                                     </div>
                                     <div class="mb-4">
                                         <label class="form-label">Coupon Discount</label>
@@ -160,6 +205,23 @@
 
 <script>
 
+    function validateMultipleImage(id) {
+        console.log(id);
+        var formData = new FormData();
+        var file = document.getElementById(id).files[0];
+        formData.append("Filedata", file);
+        var t = file.type.split('/').pop().toLowerCase();
+        if (t != "jpeg" && t != "jpg" && t != "png" && t != "bmp" && t != "gif") {
+            Swal.fire(
+                'Not a valid Image file',
+                'Select A correct Image file'
+            )
+            document.getElementById(id).value = '';
+            return false;
+        }
+    }
+
+
     $(function () {
         var dtToday = new Date();
 
@@ -185,9 +247,30 @@
         console.log("here");
         event.preventDefault()
 
+
+        let bannerImageError = true;
+
+        function validateBannerImage() {
+            console.log('ethyy');
+            let bannerimage = $('#imageValue1').val()
+            if (bannerimage.length == '') {
+
+                Swal.fire(
+
+                    'Select A Image file'
+                )
+
+                bannerImageError = false;
+                return false;
+
+            }
+        }
+
+
         // vlidate title
         let titleErr = true
         function validateTitle() {
+            console.log('ethyy');
             $('#edit_title').css('border-color', '#2d3448')
             let title = $('#edit_title').val()
             if (title.length == '') {
@@ -296,6 +379,7 @@
             }
         }
 
+        validateBannerImage()
         validateTitle()
         validateDate()
         validateMinAmount()
@@ -303,7 +387,7 @@
         validatediscount()
         validateCode()
 
-        if (titleErr === true && dateErr === true && discountErr === true && codeErr === true && minAmountErr === true && maxUseErr === true) {
+        if (bannerImageError === true && titleErr === true && dateErr === true && discountErr === true && codeErr === true && minAmountErr === true && maxUseErr === true) {
 
             $.ajax({
                 url: '/admin/add-coupon',
@@ -319,8 +403,85 @@
     }
 
 
+    $('document').ready(function () {
+        //modal1 and image 1
+        var image1 = document.getElementById('sampleImage1');
+        var modal1 = $('#modal1');
+        var cropper1;
+
+        $('#image1').change(function (event) {
+            var files = event.target.files;
+
+            var done = function (url) {
+                image1.src = url;
+                modal1.modal('show');
+            };
+
+            if (files && files.length > 0) {
+                reader = new FileReader();
+                reader.onload = function (event) {
+                    done(reader.result);
+                };
+                reader.readAsDataURL(files[0]);
+            }
+        });
+
+        modal1.on('shown.bs.modal', function () {
+            cropper1 = new Cropper(image1, {
+                aspectRatio: 272 / 295,
+                viewMode: 1,
+                preview: '#preview1'
+            });
+        }).on('hidden.bs.modal', function () {
+            cropper1.destroy();
+            cropper1 = null;
+        });
+
+        $('#crop1').click(function () {
+            canvas = cropper1.getCroppedCanvas({
+                width: 544,
+                height: 590
+            });
+
+            canvas.toBlob(function (blob) {
+                url = URL.createObjectURL(blob);
+                var reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = function () {
+                    var base64data = reader.result;
+                    modal1.modal('hide');
+                    $("#imageValue1").val(base64data)
+                    $('#chekPreview1').attr('src', base64data);
+                };
+            });
+        });
+        //modal1 and image 1 end
+    });
+
+
+
     $('#form').submit((e) => {
         e.preventDefault()
+
+
+        let bannerImageError = true;
+
+        function validateBannerImage() {
+            console.log('ethyy');
+            let bannerimage = $('#imageValue1').val()
+            if (bannerimage.length == '') {
+
+                Swal.fire(
+
+                    'Select A Image file'
+                )
+
+                bannerImageError = false;
+                return false;
+
+            }
+        }
+
 
         // vlidate title
         let titleErr = true
@@ -462,6 +623,7 @@
             }
         }
 
+        validateBannerImage()
         validateTitle()
         validateDate()
         validateMinAmount()
@@ -470,18 +632,45 @@
         validateDescription()
         validateCode()
 
-        if (titleErr === true && dateErr === true && descriptionErr === true && discountErr === true && codeErr === true && minAmountErr === true && maxUseErr === true) {
+        if (bannerImageError === true && titleErr === true && dateErr === true && descriptionErr === true && discountErr === true && codeErr === true && minAmountErr === true && maxUseErr === true) {
+            console.log("hereeeeeeeee");
 
+            let image = $('#imageValue1').val()
+            let title = $('#title').val()
+            let date = $('#date').val()
+            let discount = $('#discount').val()
+            let minAmount = $('#min_amount').val()
+            let maxUse = $('#max_use').val()
+            let description = $('#description').val()
+            let code = $('#code').val()
+
+            let formData = new FormData();
+            formData.append('image', image)
+            formData.append('title', title)
+            formData.append('date', date)
+            formData.append('discount', discount)
+            formData.append('minAmount', minAmount)
+            formData.append('maxUse', maxUse)
+            formData.append('description', description)
+            formData.append('code', code)
+
+            console.log(formData);
+            
+
+            console.log($('#form').serialize());
             $.ajax({
                 url: '/admin/add-coupon',
                 method: 'post',
-                data: $('#form').serialize(),
+                enctype: 'multipart/formdata',
+                processData: false,
+                contentType: false,
+                data: formData,
                 success: (response) => {
 
-                    if(response.err === 1){
+                    if (response.err === 1) {
                         $('#code').css('border-color', '#f30000')
                         $('#codep').html("Code already Exist!!!")
-                    }else{
+                    } else {
                         console.log(response);
                         $("#table_change").load(location.href + " #table_change");
                     }

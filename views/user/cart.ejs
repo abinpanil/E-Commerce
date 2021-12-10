@@ -321,6 +321,7 @@
 
     function changeQuantity(cartId, productId, count) {
         
+        console.log(count);
         let change = $('#tr_' + productId)
         $.ajax({
             url: '/change-product-quantity',

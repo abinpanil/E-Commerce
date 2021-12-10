@@ -150,15 +150,15 @@ router.get('/sales-report', varifyLogin, async (req, res) => {
 
 
 // top selling products report
-router.get('/top-selling-products',varifyLogin, async (req, res) => {
-  
+router.get('/top-selling-products', varifyLogin, async (req, res) => {
+
   let report = await adminHelpers.topSellingProducts()
   res.render('./admin/top-selling-products', { admin, title: "Sales Report", report })
 })
 
 
 // transaction report
-router.get('/transaction-report',varifyLogin,async(req,res)=>{
+router.get('/transaction-report', varifyLogin, async (req, res) => {
 
   let report = await adminHelpers.transactionReport()
   console.log(report);
@@ -395,15 +395,16 @@ router.post('/change-status', (req, res) => {
 
 
 router.post('/addbanner', (req, res) => {
+ 
   let data = {
 
-    bannerTitle: req.body.bannerTitle,
-    bannerHeading: req.body.bannerHeading,
-    bannerContent: req.body.bannerContent
+    bannerTitle: req.body.bannertitle,
+    bannerHeading: req.body.bannerheading,
+    bannerContent: req.body.bannercontent
   }
   adminHelpers.addBanner(data).then((id) => {
 
-    let image = req.body.image
+    let image = req.body.bannerimage
     let path = './public/user/images/productImage/' + id + '1.jpg'
     let img = image.replace(/^data:([A-Za-z+/]+);base64,/, "")
     fs.writeFileSync(path, img, { encoding: 'base64' })
@@ -453,8 +454,33 @@ router.post('/dashboard/weeklychart', async (req, res) => {
 
 // coupon adding
 router.post('/add-coupon', async (req, res) => {
-  let response = await adminHelpers.addCoupon(req.body)
-  res.json(response)
+
+  let data = {
+
+    title: req.body.title,
+    code: req.body.code,
+    discount: req.body.discount,
+    min_amount: req.body.minAmount,
+    Max_use: req.body.maxUse,
+    date: req.body.date,
+    description: req.body.description
+  }
+
+  let response = await adminHelpers.addCoupon(data)
+
+  if (response.err === 1) {
+
+    res.json(response)
+  } else {
+    console.log(response);
+    let image = req.body.image
+    let path = './public/user/images/coupon-banner/' + response.id + '1.jpg'
+    let img = image.replace(/^data:([A-Za-z+/]+);base64,/, "")
+    fs.writeFileSync(path, img, { encoding: 'base64' })
+
+    res.json(response)
+  }
+
 })
 
 // delete coupon
@@ -480,7 +506,7 @@ router.post('/delete_categoryoffer', (req, res) => {
 
 
 // search product for offer
-router.post('/product-offer/get-search-products',async(req,res)=>{
+router.post('/product-offer/get-search-products', async (req, res) => {
 
   let products = await adminHelpers.getSearchedProductForProOffer(req.body.keyWord)
   res.json(products)

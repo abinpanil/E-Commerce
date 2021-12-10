@@ -7,7 +7,7 @@ const config = require('../auth/config');
 const { route } = require('./admin');
 const { Db } = require('mongodb');
 const dotenv = require('dotenv').config()
-
+const fs = require('fs');
 const twilioClient = require("twilio")(process.env.accountSID, process.env.authToken)
 const paypal = require('paypal-rest-sdk');
 const alert = require('alert')
@@ -48,6 +48,7 @@ function varifyLogin(req, res, next) {
 /* GET users Home. */
 router.get('/', async (req, res, next) => {
 
+  let coupon = await userHelpers.getCouponForHome()
   let home = await adminHelpers.getHomeData()
   if (req.session.user) {
     checkWishlist = await userHelpers.getWishlistforCheck(req.session.user._id)
@@ -57,10 +58,12 @@ router.get('/', async (req, res, next) => {
     user.name = ''
     delete req.session.user
   }
+  let toSelling = await adminHelpers.topSellingProducts()
+  console.log(toSelling);
   adminHelpers.checExpire()
   adminHelpers.getCategory().then((data) => {
-    adminHelpers.getAllProducts().then((products) => {
-      res.render('./user/home', { admin, user, title: "Home", data, products, cartCount, home, checkWishlist });
+    userHelpers.getLatestProducts().then((products) => {
+      res.render('./user/home', { admin, user, title: "Home", data, products, cartCount, home, checkWishlist,toSelling,coupon });
     })
   })
 });
@@ -77,6 +80,18 @@ router.get('/login', function (req, res) {
   }
 });
 
+router.get('/all-products',async(req,res)=>{
+  if (req.session.user) {
+    checkWishlist = await userHelpers.getWishlistforCheck(req.session.user._id)
+    cartCount = await userHelpers.getCartCount(req.session.user._id)
+  }
+  adminHelpers.getCategory().then((data) => {
+    adminHelpers.getAllProducts().then((pro) => {
+      res.render('./user/productlist', { admin, user, title: "Products", data, pro, cartCount, checkWishlist })
+    })
+  })
+  
+})
 
 /* GET Account page. */
 router.get('/myaccount', varifyLogin, async (req, res) => {
@@ -85,6 +100,8 @@ router.get('/myaccount', varifyLogin, async (req, res) => {
   }
   let userDetails = await userHelpers.getUserDetails(req.session.user._id)
   let orders = await userHelpers.getOrder(req.session.user._id)
+  console.log(orders);
+  console.log("******");
   let address = await userHelpers.getAddress(req.session.user._id)
   adminHelpers.getCategory().then((data) => {
     res.render('./user/my_account', { admin, user, title: "My Account", data, orders, cartCount, address, userDetails });
@@ -368,7 +385,7 @@ router.post('/signin-with-google', async (req, res) => {
 
 // edit validate
 router.post('/edit_validate', (req, res) => {
-
+  console.log(req.body);
   // userHelpers.validate(req.body).then((userResponse)=>{
   // if(userResponse.status){
   userHelpers.editUser(req.body).then(() => {
@@ -573,13 +590,14 @@ router.post('/add-to-wishlist', (req, res) => {
 
 // product increment
 router.post('/change-product-quantity', (req, res) => {
-  userHelpers.changeProductQuantity(req.body).then((response) => {
+  userHelpers.changeProductQuantity(req.body).then((data) => {
     userHelpers.getTotalAmount(req.session.user._id).then((total) => {
       userHelpers.getSubTotalAmount(req.body).then((subTotal) => {
-        console.log(subTotal);
+        
         let response = {
           total: total,
-          subTotal: subTotal
+          subTotal: subTotal,
+          count : data
         }
         res.json(response)
       })
@@ -632,14 +650,16 @@ router.post('/deleteAddress', (req, res) => {
 // change user avatar
 router.post('/change-avatar', (req, res) => {
 
+  console.log(req.body);
+  let image = req.body.img1
+  console.log(image);
   let id = req.session.user._id
-  let user1 = req.body.img1
-  console.log(user1);
-  let path1 = './public/uploads/user/' + id + '.jpg'
-  let img1 = user1.replace(/^data:([A-Za-z-+/]+);base64,/, "")
-  fs.writeFileSync(path1, img1, { encoding: 'base64' })
-
+  let path = './public/user/images/user/' + id + '.jpg'
+  let img = image.replace(/^data:([A-Za-z+/]+);base64,/, "")
+  fs.writeFileSync(path, img, { encoding: 'base64' })
+  
   res.json({})
+
 })
 
 // remove product from cart

@@ -59,215 +59,1037 @@
 
     <!-- End of Banner Fashion -->
     <div class="container-fluid">
-        <div class="title-link-wrapper latest-title after-none pt-6 mb-0 appear-animate pb-5">
-            <h2 class="title font-size-xl mr-auto mb-3">Latest Products</h2>
-
-        </div>
-        <div class="swiper-container swiper-theme pb-1 mb-8 appear-animate" data-swiper-options="{
-            'spaceBetween': 20,
-            'breakpoints': {
-                '0': {
-                    'slidesPerView': 2
-                },
-                '768': {
-                    'slidesPerView': 4
-                },
-                '992': {
-                    'slidesPerView': 6
-                },
-                '1200': {
-                    'slidesPerView': 8
-                }
-            }
-            }">
-
-
-
-            <div class="shop-content toolbox-horizontal">
-
-                <!-- Start of Selected Items -->
-                <div class="selected-items mb-3">
-                    <a href="#" class="filter-clean text-primary">Clean All</a>
-                </div>
-                <!-- End of Selected Items -->
-
-                <!-- Start of Product Wrapper -->
-                <div class="product-wrapper row cols-lg-4 cols-md-3 cols-sm-2 cols-2">
-                    <%for(var i=0;i<products.length;i++){%>
-                        <div class="product-wrap">
-                            <div class="product text-center">
-                                <figure class="product-media">
-                                    <a href="/viewproduct/<%=products[i]._id%>">
-                                        <img src="/user/images/productImage/<%=products[i]._id%>1.jpg" alt="Product"
-                                            width="300" height="338" />
-                                    </a>
-                                    <div class="product-action-horizontal">
-                                        <a onclick="addToCart('<%=products[i]._id%>')"
-                                            class="btn-product-icon  w-icon-cart" title="Add to cart"></a>
-                                            
-                                            <%if(user.status){%>
-                                                <%let flag = 0%>
-                                                <%for(j=0;j<checkWishlist.length;j++){%>
-                                                    <%if(checkWishlist[j] == products[i]._id){%>
-                                                        <%flag = 1%>
-                                                        <%break%>
-                                                    <%}%>
-                                                <%}%>
-                                                <%if(flag===1){%>
-                                                    <a onclick="addToWishlist('active','<%=products[i]._id%>')" id="wish-btn-active_<%=products[i]._id%>"
-                                                        style="color: red;" class="btn-product-icon w-icon-heart-full" title="Wishlist"></a>
-                                                <%}else{%>
-                                                    <a onclick="addToWishlist('desable','<%=products[i]._id%>')" id="wish-btn-desable_<%=products[i]._id%>"
-                                                        style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
-                                                <%}%>
-                                            <%}else{%>
-                                                <a onclick="addToWishlist('<%=products[i]._id%>')" 
-                                                    style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
-                                            <%}%>
-                                            
-                                        <a href="/product-buy-now/<%=products[i]._id%>"
-                                            class="btn-product-icon w-icon-shipping" title="Buy Now"></a>
-                                    </div>
-                                </figure>
-                                <div class="product-details">
-                                    <div class="product-cat">
-                                        <a href="/viewproduct/<%=products[i]._id%>">
-                                            <%=products[i].productcategory%>
-                                        </a>
-                                    </div>
-                                    <h3 class="product-name">
-                                        <a href="/viewproduct/<%=products[i]._id%>">
-                                            <%=products[i].productname%>
-                                        </a>
-                                    </h3>
-                                    <!-- <div class="ratings-container">
-                                    <div class="ratings-full">
-                                        <span class="ratings" style="width: 100%;"></span>
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div>
-                                    <a href="product-default.html" class="rating-reviews">(3 reviews)</a>
-                                </div> -->
-                                    <%if(products[i].isOfferActive===true){%>
-
-                                        <%if(products[i].isProOfferActive===true){%>
-
-                                            <%if(products[i].offer_price> products[i].productoffer_price){%>
-                                                <p style="color: green; padding: 0; margin: 0;">
-                                                    <%=products[i].productoffer_description%>
-                                                </p>
-                                                <div class="product-pa-wrapper">
-                                                    <div class="product-price" style="color: grey;">Rs.
-                                                        <del>
-                                                            <%=products[i].productprice%>
-                                                        </del>
-                                                    </div>
-                                                </div>
-                                                <div class="product-pa-wrapper">
-                                                    <div class="product-price" style="color: green;">Rs.
-                                                        <%=products[i].productoffer_price%>
-                                                    </div>
-                                                </div>
-                                                <p style="color: green;"></p>
-                                                <%}else{%>
-                                                    <p style="color: green; padding: 0; margin: 0;">
-                                                        <%=products[i].categoryoffer_description%>
-                                                    </p>
-                                                    <div class="product-pa-wrapper">
-                                                        <div class="product-price" style="color: grey;">Rs.
-                                                            <del>
-                                                                <%=products[i].productprice%>
-                                                            </del>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-pa-wrapper">
-                                                        <div class="product-price" style="color: green;">Rs.
-                                                            <%=products[i].offer_price%>
-                                                        </div>
-                                                    </div>
-                                                    <p style="color: green;"></p>
-                                                    <%}%>
-
-                                                        <%}else{%>
-
-                                                            <p style="color: green; padding: 0; margin: 0;">
-                                                                <%=products[i].categoryoffer_description%>
-                                                            </p>
-                                                            <div class="product-pa-wrapper">
-                                                                <div class="product-price" style="color: grey;">Rs.
-                                                                    <del>
-                                                                        <%=products[i].productprice%>
-                                                                    </del>
-                                                                </div>
-                                                            </div>
-                                                            <div class="product-pa-wrapper">
-                                                                <div class="product-price" style="color: green;">Rs.
-                                                                    <%=products[i].offer_price%>
-                                                                </div>
-                                                            </div>
-                                                            <p style="color: green;"></p>
-
-                                                            <%}%>
-
-                                                                <%}else if(products[i].isProOfferActive===true){%>
-
-                                                                    <p style="color: green; padding: 0; margin: 0;">
-                                                                        <%=products[i].productoffer_description%>
-                                                                    </p>
-                                                                    <div class="product-pa-wrapper">
-                                                                        <div class="product-price" style="color: grey;">
-                                                                            Rs.
-                                                                            <del>
-                                                                                <%=products[i].productprice%>
-                                                                            </del>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="product-pa-wrapper">
-                                                                        <div class="product-price"
-                                                                            style="color: green;">Rs.
-                                                                            <%=products[i].productoffer_price%>
-                                                                        </div>
-                                                                    </div>
-                                                                    <p style="color: green;"></p>
-
-                                                                    <%}else{%>
-                                                                        <div class="product-pa-wrapper">
-                                                                            <div class="product-price">Rs.
-                                                                                <%=products[i].productprice%>
-                                                                            </div>
-                                                                        </div>
-                                                                        <%}%>
-                                </div>
+        <div class="swiper-container swiper-theme icon-box-wrapper appear-animate br-sm bg-white mt-2 mb-8"
+                    data-swiper-options="{
+                    'loop': false,
+                    'spaceBetween': 0,
+                    'breakpoints': {
+                        '0': {
+                            'slidesPerView': 1
+                        },
+                        '576': {
+                            'slidesPerView': 2
+                        },
+                        '992': {
+                            'slidesPerView': 3
+                        },
+                        '1200': {
+                            'slidesPerView': 4
+                        }
+                    }
+                    }">
+                    <div class="swiper-wrapper row cols-md-4 cols-sm-3 cols-1">
+                        <div class="swiper-slide icon-box icon-box-side text-dark">
+                            <span class="icon-box-icon icon-shipping">
+                                <i class="w-icon-truck"></i>
+                            </span>
+                            <div class="icon-box-content">
+                                <h4 class="icon-box-title">Free Shipping & Returns</h4>
+                                <p class="text-default">For all orders over $99</p>
                             </div>
                         </div>
+                        <div class="swiper-slide icon-box icon-box-side text-dark">
+                            <span class="icon-box-icon icon-payment">
+                                <i class="w-icon-bag"></i>
+                            </span>
+                            <div class="icon-box-content">
+                                <h4 class="icon-box-title">Secure Payment</h4>
+                                <p class="text-default">We ensure secure payment</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide icon-box icon-box-side text-dark icon-box-money">
+                            <span class="icon-box-icon icon-money">
+                                <i class="w-icon-money"></i>
+                            </span>
+                            <div class="icon-box-content">
+                                <h4 class="icon-box-title">Money Back Guarantee</h4>
+                                <p class="text-default">Any back within 30 days</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide icon-box icon-box-side text-dark icon-box-chat">
+                            <span class="icon-box-icon icon-chat">
+                                <i class="w-icon-chat"></i>
+                            </span>
+                            <div class="icon-box-content">
+                                <h4 class="icon-box-title">Customer Support</h4>
+                                <p class="text-default">Call or email us 24/7</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Icon Box Wrapper -->
+
+                <div class="title-link-wrapper latest-title after-none pt-6 mb-0 appear-animate">
+                    <h2 class="title font-size-xl mr-auto mb-3">Top Selling Products</h2>
+                   
+                </div>
+                <div class="swiper-container swiper-theme pb-1 mb-8 appear-animate" data-swiper-options="{
+                    'spaceBetween': 20,
+                    'breakpoints': {
+                        '0': {
+                            'slidesPerView': 2
+                        },
+                        '768': {
+                            'slidesPerView': 4
+                        },
+                        '992': {
+                            'slidesPerView': 6
+                        },
+                        '1200': {
+                            'slidesPerView': 8
+                        }
+                    }
+                    }">
+                    <div class="swiper-wrapper row cols-xl-8 cols-lg-6 cols-md-4 cols-2">
+                        <%for(i=0;i<toSelling.length;i++){%>
+
+                            <div class="swiper-slide product-wrap">
+                                <div class="product text-center">
+                                    <figure class="product-media">
+                                        <a href="/viewproduct/<%=toSelling[i]._id%>">
+                                            <img src="/user/images/productImage/<%=toSelling[i]._id%>1.jpg" alt="Product"
+                                                width="300" height="337">
+                                            <img src="/user/images/productImage/<%=toSelling[i]._id%>2.jpg" alt="Product"
+                                                width="300" height="337">
+                                        </a>
+                                        <div class="product-label-group">
+
+                                            <%if(toSelling[i].isOfferActive===true){%>
+
+                                                <%if(toSelling[i].isProOfferActive===true){%>
+            
+                                                    <%if(toSelling[i].offer_price > toSelling[i].productoffer_price){%>
+
+                                                        <label class="product-label label-sale"><%=toSelling[i].productoffer_discount%>% off</label>
+        
+                                                    <%}else{%>
+                                                            
+                                                        <label class="product-label label-sale"><%=toSelling[i].categoryoffer_discount%>% off</label>
+            
+                                                    <%}%>
+            
+                                                <%}else{%>
+
+                                                    <label class="product-label label-sale"><%=toSelling[i].categoryoffer_discount%>% off</label>
+            
+                                                <%}%>
+            
+                                            <%}else if(toSelling[i].isProOfferActive === true){%>
+                                                
+                                                <label class="product-label label-sale"><%=toSelling[i].productoffer_discount%>% off</label>
+                                                
+            
+                                            <%}else{%>
+        
+                                                
+                                            <%}%>
+
+                                        </div>
+                                        <div class="product-action-horizontal">
+                                            <a onclick="addToCart('<%=toSelling[i]._id%>')"
+                                                class="btn-product-icon  w-icon-cart" title="Add to cart"></a>
+
+                                                <%if(user.status){%>
+                                                    <%let flag = 0%>
+                                                    <%for(j=0;j<checkWishlist.length;j++){%>
+                                                        <%if(checkWishlist[j] == toSelling[i]._id){%>
+                                                            <%flag = 1%>
+                                                            <%break%>
+                                                        <%}%>
+                                                    <%}%>
+                                                    <%if(flag===1){%>
+                                                        <a onclick="addToWishlist('active','<%=toSelling[i]._id%>')" id="top_wish-btn-active_<%=toSelling[i]._id%>"
+                                                            style="color: red;" class="btn-product-icon w-icon-heart-full" title="Wishlist"></a>
+                                                    <%}else{%>
+                                                        <a onclick="addToWishlist('desable','<%=toSelling[i]._id%>')" id="wish-btn-desable_<%=toSelling[i]._id%>"
+                                                            style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                    <%}%>
+                                                <%}else{%>
+                                                    <a onclick="addToWishlist('<%=toSelling[i]._id%>')" 
+                                                        style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                <%}%>
+
+
+                                                <a href="/product-buy-now/<%=toSelling[i]._id%>"
+                                                    class="btn-product-icon w-icon-shipping" title="Buy Now"></a>
+                                        </div>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h4 class="product-name"><a href="/viewproduct/<%=toSelling[i]._id%>"><%=toSelling[i].productname%></a></h4>
+                                        <div class="product-price">
+
+
+
+
+                                            <%if(toSelling[i].isOfferActive===true){%>
+
+                                                <%if(toSelling[i].isProOfferActive===true){%>
+            
+                                                    <%if(toSelling[i].offer_price > toSelling[i].productoffer_price){%>
+                                                        
+                                                        <ins class="new-price">Rs.<%=toSelling[i].productoffer_price%></ins><del class="old-price">Rs.<%=toSelling[i].productprice%></del>
+
+                                                        
+        
+                                                    <%}else{%>
+
+                                                        <ins class="new-price">Rs.<%=toSelling[i].offer_price%></ins><del class="old-price">Rs.<%=toSelling[i].productprice%></del>
+                                                            
+                                                        
+            
+                                                    <%}%>
+            
+                                                <%}else{%>
+            
+                                                    <ins class="new-price">Rs.<%=toSelling[i].offer_price%></ins><del class="old-price">Rs.<%=toSelling[i].productprice%></del>
+                                                    
+            
+                                                <%}%>
+            
+                                            <%}else if(toSelling[i].isProOfferActive === true){%>
+                                                
+                                                <ins class="new-price">Rs.<%=toSelling[i].productoffer_price%></ins><del class="old-price">Rs.<%=toSelling[i].productprice%></del>
+                                                
+            
+                                            <%}else{%>
+        
+                                                <ins class="new-price">Rs.<%=toSelling[i].productprice%></ins>
+                                               
+        
+                                            <%}%>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End of Product Wrap -->
+
                         <%}%>
+                        
+                        
+                    </div>
+                </div>
+                <!-- End of Banner Product Wrapper -->
+            </div>
+            <%if(coupon){%>
+            <div class="banner banner-fashion appear-animate mb-8" style="background-color: #D3D3D4;">
+                <div class="banner-content align-items-center">
+                    <div class="content-left d-flex align-items-center mb-2">
+                        <div class="banner-price-info text-secondary text-uppercase font-weight-bolder lh-1">
+                            <%=coupon.discount%>
+                            <sup class="font-weight-bold ls-25">%</sup><sub class="font-weight-bold ">  </sub>
+                        </div>
+                        <hr class="banner-divider mt-0 mb-0">
+                    </div>
+                    <div class="content-right d-flex align-items-center flex-1 flex-wrap">
+                        <div class="banner-info mr-auto pr-4">
+                            <h3 class="banner-title text-dark text-uppercase ls-25"><%=coupon.title%></h3>
+                            <p class="mb-0">Use code
+                                <span class="text-white bg-dark font-weight-bold ls-50 d-inline-block"><%=coupon.code%></span> to get best offer.</p>
+                        </div>
+                        <a href="/all-products" class="btn btn-white btn-rounded btn-icon-right mb-3">
+                            Shop Now<i class="w-icon-long-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <figure class="banner-media skrollable">
+                    <img src="/user/images/coupon-banner/<%=coupon._id%>1.jpg" alt="Banner" width="431" height="610"
+                        style="background-color: #D3D3D3;" data-bottom-top="transform: translateY(4vh);"
+                        data-top-bottom="transform: translateY(-4vh);" />
+                </figure>
+            </div>
+            <%}%>
+            <!-- End of Banner Fashion -->
 
-                            <!-- End of Product Wrapper -->
+        <div class="container-fluid">
+            <div class="row banner-product-wrapper banner-product-wrapper2 appear-animate pb-1 mb-10">
+                <div class="banner-product col-xl-3 col-md-4 mb-4 mb-md-0">
+                    <h2 class="title pt-3 mb-5 appear-animate">Latest Products</h2>
+                    <div class="banner banner-fixed overlay-zoom br-xs">
+                        <figure class="banner-media h-100">
+                            <img 
+                                width="431" height="610" style="background-color: #ECECEC;" />
+                        </figure>
+                        <div class="banner-content">
+                            <h5 class="banner-subtitle text-uppercase font-weight-bold">Latest</h5>
+                            <h3 class="banner-title text-capitalize ls-25">Kitchen Utensils<br>&amp; Tools, Dining
+                            </h3>
+                            <a href="/all-products"
+                                class="btn btn-dark btn-md btn-outline btn-rounded btn-icon-right">
+                                Shop Now<i class="w-icon-long-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-wrapper col-xl-9 col-md-8">
+                    <div style="height: 53px;"></div>
+                    <div class="swiper-container swiper-theme" data-swiper-options="{
+                        'spaceBetween': 20,
+                        'breakpoints': {
+                            '0': {
+                                'slidesPerView': 2
+                            },
+                            '992': {
+                                'slidesPerView': 3
+                            },
+                            '1200': {
+                                'slidesPerView': 4
+                            },
+                            '1520': {
+                                'slidesPerView': 6
+                            }
+                        }
+                        }">
+                        <div class="swiper-wrapper row cols-xl-4 cols-lg-3 cols-2">
+                            <div class="swiper-slide product-col">
+                               
+                                <%for(i=0;i<products.length;i++){%>
+                                    <%if(i === 0 || i === 1){%>
+                                    <div class="product-wrap">
+                                        <div class="product text-center">
+                                            <figure class="product-media">
+                                                <a href="/viewproduct/<%=products[i]._id%>">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>1.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>2.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                </a>
+                                                <div class="product-label-group">
 
-                            <!-- Start of Pagination -->
-                            <!-- <div class="toolbox toolbox-pagination justify-content-between">
-                    <p class="showing-info mb-2 mb-sm-0">
-                        Showing<span>1-12 of 60</span>Products
-                    </p>
-                    <ul class="pagination">
-                        <li class="prev disabled">
-                            <a href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
-                                <i class="w-icon-long-arrow-left"></i>Prev
-                            </a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="next">
-                            <a href="#" aria-label="Next">
-                                Next<i class="w-icon-long-arrow-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div> -->
-                            <!-- End of Pagination -->
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+        
+                                                                <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                
+                                                            <%}else{%>
+                                                                    
+                                                                <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+        
+                                                            <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        
+                                                    <%}%>
+
+                                                   
+                                                </div>
+                                                <div class="product-action-horizontal">
+                                                    <a onclick="addToCart('<%=products[i]._id%>')"
+                                                        class="btn-product-icon  w-icon-cart" title="Add to cart"></a>
+        
+                                                        <%if(user.status){%>
+                                                            <%let flag = 0%>
+                                                            <%for(j=0;j<checkWishlist.length;j++){%>
+                                                                <%if(checkWishlist[j] == products[i]._id){%>
+                                                                    <%flag = 1%>
+                                                                    <%break%>
+                                                                <%}%>
+                                                            <%}%>
+                                                            <%if(flag===1){%>
+                                                                <a onclick="addToWishlist('active','<%=products[i]._id%>')" id="top_wish-btn-active_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart-full" title="Wishlist"></a>
+                                                            <%}else{%>
+                                                                <a onclick="addToWishlist('desable','<%=products[i]._id%>')" id="wish-btn-desable_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                            <%}%>
+                                                        <%}else{%>
+                                                            <a onclick="addToWishlist('<%=products[i]._id%>')" 
+                                                                style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                        <%}%>
+        
+        
+                                                        <a href="/product-buy-now/<%=products[i]._id%>"
+                                                            class="btn-product-icon w-icon-shipping" title="Buy Now"></a>
+                                                </div>
+                                            </figure>
+                                            <div class="product-details">
+                                                <h4 class="product-name"><a href="/viewproduct/<%=products[i]._id%>"><%=products[i].productname%></a>
+                                                </h4>
+                                                <div class="product-price">
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+                                                                
+                                                                <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+        
+                                                                
+                
+                                                            <%}else{%>
+        
+                                                                <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                                    
+                                                                
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+                    
+                                                            <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                            
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        <ins class="new-price">Rs.<%=products[i].productprice%></ins>
+                                                       
+                
+                                                    <%}%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!-- End of Product Wrap -->
+                                <%}%>
+                                <%}%>
+                                <!-- End of Product Wrap -->
+                            </div>
+                            <!-- End of Product Col -->
+                            <div class="swiper-slide product-col">
+                                <%for(i=0;i<products.length;i++){%>
+                                    <%if(i === 2 || i === 3){%>
+                                    <div class="product-wrap">
+                                        <div class="product text-center">
+                                            <figure class="product-media">
+                                                <a href="/viewproduct/<%=products[i]._id%>">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>1.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>2.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                </a>
+                                                <div class="product-label-group">
+
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+        
+                                                                <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                
+                                                            <%}else{%>
+                                                                    
+                                                                <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+        
+                                                            <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        
+                                                    <%}%>
+
+                                                   
+                                                </div>
+                                                <div class="product-action-horizontal">
+                                                    <a onclick="addToCart('<%=products[i]._id%>')"
+                                                        class="btn-product-icon  w-icon-cart" title="Add to cart"></a>
+        
+                                                        <%if(user.status){%>
+                                                            <%let flag = 0%>
+                                                            <%for(j=0;j<checkWishlist.length;j++){%>
+                                                                <%if(checkWishlist[j] == products[i]._id){%>
+                                                                    <%flag = 1%>
+                                                                    <%break%>
+                                                                <%}%>
+                                                            <%}%>
+                                                            <%if(flag===1){%>
+                                                                <a onclick="addToWishlist('active','<%=products[i]._id%>')" id="top_wish-btn-active_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart-full" title="Wishlist"></a>
+                                                            <%}else{%>
+                                                                <a onclick="addToWishlist('desable','<%=products[i]._id%>')" id="wish-btn-desable_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                            <%}%>
+                                                        <%}else{%>
+                                                            <a onclick="addToWishlist('<%=products[i]._id%>')" 
+                                                                style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                        <%}%>
+        
+        
+                                                        <a href="/product-buy-now/<%=products[i]._id%>"
+                                                            class="btn-product-icon w-icon-shipping" title="Buy Now"></a>
+                                                </div>
+                                            </figure>
+                                            <div class="product-details">
+                                                <h4 class="product-name"><a href="/viewproduct/<%=products[i]._id%>"><%=products[i].productname%></a>
+                                                </h4>
+                                                <div class="product-price">
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+                                                                
+                                                                <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+        
+                                                                
+                
+                                                            <%}else{%>
+        
+                                                                <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                                    
+                                                                
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+                    
+                                                            <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                            
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        <ins class="new-price">Rs.<%=products[i].productprice%></ins>
+                                                       
+                
+                                                    <%}%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!-- End of Product Wrap -->
+                                <%}%>
+                                <%}%>
+                            </div>
+                            <!-- End of Product Col -->
+                            <div class="swiper-slide product-col">
+                                <%for(i=0;i<products.length;i++){%>
+                                    <%if(i === 4 || i === 5){%>
+                                    <div class="product-wrap">
+                                        <div class="product text-center">
+                                            <figure class="product-media">
+                                                <a href="/viewproduct/<%=products[i]._id%>">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>1.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>2.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                </a>
+                                                <div class="product-label-group">
+
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+        
+                                                                <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                
+                                                            <%}else{%>
+                                                                    
+                                                                <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+        
+                                                            <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        
+                                                    <%}%>
+
+                                                   
+                                                </div>
+                                                <div class="product-action-horizontal">
+                                                    <a onclick="addToCart('<%=products[i]._id%>')"
+                                                        class="btn-product-icon  w-icon-cart" title="Add to cart"></a>
+        
+                                                        <%if(user.status){%>
+                                                            <%let flag = 0%>
+                                                            <%for(j=0;j<checkWishlist.length;j++){%>
+                                                                <%if(checkWishlist[j] == products[i]._id){%>
+                                                                    <%flag = 1%>
+                                                                    <%break%>
+                                                                <%}%>
+                                                            <%}%>
+                                                            <%if(flag===1){%>
+                                                                <a onclick="addToWishlist('active','<%=products[i]._id%>')" id="top_wish-btn-active_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart-full" title="Wishlist"></a>
+                                                            <%}else{%>
+                                                                <a onclick="addToWishlist('desable','<%=products[i]._id%>')" id="wish-btn-desable_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                            <%}%>
+                                                        <%}else{%>
+                                                            <a onclick="addToWishlist('<%=products[i]._id%>')" 
+                                                                style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                        <%}%>
+        
+        
+                                                        <a href="/product-buy-now/<%=products[i]._id%>"
+                                                            class="btn-product-icon w-icon-shipping" title="Buy Now"></a>
+                                                </div>
+                                            </figure>
+                                            <div class="product-details">
+                                                <h4 class="product-name"><a href="/viewproduct/<%=products[i]._id%>"><%=products[i].productname%></a>
+                                                </h4>
+                                                <div class="product-price">
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+                                                                
+                                                                <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+        
+                                                                
+                
+                                                            <%}else{%>
+        
+                                                                <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                                    
+                                                                
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+                    
+                                                            <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                            
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        <ins class="new-price">Rs.<%=products[i].productprice%></ins>
+                                                       
+                
+                                                    <%}%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!-- End of Product Wrap -->
+                                <%}%>
+                                <%}%>
+                            </div>
+                            <!-- End of Product Col -->
+                            <div class="swiper-slide product-col">
+                                <%for(i=0;i<products.length;i++){%>
+                                    <%if(i === 6 || i === 7){%>
+                                    <div class="product-wrap">
+                                        <div class="product text-center">
+                                            <figure class="product-media">
+                                                <a href="/viewproduct/<%=products[i]._id%>">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>1.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>2.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                </a>
+                                                <div class="product-label-group">
+
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+        
+                                                                <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                
+                                                            <%}else{%>
+                                                                    
+                                                                <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+        
+                                                            <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        
+                                                    <%}%>
+
+                                                   
+                                                </div>
+                                                <div class="product-action-horizontal">
+                                                    <a onclick="addToCart('<%=products[i]._id%>')"
+                                                        class="btn-product-icon  w-icon-cart" title="Add to cart"></a>
+        
+                                                        <%if(user.status){%>
+                                                            <%let flag = 0%>
+                                                            <%for(j=0;j<checkWishlist.length;j++){%>
+                                                                <%if(checkWishlist[j] == products[i]._id){%>
+                                                                    <%flag = 1%>
+                                                                    <%break%>
+                                                                <%}%>
+                                                            <%}%>
+                                                            <%if(flag===1){%>
+                                                                <a onclick="addToWishlist('active','<%=products[i]._id%>')" id="top_wish-btn-active_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart-full" title="Wishlist"></a>
+                                                            <%}else{%>
+                                                                <a onclick="addToWishlist('desable','<%=products[i]._id%>')" id="wish-btn-desable_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                            <%}%>
+                                                        <%}else{%>
+                                                            <a onclick="addToWishlist('<%=products[i]._id%>')" 
+                                                                style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                        <%}%>
+        
+        
+                                                        <a href="/product-buy-now/<%=products[i]._id%>"
+                                                            class="btn-product-icon w-icon-shipping" title="Buy Now"></a>
+                                                </div>
+                                            </figure>
+                                            <div class="product-details">
+                                                <h4 class="product-name"><a href="/viewproduct/<%=products[i]._id%>"><%=products[i].productname%></a>
+                                                </h4>
+                                                <div class="product-price">
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+                                                                
+                                                                <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+        
+                                                                
+                
+                                                            <%}else{%>
+        
+                                                                <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                                    
+                                                                
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+                    
+                                                            <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                            
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        <ins class="new-price">Rs.<%=products[i].productprice%></ins>
+                                                       
+                
+                                                    <%}%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!-- End of Product Wrap -->
+                                <%}%>
+                                <%}%>
+                            </div>
+                            <!-- End of Product Col -->
+                            <div class="swiper-slide product-col">
+                                <%for(i=0;i<products.length;i++){%>
+                                    <%if(i === 8 || i === 9){%>
+                                    <div class="product-wrap">
+                                        <div class="product text-center">
+                                            <figure class="product-media">
+                                                <a href="/viewproduct/<%=products[i]._id%>">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>1.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>2.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                </a>
+                                                <div class="product-label-group">
+
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+        
+                                                                <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                
+                                                            <%}else{%>
+                                                                    
+                                                                <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+        
+                                                            <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        
+                                                    <%}%>
+
+                                                   
+                                                </div>
+                                                <div class="product-action-horizontal">
+                                                    <a onclick="addToCart('<%=products[i]._id%>')"
+                                                        class="btn-product-icon  w-icon-cart" title="Add to cart"></a>
+        
+                                                        <%if(user.status){%>
+                                                            <%let flag = 0%>
+                                                            <%for(j=0;j<checkWishlist.length;j++){%>
+                                                                <%if(checkWishlist[j] == products[i]._id){%>
+                                                                    <%flag = 1%>
+                                                                    <%break%>
+                                                                <%}%>
+                                                            <%}%>
+                                                            <%if(flag===1){%>
+                                                                <a onclick="addToWishlist('active','<%=products[i]._id%>')" id="top_wish-btn-active_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart-full" title="Wishlist"></a>
+                                                            <%}else{%>
+                                                                <a onclick="addToWishlist('desable','<%=products[i]._id%>')" id="wish-btn-desable_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                            <%}%>
+                                                        <%}else{%>
+                                                            <a onclick="addToWishlist('<%=products[i]._id%>')" 
+                                                                style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                        <%}%>
+        
+        
+                                                        <a href="/product-buy-now/<%=products[i]._id%>"
+                                                            class="btn-product-icon w-icon-shipping" title="Buy Now"></a>
+                                                </div>
+                                            </figure>
+                                            <div class="product-details">
+                                                <h4 class="product-name"><a href="/viewproduct/<%=products[i]._id%>"><%=products[i].productname%></a>
+                                                </h4>
+                                                <div class="product-price">
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+                                                                
+                                                                <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+        
+                                                                
+                
+                                                            <%}else{%>
+        
+                                                                <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                                    
+                                                                
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+                    
+                                                            <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                            
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        <ins class="new-price">Rs.<%=products[i].productprice%></ins>
+                                                       
+                
+                                                    <%}%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!-- End of Product Wrap -->
+                                <%}%>
+                                <%}%>
+                            </div>
+                            <!-- End of Product Col -->
+                            <div class="swiper-slide product-col">
+                                <%for(i=0;i<products.length;i++){%>
+                                    <%if(i === 10 || i === 11){%>
+                                    <div class="product-wrap">
+                                        <div class="product text-center">
+                                            <figure class="product-media">
+                                                <a href="/viewproduct/<%=products[i]._id%>">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>1.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                    <img src="/user/images/productImage/<%=products[i]._id%>2.jpg"
+                                                        alt="Product" width="300" height="337">
+                                                </a>
+                                                <div class="product-label-group">
+
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+        
+                                                                <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                
+                                                            <%}else{%>
+                                                                    
+                                                                <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+        
+                                                            <label class="product-label label-sale"><%=products[i].categoryoffer_discount%>% off</label>
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <label class="product-label label-sale"><%=products[i].productoffer_discount%>% off</label>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        
+                                                    <%}%>
+
+                                                   
+                                                </div>
+                                                <div class="product-action-horizontal">
+                                                    <a onclick="addToCart('<%=products[i]._id%>')"
+                                                        class="btn-product-icon  w-icon-cart" title="Add to cart"></a>
+        
+                                                        <%if(user.status){%>
+                                                            <%let flag = 0%>
+                                                            <%for(j=0;j<checkWishlist.length;j++){%>
+                                                                <%if(checkWishlist[j] == products[i]._id){%>
+                                                                    <%flag = 1%>
+                                                                    <%break%>
+                                                                <%}%>
+                                                            <%}%>
+                                                            <%if(flag===1){%>
+                                                                <a onclick="addToWishlist('active','<%=products[i]._id%>')" id="top_wish-btn-active_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart-full" title="Wishlist"></a>
+                                                            <%}else{%>
+                                                                <a onclick="addToWishlist('desable','<%=products[i]._id%>')" id="wish-btn-desable_<%=products[i]._id%>"
+                                                                    style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                            <%}%>
+                                                        <%}else{%>
+                                                            <a onclick="addToWishlist('<%=products[i]._id%>')" 
+                                                                style="color: red;" class="btn-product-icon w-icon-heart" title="Wishlist"></a>
+                                                        <%}%>
+        
+        
+                                                        <a href="/product-buy-now/<%=products[i]._id%>"
+                                                            class="btn-product-icon w-icon-shipping" title="Buy Now"></a>
+                                                </div>
+                                            </figure>
+                                            <div class="product-details">
+                                                <h4 class="product-name"><a href="/viewproduct/<%=products[i]._id%>"><%=products[i].productname%></a>
+                                                </h4>
+                                                <div class="product-price">
+                                                    <%if(products[i].isOfferActive===true){%>
+
+                                                        <%if(products[i].isProOfferActive===true){%>
+                    
+                                                            <%if(products[i].offer_price > products[i].productoffer_price){%>
+                                                                
+                                                                <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+        
+                                                                
+                
+                                                            <%}else{%>
+        
+                                                                <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                                    
+                                                                
+                    
+                                                            <%}%>
+                    
+                                                        <%}else{%>
+                    
+                                                            <ins class="new-price">Rs.<%=products[i].offer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                            
+                    
+                                                        <%}%>
+                    
+                                                    <%}else if(products[i].isProOfferActive === true){%>
+                                                        
+                                                        <ins class="new-price">Rs.<%=products[i].productoffer_price%></ins><del class="old-price">Rs.<%=products[i].productprice%></del>
+                                                        
+                    
+                                                    <%}else{%>
+                
+                                                        <ins class="new-price">Rs.<%=products[i].productprice%></ins>
+                                                       
+                
+                                                    <%}%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!-- End of Product Wrap -->
+                                <%}%>
+                                <%}%>
+                            </div>
+                            <!-- End of Product Col -->
+
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- End of Banner Product Wrapper -->
@@ -316,23 +1138,47 @@
                     if (response.status === 1) {
                         $(`#wish-btn-${name}_${id}`).removeClass('w-icon-heart')
                         $(`#wish-btn-${name}_${id}`).addClass('w-icon-heart-full')
-                        Swal.fire({
-                            position: 'top-end',
+                        var toastMixin = Swal.mixin({
+                            toast: true,
                             icon: 'success',
-                            title: 'Product Added to Wishlist',
+                            title: 'General Title',
+                            animation: false,
+                            position: 'top-right',
                             showConfirmButton: false,
-                            timer: 1500
-                        })
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        });
+
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'Product Added to Wishlist'
+                        });
                     }else if(response.status === 2){
                         $(`#wish-btn-${name}_${id}`).removeClass('w-icon-heart-full')
                         $(`#wish-btn-${name}_${id}`).addClass('w-icon-heart')
-                        Swal.fire({
-                            position: 'top-end',
+                        var toastMixin = Swal.mixin({
+                            toast: true,
                             icon: 'success',
-                            title: 'Product Removed from Wishlist',
+                            title: 'General Title',
+                            animation: false,
+                            position: 'top-right',
                             showConfirmButton: false,
-                            timer: 1500
-                        })
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        });
+
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'Product removed from Wishlist'
+                        });
                     }
 
                 } else {
@@ -357,13 +1203,25 @@
                     let count = $('#cart_count').html()
                     $('#cart_count').html(parseInt(count) + 1)
 
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Product Added to cart',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                    var toastMixin = Swal.mixin({
+                            toast: true,
+                            icon: 'success',
+                            title: 'General Title',
+                            animation: false,
+                            position: 'top-right',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        });
+
+                        toastMixin.fire({
+                            animation: true,
+                            title: 'Item Added to Cart'
+                        });
 
                 } else {
                     window.location.assign('/login')

@@ -32,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-4">
 
-                            <form id="form" action="/admin/addbanner" onsubmit="return addbanner()" method="post" enctype="multipart/form-data">
+                            <form id="form"  onsubmit="return addbanner()" >
 
 
                                 <div class="mb-4 mb-3">
@@ -91,12 +91,7 @@
                                     <input type="text" placeholder="Type here" name="bannerContent" class="form-control"
                                         id="banner_content" />
                                 </div>
-                                <div class="mb-4">
-                                    <label class="form-label">Direction</label>
-                                    <input type="text" placeholder="Type here" name="direction" class="form-control"
-                                        id="banner_direction" />
-                                        <p id="banner_directionp" style="color: red;"></p>
-                                </div>
+                                
 
 
 
@@ -322,39 +317,56 @@
             }
         }
 
-        let bannerdirectionError = true;
-
-        function validateBannerDirection() {
-
-            $('#banner_direction').css('border-color', '#2d3448')
-            let bannerdirection = $('#banner_direction').val().trim()
-            console.log(bannerdirection);
-            if (bannerdirection.length == '') {
-
-                $('#banner_direction').css('border-color', '#f30000')
-                $('#banner_direction').attr("placeholder", "Enter Direction")
-                $('#banner_directionp').html("Enter Direction")
-                bannerdirectionError = false;
-                return false;
-
-            }
-        }
+        
 
         console.log("ivdeeem");
-        validateBannerDirection()
+        
         validateBannerImage()
         validateBannerContent()
         validateBannerHeading()
         validateBannerTitle()
 
 
-        if (bannerImageError === true && bannerTitleError === true && bannerHeadingError === true && bannerContentError === true) {
+        if (bannerImageError === true && bannerTitleError === true && bannerHeadingError === true && bannerContentError === true ) {
 
             console.log("innnnnn");
-            return true
+
+            let bannerimage = $('#imageValue1').val()
+            let bannertitle = $('#banner_title').val()
+            let bannerheading = $('#banner_heading').val()
+            let bannercontent = $('#banner_content').val()
+
+            let formData = new FormData();
+            formData.append('bannerimage', bannerimage)
+            formData.append('bannertitle', bannertitle)
+            formData.append('bannerheading', bannerheading)
+            formData.append('bannercontent', bannercontent)
+
+
+            $.ajax({
+                url: '/admin/addbanner',
+                method: 'post',
+                enctype: 'multipart/formdata',
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: (response) => {
+
+                    if (response.err === 1) {
+                        $('#code').css('border-color', '#f30000')
+                        $('#codep').html("Code already Exist!!!")
+                    } else {
+                        console.log(response);
+                        $("#table_change").load(location.href + " #table_change");
+                    }
+
+                }
+            })
+
+            
         } else {
             console.log("outtttt");
-            return false
+            return true
         }
 
 
