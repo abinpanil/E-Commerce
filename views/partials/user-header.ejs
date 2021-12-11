@@ -143,23 +143,32 @@
             //         method: 'get',
             //     })
             // })
+            
+            $(document).ready(function () {
 
-            // signOut
-            function signOut() {
-                console.log("inside");
-                var auth2 = gapi.auth2.getAuthInstance();
-                auth2.signOut().then(function () {
-                    console.log('User signed out.');
-                });
-                $.ajax({
+                const auth2 = window.gapi.auth2.getAuthInstance()
 
-                    url: '/signout',
-                    method: 'post',
-                    success: () => {
-                        location.reload()
+                function signOut() {
+                    console.log("inside");
+
+
+                    if (auth2 != null) {
+                        auth2.signOut().then(auth2.disconnect().then(this.props.onLogoutSuccess))
                     }
 
-                })
-            }
+                    $.ajax({
+
+                        url: '/signout',
+                        method: 'post',
+                        success: () => {
+                            location.reload()
+                        }
+
+                    })
+                }
+            })
+
+            // signOut
+
 
         </script>

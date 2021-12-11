@@ -1,7 +1,7 @@
 const db = require('../config/connection')
 const collection = require('../config/collections')
 const objectId = require('mongodb').ObjectId;
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const moment = require('moment')
 const { PRODUCTS_COLLECTION } = require('../config/collections');
 const { response } = require('express');
