@@ -17,7 +17,7 @@
     <div class="page-content" id="container">
         <div class="container">
 
-            <form class="form checkout-form" id="checkout-form">
+            <form class="form checkout-form" onsubmit="checkout()" id="checkout-form">
                 <div class="row mb-9">
                     <div class="col-lg-7 pr-lg-4 mb-4">
                         <div class="head pb-5">
@@ -418,8 +418,8 @@
         return true
     }
 
-    $('#checkout-form').submit((e) => {
-        e.preventDefault()
+    function checkout() {
+        event.preventDefault()
         $.ajax({
             url: '/place-order',
             method: 'post',
@@ -438,7 +438,7 @@
 
             }
         })
-    })
+    }
 
     function razorpayPayment(order) {
 
