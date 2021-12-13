@@ -273,6 +273,7 @@ router.post('/editproduct_get', (req, res) => {
 // edit Product
 router.post('/edit_product', (req, res) => {
 
+  console.log('hereeeeeeeeeeee');
   let product = {
     id: req.body.id,
     producttitle: req.body.producttitle,
@@ -284,29 +285,34 @@ router.post('/edit_product', (req, res) => {
     productsubcategory: req.body.productsubcategory
   }
 
-  adminHelpers.updateProduct(product).then((product) => {
+  adminHelpers.updateProduct(product).then(() => {
+
+    
+    let id = product.id
+
+    if(req.body.image1 != ''){
+      let image1 = req.body.image1
+      let path1 = './public/user/images/productImage/' + id + '1.jpg'
+      let img1 = image1.replace(/^data:([A-Za-z+/]+);base64,/, "")
+      fs.writeFileSync(path1, img1, { encoding: 'base64' })
+    }else if(req.body.image2 !=''){
+      let image2 = req.body.image2
+      let path2 = './public/user/images/productImage/' + id + '2.jpg'
+      let img2 = image2.replace(/^data:([A-Za-z+/]+);base64,/, "")
+      fs.writeFileSync(path2, img2, { encoding: 'base64' })
+    }else if(req.body.image3 !=''){
+      let image3 = req.body.image3
+      let path3 = './public/user/images/productImage/' + id + '3.jpg'
+      let img3 = image3.replace(/^data:([A-Za-z+/]+);base64,/, "")
+      fs.writeFileSync(path3, img3, { encoding: 'base64' })
+    }else if(req.body.image4 !=''){
+      let image4 = req.body.image4
+      let path4 = './public/user/images/productImage/' + id + '4.jpg'
+      let img4 = image4.replace(/^data:([A-Za-z+/]+);base64,/, "")
+      fs.writeFileSync(path4, img4, { encoding: 'base64' })
+    }
 
     res.redirect('/admin/products')
-    let image1 = req.body.image1
-    let image2 = req.body.image2
-    let image3 = req.body.image3
-    let image4 = req.body.image4
-
-    let path1 = './public/user/images/productImage/' + id + '1.jpg'
-    let path2 = './public/user/images/productImage/' + id + '2.jpg'
-    let path3 = './public/user/images/productImage/' + id + '3.jpg'
-    let path4 = './public/user/images/productImage/' + id + '4.jpg'
-
-    let img1 = image1.replace(/^data:([A-Za-z+/]+);base64,/, "")
-    let img2 = image2.replace(/^data:([A-Za-z+/]+);base64,/, "")
-    let img3 = image3.replace(/^data:([A-Za-z+/]+);base64,/, "")
-    let img4 = image4.replace(/^data:([A-Za-z+/]+);base64,/, "")
-
-    fs.writeFileSync(path1, img1, { encoding: 'base64' })
-    fs.writeFileSync(path2, img2, { encoding: 'base64' })
-    fs.writeFileSync(path3, img3, { encoding: 'base64' })
-    fs.writeFileSync(path4, img4, { encoding: 'base64' })
-
   })
 
 })
@@ -359,9 +365,10 @@ router.post('/add_product', function (req, res) {
     fs.writeFileSync(path2, img2, { encoding: 'base64' })
     fs.writeFileSync(path3, img3, { encoding: 'base64' })
     fs.writeFileSync(path4, img4, { encoding: 'base64' })
-
+    
+    
     res.redirect('/admin/add_products')
-
+    
   })
 })
 

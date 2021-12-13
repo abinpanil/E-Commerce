@@ -25,10 +25,8 @@ paypal.configure({
 
 
 let admin = false
-let user = {
-  name: '',
-  status: false
-}
+
+let user = null
 
 let cartCount = 0
 let checkWishlist = {}
@@ -50,13 +48,10 @@ router.get('/', async (req, res, next) => {
 
   let coupon = await userHelpers.getCouponForHome()
   let home = await adminHelpers.getHomeData()
+  let user = req.session.user
   if (req.session.user) {
     checkWishlist = await userHelpers.getWishlistforCheck(req.session.user._id)
     cartCount = await userHelpers.getCartCount(req.session.user._id)
-  } else {
-    user.status = false
-    user.name = ''
-    delete req.session.user
   }
   let toSelling = await adminHelpers.topSellingProducts()
   console.log(toSelling);
@@ -71,6 +66,7 @@ router.get('/', async (req, res, next) => {
 
 /* GET login. */
 router.get('/login', function (req, res) {
+  let user = req.session.user
   if (req.session.user) {
     res.redirect('/')
   } else {
@@ -81,6 +77,7 @@ router.get('/login', function (req, res) {
 });
 
 router.get('/all-products',async(req,res)=>{
+  let user = req.session.user
   if (req.session.user) {
     checkWishlist = await userHelpers.getWishlistforCheck(req.session.user._id)
     cartCount = await userHelpers.getCartCount(req.session.user._id)
@@ -95,6 +92,7 @@ router.get('/all-products',async(req,res)=>{
 
 /* GET Account page. */
 router.get('/myaccount', varifyLogin, async (req, res) => {
+  let user = req.session.user
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
@@ -111,6 +109,7 @@ router.get('/myaccount', varifyLogin, async (req, res) => {
 
 /* GET cart. */
 router.get('/cart', varifyLogin, async (req, res) => {
+  let user = req.session.user
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
@@ -128,6 +127,7 @@ router.get('/cart', varifyLogin, async (req, res) => {
 
 /* GET wishlist. */
 router.get('/wishlist', varifyLogin, async function (req, res, next) {
+  let user = req.session.user
   let wishlist = await userHelpers.getWishlist(req.session.user._id)
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
@@ -140,6 +140,7 @@ router.get('/wishlist', varifyLogin, async function (req, res, next) {
 
 // GET Checkout
 router.get('/checkout', varifyLogin, async (req, res) => {
+  let user = req.session.user
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
@@ -159,6 +160,7 @@ router.get('/checkout', varifyLogin, async (req, res) => {
 
 // Buy now From Direct Product
 router.get('/product-buy-now/:id', varifyLogin, async (req, res) => {
+  let user = req.session.user
   userHelpers.deletePendingOrder()
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
@@ -175,6 +177,7 @@ router.get('/product-buy-now/:id', varifyLogin, async (req, res) => {
 
 // order placed
 router.get('/order-placed', varifyLogin, async (req, res) => {
+  let user = req.session.user
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
@@ -190,6 +193,7 @@ router.get('/order-placed', varifyLogin, async (req, res) => {
 
 // product page
 router.get('/viewproduct/:_id', async (req, res) => {
+  let user = req.session.user
   if (req.session.user) {
     checkWishlist = await userHelpers.getWishlistforCheck(req.session.user._id)
     cartCount = await userHelpers.getCartCount(req.session.user._id)
@@ -205,6 +209,7 @@ router.get('/viewproduct/:_id', async (req, res) => {
 
 // Get view products
 router.get('/view-order/:_id', varifyLogin, async (req, res) => {
+  let user = req.session.user
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
@@ -217,6 +222,7 @@ router.get('/view-order/:_id', varifyLogin, async (req, res) => {
 
 /* Opt Load */
 router.get('/otpLoad', async (req, res) => {
+  let user = req.session.user
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
@@ -228,6 +234,7 @@ router.get('/otpLoad', async (req, res) => {
 
 // Get list category products
 router.get('/listproductscat/:cat', async function (req, res, next) {
+  let user = req.session.user
   if (req.session.user) {
     checkWishlist = await userHelpers.getWishlistforCheck(req.session.user._id)
     cartCount = await userHelpers.getCartCount(req.session.user._id)
@@ -242,6 +249,7 @@ router.get('/listproductscat/:cat', async function (req, res, next) {
 
 // product search
 router.get('/productsearch', async (req, res) => {
+  let user = req.session.user
 
   if (req.session.user) {
     checkWishlist = await userHelpers.getWishlistforCheck(req.session.user._id)
@@ -257,6 +265,7 @@ router.get('/productsearch', async (req, res) => {
 
 /* GET List subcategory products. */
 router.get('/listproductssubcat/:subcat/:cat', async function (req, res, next) {
+  let user = req.session.user
   if (req.session.user) {
     checkWishlist = await userHelpers.getWishlistforCheck(req.session.user._id)
     cartCount = await userHelpers.getCartCount(req.session.user._id)
@@ -272,6 +281,7 @@ router.get('/listproductssubcat/:subcat/:cat', async function (req, res, next) {
 
 // Get add new address
 router.get('/add_address', async (req, res) => {
+  let user = req.session.user
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id)
   }
@@ -297,8 +307,7 @@ router.post('/signIn', function (req, res) {
   userHelpers.doLogin(data).then((response) => {
     if (response.status) {
       req.session.user = response.user
-      user.status = true
-      user.name = req.session.user.name
+      user = req.session.user
       logData = response
       if (req.session.product) {
         userHelpers.addToCart(req.session.product, req.session.user._id).then(() => {
@@ -317,10 +326,9 @@ router.post('/signIn', function (req, res) {
 
 
 /* Signout. */
-router.post('/signout', (req, res) => {
-  delete req.session.user
-  user.name = ""
-  user.status = false
+router.post('/signout',  async(req, res) => {
+
+  req.session.user = null
   res.redirect('/')
 })
 
@@ -367,8 +375,7 @@ router.post('/signin-with-google', async (req, res) => {
     let userData = await userHelpers.SignInWithGoogle(payload)
     console.log(userData);
     req.session.user = userData
-    user.status = true
-    user.name = req.session.user.name
+    user = req.session.user
     logData = response
     res.json({})
 
@@ -487,7 +494,6 @@ router.post('/otpcheck', (req, res) => {
       if (data.valid) {
         userHelpers.checkNumber(number).then((response) => {
           req.session.user = response.user
-          user.status = true
           user.name = response.user.name
           res.redirect('/')
         })
@@ -556,8 +562,9 @@ router.post('/create_password', async (req, res) => {
 
 // add to cart
 router.post('/add-to-cart', (req, res) => {
+  let user = req.session.user
   let response = {}
-  if (user.status === true) {
+  if (user) {
     let proId = req.body.proId
     let userId = req.session.user._id
     userHelpers.addToCart(proId, userId).then(() => {
@@ -574,7 +581,8 @@ router.post('/add-to-cart', (req, res) => {
 
 router.post('/add-to-wishlist', (req, res) => {
   console.log('hereeeeeee');
-  if (user.status === true) {
+  let user = req.session.user
+  if (user) {
     let proId = req.body.proId
     let userId = req.session.user._id
     userHelpers.addToWishlist(proId, userId).then((response) => {
@@ -722,8 +730,8 @@ router.post('/place-order', async (req, res) => {
         "payment_method": "paypal"
       },
       "redirect_urls": {
-        "return_url": "http://localhost:2000/done/" + orderId,
-        "cancel_url": "http://localhost:2000/cancel-paypal"
+        "return_url": "http://shop.abinpanil.tech/done/" + orderId,
+        "cancel_url": "http://shop.abinpanil.tech/cancel-paypal"
       },
       "transactions": [{
         "item_list": {
@@ -846,8 +854,8 @@ router.post('/place-order-direct', async (req, res) => {
         "payment_method": "paypal"
       },
       "redirect_urls": {
-        "return_url": "http://localhost:2000/done/" + orderId,
-        "cancel_url": "http://localhost:2000/product-buy-now/" + products._id
+        "return_url": "http://shop.abinpanil.tech/done/" + orderId,
+        "cancel_url": "http://shop.abinpanil.tech/product-buy-now/" + products._id
       },
       "transactions": [{
         "item_list": {

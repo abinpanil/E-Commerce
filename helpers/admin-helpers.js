@@ -146,7 +146,10 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             let product = await db.get().collection(collection.PRODUCTS_COLLECTION).updateOne({ _id: objectId(data.id) }, { $set: { productname: data.productname, productdiscription: data.productdiscription, productprice: data.productprice, productquantity: data.productquantity, productsize: data.productsize, productcolour: data.productcolour, productcategory: data.productcategory, productsubcategory: data.productsubcategory } })
 
-            resolve(product)
+            console.log(product);
+            // let objId = ObjectId(product.insertedId).toString()
+
+            resolve()
         })
     },
     blockUser: (userId) => {

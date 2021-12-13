@@ -323,6 +323,9 @@
         
         console.log(count);
         let change = $('#tr_' + productId)
+
+        let quantity = $('#quantity_' + productId).val()
+
         $.ajax({
             url: '/change-product-quantity',
             method: 'post',
@@ -333,7 +336,7 @@
             },
             success: (response) => {
 
-                let quantity = $('#quantity_' + productId).val()
+                
                 console.log(response);
                 
 

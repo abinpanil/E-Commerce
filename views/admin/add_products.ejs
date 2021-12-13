@@ -111,6 +111,7 @@
                     <figure>
                       <img style=" width: 100px;" src="/user/images/imgplaceholder.png"
                         class="gambar img-responsive img-thumbnail" id="chekPreview1" style="max-width: 200px; " />
+                        <span style="color: red;" class="" id="img1wrn"></span>
                     </figure>
                     <input type="file" id="image1" accept="image/gif, image/jpeg, image/png"
                       onchange="validateMultipleImage('image1')" class="item-img1 file center-block"
@@ -146,6 +147,7 @@
                     <figure>
                       <img style=" width: 100px;" src="/user/images/imgplaceholder.png"
                         class="gambar img-responsive img-thumbnail" id="chekPreview2" style="max-width: 200px; " />
+                        <span style="color: red;" class="" id="img2wrn"></span>
                     </figure>
                     <input type="file" id="image2" accept="image/gif, image/jpeg, image/png"
                       onchange="validateMultipleImage('image2')" class="item-img2 file center-block"
@@ -181,6 +183,7 @@
                     <figure>
                       <img style=" width: 100px;" src="/user/images/imgplaceholder.png"
                         class="gambar img-responsive img-thumbnail" id="chekPreview3" style="max-width: 200px; " />
+                        <span style="color: red;" class="" id="img3wrn"></span>
                     </figure>
                     <input type="file" id="image3" accept="image/gif, image/jpeg, image/png"
                       onchange="validateMultipleImage('image3')" class="item-img3 file center-block"
@@ -216,6 +219,7 @@
                     <figure>
                       <img style=" width: 100px;" src="/user/images/imgplaceholder.png"
                         class="gambar img-responsive img-thumbnail" id="chekPreview4" style="max-width: 200px; " />
+                        <span style="color: red;" class="" id="img4wrn"></span>
                     </figure>
                     <input type="file" id="image4" accept="image/gif, image/jpeg, image/png"
                       onchange="validateMultipleImage('image4')" class="item-img4 file center-block"
@@ -567,7 +571,9 @@
   // validation
   function validateform() {
 
+    // event.preventDefault()
 
+    // debugger
 
     let productname = $('#product_name').val()
     let producttitle = $('#product_title').val()
@@ -578,6 +584,49 @@
     // let productcolour = $('#product_colour').val()
     let productcategory = $('#getSubCat').val()
     let productsubcategory = $('#subcategory').val()
+
+    let image1 = $('#imageValue1').val()
+    let image2 = $('#imageValue2').val()
+    let image3 = $('#imageValue3').val()
+    let image4 = $('#imageValue4').val()
+
+    let img1Err = true
+
+    function validateImg1() {
+      if (image1.length == '') {
+        $('#img1wrn').text('Select Image')
+        img1Err =false
+      }
+    }
+
+
+    let img2Err = true
+
+    function validateImg2() {
+      if (image2.length == '') {
+        $('#img2wrn').text('Select Image')
+        img2Err =false
+      }
+    }
+
+    let img3Err = true
+
+    function validateImg3() {
+      if (image3.length == '') {
+        $('#img3wrn').text('Select Image')
+        img3Err =false
+      }
+    }
+
+    let img4Err = true
+
+    function validateImg4() {
+      if (image4.length == '') {
+        $('#img4wrn').text('Select Image')
+        img4Err =false
+      }
+    }
+
 
     // product name
     let productNameError = true;
@@ -732,7 +781,10 @@
       }
     }
 
-
+    validateImg1()
+    validateImg2()
+    validateImg3()
+    validateImg4()
     validateProductTitle()
     validateProductName()
     validateProductDiscription()
@@ -743,7 +795,7 @@
     validateProducCategory()
     validateProducSubCategory()
 
-    if (productNameError === true && productTitleError === true && productDisError === true && productPriceError === true && productQuantityError === true) {
+    if (img1Err === true && img2Err === true && img3Err === true && img4Err === true && productNameError === true && productTitleError === true && productDisError === true && productPriceError === true && productQuantityError === true) {
 
       return true
 

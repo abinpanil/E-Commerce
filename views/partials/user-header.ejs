@@ -2,6 +2,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
 
+<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+
 <style>
     @media (max-width: 767px) {
         .header-top {
@@ -22,7 +24,7 @@
                     <div class="header-right">
 
                         <!-- End of Dropdown Menu -->
-                        <%if(user.status){%>
+                        <%if(user){%>
                             <a href="javascript:void(0)" style="font-size: 12px;" class="d-lg-show"><b>Hi <%=user.name%>
                                 </b></a>
                             <a href="/myaccount" style="font-size: 12px;" class="d-lg-show">My Account</a>
@@ -62,7 +64,7 @@
                             </button>
                         </form>
                     </div>
-                    <%if(user.status){%>
+                    <%if(user){%>
                         <div class="header-right ml-4">
 
                             <a class="wishlist label-down link d-xs-show" href="/wishlist">
@@ -130,6 +132,9 @@
         </header>
         <!-- End of Header -->
 
+
+
+
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 
         <script>
@@ -143,30 +148,34 @@
             //         method: 'get',
             //     })
             // })
-            
-            $(document).ready(function () {
-
-                const auth2 = window.gapi.auth2.getAuthInstance()
-
-                function signOut() {
-                    console.log("inside");
 
 
-                    if (auth2 != null) {
-                        auth2.signOut().then(auth2.disconnect().then(this.props.onLogoutSuccess))
+
+
+            // gapi.load('auth2', function () {
+            //     gapi.auth2.init();
+            // });
+
+
+
+
+
+            function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    console.log('User signed out.');
+                });
+                
+                $.ajax({
+
+                    url: '/signout',
+                    method: 'post',
+                    success: () => {
+                        location.reload()
                     }
 
-                    $.ajax({
-
-                        url: '/signout',
-                        method: 'post',
-                        success: () => {
-                            location.reload()
-                        }
-
-                    })
-                }
-            })
+                })
+            }
 
             // signOut
 
